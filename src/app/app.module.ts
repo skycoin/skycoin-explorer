@@ -11,6 +11,7 @@ import { BlockChainTableComponent } from './components/pages/block-chain-table/b
 import { ApiService } from './services/api/api.service';
 import { HttpModule } from '@angular/http';
 import { PaginationComponent } from './components/pages/block-chain-table/pagination/pagination.component';
+import { CoinSupplyComponent } from './components/pages/block-chain-table/coin-supply/coin-supply.component';
 
 const ROUTES = [
   {
@@ -33,6 +34,7 @@ const ROUTES = [
     SearchBarComponent,
     LoadingComponent,
     PaginationComponent,
+    CoinSupplyComponent,
   ],
   imports: [
     BrowserModule,

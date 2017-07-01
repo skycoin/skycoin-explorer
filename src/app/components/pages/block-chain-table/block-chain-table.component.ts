@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import moment from 'moment-es6';
@@ -10,7 +10,7 @@ import { ApiService } from '../../../services/api/api.service';
   templateUrl: './block-chain-table.component.html',
   styleUrls: ['./block-chain-table.component.css']
 })
-export class BlockChainTableComponent implements OnInit {
+export class BlockChainTableComponent {
 
   private blocks: Block[];
   private totalBlocks: number;
@@ -24,28 +24,19 @@ export class BlockChainTableComponent implements OnInit {
     this.blocks = [];
   }
 
-  GetBlockAmount(txns: Transaction[]) {
+  GetBlockAmount(txns: Transaction[]): number {
     const ret = [];
-    _.each(txns, function(o){
+    _.each(txns, o => {
       if (o.outputs) {
-        _.each(o.outputs, function(_o){
-          ret.push(_o.coins);
-        })
+        _.each(o.outputs, _o => ret.push(_o.coins));
       }
-
     });
 
-    const totalCoins = ret.reduce(function(memo, coin) {
-      return memo + parseInt(coin);
-    }, 0);
-    return totalCoins;
+    return ret.reduce((memo, coin) => memo + parseInt(coin), 0);
   }
 
   getTime(time){
-    return moment.unix(time).format("YYYY-MM-DD HH:mm");
-  }
-
-  ngOnInit() {
+    return moment.unix(time).format('YYYY-MM-DD HH:mm');
   }
 
   showDetails(block: Block) {
@@ -68,11 +59,10 @@ export class BlockChainTableComponent implements OnInit {
     }
     this.loading = true;
 
-    this.api.getBlocks(blockStart,blockEnd)
+    this.api.getBlocks(blockStart, blockEnd)
       .subscribe(
         data => {
-          let newData = _.sortBy(data, function (block) {return block.header.seq}).reverse();
-          this.blocks = newData;
+          this.blocks = _.sortBy(data, function (block) {return block.header.seq}).reverse();
           this.loading = false;
         }, error => {
           this.loading = false;

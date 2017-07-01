@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { HeaderComponent } from './components/layout/header/header.component';
+import { SearchBarComponent } from './components/layout/search-bar/search-bar.component';
 import { LoadingComponent } from './components/layout/loading/loading.component';
 
 const ROUTES = [
@@ -17,10 +18,10 @@ const ROUTES = [
 
 @NgModule({
   declarations: [
-    AppComponent
     AppComponent,
     FooterComponent,
     HeaderComponent,
+    SearchBarComponent,
     LoadingComponent,
   ],
   imports: [

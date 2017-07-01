@@ -26,9 +26,12 @@ const ROUTES = [
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     RouterModule.forRoot(ROUTES),
   ],
-  providers: [],
+  providers: [
+    ApiService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

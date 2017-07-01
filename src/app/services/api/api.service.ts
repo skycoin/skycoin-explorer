@@ -29,6 +29,14 @@ export class ApiService {
     return this.get('coinSupply');
   }
 
+  getInputAddress(uxid:string): any{
+    return this.get('uxout?uxid=' + uxid);
+  }
+
+  getTransaction(txid:string): Observable<any> {
+    return this.get('transaction?txid=' + txid);
+  }
+
   private get(url) {
     return this.http.get(this.baseUrl + 'api/' + url)
       .map(res => res.json())

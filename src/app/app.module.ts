@@ -13,6 +13,7 @@ import { HttpModule } from '@angular/http';
 import { PaginationComponent } from './components/pages/block-chain-table/pagination/pagination.component';
 import { CoinSupplyComponent } from './components/pages/block-chain-table/coin-supply/coin-supply.component';
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
+import { TransactionDetailComponent } from './components/pages/transaction-detail/transaction-detail.component';
 
 const ROUTES = [
   {
@@ -28,6 +29,11 @@ const ROUTES = [
     path: 'block/:id',
     component: BlockDetailsComponent
   },
+  {
+    path: 'transaction/:txid',
+    component: TransactionDetailComponent
+  }
+  ,
 ];
 
 @NgModule({
@@ -41,6 +47,7 @@ const ROUTES = [
     PaginationComponent,
     CoinSupplyComponent,
     BlockDetailsComponent,
+    TransactionDetailComponent,
   ],
   imports: [
     BrowserModule,

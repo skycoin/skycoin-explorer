@@ -14,6 +14,7 @@ import { PaginationComponent } from './components/pages/block-chain-table/pagina
 import { CoinSupplyComponent } from './components/pages/block-chain-table/coin-supply/coin-supply.component';
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
 import { TransactionDetailComponent } from './components/pages/transaction-detail/transaction-detail.component';
+import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
 
 const ROUTES = [
   {
@@ -28,6 +29,10 @@ const ROUTES = [
   {
     path: 'block/:id',
     component: BlockDetailsComponent
+  },
+  {
+    path: 'address/:address',
+    component: AddressDetailComponent
   },
   {
     path: 'transaction/:txid',
@@ -48,6 +53,7 @@ const ROUTES = [
     CoinSupplyComponent,
     BlockDetailsComponent,
     TransactionDetailComponent,
+    AddressDetailComponent,
   ],
   imports: [
     BrowserModule,

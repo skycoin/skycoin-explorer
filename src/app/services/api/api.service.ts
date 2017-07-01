@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { Block, BlockResponse, CoinSupply } from '../../components/pages/block-chain-table/block';
+import { AddressBalanceResponse, UnspentOutput } from '../../components/pages/address-detail/UnspentOutput';
 
 @Injectable()
 export class ApiService {
@@ -29,12 +30,20 @@ export class ApiService {
     return this.get('coinSupply');
   }
 
+  getCurrentBalanceOfAddress(address: number): Observable<AddressBalanceResponse> {
+    return this.get('currentBalance?address=' + address);
+  }
+
   getInputAddress(uxid:string): any{
     return this.get('uxout?uxid=' + uxid);
   }
 
   getTransaction(txid:string): Observable<any> {
     return this.get('transaction?txid=' + txid);
+  }
+
+  getUxOutputsForAddress(address: number): Observable<UnspentOutput[]> {
+    return this.get('address?address=' + address);
   }
 
   private get(url) {

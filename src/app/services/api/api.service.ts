@@ -10,7 +10,7 @@ import { AddressBalanceResponse, UnspentOutput } from '../../components/pages/ad
 @Injectable()
 export class ApiService {
 
-  private baseUrl = 'http://127.0.0.1:8001/';
+  private baseUrl = '/';
 
   constructor(private http: Http) { }
 
@@ -27,11 +27,11 @@ export class ApiService {
   }
 
   getCoinSupply(): Observable<CoinSupply> {
-    return this.get('coinSupply');
+    return this.get('explorer/getEffectiveOutputs');
   }
 
   getCurrentBalanceOfAddress(address: number): Observable<AddressBalanceResponse> {
-    return this.get('currentBalance?address=' + address);
+    return this.get('outputs?addrs=' + address);
   }
 
   getInputAddress(uxid:string): any{
@@ -43,7 +43,7 @@ export class ApiService {
   }
 
   getUxOutputsForAddress(address: number): Observable<UnspentOutput[]> {
-    return this.get('address?address=' + address);
+    return this.get('explorer/address?address=' + address);
   }
 
   private get(url) {

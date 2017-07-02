@@ -1,0 +1,10 @@
+{
+  "/api/*": {
+    "target": "http://explorer.skycoin.net",
+    "pathRewrite": {
+      "^/api" : ""
+    },
+    "secure": false,
+    "logLevel": "debug"
+  }
+}

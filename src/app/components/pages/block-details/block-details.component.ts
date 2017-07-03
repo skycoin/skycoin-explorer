@@ -15,9 +15,8 @@ import 'rxjs/add/operator/switchMap';
 })
 export class BlockDetailsComponent implements OnInit {
 
-  private blocksObservable: Observable<Block[]>;
-
-  private block: Block;
+  blocksObservable: Observable<Block[]>;
+  block: Block;
 
   constructor(
     private api: ApiService,

@@ -10,14 +10,14 @@ export class PaginationComponent implements OnInit {
 
   @Output() onChangePage = new EventEmitter<any>();
 
-  private numberOfBlocks:number;
-  private currentPage:number;
-  private pagesToShowAtATime:number;
-  private pages:any;
-  private pageStartPointer:number;
-  private currentPages:number[];
-  private pageEndPointer:number;
-  private noUpcoming:boolean;
+  numberOfBlocks:number;
+  currentPage:number;
+  pagesToShowAtATime:number;
+  pages:any;
+  pageStartPointer:number;
+  currentPages:number[];
+  pageEndPointer:number;
+  noUpcoming:boolean;
 
   constructor(
     private api: ApiService,

@@ -1,3 +1,53 @@
+/*
+
+Explorer backend service
+
+Serves precompiled angular website from the ./dist folder.
+
+This must be run from the same folder as ./dist, unless run in -api-only mode.
+
+Environment options:
+* EXPLORER_HOST - The addr:port to bind the explorer to. Do not include a scheme. Defaults to 127.0.0.1:8001
+* SKYCOIN_ADDR - The skycoin node's address. You must include a scheme. Defaults to http://127.0.0.1:6420
+
+CLI Options:
+* -api-only - Don't serve static content from ./dist, only proxy the skycoin node
+
+
+HTTP API:
+
+* /api/block
+    - proxy: /block
+    - args: hash
+
+* /api/blocks
+    - proxy: /blocks
+    - args: start, end
+
+* /api/coinSupply
+    - proxy: /explorer/getEffectiveOutputs
+
+* /api/blockchain/metadata
+    - proxy: /blockchain/metadata
+
+* /api/address
+    - proxy: /explorer/address
+    - args: address
+
+* /api/currentBalance
+    - proxy: /outputs
+    - args: addrs
+
+* /api/uxout
+    - proxy: /uxout
+    - args: uxid
+
+* /api/transaction
+    - proxy: /transaction
+    - args: txid
+
+*/
+
 package main
 
 import (
@@ -108,10 +158,6 @@ func (s SkycoinProxyEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 }
 
 var proxyEndpoints = []SkycoinProxyEndpoint{
-	{
-		ExplorerPath: "/api/outputs",
-		SkycoinPath:  "/outputs",
-	},
 	{
 		ExplorerPath: "/api/block",
 		SkycoinPath:  "/block",

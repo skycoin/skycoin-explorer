@@ -27,11 +27,11 @@ export class ApiService {
   }
 
   getCoinSupply(): Observable<CoinSupply> {
-    return this.get('explorer/getEffectiveOutputs');
+    return this.get('coinSupply');
   }
 
   getCurrentBalanceOfAddress(address: number): Observable<AddressBalanceResponse> {
-    return this.get('outputs?addrs=' + address);
+    return this.get('currentBalance?addrs=' + address);
   }
 
   getInputAddress(uxid:string): any{
@@ -43,7 +43,7 @@ export class ApiService {
   }
 
   getUxOutputsForAddress(address: number): Observable<UnspentOutput[]> {
-    return this.get('explorer/address?address=' + address);
+    return this.get('address?address=' + address);
   }
 
   private get(url) {

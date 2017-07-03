@@ -25,3 +25,7 @@ We keep dist in source control to remove node/npm as a dependency within our ser
 ```sh
 go run explorer.go
 ```
+
+## explorer.go API documentation
+
+See [explorer.go](explorer.go)

@@ -19,3 +19,9 @@ This project is largely based on the Skycoin explorer within the skycoin/skycoin
 ## Notes
 
 We keep dist in source control to remove node/npm as a dependency within our server environment
+
+## Running explorer.go server
+
+```sh
+go run explorer.go
+```

@@ -9,8 +9,8 @@ import { ApiService } from '../../../../services/api/api.service';
 })
 export class CoinSupplyComponent implements OnInit {
 
-  private coinSupply: number;
-  private coinCap: number;
+  coinSupply: number;
+  coinCap: number;
 
   constructor(
     private api: ApiService

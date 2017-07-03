@@ -12,15 +12,15 @@ declare var QRCode: any;
 })
 export class AddressDetailComponent implements OnInit {
 
-  private UxOutputs: Observable<any>;
+  UxOutputs: Observable<any>;
 
-  private showUxID:boolean;
+  showUxID:boolean;
 
-  private transactions:any[];
+  transactions:any[];
 
-  private currentAddress:string;
+  currentAddress:string;
 
-  private currentBalance:number;
+  currentBalance:number;
 
   constructor(
     private api: ApiService,

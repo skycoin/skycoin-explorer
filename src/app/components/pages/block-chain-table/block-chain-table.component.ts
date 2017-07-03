@@ -12,9 +12,9 @@ import { ApiService } from '../../../services/api/api.service';
 })
 export class BlockChainTableComponent {
 
-  private blocks: Block[];
-  private totalBlocks: number;
-  private loading: boolean;
+  blocks: Block[];
+  totalBlocks: number;
+  loading: boolean;
 
   constructor(
     private api: ApiService,

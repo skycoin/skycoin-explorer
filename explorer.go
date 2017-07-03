@@ -12,13 +12,13 @@ import (
 )
 
 const (
-	defaultExplorerHost = ":8001"
-	defaultSkycoinHost  = "http://127.0.0.1:6420"
+	defaultExplorerHost = "127.0.0.1:8001"
+	defaultSkycoinAddr  = "http://127.0.0.1:6420"
 )
 
 var (
-	explorerHost = ""     // override with envvar SKYCOIN_EXPLORER_HOST
-	skycoinHost  *url.URL // override with envvar SKYCOIN_HOST
+	explorerHost = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
+	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
 	apiOnly      bool     // set to true with -api-only cli flag
 )
 
@@ -28,17 +28,22 @@ func init() {
 		explorerHost = defaultExplorerHost
 	}
 
-	skycoinHostString := os.Getenv("SKYCOIN_HOST")
-	if skycoinHostString == "" {
-		skycoinHostString = defaultSkycoinHost
+	skycoinAddrString := os.Getenv("SKYCOIN_ADDR")
+	if skycoinAddrString == "" {
+		skycoinAddrString = defaultSkycoinAddr
 	}
 
-	origURL, err := url.Parse(skycoinHostString)
+	origURL, err := url.Parse(skycoinAddrString)
 	if err != nil {
-		log.Panicln("Invalid SKYCOIN_HOST", skycoinHostString, err)
+		log.Println("SKYCOIN_ADDR must have a scheme, e.g. http://")
+		log.Fatalln("Invalid SKYCOIN_HOST", skycoinAddrString, err)
 	}
 
-	skycoinHost = &url.URL{
+	if origURL.Scheme == "" {
+		log.Fatalln("SKYCOIN_ADDR must have a scheme, e.g. http://")
+	}
+
+	skycoinAddr = &url.URL{
 		Scheme: origURL.Scheme,
 		Host:   origURL.Host,
 	}
@@ -58,8 +63,8 @@ func skycoinURL(path string, query url.Values) string {
 	}
 
 	u := &url.URL{
-		Scheme:   skycoinHost.Scheme,
-		Host:     skycoinHost.Host,
+		Scheme:   skycoinAddr.Scheme,
+		Host:     skycoinAddr.Host,
 		Path:     path,
 		RawQuery: rawQuery,
 	}
@@ -193,7 +198,7 @@ func main() {
 		handleStaticContent()
 	}
 
-	log.Println("Running skycoin explorer on", explorerHost)
+	log.Printf("Running skycoin explorer on http://%s", explorerHost)
 
 	if err := http.ListenAndServe(explorerHost, nil); err != nil {
 		log.Println("Fatal:", err)

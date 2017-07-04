@@ -40,7 +40,7 @@ export class BlockChainTableComponent {
   }
 
   showDetails(block: Block) {
-    this.router.navigate(['/block', block.header.seq]);
+    this.router.navigate(['/app/block', block.header.seq]);
   }
 
   handlePageChange(pagesData: number[]) {

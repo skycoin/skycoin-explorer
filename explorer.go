@@ -52,6 +52,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -149,10 +150,18 @@ func (s SkycoinProxyEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 
 	defer resp.Body.Close()
 
-	if _, err := io.Copy(w, resp.Body); err != nil {
+	if n, err := io.Copy(w, resp.Body); err != nil {
 		msg := "Copying response from skycoin node to client failed"
+		if n != 0 {
+			msg += fmt.Sprintf(", after %d bytes were written", n)
+		}
 		log.Println("ERROR:", msg, skycoinURL)
-		http.Error(w, msg, http.StatusInternalServerError)
+
+		// An error response can only be written if the ResponseWriter has not been written to
+		if n == 0 {
+			http.Error(w, msg, http.StatusInternalServerError)
+		}
+
 		return
 	}
 }
@@ -207,6 +216,13 @@ func main() {
 
 	if !apiOnly {
 		http.Handle("/", http.FileServer(http.Dir("./dist/")))
+
+		// The angular app's internal routes must all start with /app/.
+		// This serves the index.html for all of those routes.
+		// The angular app will render the correct page based upon the request path.
+		http.Handle("/app/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "./dist/index.html")
+		}))
 	}
 
 	log.Printf("Running skycoin explorer on http://%s", explorerHost)

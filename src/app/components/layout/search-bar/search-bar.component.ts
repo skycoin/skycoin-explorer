@@ -17,14 +17,14 @@ export class SearchBarComponent implements OnInit {
 
   searchBlockHistory(hashVal:string){
     if(hashVal.length ==34 || hashVal.length ==35 ){
-      this.router.navigate(['/address', hashVal]);
+      this.router.navigate(['/app/address', hashVal]);
       return;
     }
     if(hashVal.length ==64){
-      this.router.navigate(['/transaction', hashVal]);
+      this.router.navigate(['/app/transaction', hashVal]);
       return;
     }
-    this.router.navigate(['/block', hashVal]);
+    this.router.navigate(['/app/block', hashVal]);
     return;
   }
 }

@@ -19,23 +19,23 @@ import { AddressDetailComponent } from './components/pages/address-detail/addres
 const ROUTES = [
   {
     path: '',
-    redirectTo: 'blocks',
+    redirectTo: 'app/blocks',
     pathMatch: 'full'
   },
   {
-    path: 'blocks',
+    path: 'app/blocks',
     component: BlockChainTableComponent
   },
   {
-    path: 'block/:id',
+    path: 'app/block/:id',
     component: BlockDetailsComponent
   },
   {
-    path: 'address/:address',
+    path: 'app/address/:address',
     component: AddressDetailComponent
   },
   {
-    path: 'transaction/:txid',
+    path: 'app/transaction/:txid',
     component: TransactionDetailComponent
   }
   ,

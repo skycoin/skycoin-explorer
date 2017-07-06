@@ -56,7 +56,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   getTime(time: number){
-    return moment.unix(time).format();
+    return moment.unix(time).utc().format('YYYY-MM-DD HH:mm:ss');
   }
 
 }

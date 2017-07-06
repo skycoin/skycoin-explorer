@@ -36,7 +36,7 @@ export class BlockChainTableComponent {
   }
 
   getTime(time){
-    return moment.unix(time).format('YYYY-MM-DD HH:mm');
+    return moment.unix(time).utc().format('YYYY-MM-DD HH:mm:ss');
   }
 
   showDetails(block: Block) {

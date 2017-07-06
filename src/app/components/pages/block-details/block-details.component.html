@@ -2,8 +2,8 @@
   <h2>Block Details</h2>
   <div class="card" *ngIf="block">
     <div class="card-content" >
-      <table>
-        <tbody >
+      <table class="block-header">
+        <tbody>
 
         <tr>
 
@@ -22,7 +22,7 @@
         </tr>
 
         <tr>
-          <td>Total Amount</td><td>{{ getAmount(block) }} coins</td>
+          <td>Total Amount</td><td>{{ getAmount(block) | number : '1.0-0' }} SKY</td>
         </tr>
 
         </tbody>
@@ -33,19 +33,25 @@
 
   <div class="col s12">Transactions</div>
   <div class="col s12">
-    <div class="col s1">S.no</div>
-    <div class="col s2">Transaction Id</div>
+    <div class="col s3">Transaction ID</div>
     <div class="col s3">Inputs</div>
     <div class="col s4">Outputs</div>
     <div class="col s2">Amount</div>
   </div>
   <div *ngIf="block">
-    <div  class="col s12" *ngFor="let transaction of block.body.txns;let i = index">
-
-      <div class="col s1">{{i+1}}</div>
-      <div class="col s2 wrap"><a [routerLink]="['/app/transaction', transaction.txid ]" >{{transaction.txid}}</a></div>
-      <div class="col s3 wrap"><p *ngFor="let input of transaction.inputs;" class="input">{{input}}</p></div>
-      <div class="col s6 wrap"><p *ngFor="let output of transaction.outputs;" class="input"><a [routerLink]="['/app/address', output.dst ]" >{{output.dst}}</a>  - {{output.coins}}</p></div>
+    <div  class="col s12" *ngFor="let transaction of block.body.txns">
+      <div class="col s3 wrap">
+        <a [routerLink]="['/app/transaction', transaction.txid ]" >{{transaction.txid}}</a>
+      </div>
+      <div class="col s3 wrap">
+        <p *ngFor="let input of transaction.inputs;" class="input">{{input}}</p>
+      </div>
+      <div class="col s4 wrap">
+        <p *ngFor="let output of transaction.outputs;" class="input"><a [routerLink]="['/app/address', output.dst ]" >{{output.dst}}</a></p>
+      </div>
+      <div class="col s2 wrap">
+        <p *ngFor="let output of transaction.outputs;" class="input">{{output.coins | number : '1.0-0' }}</p>
+      </div>
     </div>
   </div>
 

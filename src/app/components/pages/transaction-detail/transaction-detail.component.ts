@@ -33,12 +33,9 @@ export class TransactionDetailComponent implements OnInit {
       })
       .flatMap((trans: any) => {
         const tasks$ = [];
-        this.transaction = trans.txn;
-        this.transaction.status = trans.status.confirmed;
-        this.transaction.block_num = trans.status.block_seq;
-        trans = trans.txn;
-        for (let i = 0; i < trans.inputs.length; i++){
-          tasks$.push(this.getAddressOfInput(trans.inputs[i]));
+        this.transaction = trans;
+        for (let i = 0; i < this.transaction.txn.inputs.length; i++){
+          tasks$.push(this.getAddressOfInput(this.transaction.txn.inputs[i]));
         }
         return Observable.forkJoin(...tasks$);
       });
@@ -46,7 +43,7 @@ export class TransactionDetailComponent implements OnInit {
     this.transactionObservable.subscribe((trans) => {
 
       for (let i = 0; i < trans.length; i++){
-        this.transaction.inputs[i] = trans[i].owner_address;
+        this.transaction.txn.inputs[i] = trans[i].owner_address;
       }
     })
   }

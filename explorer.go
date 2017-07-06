@@ -223,6 +223,26 @@ func main() {
 		http.Handle("/app/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "./dist/index.html")
 		}))
+
+		// Backwards compatiblity for the old link;
+		// / redirected to /blocks on load, so people may have linked to /blocks
+		// Redirect /blocks to / instead of 404
+		http.Handle("/blocks", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+		}))
+
+		// /block/*, /transaction/* and /address/* are now prefixed with /app
+		redirectToApp := func(basePath string) {
+			http.Handle(basePath, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				block := r.URL.Path[len(basePath):]
+				path := fmt.Sprintf("/app%s%s", basePath, block)
+				http.Redirect(w, r, path, http.StatusMovedPermanently)
+			}))
+		}
+
+		redirectToApp("/block/")
+		redirectToApp("/transaction/")
+		redirectToApp("/address/")
 	}
 
 	log.Printf("Running skycoin explorer on http://%s", explorerHost)

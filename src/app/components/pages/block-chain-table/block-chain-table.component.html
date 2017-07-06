@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col s12 s12 card light-blue lighten-1 white-text">
-    <div class="card-content">
+    <div class="card-content blockchain-metadata">
       <span class="col s6">Block Height:</span><span class="col s6">{{ totalBlocks| number : '1.0-0'}}</span>
       <app-coin-supply></app-coin-supply>
     </div>
@@ -22,7 +22,7 @@
     <tr *ngFor="let block of blocks" (click)="showDetails(block)">
       <!--TODO: Use pipe? -->
       <td>{{getTime(block.header.timestamp)}}</td>
-      <td>{{ block.header.seq | number : '1.0-0'}}</td>
+      <td>{{ block.header.seq }}</td>
       <td>{{ block.body.txns.length }}</td>
       <!--TODO: Use pipe? -->
       <td>{{ GetBlockAmount(block.body.txns) | number : '1.0-0'}}</td>

@@ -11,3 +11,7 @@
 .right-arrow{
   margin-top: 50px;
 }
+
+.transaction-header .td {
+    padding: 2px 5px;
+}

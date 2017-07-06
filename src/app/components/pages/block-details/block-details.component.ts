@@ -23,11 +23,11 @@ export class BlockDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.block=null;
+    this.block = null;
   }
 
   ngOnInit() {
-    this.blocksObservable= this.route.params
+    this.blocksObservable = this.route.params
       .filter(params => params['id'] !== undefined)
       .switchMap((params: Params) => {
         let selectedBlock = +params['id'];

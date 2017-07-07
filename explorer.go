@@ -58,11 +58,21 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 )
 
 const (
 	defaultExplorerHost = "127.0.0.1:8001"
 	defaultSkycoinAddr  = "http://127.0.0.1:6420"
+
+	// timeout for requests to the backend skycoin node
+	skycoinRequestTimeout = time.Second * 30
+
+	// https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/
+	// timeout for requests to the explorer
+	serverReadTimeout  = time.Second * 10
+	serverWriteTimeout = time.Second * 60
+	serverIdleTimeout  = time.Second * 120
 )
 
 var (
@@ -138,9 +148,13 @@ func (s SkycoinProxyEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 
 	skycoinURL := buildSkycoinURL(s.SkycoinPath, query)
 
-	log.Printf("Proxying request %s to skycoin node %s", r.URL.String(), skycoinURL)
+	log.Printf("Proxying request %s to skycoin node %s with timeout %v", r.URL.String(), skycoinURL, skycoinRequestTimeout)
 
-	resp, err := http.Get(skycoinURL)
+	c := &http.Client{
+		Timeout: skycoinRequestTimeout,
+	}
+
+	resp, err := c.Get(skycoinURL)
 	if err != nil {
 		msg := "Request to skycoin node failed"
 		log.Println("ERROR:", msg, skycoinURL)
@@ -208,32 +222,34 @@ var proxyEndpoints = []SkycoinProxyEndpoint{
 }
 
 func main() {
+	mux := http.NewServeMux()
+
 	// Register proxy endpoints from config
 	for _, e := range proxyEndpoints {
-		http.Handle(e.ExplorerPath, e)
+		mux.Handle(e.ExplorerPath, e)
 		log.Printf("%s proxied to %s with args %v", e.ExplorerPath, e.SkycoinPath, e.QueryArgs)
 	}
 
 	if !apiOnly {
-		http.Handle("/", http.FileServer(http.Dir("./dist/")))
+		mux.Handle("/", http.FileServer(http.Dir("./dist/")))
 
 		// The angular app's internal routes must all start with /app/.
 		// This serves the index.html for all of those routes.
 		// The angular app will render the correct page based upon the request path.
-		http.Handle("/app/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mux.Handle("/app/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "./dist/index.html")
 		}))
 
 		// Backwards compatiblity for the old link;
 		// / redirected to /blocks on load, so people may have linked to /blocks
 		// Redirect /blocks to / instead of 404
-		http.Handle("/blocks", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mux.Handle("/blocks", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", http.StatusMovedPermanently)
 		}))
 
 		// /block/*, /transaction/* and /address/* are now prefixed with /app
 		redirectToApp := func(basePath string) {
-			http.Handle(basePath, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			mux.Handle(basePath, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				block := r.URL.Path[len(basePath):]
 				path := fmt.Sprintf("/app%s%s", basePath, block)
 				http.Redirect(w, r, path, http.StatusMovedPermanently)
@@ -247,7 +263,15 @@ func main() {
 
 	log.Printf("Running skycoin explorer on http://%s", explorerHost)
 
-	if err := http.ListenAndServe(explorerHost, nil); err != nil {
+	s := &http.Server{
+		Addr:         explorerHost,
+		Handler:      mux,
+		ReadTimeout:  serverReadTimeout,
+		WriteTimeout: serverWriteTimeout,
+		IdleTimeout:  serverIdleTimeout,
+	}
+
+	if err := s.ListenAndServe(); err != nil {
 		log.Println("Fatal:", err)
 	}
 }

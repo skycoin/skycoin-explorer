@@ -13,38 +13,7 @@ Environment options:
 CLI Options:
 * -api-only - Don't serve static content from ./dist, only proxy the skycoin node
 
-
-HTTP API:
-
-* /api/block
-    - proxy: /block
-    - args: hash
-
-* /api/blocks
-    - proxy: /blocks
-    - args: start, end
-
-* /api/coinSupply
-    - proxy: /explorer/getEffectiveOutputs
-
-* /api/blockchain/metadata
-    - proxy: /blockchain/metadata
-
-* /api/address
-    - proxy: /explorer/address
-    - args: address
-
-* /api/currentBalance
-    - proxy: /outputs
-    - args: addrs
-
-* /api/uxout
-    - proxy: /uxout
-    - args: uxid
-
-* /api/transaction
-    - proxy: /transaction
-    - args: txid
+Run the explorer and navigate to http://127.0.0.1:8001/api.html for API documentation.
 
 */
 

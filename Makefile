@@ -7,6 +7,9 @@ EXPLORER := explorer
 run: ## run explorer.go
 	go run explorer.go
 
+run-api: ## run explorer.go -api-only
+	go run explorer.go -api-only
+
 build-go: ## build explorer.go
 	go build -o $(EXPLORER) explorer.go
 

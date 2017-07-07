@@ -59,6 +59,8 @@ import (
 	"net/url"
 	"os"
 	"time"
+
+	"github.com/NYTimes/gziphandler"
 )
 
 const (
@@ -224,32 +226,36 @@ var proxyEndpoints = []SkycoinProxyEndpoint{
 func main() {
 	mux := http.NewServeMux()
 
+	gzipHandle := func(path string, handler http.Handler) {
+		mux.Handle(path, gziphandler.GzipHandler(handler))
+	}
+
 	// Register proxy endpoints from config
 	for _, e := range proxyEndpoints {
-		mux.Handle(e.ExplorerPath, e)
+		gzipHandle(e.ExplorerPath, e)
 		log.Printf("%s proxied to %s with args %v", e.ExplorerPath, e.SkycoinPath, e.QueryArgs)
 	}
 
 	if !apiOnly {
-		mux.Handle("/", http.FileServer(http.Dir("./dist/")))
+		gzipHandle("/", http.FileServer(http.Dir("./dist/")))
 
 		// The angular app's internal routes must all start with /app/.
 		// This serves the index.html for all of those routes.
 		// The angular app will render the correct page based upon the request path.
-		mux.Handle("/app/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gzipHandle("/app/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "./dist/index.html")
 		}))
 
 		// Backwards compatiblity for the old link;
 		// / redirected to /blocks on load, so people may have linked to /blocks
 		// Redirect /blocks to / instead of 404
-		mux.Handle("/blocks", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gzipHandle("/blocks", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", http.StatusMovedPermanently)
 		}))
 
 		// /block/*, /transaction/* and /address/* are now prefixed with /app
 		redirectToApp := func(basePath string) {
-			mux.Handle(basePath, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			gzipHandle(basePath, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				block := r.URL.Path[len(basePath):]
 				path := fmt.Sprintf("/app%s%s", basePath, block)
 				http.Redirect(w, r, path, http.StatusMovedPermanently)

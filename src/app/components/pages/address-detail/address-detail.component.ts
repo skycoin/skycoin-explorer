@@ -13,12 +13,10 @@ declare var QRCode: any;
 export class AddressDetailComponent implements OnInit {
 
   UxOutputs: Observable<any>;
-
   transactions: any[];
-
   currentAddress: string;
-
   currentBalance: number;
+  loading: boolean;
 
   constructor(
     private api: ApiService,
@@ -29,6 +27,7 @@ export class AddressDetailComponent implements OnInit {
     this.currentBalance = 0;
     this.transactions = [];
     this.currentAddress = null;
+    this.loading = false;
   }
 
   ngOnInit() {
@@ -36,6 +35,8 @@ export class AddressDetailComponent implements OnInit {
   }
 
   ngAfterViewInit(){
+    this.loading = true;
+
     this.UxOutputs = this.route.params
       .switchMap((params: Params) => {
         let address = params['address'];
@@ -45,9 +46,14 @@ export class AddressDetailComponent implements OnInit {
         return this.api.getUxOutputsForAddress(address);
       });
 
-    this.UxOutputs.subscribe((uxoutputs) => {
+    this.UxOutputs.subscribe(uxoutputs => {
+      this.loading = false;
       this.transactions = uxoutputs;
       console.log(uxoutputs);
+    }, error => {
+      // TODO -- error message
+      this.loading = false;
+      console.log(error);
     });
 
     this.route.params

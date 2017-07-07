@@ -13,6 +13,7 @@ import 'rxjs/add/operator/mergeMap';
 export class TransactionDetailComponent implements OnInit {
 
   transaction: any;
+  loading: boolean;
 
   private transactionObservable: Observable<any>;
 
@@ -23,9 +24,12 @@ export class TransactionDetailComponent implements OnInit {
   ) {
     this.transactionObservable = null;
     this.transaction = null;
+    this.loading = false;
   }
 
   ngOnInit() {
+    this.loading = true;
+
     this.transactionObservable = this.route.params
       .flatMap((params: Params) => {
         const txid = params['txid'];
@@ -38,14 +42,18 @@ export class TransactionDetailComponent implements OnInit {
           tasks$.push(this.getAddressOfInput(this.transaction.txn.inputs[i]));
         }
         return Observable.forkJoin(...tasks$);
-      });
+    });
 
-    this.transactionObservable.subscribe((trans) => {
-
-      for (let i = 0; i < trans.length; i++){
+    this.transactionObservable.subscribe(trans => {
+      this.loading = false;
+      for (let i = 0; i < trans.length; i++) {
         this.transaction.txn.inputs[i] = trans[i].owner_address;
       }
-    })
+    }, error => {
+      // TODO -- error message
+      this.loading = false;
+      console.log(error);
+    });
   }
 
   getAddressOfInput(uxid: string): Observable<any>{

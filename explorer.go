@@ -194,6 +194,100 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 var apiEndpoints = []APIEndpoint{
 	{
+		ExplorerPath:   "/api/coinSupply",
+		SkycoinPath:    "/explorer/getEffectiveOutputs",
+		Description:    "Returns metadata about the coin distribution.",
+		ExampleRequest: "/api/coinSupply",
+		ExampleResponse: `{
+    "coinSupply": 5791552,
+    "coinCap": 100000000,
+    "UndistributedLockedCoinBalance": 94208448,
+    "UndistributedLockedCoinHoldingAddresses": [
+        "R6aHqKWSQfvpdo2fGSrq4F1RYXkBWR9HHJ",
+        "2EYM4WFHe4Dgz6kjAdUkM6Etep7ruz2ia6h",
+        "25aGyzypSA3T9K6rgPUv1ouR13efNPtWP5m"
+    ]
+}`,
+	},
+
+	{
+		ExplorerPath:   "/api/address",
+		SkycoinPath:    "/explorer/address",
+		QueryArgs:      []string{"address"},
+		Description:    "Returns address info.",
+		ExampleRequest: "/api/address?address=SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
+		ExampleResponse: `[
+    {
+        "status": {
+            "confirmed": true,
+            "unconfirmed": false,
+            "height": 1,
+            "block_seq": 1893,
+            "unknown": false
+        },
+        "length": 414,
+        "type": 0,
+        "txid": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3",
+        "inner_hash": "5fcc1649794894f2c79411a832f799ba12e0528ff530d7068abaa03c10e451cf",
+        "timestamp": 1499405825,
+        "sigs": [
+            "b951fd0c1528df88c87eb90cb1ecbc3ba2b6332ace16c2f1cc731976c0cebfb10ecb1c20335374f8cf0b832364a523c3e16f32c3240ed4eccfac1803caf8815100",
+            "6a06e57d130f6e780eecbe0c2626eed7724a2443438258598af287bf8fc1b87f041d04a7082550bd2055a08f0849419200fdac27c018d5cebf84e8bba1c4f61201",
+            "8cc9ae6ae5be81456fc8e2d54b6868c45b415556c689c8c4329cd30b671a18254885a1aef8a3ac9ab76a8dc83e08607516fdef291a003935ae4507775ae53c7800"
+        ],
+        "inputs": [
+            {
+                "uxid": "0922a7b41d1b76b6b56bfad0d5d0f6845517bbd895c660eab0ebe3899b5f63c4",
+                "owner": "2Q2VViWhgBzz6c8GkXQyDVFdQUWcBcDon4L"
+            },
+            {
+                "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
+                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5"
+            },
+            {
+                "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
+                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5"
+            }
+        ],
+        "outputs": [
+            {
+                "uxid": "8a941208d3f2d2c4a32438e05645fb64dba3b4b7d83c48d52f51bc1eb9a4117a",
+                "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
+                "coins": "2361",
+                "hours": 1006716
+            },
+            {
+                "uxid": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
+                "dst": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
+                "coins": "51",
+                "hours": 2013433
+            }
+        ]
+    }
+]`,
+	},
+
+	{
+		ExplorerPath:   "/api/blockchain/metadata",
+		SkycoinPath:    "/blockchain/metadata",
+		Description:    "Returns blockchain metadata.",
+		ExampleRequest: "/api/blockchain/metadata",
+		ExampleResponse: `{
+    "head": {
+        "seq": 1893,
+        "block_hash": "e20d5832b3f9bea4da58e149e4805b4e4a962ea7c5ce3cd9f31c6d7fc72e3300",
+        "previous_block_hash": "e99fe31adf3a15aab77eb81d7aaa5477a96d2ce7f74ccb3d4cdce4da2eb01cb2",
+        "timestamp": 1499405825,
+        "fee": 5033788,
+        "version": 0,
+        "tx_body_hash": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3"
+    },
+    "unspents": 783,
+    "unconfirmed": 0
+}`,
+	},
+
+	{
 		ExplorerPath:   "/api/block",
 		SkycoinPath:    "/block",
 		QueryArgs:      []string{"hash"},
@@ -353,100 +447,6 @@ var apiEndpoints = []APIEndpoint{
 	},
 
 	{
-		ExplorerPath:   "/api/coinSupply",
-		SkycoinPath:    "/explorer/getEffectiveOutputs",
-		Description:    "Returns metadata about the coin distribution.",
-		ExampleRequest: "/api/coinSupply",
-		ExampleResponse: `{
-    "coinSupply": 5791552,
-    "coinCap": 100000000,
-    "UndistributedLockedCoinBalance": 94208448,
-    "UndistributedLockedCoinHoldingAddresses": [
-        "R6aHqKWSQfvpdo2fGSrq4F1RYXkBWR9HHJ",
-        "2EYM4WFHe4Dgz6kjAdUkM6Etep7ruz2ia6h",
-        "25aGyzypSA3T9K6rgPUv1ouR13efNPtWP5m"
-    ]
-}`,
-	},
-
-	{
-		ExplorerPath:   "/api/blockchain/metadata",
-		SkycoinPath:    "/blockchain/metadata",
-		Description:    "Returns blockchain metadata.",
-		ExampleRequest: "/api/blockchain/metadata",
-		ExampleResponse: `{
-    "head": {
-        "seq": 1893,
-        "block_hash": "e20d5832b3f9bea4da58e149e4805b4e4a962ea7c5ce3cd9f31c6d7fc72e3300",
-        "previous_block_hash": "e99fe31adf3a15aab77eb81d7aaa5477a96d2ce7f74ccb3d4cdce4da2eb01cb2",
-        "timestamp": 1499405825,
-        "fee": 5033788,
-        "version": 0,
-        "tx_body_hash": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3"
-    },
-    "unspents": 783,
-    "unconfirmed": 0
-}`,
-	},
-
-	{
-		ExplorerPath:   "/api/address",
-		SkycoinPath:    "/explorer/address",
-		QueryArgs:      []string{"address"},
-		Description:    "Returns address info.",
-		ExampleRequest: "/api/address?address=SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
-		ExampleResponse: `[
-    {
-        "status": {
-            "confirmed": true,
-            "unconfirmed": false,
-            "height": 1,
-            "block_seq": 1893,
-            "unknown": false
-        },
-        "length": 414,
-        "type": 0,
-        "txid": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3",
-        "inner_hash": "5fcc1649794894f2c79411a832f799ba12e0528ff530d7068abaa03c10e451cf",
-        "timestamp": 1499405825,
-        "sigs": [
-            "b951fd0c1528df88c87eb90cb1ecbc3ba2b6332ace16c2f1cc731976c0cebfb10ecb1c20335374f8cf0b832364a523c3e16f32c3240ed4eccfac1803caf8815100",
-            "6a06e57d130f6e780eecbe0c2626eed7724a2443438258598af287bf8fc1b87f041d04a7082550bd2055a08f0849419200fdac27c018d5cebf84e8bba1c4f61201",
-            "8cc9ae6ae5be81456fc8e2d54b6868c45b415556c689c8c4329cd30b671a18254885a1aef8a3ac9ab76a8dc83e08607516fdef291a003935ae4507775ae53c7800"
-        ],
-        "inputs": [
-            {
-                "uxid": "0922a7b41d1b76b6b56bfad0d5d0f6845517bbd895c660eab0ebe3899b5f63c4",
-                "owner": "2Q2VViWhgBzz6c8GkXQyDVFdQUWcBcDon4L"
-            },
-            {
-                "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
-                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5"
-            },
-            {
-                "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
-                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5"
-            }
-        ],
-        "outputs": [
-            {
-                "uxid": "8a941208d3f2d2c4a32438e05645fb64dba3b4b7d83c48d52f51bc1eb9a4117a",
-                "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
-                "coins": "2361",
-                "hours": 1006716
-            },
-            {
-                "uxid": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
-                "dst": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
-                "coins": "51",
-                "hours": 2013433
-            }
-        ]
-    }
-]`,
-	},
-
-	{
 		ExplorerPath:   "/api/currentBalance",
 		SkycoinPath:    "/outputs",
 		QueryArgs:      []string{"addrs"},
@@ -478,25 +478,6 @@ var apiEndpoints = []APIEndpoint{
     ],
     "outgoing_outputs": [],
     "incoming_outputs": []
-}`,
-	},
-
-	{
-		ExplorerPath:   "/api/uxout",
-		SkycoinPath:    "/uxout",
-		QueryArgs:      []string{"uxid"},
-		Description:    "Returns unspent output metadata.  Note: coins are measured in drops, which are coins * 1000000.",
-		ExampleRequest: "/api/uxout?uxid=374fac152e3a920975151438ad87125c0222c4e78cae2c49183cde674cb07bd7",
-		ExampleResponse: `{
-    "uxid": "374fac152e3a920975151438ad87125c0222c4e78cae2c49183cde674cb07bd7",
-    "time": 1492186087,
-    "src_block_seq": 865,
-    "src_tx": "23b942eb86270f3d8bd42d2059ffbe0b1607f277870b4272b2b864fb7dfa7457",
-    "owner_address": "3fEbhoHzsUwdUr8nSoofXhU9nZRDGgycCu",
-    "coins": 100000000,
-    "hours": 37364678,
-    "spent_block_seq": 866,
-    "spent_tx": "1ffa69520c15a8eb89cf68bb1a7ef9bdfcecbc490f8b70ed01206f480fa6b8ea"
 }`,
 	},
 
@@ -544,6 +525,25 @@ var apiEndpoints = []APIEndpoint{
     }
 }`,
 	},
+
+	{
+		ExplorerPath:   "/api/uxout",
+		SkycoinPath:    "/uxout",
+		QueryArgs:      []string{"uxid"},
+		Description:    "Returns unspent output metadata.  Note: coins are measured in drops, which are coins * 1000000.",
+		ExampleRequest: "/api/uxout?uxid=374fac152e3a920975151438ad87125c0222c4e78cae2c49183cde674cb07bd7",
+		ExampleResponse: `{
+    "uxid": "374fac152e3a920975151438ad87125c0222c4e78cae2c49183cde674cb07bd7",
+    "time": 1492186087,
+    "src_block_seq": 865,
+    "src_tx": "23b942eb86270f3d8bd42d2059ffbe0b1607f277870b4272b2b864fb7dfa7457",
+    "owner_address": "3fEbhoHzsUwdUr8nSoofXhU9nZRDGgycCu",
+    "coins": 100000000,
+    "hours": 37364678,
+    "spent_block_seq": 866,
+    "spent_tx": "1ffa69520c15a8eb89cf68bb1a7ef9bdfcecbc490f8b70ed01206f480fa6b8ea"
+}`,
+	},
 }
 
 var docEndpoint APIEndpoint = APIEndpoint{
@@ -564,7 +564,7 @@ var parsedJSONAPIEndpoints []ParsedJSONAPIEndpoint
 func init() {
 	parsedJSONAPIEndpoints = make([]ParsedJSONAPIEndpoint, len(apiEndpoints)+1)
 
-	parsedJSONAPIEndpoints[0] = ParsedJSONAPIEndpoint{
+	parsedJSONAPIEndpoints[len(apiEndpoints)] = ParsedJSONAPIEndpoint{
 		APIEndpoint: docEndpoint,
 	}
 
@@ -667,10 +667,11 @@ var docTemplateBody string
 func init() {
 	t := template.Must(template.New("docs").Parse(docTemplate))
 
-	endpoints := []APIEndpoint{docEndpoint}
+	endpoints := []APIEndpoint{}
 	endpoints = append(endpoints, apiEndpoints...)
+	endpoints = append(endpoints, docEndpoint)
 
-	log.Println("docs.html output:")
+	log.Println("api.html output:")
 	b := &bytes.Buffer{}
 	if err := t.Execute(b, endpoints); err != nil {
 		log.Panic(err)
@@ -729,7 +730,7 @@ func main() {
 		redirectToApp("/transaction/")
 		redirectToApp("/address/")
 
-		gzipHandle("/docs.html", http.HandlerFunc(htmlDocs))
+		gzipHandle("/api.html", http.HandlerFunc(htmlDocs))
 	}
 
 	log.Printf("Running skycoin explorer on http://%s", explorerHost)

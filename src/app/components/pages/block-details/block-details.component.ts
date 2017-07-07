@@ -17,6 +17,7 @@ export class BlockDetailsComponent implements OnInit {
 
   blocksObservable: Observable<Block[]>;
   block: Block;
+  loading: boolean;
 
   constructor(
     private api: ApiService,
@@ -24,9 +25,12 @@ export class BlockDetailsComponent implements OnInit {
     private router: Router
   ) {
     this.block = null;
+    this.loading = false;
   }
 
   ngOnInit() {
+    this.loading = true;
+
     this.blocksObservable = this.route.params
       .filter(params => params['id'] !== undefined)
       .switchMap((params: Params) => {
@@ -34,10 +38,14 @@ export class BlockDetailsComponent implements OnInit {
         return this.api.getBlocks(selectedBlock,selectedBlock);
       });
 
-    this.blocksObservable.subscribe((blocks)=>{
+    this.blocksObservable.subscribe(blocks => {
+      this.loading = false;
       this.block = blocks[0];
-    })
-
+    }, error => {
+      // TODO -- error message
+      this.loading = false;
+      console.log(error);
+    });
   }
 
   getTime(time:number){

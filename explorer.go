@@ -51,9 +51,11 @@ HTTP API:
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"html/template"
 	"io"
 	"log"
 	"net/http"
@@ -544,17 +546,27 @@ var apiEndpoints = []APIEndpoint{
 	},
 }
 
+var docEndpoint APIEndpoint = APIEndpoint{
+	ExplorerPath:   "/api/docs",
+	Description:    "Returns this documentation as JSON",
+	ExampleRequest: "/api/docs",
+}
+
 // Parse the ExampleResponse string into generic interface, for human-readable
 // formatting when rendered in the browser as JSON
 type ParsedJSONAPIEndpoint struct {
 	APIEndpoint
-	ParsedExampleResponse interface{} `json:"example_response"`
+	ParsedExampleResponse interface{} `json:"example_response,omitempty"`
 }
 
 var parsedJSONAPIEndpoints []ParsedJSONAPIEndpoint
 
 func init() {
-	parsedJSONAPIEndpoints = make([]ParsedJSONAPIEndpoint, len(apiEndpoints))
+	parsedJSONAPIEndpoints = make([]ParsedJSONAPIEndpoint, len(apiEndpoints)+1)
+
+	parsedJSONAPIEndpoints[0] = ParsedJSONAPIEndpoint{
+		APIEndpoint: docEndpoint,
+	}
 
 	for i := range apiEndpoints {
 		parsedJSONAPIEndpoints[i].APIEndpoint = apiEndpoints[i]
@@ -564,7 +576,7 @@ func init() {
 			log.Println("path:", apiEndpoints[i].ExplorerPath)
 			log.Println("Example response:")
 			log.Println(apiEndpoints[i].ExampleResponse)
-			panic(err)
+			log.Panic(err)
 		}
 	}
 }
@@ -587,8 +599,89 @@ func jsonDocs(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+const docTemplate string = `<html><head>
+<title>Skycoin Explorer API Documentation</title>
+<style type="text/css">
+code { white-space: pre; }
+pre { background: #F7FAFB; }
+code.inline { border-radius: 3px; padding: 0.2em; background-color: #F7FAFB; font-size: 1.3em; }
+.example { margin-left: 2em; }
+</style>
+</head><body><div id="main">
+
+<h1>Skycoin Explorer API Documentation</h1>
+
+<div>
+<p>
+<p>The Skycoin Explorer API proxies a subset of a Skycoin node's API.</p>
+<p>All endpoints start with /api</p>
+<p>Further information about an endpoint can be found at the Skycoin repo.</p>
+<p>Skycoin Github:<a href="https://github.com/skycoin/skycoin">https://github.com/skycoin/skycoin</a>.</p>
+<p>Skycoin Explorer Github: <a href="https://github.com/skycoin/skycoin-explorer">https://github.com/skycoin/skycoin-explorer</a></p>
+</p>
+</div>
+
+<hr />
+
+{{- range . -}}
+<div class="endpoint">
+
+<h2><p><code class="inline">{{ .ExplorerPath }}</code></p></h2>
+
+{{- if .QueryArgs -}}
+<p><ul>
+{{- range .QueryArgs -}}
+    <li><code class="inline">{{ . }}</code></li>
+{{- end -}}
+</ul></p>
+{{- end -}}
+
+
+{{ if .Description }}
+<p>{{ .Description }}</p>
+{{ end }}
+
+{{ if .ExampleRequest }}
+<p>Example request:</p>
+<p class="example"><code class="inline">{{ .ExampleRequest }}</code></p>
+{{ end }}
+
+{{ if .ExampleResponse }}
+<p>Example response:</p>
+<p class="example"><pre class="example"><code>{{ .ExampleResponse }}</code></pre></p>
+{{ end }}
+
+{{ if .SkycoinPath }}
+<p>Internal skycoin node path:</p>
+<p class="example"><code class="inline">{{ .SkycoinPath }}</code></p>
+{{ end }}
+
+<div>
+<hr />
+{{- end -}}
+
+</div></body></html>`
+
+var docTemplateBody string
+
+func init() {
+	t := template.Must(template.New("docs").Parse(docTemplate))
+
+	endpoints := []APIEndpoint{docEndpoint}
+	endpoints = append(endpoints, apiEndpoints...)
+
+	log.Println("docs.html output:")
+	b := &bytes.Buffer{}
+	if err := t.Execute(b, endpoints); err != nil {
+		log.Panic(err)
+	}
+
+	docTemplateBody = b.String()
+	log.Println(docTemplateBody)
+}
+
 func htmlDocs(w http.ResponseWriter, r *http.Request) {
-	// TODO -- send apiEndpoints as templated HTML
+	fmt.Fprintf(w, docTemplateBody)
 }
 
 func main() {
@@ -635,6 +728,8 @@ func main() {
 		redirectToApp("/block/")
 		redirectToApp("/transaction/")
 		redirectToApp("/address/")
+
+		gzipHandle("/docs.html", http.HandlerFunc(htmlDocs))
 	}
 
 	log.Printf("Running skycoin explorer on http://%s", explorerHost)

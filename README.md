@@ -1,5 +1,7 @@
 # Skycoin Explorer
 
+http://explorer.skycoin.net
+
 ## Requirements
 
 ```
@@ -56,12 +58,13 @@ make run-api
 
 ## API documentation
 
-The API documentation is available at the `/api.html` endpoint of the explorer server.
+HTML documentation:
 
-```sh
-make run
-# open browser at http://127.0.0.1:8001/api.html
-```
+http://explorer.skycoin.net/api.html
+
+JSON formatted API docs:
+
+http://explorer.skycoin.net/api/docs
 
 ## Development
 

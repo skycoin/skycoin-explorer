@@ -168,17 +168,21 @@ var apiEndpoints = []APIEndpoint{
 		Description:    "Returns metadata about the coin distribution.",
 		ExampleRequest: "/api/coinSupply",
 		ExampleResponse: `{
-    "coinSupply": 5791552,
-    "coinCap": 100000000,
-    "UndistributedLockedCoinBalance": 94208448,
-    "UndistributedLockedCoinHoldingAddresses": [
+    "current_supply": 5791552,
+    "total_supply": 25000000,
+    "max_supply": 100000000,
+    "unlocked_distribution_addresses": [
         "R6aHqKWSQfvpdo2fGSrq4F1RYXkBWR9HHJ",
         "2EYM4WFHe4Dgz6kjAdUkM6Etep7ruz2ia6h",
         "25aGyzypSA3T9K6rgPUv1ouR13efNPtWP5m"
+    ],
+    "locked_distribution_addresses": [
+        "gpqsFSuMCZmsjPc6Rtgy1FmLx424tH86My",
+        "2EUF3GPEUmfocnUc1w6YPtqXVCy3UZA4rAq",
+        "TtAaxB3qGz5zEAhhiGkBY9VPV7cekhvRYS"
     ]
 }`,
 	},
-
 	{
 		ExplorerPath:   "/api/address",
 		SkycoinPath:    "/explorer/address",

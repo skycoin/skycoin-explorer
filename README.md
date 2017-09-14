@@ -1,6 +1,8 @@
 # Skycoin Explorer
 
-http://explorer.skycoin.net
+[![Build Status](https://travis-ci.org/skycoin/skycoin-explorer.svg)](https://travis-ci.org/skycoin/skycoin-explorer)
+
+https://explorer.skycoin.net
 
 ## Requirements
 

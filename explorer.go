@@ -53,6 +53,7 @@ var (
 	explorerHost = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
 	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
 	apiOnly      bool     // set to true with -api-only cli flag
+	verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
 )
 
 func init() {
@@ -82,7 +83,12 @@ func init() {
 	}
 
 	flag.BoolVar(&apiOnly, "api-only", false, "Only run the API, don't serve static content")
+	flag.BoolVar(&verify, "verify", false, "Run init() checks and quit")
 	flag.Parse()
+
+	if verify {
+		log.Println("Running in verify mode")
+	}
 
 	if apiOnly {
 		log.Println("Running in api-only mode")
@@ -644,14 +650,12 @@ func init() {
 	endpoints = append(endpoints, apiEndpoints...)
 	endpoints = append(endpoints, docEndpoint)
 
-	log.Println("api.html output:")
 	b := &bytes.Buffer{}
 	if err := t.Execute(b, endpoints); err != nil {
 		log.Panic(err)
 	}
 
 	docTemplateBody = b.String()
-	log.Println(docTemplateBody)
 }
 
 func htmlDocs(w http.ResponseWriter, r *http.Request) {
@@ -659,6 +663,15 @@ func htmlDocs(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	if verify {
+		// After the init() checks complete, quit
+		log.Println("Verified")
+		return
+	}
+
+	log.Println("api.html output:")
+	log.Println(docTemplateBody)
+
 	mux := http.NewServeMux()
 
 	gzipHandle := func(path string, handler http.Handler) {

@@ -174,9 +174,9 @@ var apiEndpoints = []APIEndpoint{
 		Description:    "Returns metadata about the coin distribution.",
 		ExampleRequest: "/api/coinSupply",
 		ExampleResponse: `{
-    "current_supply": 5791552,
-    "total_supply": 25000000,
-    "max_supply": 100000000,
+    "current_supply": "5791552.000000",
+    "total_supply": "25000000.000000",
+    "max_supply": "100000000.000000",
     "unlocked_distribution_addresses": [
         "R6aHqKWSQfvpdo2fGSrq4F1RYXkBWR9HHJ",
         "2EYM4WFHe4Dgz6kjAdUkM6Etep7ruz2ia6h",

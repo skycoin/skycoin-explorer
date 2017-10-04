@@ -10,7 +10,7 @@ After cloning the project, you will need to run `npm install` to pull in all jav
 
 ### Dev against local Skycoin
 
-If you are already running Skycoin, you can start the Skycoin explorer by running  `npm start`. This will serve the explorer, start a proxy for skycoin from http://127.0.0.1:6420.
+If you are already running Skycoin, you can start the Skycoin explorer by running  `npm start`. This will serve the explorer, start a proxy for skycoin from http://127.0.0.1:8001.
 
 ### Dev against explorer.skycoin.net
 

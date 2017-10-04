@@ -17,31 +17,39 @@ export class BlockDetailsComponent implements OnInit {
 
   blocksObservable: Observable<Block[]>;
   block: Block;
+  loading: boolean;
 
   constructor(
     private api: ApiService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.block=null;
+    this.block = null;
+    this.loading = false;
   }
 
   ngOnInit() {
-    this.blocksObservable= this.route.params
+    this.loading = true;
+
+    this.blocksObservable = this.route.params
       .filter(params => params['id'] !== undefined)
       .switchMap((params: Params) => {
         let selectedBlock = +params['id'];
         return this.api.getBlocks(selectedBlock,selectedBlock);
       });
 
-    this.blocksObservable.subscribe((blocks)=>{
+    this.blocksObservable.subscribe(blocks => {
+      this.loading = false;
       this.block = blocks[0];
-    })
-
+    }, error => {
+      // TODO -- error message
+      this.loading = false;
+      console.log(error);
+    });
   }
 
   getTime(time:number){
-    return moment.unix(time).format();
+    return moment.unix(time).utc().format('YYYY-MM-DD HH:mm:ss');
   }
 
   getAmount(block:Block){

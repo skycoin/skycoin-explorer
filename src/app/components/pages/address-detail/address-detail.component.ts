@@ -13,25 +13,21 @@ declare var QRCode: any;
 export class AddressDetailComponent implements OnInit {
 
   UxOutputs: Observable<any>;
-
-  showUxID:boolean;
-
-  transactions:any[];
-
-  currentAddress:string;
-
-  currentBalance:number;
+  transactions: any[];
+  currentAddress: string;
+  currentBalance: number;
+  loading: boolean;
 
   constructor(
     private api: ApiService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.UxOutputs=null;
-    this.currentBalance=0;
-    this.transactions =[];
+    this.UxOutputs = null;
+    this.currentBalance = 0;
+    this.transactions = [];
     this.currentAddress = null;
-    this.showUxID = false;
+    this.loading = false;
   }
 
   ngOnInit() {
@@ -39,7 +35,9 @@ export class AddressDetailComponent implements OnInit {
   }
 
   ngAfterViewInit(){
-    this.UxOutputs= this.route.params
+    this.loading = true;
+
+    this.UxOutputs = this.route.params
       .switchMap((params: Params) => {
         let address = params['address'];
         this.currentAddress = address;
@@ -48,31 +46,26 @@ export class AddressDetailComponent implements OnInit {
         return this.api.getUxOutputsForAddress(address);
       });
 
-    this.UxOutputs.subscribe((uxoutputs)=>{
+    this.UxOutputs.subscribe(uxoutputs => {
+      this.loading = false;
       this.transactions = uxoutputs;
       console.log(uxoutputs);
+    }, error => {
+      // TODO -- error message
+      this.loading = false;
+      console.log(error);
     });
 
     this.route.params
       .switchMap((params: Params) => {
         let address = params['address'];
         return this.api.getCurrentBalanceOfAddress(address);
-      }).subscribe((addressDetails)=>{
-      if(addressDetails.head_outputs.length>0){
-        for(var i=0;i<addressDetails.head_outputs.length;i++){
-          this.currentBalance = this.currentBalance+ parseInt(addressDetails.head_outputs[i].coins);
+      }).subscribe((addressDetails) => {
+      if (addressDetails.head_outputs.length > 0) {
+        for (var i = 0; i < addressDetails.head_outputs.length;i++) {
+          this.currentBalance = this.currentBalance + parseInt(addressDetails.head_outputs[i].coins);
         }
       }
     });
-  }
-
-  showUxId(){
-    this.showUxID = true;
-    return false;
-  }
-
-  hideUxId(){
-    this.showUxID = false;
-    return false;
   }
 }

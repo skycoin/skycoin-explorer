@@ -15,8 +15,9 @@ a{
   margin-top: 50px;
 }
 
-.address-qr{
-  padding-top: 20px;
+.uxid{
+    font-size: 10px;
+    word-wrap: break-word;
 }
 
 .modalShow{
@@ -28,4 +29,9 @@ a{
   max-height: 25%;
   transform: scaleX(1);
   top: 10%;
+}
+
+.qr-code >>> img{
+    margin: auto;
+    padding-top: 1em;
 }

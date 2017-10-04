@@ -1,4 +1,28 @@
 {
+  "/api/coinSupply": {
+    "target": "http://explorer.skycoin.net",
+    "pathRewrite": {
+      "^/api/coinSupply" : "explorer/getEffectiveOutputs"
+    },
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/api/outputs": {
+    "target": "http://explorer.skycoin.net",
+    "pathRewrite": {
+      "^/api/outputs" : "currentBalance"
+    },
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/api/address": {
+    "target": "http://explorer.skycoin.net",
+    "pathRewrite": {
+      "^/api/address" : "explorer/address"
+    },
+    "secure": false,
+    "logLevel": "debug"
+  },
   "/api/*": {
     "target": "http://explorer.skycoin.net",
     "pathRewrite": {

@@ -5,3 +5,7 @@ tr:hover{
 .wrap{
   word-break: break-all;
 }
+
+.blockchain-metadata {
+    padding: 0px;
+}

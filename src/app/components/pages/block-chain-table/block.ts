@@ -68,13 +68,11 @@ export class Transaction {
   ) {}
 }
 
-export class CoinSupply {
-  constructor(
-    public coinSupply: number,
-    public coinCap: number,
-  ) {}
+export interface CoinSupply {
+  current_supply: number,
+  total_supply: number,
+  max_supply: number,
 }
-
 
 export class BlockResponse {
   constructor(

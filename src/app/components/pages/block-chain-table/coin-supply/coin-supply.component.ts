@@ -9,19 +9,19 @@ import { ApiService } from '../../../../services/api/api.service';
 })
 export class CoinSupplyComponent implements OnInit {
 
-  coinSupply: number;
-  coinCap: number;
+  currentSupply: number;
+  totalSupply: number;
 
   constructor(
     private api: ApiService
   ) {
-    this.coinSupply = this.coinCap = 0;
+    this.currentSupply = this.totalSupply = 0;
   }
 
   ngOnInit() {
     this.api.getCoinSupply().subscribe((supply: CoinSupply) => {
-      this.coinCap = supply.coinCap;
-      this.coinSupply = supply.coinSupply;
+      this.currentSupply = supply.current_supply;
+      this.totalSupply = supply.total_supply;
     })
   }
 }

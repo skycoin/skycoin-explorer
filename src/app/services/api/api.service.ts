@@ -6,7 +6,7 @@ import 'rxjs/add/operator/catch';
 
 import { CoinSupply } from '../../components/pages/blocks/block';
 import { AddressBalanceResponse, UnspentOutput } from '../../components/pages/address-detail/UnspentOutput';
-import { Block, Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, parseGetBlocksBlock } from '../../app.datatypes';
+import { Block, Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, parseGetBlocksBlock, GetUxoutResponse } from '../../app.datatypes';
 
 @Injectable()
 export class ApiService {
@@ -17,9 +17,8 @@ export class ApiService {
     private http: Http
   ) { }
 
-  getBlocks(startNumber: number, endNumber: number): Observable<Block[]> {
-    return this.get('blocks', { start: startNumber, end: endNumber })
-      .map((res: GetBlocksResponse) => res.blocks.map(block => parseGetBlocksBlock(block)).sort((a, b) => b.id - a.id));
+  getBlocks(startNumber: number, endNumber: number): Observable<GetBlocksResponse> {
+    return this.get('blocks', { start: startNumber, end: endNumber });
   }
 
   getBlockchainMetadata(): Observable<Blockchain> {
@@ -27,6 +26,10 @@ export class ApiService {
       .map((res: GetBlockchainMetadataResponse) => ({
         blocks: res.head.seq,
       }))
+  }
+
+  getUxout(uxid: string): Observable<GetUxoutResponse> {
+    return this.get('uxout', { uxid: uxid });
   }
 
   // Old methods

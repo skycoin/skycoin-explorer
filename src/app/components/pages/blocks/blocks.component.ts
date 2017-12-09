@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { Block } from '../../../app.datatypes';
+import { ExplorerService } from '../../../services/explorer/explorer.service';
 
 @Component({
   templateUrl: './blocks.component.html',
@@ -16,6 +17,7 @@ export class BlocksComponent implements OnInit {
 
   constructor(
     private api: ApiService,
+    private explorer: ExplorerService,
     private router: Router
   ) {}
 
@@ -36,6 +38,6 @@ export class BlocksComponent implements OnInit {
     this.pageIndex = pageInfo.offset;
     const end = this.pageCount - (this.pageIndex * this.pageSize);
     const begin = end - this.pageSize;
-    this.api.getBlocks(begin > 0 ? begin : 0, end > 0 ? end : 0).first().subscribe(blocks => this.blocks = blocks);
+    this.explorer.getBlocks(begin > 0 ? begin : 0, end > 0 ? end : 0).first().subscribe(blocks => this.blocks = blocks);
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 
 declare var QRCode: any;
@@ -11,61 +10,37 @@ declare var QRCode: any;
   styleUrls: ['./address-detail.component.css']
 })
 export class AddressDetailComponent implements OnInit {
-
-  UxOutputs: Observable<any>;
-  transactions: any[];
-  currentAddress: string;
+  address: string;
+  transactions = [];
   currentBalance: number;
-  loading: boolean;
+  loading = false;
 
   constructor(
     private api: ApiService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {
-    this.UxOutputs = null;
-    this.currentBalance = 0;
-    this.transactions = [];
-    this.currentAddress = null;
-    this.loading = false;
-  }
+  ) {}
 
   ngOnInit() {
-
-  }
-
-  ngAfterViewInit(){
     this.loading = true;
 
-    this.UxOutputs = this.route.params
-      .switchMap((params: Params) => {
-        let address = params['address'];
-        this.currentAddress = address;
-        let qrcode = new QRCode("qr-code");
-        qrcode.makeCode(this.currentAddress);
-        return this.api.getUxOutputsForAddress(address);
-      });
-
-    this.UxOutputs.subscribe(uxoutputs => {
+    this.route.params.switchMap((params: Params) => {
+      this.address = params['address'];
+      // const qrcode = new QRCode('qr-code');
+      // qrcode.makeCode(this.address);
+      return this.api.getUxOutputsForAddress(this.address);
+    }).subscribe(data => {
+      this.transactions = data;
       this.loading = false;
-      this.transactions = uxoutputs;
-      console.log(uxoutputs);
-    }, error => {
-      // TODO -- error message
-      this.loading = false;
-      console.log(error);
     });
 
-    this.route.params
-      .switchMap((params: Params) => {
-        let address = params['address'];
-        return this.api.getCurrentBalanceOfAddress(address);
-      }).subscribe((addressDetails) => {
-      if (addressDetails.head_outputs.length > 0) {
-        for (var i = 0; i < addressDetails.head_outputs.length;i++) {
-          this.currentBalance = this.currentBalance + parseInt(addressDetails.head_outputs[i].coins);
+
+    this.route.params.switchMap((params: Params) => this.api.getCurrentBalanceOfAddress(params['address']))
+      .subscribe((addressDetails) => {
+        if (addressDetails.head_outputs.length > 0) {
+          for (let i = 0; i < addressDetails.head_outputs.length; i++) {
+            this.currentBalance = this.currentBalance + parseInt(addressDetails.head_outputs[i].coins, 10);
+          }
         }
-      }
-    });
+      });
   }
 }

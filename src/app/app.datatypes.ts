@@ -35,7 +35,8 @@ export class Output {
 }
 
 export class Transaction {
-  inputs: any[];
+  id: string;
+  inputs: Output[];
   outputs: Output[];
 }
 
@@ -73,7 +74,8 @@ export function parseGetBlocksBlock(block: GetBlocksResponseBlock): Block {
 
 function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransaction): Transaction {
   return {
-    inputs: transaction.inputs,
+    id: transaction.txid,
+    inputs: transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
   }
 }
@@ -92,6 +94,7 @@ class GetBlocksResponseBlockBody {
 }
 
 class GetBlocksResponseBlockBodyTransaction {
+  txid: string;
   inputs: string[];
   outputs: GetBlocksResponseBlockBodyTransactionOutput[];
 }
@@ -130,6 +133,22 @@ export class GetOutputsRequestOutput {
   address: string;
   coins: string;
   hours: number;
+}
+
+export class GetUxoutResponse {
+  coins: number;
+  hours: number;
+  owner_address: string;
+  uxid: string;
+}
+
+export function parseGetUxout(raw: GetUxoutResponse): Output {
+  return {
+    address: raw.owner_address,
+    coins: raw.coins / 1000000,
+    hours: raw.hours,
+    hash: raw.uxid,
+  }
 }
 
 /**

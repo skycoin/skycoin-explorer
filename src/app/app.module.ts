@@ -18,6 +18,7 @@ import { TransactionDetailComponent } from './components/pages/transaction-detai
 import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
 import { TransactionCardComponent } from './components/layout/transaction-card/transaction-card.component';
 import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
+import { ExplorerService } from './services/explorer/explorer.service';
 
 
 const ROUTES = [
@@ -69,6 +70,7 @@ const ROUTES = [
   ],
   providers: [
     ApiService,
+    ExplorerService,
   ],
   bootstrap: [AppComponent]
 })

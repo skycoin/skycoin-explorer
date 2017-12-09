@@ -16,9 +16,9 @@ import { CoinSupplyComponent } from './components/pages/blocks/coin-supply/coin-
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
 import { TransactionDetailComponent } from './components/pages/transaction-detail/transaction-detail.component';
 import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
-import { TransactionCardComponent } from './components/layout/transaction-card/transaction-card.component';
 import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
 import { ExplorerService } from './services/explorer/explorer.service';
+import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 
 
 const ROUTES = [
@@ -48,18 +48,18 @@ const ROUTES = [
 
 @NgModule({
   declarations: [
+    AddressDetailComponent,
     AppComponent,
+    BlockDetailsComponent,
+    BlocksComponent,
+    CoinSupplyComponent,
     FooterComponent,
     HeaderComponent,
-    BlocksComponent,
-    SearchBarComponent,
     LoadingComponent,
     PaginationComponent,
-    CoinSupplyComponent,
-    BlockDetailsComponent,
+    QrCodeComponent,
+    SearchBarComponent,
     TransactionDetailComponent,
-    AddressDetailComponent,
-    TransactionCardComponent,
     TransactionsValuePipe,
   ],
   imports: [

@@ -36,6 +36,7 @@ export class Output {
 
 export class Transaction {
   id: string;
+  timestamp: number;
   inputs: Output[];
   outputs: Output[];
 }
@@ -52,6 +53,52 @@ export class Wallet {
 /**
  * Node Response Types
  */
+
+export class GetAddressResponseTransaction {
+  inputs: GetAddressResponseTransactionInput[];
+  outputs: GetAddressResponseTransactionOutput[];
+  timestamp: number;
+  txid: string;
+}
+
+export function parseGetAddressTransaction(raw: GetAddressResponseTransaction): Transaction {
+  return {
+    id: raw.txid,
+    timestamp: raw.timestamp,
+    inputs: raw.inputs.map(input => parseGetAddressInput(input)),
+    outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
+  }
+}
+
+class GetAddressResponseTransactionInput {
+  uxid: string;
+  owner: string;
+}
+
+function parseGetAddressInput(raw: GetAddressResponseTransactionInput): Output {
+  return {
+    address: raw.owner,
+    coins: null,
+    hash: raw.uxid,
+    hours: null,
+  }
+}
+
+class GetAddressResponseTransactionOutput {
+  uxid: string;
+  dst: string;
+  coins: string;
+  hours: number;
+}
+
+function parseGetAddressOutput(raw: GetAddressResponseTransactionOutput): Output {
+  return {
+    address: raw.dst,
+    coins: parseFloat(raw.coins),
+    hash: raw.uxid,
+    hours: raw.hours,
+  }
+}
 
 export class GetBlocksResponse {
   blocks: GetBlocksResponseBlock[];
@@ -75,6 +122,7 @@ export function parseGetBlocksBlock(block: GetBlocksResponseBlock): Block {
 function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransaction): Transaction {
   return {
     id: transaction.txid,
+    timestamp: null,
     inputs: transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
   }
@@ -119,6 +167,18 @@ export class GetBlockchainMetadataResponse {
 
 export class GetBlockchainMetadataResponseHead {
   seq: number;
+}
+
+export class GetCurrentBalanceResponse {
+  head_outputs: GetCurrentBalanceResponseOutput[];
+}
+
+class GetCurrentBalanceResponseOutput {
+  hash: string;
+  src_tx: string;
+  address: string;
+  coins: string;
+  hours: number;
 }
 
 export class GetOutputsRequest {

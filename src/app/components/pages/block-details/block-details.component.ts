@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Block } from '../../../app.datatypes';
+import { Block, Output } from '../../../app.datatypes';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 
@@ -25,5 +25,9 @@ export class BlockDetailsComponent implements OnInit {
     this.route.params.filter(params => +params['id'] !== null)
       .switchMap((params: Params) => this.explorer.getBlock(+params['id']))
       .subscribe((block: Block) => this.block = block);
+  }
+
+  openAddress(output: Output) {
+    this.router.navigate(['/app/address', output.address]);
   }
 }

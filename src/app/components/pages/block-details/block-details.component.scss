@@ -74,6 +74,11 @@ h2 {
 
         > div {
           vertical-align: top;
+
+          span {
+            color: $primary;
+            cursor: pointer;
+          }
         }
       }
 

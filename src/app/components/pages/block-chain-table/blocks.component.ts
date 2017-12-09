@@ -7,10 +7,10 @@ import { ApiService } from '../../../services/api/api.service';
 
 @Component({
   selector: 'app-block-chain-table',
-  templateUrl: './block-chain-table.component.html',
-  styleUrls: ['./block-chain-table.component.css']
+  templateUrl: './blocks.component.html',
+  styleUrls: ['./blocks.component.scss']
 })
-export class BlockChainTableComponent {
+export class BlocksComponent {
 
   blocks: Block[];
   totalBlocks: number;

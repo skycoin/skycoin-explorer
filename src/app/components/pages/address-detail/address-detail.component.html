@@ -35,7 +35,9 @@
         </div>
         <div class="col-sm-7">
           <div class="-row" *ngFor="let output of transaction.outputs">
-            <div class="width-3-4 gutter-right -left">{{ output.address }}</div>
+            <div class="width-3-4 gutter-right -left -link">
+              <span (click)="openAddress(output)">{{ output.address }}</span>
+            </div>
             <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
           </div>
         </div>

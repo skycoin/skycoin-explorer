@@ -1,11 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
-/* Custom Stylesheet */
-/**
- * Use this file to override Materialize files so you can update
- * the core Materialize files in the future
- *
- * Made By MaterializeCSS.com
- */
+@font-face {
+  font-family: 'Skycoin';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/skycoin/Skycoin-Light.woff2') format('off2'),
+  url('fonts/skycoin/Skycoin-Light.woff') format('off');
+}
+
+@font-face {
+  font-family: 'Skycoin';
+  font-style: italic;
+  font-weight: 700;
+  src: url('fonts/skycoin/Skycoin-LightItalic.woff2') format('off2'),
+  url('fonts/skycoin/Skycoin-LightItalic.woff') format('off');
+}
+
+@font-face {
+  font-family: 'Skycoin';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/skycoin/Skycoin-Regular.woff2') format('off2'),
+  url('fonts/skycoin/Skycoin-Regular.woff') format('off');
+}
+
+@font-face {
+  font-family: 'Skycoin';
+  font-style: italic;
+  font-weight: 700;
+  src: url('fonts/skycoin/Skycoin-RegularItalic.woff2') format('off2'),
+  url('fonts/skycoin/Skycoin-RegularItalic.woff') format('off');
+}
+
+@font-face {
+  font-family: 'Skycoin';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/skycoin/Skycoin-Bold.woff2') format('off2'),
+  url('fonts/skycoin/Skycoin-Bold.woff') format('off');
+}
+
+@font-face {
+  font-family: 'Skycoin';
+  font-style: italic;
+  font-weight: 700;
+  src: url('fonts/skycoin/Skycoin-BoldItalic.woff2') format('off2'),
+  url('fonts/skycoin/Skycoin-BoldItalic.woff') format('off');
+}
 
 .icon-block {
   padding: 0 15px;

@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col s12 s12 card light-blue lighten-1 white-text">
+    <div class="card-content blockchain-metadata">
+      <span class="col s6">Block Height:</span><span class="col s6">{{ totalBlocks| number : '1.0-0'}}</span>
+      <app-coin-supply></app-coin-supply>
+    </div>
+  </div>
+</div>
+
+<ngx-datatable #table
+               class="material"
+               [rows]="blocks"
+               columnMode="flex"
+               [headerHeight]="50"
+               [footerHeight]="50"
+               [rowHeight]="50"
+               [limit]="pageSize"
+               [externalPaging]="true"
+               [scrollbarH]="true"
+               [count]="pageCount"
+               [offset]="pageIndex"
+               (page)="setPage($event)"
+               (activate)="onActivate($event)">
+  <ngx-datatable-column name="Timestamp" prop="timestamp" [flexGrow]="1">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{ value }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Block height" prop="id" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column name="Transactions" prop="transactions" [flexGrow]="1">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{ value.length }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Amount" prop="transactions" [flexGrow]="1">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{ value | transactionsValue }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Hash" prop="hash" [flexGrow]="2">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{ value }}
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>

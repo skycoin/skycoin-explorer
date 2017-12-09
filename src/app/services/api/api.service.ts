@@ -4,26 +4,45 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { Block, BlockResponse, CoinSupply } from '../../components/pages/block-chain-table/block';
+import { CoinSupply } from '../../components/pages/blocks/block';
 import { AddressBalanceResponse, UnspentOutput } from '../../components/pages/address-detail/UnspentOutput';
+import { Block, Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, parseGetBlocksResponseTransaction } from '../../app.datatypes';
 
 @Injectable()
 export class ApiService {
 
-  private baseUrl = '/';
+  private url = '/api/';
 
-  constructor(private http: Http) { }
+  constructor(
+    private http: Http
+  ) { }
+
+  getBlocks(startNumber: number, endNumber: number): Observable<Block[]> {
+    return this.get('blocks', { start: startNumber, end: endNumber })
+      .map((res: GetBlocksResponse) => {
+        const blocks: Block[] = [];
+        res.blocks.forEach(block => blocks.push({
+          id: block.header.seq,
+          hash: block.header.block_hash,
+          timestamp: block.header.timestamp,
+          transactions: block.body.txns.map(transaction => parseGetBlocksResponseTransaction(transaction))
+        }));
+        return blocks.sort((a, b) => b.id - a.id);
+      });
+  }
+
+  getBlockchainMetadata(): Observable<Blockchain> {
+    return this.get('blockchain/metadata')
+      .map((res: GetBlockchainMetadataResponse) => ({
+        blocks: res.head.seq,
+      }))
+  }
+
+  // Old methods
 
   fetchNumberOfBlocks(): Observable<number> {
     return this.get('blockchain/metadata')
       .map(res => res.head.seq);
-  }
-
-  getBlocks(startNumber: number, endNumber: number): Observable<Block[]> {
-    const stringConvert = 'start=' + startNumber + '&end=' + endNumber;
-
-    return this.get('blocks?' + stringConvert)
-      .map((res: BlockResponse) => res.blocks);
   }
 
   getCoinSupply(): Observable<CoinSupply> {
@@ -42,16 +61,29 @@ export class ApiService {
     return this.get('transaction?txid=' + txid);
   }
 
-  getUxOutputsForAddress(address: number): Observable<UnspentOutput[]> {
+  getUxOutputsForAddress(address: string): Observable<UnspentOutput[]> {
+    console.log(address);
     return this.get('address?address=' + address);
   }
 
-  private get(url) {
-    return this.http.get(this.baseUrl + 'api/' + url)
-      .map(res => res.json())
-      .catch((error:any) => {
-        console.log(error);
-        return Observable.throw(error || 'Server error');
-      });
+  private get(url, options = null) {
+    return this.http.get(this.getUrl(url, options))
+      .map((res: any) => res.json())
+      .catch((error: any) => Observable.throw(error || 'Server error'));
+  }
+
+  private getQueryString(parameters = null) {
+    if (!parameters) {
+      return '';
+    }
+
+    return Object.keys(parameters).reduce((array,key) => {
+      array.push(key + '=' + encodeURIComponent(parameters[key]));
+      return array;
+    }, []).join('&');
+  }
+
+  private getUrl(url, options = null) {
+    return this.url + url + '?' + this.getQueryString(options);
   }
 }

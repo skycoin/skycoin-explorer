@@ -16,7 +16,14 @@ export class Address {
 }
 
 export class Block {
+  id: number;
+  hash: string;
+  timestamp: number;
+  transactions: Transaction[];
+}
 
+export class Blockchain {
+  blocks: number;
 }
 
 export class Output {
@@ -24,6 +31,11 @@ export class Output {
   coins: number;
   hash: string;
   hours: number;
+}
+
+export class Transaction {
+  inputs: any[];
+  outputs: Output[];
 }
 
 export class Wallet {
@@ -38,6 +50,61 @@ export class Wallet {
 /**
  * Node Response Types
  */
+
+export class GetBlocksResponse {
+  blocks: GetBlocksResponseBlock[];
+}
+
+export class GetBlocksResponseBlock {
+  body: GetBlocksResponseBlockBody;
+  header: GetBlocksResponseBlockHeader;
+}
+
+export class GetBlocksResponseBlockBody {
+  txns: GetBlocksResponseBlockBodyTransaction[];
+}
+
+export class GetBlocksResponseBlockBodyTransaction {
+  inputs: string[];
+  outputs: GetBlocksResponseBlockBodyTransactionOutput[];
+}
+
+class GetBlocksResponseBlockBodyTransactionOutput {
+  coins: string;
+  dst: string;
+  hours: number;
+  uxid: string;
+}
+
+export function parseGetBlocksResponseTransaction(transaction: GetBlocksResponseBlockBodyTransaction): Transaction {
+  return {
+    inputs: transaction.inputs,
+    outputs: transaction.outputs.map(output => parseGetBlocksResponseOutput(output)),
+  }
+}
+
+function parseGetBlocksResponseOutput(raw: GetBlocksResponseBlockBodyTransactionOutput): Output {
+  return {
+    address: raw.dst,
+    coins: parseFloat(raw.coins),
+    hash: raw.uxid,
+    hours: raw.hours,
+  }
+}
+
+export class GetBlocksResponseBlockHeader {
+  block_hash: string;
+  seq: number;
+  timestamp: number;
+}
+
+export class GetBlockchainMetadataResponse {
+  head: GetBlockchainMetadataResponseHead;
+}
+
+export class GetBlockchainMetadataResponseHead {
+  seq: number;
+}
 
 export class GetOutputsRequest {
   head_outputs: GetOutputsRequestOutput[];

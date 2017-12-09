@@ -18,6 +18,7 @@ export class Address {
 export class Block {
   id: number;
   hash: string;
+  parent_hash: string;
   timestamp: number;
   transactions: Transaction[];
 }
@@ -55,16 +56,42 @@ export class GetBlocksResponse {
   blocks: GetBlocksResponseBlock[];
 }
 
-export class GetBlocksResponseBlock {
+class GetBlocksResponseBlock {
   body: GetBlocksResponseBlockBody;
   header: GetBlocksResponseBlockHeader;
 }
 
-export class GetBlocksResponseBlockBody {
+export function parseGetBlocksBlock(block: GetBlocksResponseBlock): Block {
+  return {
+    id: block.header.seq,
+    hash: block.header.block_hash,
+    parent_hash: block.header.previous_block_hash,
+    timestamp: block.header.timestamp,
+    transactions: block.body.txns.map(transaction => parseGetBlocksTransaction(transaction))
+  }
+}
+
+function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransaction): Transaction {
+  return {
+    inputs: transaction.inputs,
+    outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
+  }
+}
+
+function parseGetBlocksOutput(raw: GetBlocksResponseBlockBodyTransactionOutput): Output {
+  return {
+    address: raw.dst,
+    coins: parseFloat(raw.coins),
+    hash: raw.uxid,
+    hours: raw.hours,
+  }
+}
+
+class GetBlocksResponseBlockBody {
   txns: GetBlocksResponseBlockBodyTransaction[];
 }
 
-export class GetBlocksResponseBlockBodyTransaction {
+class GetBlocksResponseBlockBodyTransaction {
   inputs: string[];
   outputs: GetBlocksResponseBlockBodyTransactionOutput[];
 }
@@ -76,24 +103,9 @@ class GetBlocksResponseBlockBodyTransactionOutput {
   uxid: string;
 }
 
-export function parseGetBlocksResponseTransaction(transaction: GetBlocksResponseBlockBodyTransaction): Transaction {
-  return {
-    inputs: transaction.inputs,
-    outputs: transaction.outputs.map(output => parseGetBlocksResponseOutput(output)),
-  }
-}
-
-function parseGetBlocksResponseOutput(raw: GetBlocksResponseBlockBodyTransactionOutput): Output {
-  return {
-    address: raw.dst,
-    coins: parseFloat(raw.coins),
-    hash: raw.uxid,
-    hours: raw.hours,
-  }
-}
-
-export class GetBlocksResponseBlockHeader {
+class GetBlocksResponseBlockHeader {
   block_hash: string;
+  previous_block_hash: string;
   seq: number;
   timestamp: number;
 }

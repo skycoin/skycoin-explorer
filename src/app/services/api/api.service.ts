@@ -6,7 +6,7 @@ import 'rxjs/add/operator/catch';
 
 import { CoinSupply } from '../../components/pages/blocks/block';
 import { AddressBalanceResponse, UnspentOutput } from '../../components/pages/address-detail/UnspentOutput';
-import { Block, Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, parseGetBlocksResponseTransaction } from '../../app.datatypes';
+import { Block, Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, parseGetBlocksBlock } from '../../app.datatypes';
 
 @Injectable()
 export class ApiService {
@@ -19,16 +19,7 @@ export class ApiService {
 
   getBlocks(startNumber: number, endNumber: number): Observable<Block[]> {
     return this.get('blocks', { start: startNumber, end: endNumber })
-      .map((res: GetBlocksResponse) => {
-        const blocks: Block[] = [];
-        res.blocks.forEach(block => blocks.push({
-          id: block.header.seq,
-          hash: block.header.block_hash,
-          timestamp: block.header.timestamp,
-          transactions: block.body.txns.map(transaction => parseGetBlocksResponseTransaction(transaction))
-        }));
-        return blocks.sort((a, b) => b.id - a.id);
-      });
+      .map((res: GetBlocksResponse) => res.blocks.map(block => parseGetBlocksBlock(block)).sort((a, b) => b.id - a.id));
   }
 
   getBlockchainMetadata(): Observable<Blockchain> {

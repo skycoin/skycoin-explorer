@@ -11,8 +11,6 @@ import { LoadingComponent } from './components/layout/loading/loading.component'
 import { BlocksComponent } from './components/pages/blocks/blocks.component';
 import { ApiService } from './services/api/api.service';
 import { HttpModule } from '@angular/http';
-import { PaginationComponent } from './components/pages/blocks/pagination/pagination.component';
-import { CoinSupplyComponent } from './components/pages/blocks/coin-supply/coin-supply.component';
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
 import { TransactionDetailComponent } from './components/pages/transaction-detail/transaction-detail.component';
 import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
@@ -52,11 +50,9 @@ const ROUTES = [
     AppComponent,
     BlockDetailsComponent,
     BlocksComponent,
-    CoinSupplyComponent,
     FooterComponent,
     HeaderComponent,
     LoadingComponent,
-    PaginationComponent,
     QrCodeComponent,
     SearchBarComponent,
     TransactionDetailComponent,

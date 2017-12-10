@@ -21,10 +21,6 @@ export class ApiService {
     return this.get('address', { address: address });
   }
 
-  getCurrentBalance(address: string): Observable<GetCurrentBalanceResponse> {
-    return this.get('currentBalance', { addrs: address })
-  }
-
   getBlocks(startNumber: number, endNumber: number): Observable<GetBlocksResponse> {
     return this.get('blocks', { start: startNumber, end: endNumber });
   }
@@ -36,24 +32,19 @@ export class ApiService {
       }))
   }
 
+  getCoinSupply(): Observable<CoinSupply> {
+    return this.get('coinSupply');
+  }
+
+  getCurrentBalance(address: string): Observable<GetCurrentBalanceResponse> {
+    return this.get('currentBalance', { addrs: address })
+  }
+
   getUxout(uxid: string): Observable<GetUxoutResponse> {
     return this.get('uxout', { uxid: uxid });
   }
 
   // Old methods
-
-  fetchNumberOfBlocks(): Observable<number> {
-    return this.get('blockchain/metadata')
-      .map(res => res.head.seq);
-  }
-
-  getCoinSupply(): Observable<CoinSupply> {
-    return this.get('coinSupply');
-  }
-
-  getCurrentBalanceOfAddress(address: number): Observable<AddressBalanceResponse> {
-    return this.get('currentBalance?addrs=' + address);
-  }
 
   getInputAddress(uxid:string): any{
     return this.get('uxout?uxid=' + uxid);
@@ -61,11 +52,6 @@ export class ApiService {
 
   getTransaction(txid:string): Observable<any> {
     return this.get('transaction?txid=' + txid);
-  }
-
-  getUxOutputsForAddress(address: string): Observable<UnspentOutput[]> {
-    console.log(address);
-    return this.get('address?address=' + address);
   }
 
   private get(url, options = null) {

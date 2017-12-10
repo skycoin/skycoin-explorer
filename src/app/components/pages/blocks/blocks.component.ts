@@ -11,6 +11,8 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
 export class BlocksComponent implements OnInit {
 
   blocks: Block[] = [];
+  currentSupply: number;
+  totalSupply: number;
   pageCount = 0;
   pageIndex = 0;
   pageSize = 10;
@@ -26,6 +28,11 @@ export class BlocksComponent implements OnInit {
       this.pageCount = blockchain.blocks;
       this.setPage({ offset: 0 });
     });
+
+    this.api.getCoinSupply().first().subscribe(response => {
+      this.currentSupply = response.current_supply;
+      this.totalSupply = response.total_supply;
+    })
   }
 
   onActivate(response) {

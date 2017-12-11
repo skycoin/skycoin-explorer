@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { Block } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
+import 'rxjs/add/operator/first';
 
 @Component({
   templateUrl: './blocks.component.html',
@@ -13,9 +14,13 @@ export class BlocksComponent implements OnInit {
   blocks: Block[] = [];
   currentSupply: number;
   totalSupply: number;
-  pageCount = 0;
+  blockCount = 0;
   pageIndex = 0;
   pageSize = 10;
+
+  get pageCount() {
+    return Math.ceil(this.blockCount / this.pageSize);
+  }
 
   constructor(
     private api: ApiService,
@@ -25,8 +30,8 @@ export class BlocksComponent implements OnInit {
 
   ngOnInit() {
     this.api.getBlockchainMetadata().first().subscribe(blockchain => {
-      this.pageCount = blockchain.blocks;
-      this.setPage({ offset: 0 });
+      this.blockCount = blockchain.blocks;
+      this.navigate(0);
     });
 
     this.api.getCoinSupply().first().subscribe(response => {
@@ -39,10 +44,16 @@ export class BlocksComponent implements OnInit {
     this.router.navigate(['/app/block', block.id]);
   }
 
-  setPage(pageInfo) {
-    this.pageIndex = pageInfo.offset;
-    const end = this.pageCount - (this.pageIndex * this.pageSize);
-    const begin = end - this.pageSize;
+  navigate(direction) {
+    console.log(this.pageIndex + direction);
+    if (this.pageIndex + direction < 0 || this.pageIndex + direction > this.pageCount) {
+      console.log('returning');
+      return
+    }
+
+    this.pageIndex = this.pageIndex + direction;
+    const end = this.blockCount - (this.pageIndex * this.pageSize);
+    const begin = end - this.pageSize + 1;
     this.explorer.getBlocks(begin > 0 ? begin : 0, end > 0 ? end : 0).first().subscribe(blocks => this.blocks = blocks);
   }
 }

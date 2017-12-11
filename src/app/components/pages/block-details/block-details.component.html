@@ -24,7 +24,7 @@
     <div class="-body">
       <div class="row" *ngFor="let transaction of block.transactions">
         <div class="col-sm-2 -primary">
-          <div class="-cell">
+          <div class="-cell -pointer" (click)="openTransaction(transaction)">
             {{ transaction.id }}
           </div>
         </div>

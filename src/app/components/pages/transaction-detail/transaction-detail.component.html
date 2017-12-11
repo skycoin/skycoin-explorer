@@ -1,17 +1,17 @@
 <div class="row">
   <div class="col-sm-12">
     <h2>Transaction</h2>
-    <p><span>Status</span>  </p>
-    <p><span>Timestamp</span>  </p>
-    <p><span>Block</span>  </p>
+    <p><span>Status</span> {{ transaction ? (transaction.status ? 'Confirmed' : 'Unconfirmed') : 'loading...' }} </p>
+    <p><span>Timestamp</span> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : 'loading...' }} </p>
+    <p><span>Block</span> {{ transaction ? transaction.block : 'loading...' }} </p>
   </div>
 </div>
 
 <div class="transaction">
   <div class="-title">
     <div class="row">
-      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span></div>
-      <div class="col-sm-4 -right">{{ transaction.timestamp }}</div>
+      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction ? transaction.id : 'loading...' }}</span></div>
+      <div class="col-sm-4 -right">{{ transaction ? transaction.timestamp : 'loading...' }}</div>
     </div>
   </div>
   <div class="-header">
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <div class="-body">
+  <div class="-body" *ngIf="transaction">
     <div class="row">
       <div class="col-sm-5 -left">
         <div class="-row" *ngFor="let input of transaction.inputs">

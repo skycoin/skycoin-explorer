@@ -20,7 +20,7 @@
   </div>
   <div class="-body">
     <div class="row" *ngFor="let block of blocks" (click)="open(block)">
-      <div class="col-sm-2">{{ block.timestamp }}</div>
+      <div class="col-sm-2">{{ block.timestamp * 1000 | date:'short' }}</div>
       <div class="col-sm-2 -gray">{{ block.id }}</div>
       <div class="col-sm-2 -gray">{{ block.transactions.length }}</div>
       <div class="col-sm-6">{{ block.hash }}</div>

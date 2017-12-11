@@ -22,5 +22,6 @@ export class SearchBarComponent {
     } else {
       this.router.navigate(['/app/block', hashVal]);
     }
+    this.query = null;
   }
 }

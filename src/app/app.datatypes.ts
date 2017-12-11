@@ -35,10 +35,12 @@ export class Output {
 }
 
 export class Transaction {
+  block: number;
   id: string;
-  timestamp: number;
   inputs: Output[];
   outputs: Output[];
+  status: boolean;
+  timestamp: number;
 }
 
 export class Wallet {
@@ -63,10 +65,12 @@ export class GetAddressResponseTransaction {
 
 export function parseGetAddressTransaction(raw: GetAddressResponseTransaction): Transaction {
   return {
+    block: null,
     id: raw.txid,
     timestamp: raw.timestamp,
     inputs: raw.inputs.map(input => parseGetAddressInput(input)),
     outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
+    status: null,
   }
 }
 
@@ -121,10 +125,12 @@ export function parseGetBlocksBlock(block: GetBlocksResponseBlock): Block {
 
 function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransaction): Transaction {
   return {
+    block: null,
     id: transaction.txid,
     timestamp: null,
     inputs: transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
+    status: null,
   }
 }
 
@@ -193,6 +199,60 @@ export class GetOutputsRequestOutput {
   address: string;
   coins: string;
   hours: number;
+}
+
+export class GetTransactionResponse {
+  status: GetTransactionStatus;
+  time: number;
+  txn: GetTransactionTransaction;
+}
+
+export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
+  return {
+    block: raw.status.block_seq,
+    id: raw.txn.txid,
+    inputs: raw.txn.inputs.map(input => parseGetTransactionInput(input)),
+    outputs: raw.txn.outputs.map(output => parseGetTransactionOutput(output)),
+    status: raw.status.confirmed,
+    timestamp: raw.txn.timestamp,
+  }
+}
+
+function parseGetTransactionInput(raw: string): Output {
+  return {
+    address: null,
+    coins: null,
+    hash: raw,
+    hours: null,
+  }
+}
+
+function parseGetTransactionOutput(raw: GetTransactionOutput): Output {
+  return {
+    address: raw.dst,
+    coins: parseFloat(raw.coins),
+    hash: raw.uxid,
+    hours: raw.hours,
+  }
+}
+
+class GetTransactionOutput {
+  uxid: string;
+  dst: string;
+  coins: string;
+  hours: number;
+}
+
+class GetTransactionStatus {
+  confirmed: boolean;
+  block_seq: number;
+}
+
+class GetTransactionTransaction {
+  inputs: string[];
+  outputs: GetTransactionOutput[];
+  timestamp: number;
+  txid: string;
 }
 
 export class GetUxoutResponse {

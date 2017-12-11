@@ -1,53 +1,43 @@
-<div class="row" *ngIf="transaction!=null">
-  <h2>Transaction Details</h2>
-  <div class="card light-blue lighten-1 white-text" *ngIf="transaction && transaction.txn">
-    <div class="card-content" >
-      <table class="transaction-header">
-        <tbody >
-
-        <tr>
-
-          <td>Status</td><td>{{ transaction.status.confirmed ? "confirmed" : "unconfirmed" }}</td>
-
-        </tr>
-        <tr>
-          <td>Timestamp</td><td>{{getTime(transaction.txn.timestamp)}}</td>
-        </tr>
-        <tr>
-          <td>Block </td><td><a [routerLink]="['/app/block', transaction.status.block_seq ]" style="color: #ffffff">{{ transaction.status.block_seq }}</a></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-
-  <div class=" card col s12">
-    <div class="card-title">Transaction id : {{transaction.txn.txid}}</div>
-    <div class="col s4">
-      <ul class="collection">
-        <li class="collection-item"><h5>Inputs</h5></li>
-        <li class="collection-item" *ngFor="let input of transaction.txn.inputs">{{input}}</li>
-
-      </ul>
-    </div>
-    <div class="accent-1 col s1 right-arrow center">
-      <i class="material-icons">trending_flat</i>
-    </div>
-
-    <div class="col s5">
-      <ul class="collection">
-        <li class="collection-item"><h5>Outputs</h5></li>
-        <li class="collection-item" *ngFor="let output of transaction.txn.outputs"><a [routerLink]="['/app/address', output.dst ]">{{output.dst}}</a></li>
-      </ul>
-    </div>
-    <div class="col s2">
-      <ul class="collection">
-        <li class="collection-item"><h5>Coins</h5></li>
-        <li class="collection-item" *ngFor="let output of transaction.txn.outputs">{{output.coins | number : '1.0-0'}}</li>
-      </ul>
-    </div>
+<div class="row">
+  <div class="col-sm-12">
+    <h2>Transaction</h2>
+    <p><span>Status</span>  </p>
+    <p><span>Timestamp</span>  </p>
+    <p><span>Block</span>  </p>
   </div>
 </div>
 
-<app-loading [loading]="loading"></app-loading>
+<div class="transaction">
+  <div class="-title">
+    <div class="row">
+      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span></div>
+      <div class="col-sm-4 -right">{{ transaction.timestamp }}</div>
+    </div>
+  </div>
+  <div class="-header">
+    <div class="row">
+      <div class="col-sm-5 -left">Inputs</div>
+      <div class="col-sm-7">
+        <div class="width-3-4 gutter-right -left">Outputs</div>
+        <div class="width-1-4 gutter-left -right">Value</div>
+      </div>
+    </div>
+  </div>
+  <div class="-body">
+    <div class="row">
+      <div class="col-sm-5 -left">
+        <div class="-row" *ngFor="let input of transaction.inputs">
+          {{ input.hash }}
+        </div>
+      </div>
+      <div class="col-sm-7">
+        <div class="-row" *ngFor="let output of transaction.outputs">
+          <div class="width-3-4 gutter-right -left -link">
+            <span (click)="openAddress(output)">{{ output.address }}</span>
+          </div>
+          <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -35,10 +35,8 @@ export class BlocksComponent implements OnInit {
     })
   }
 
-  onActivate(response) {
-    if (response.row && response.row.id >= 0) {
-      this.router.navigate(['/app/block', response.row.id]);
-    }
+  open(block: Block) {
+    this.router.navigate(['/app/block', block.id]);
   }
 
   setPage(pageInfo) {

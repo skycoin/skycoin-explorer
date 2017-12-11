@@ -40,6 +40,10 @@ export class ApiService {
     return this.get('currentBalance', { addrs: address })
   }
 
+  getTransaction(transactionId:string): Observable<any> {
+    return this.get('transaction', { txid: transactionId });
+  }
+
   getUxout(uxid: string): Observable<GetUxoutResponse> {
     return this.get('uxout', { uxid: uxid });
   }
@@ -48,10 +52,6 @@ export class ApiService {
 
   getInputAddress(uxid:string): any{
     return this.get('uxout?uxid=' + uxid);
-  }
-
-  getTransaction(txid:string): Observable<any> {
-    return this.get('transaction?txid=' + txid);
   }
 
   private get(url, options = null) {

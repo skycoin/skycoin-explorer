@@ -1,45 +1,43 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-8 -details">
-      <h2>{{ address }}</h2>
-      <p><span># of Transactions</span> {{ this.transactions ? this.transactions.length : 0 }} </p>
-      <p><span>Balance</span> {{ balance }} </p>
-    </div>
-    <div class="col-sm-4 -qr-code">
-      <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
+<div class="row">
+  <div class="col-sm-8 -details">
+    <h2>{{ address }}</h2>
+    <p><span># of Transactions</span> {{ this.transactions ? this.transactions.length : 0 }} </p>
+    <p><span>Balance</span> {{ balance }} </p>
+  </div>
+  <div class="col-sm-4 -qr-code">
+    <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
+  </div>
+</div>
+
+<div class="transaction" *ngFor="let transaction of transactions">
+  <div class="-title">
+    <div class="row">
+      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span></div>
+      <div class="col-sm-4 -right">{{ transaction.timestamp }}</div>
     </div>
   </div>
-
-  <div class="transaction" *ngFor="let transaction of transactions">
-    <div class="-title">
-      <div class="row">
-        <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span></div>
-        <div class="col-sm-4 -right">{{ transaction.timestamp }}</div>
+  <div class="-header">
+    <div class="row">
+      <div class="col-sm-5 -left">Inputs</div>
+      <div class="col-sm-7">
+        <div class="width-3-4 gutter-right -left">Outputs</div>
+        <div class="width-1-4 gutter-left -right">Value</div>
       </div>
     </div>
-    <div class="-header">
-      <div class="row">
-        <div class="col-sm-5 -left">Inputs</div>
-        <div class="col-sm-7">
-          <div class="width-3-4 gutter-right -left">Outputs</div>
-          <div class="width-1-4 gutter-left -right">Value</div>
+  </div>
+  <div class="-body">
+    <div class="row">
+      <div class="col-sm-5 -left">
+        <div class="-row" *ngFor="let input of transaction.inputs">
+          {{ input.hash }}
         </div>
       </div>
-    </div>
-    <div class="-body">
-      <div class="row">
-        <div class="col-sm-5 -left">
-          <div class="-row" *ngFor="let input of transaction.inputs">
-            {{ input.hash }}
+      <div class="col-sm-7">
+        <div class="-row" *ngFor="let output of transaction.outputs">
+          <div class="width-3-4 gutter-right -left -link">
+            <span (click)="openAddress(output)">{{ output.address }}</span>
           </div>
-        </div>
-        <div class="col-sm-7">
-          <div class="-row" *ngFor="let output of transaction.outputs">
-            <div class="width-3-4 gutter-right -left -link">
-              <span (click)="openAddress(output)">{{ output.address }}</span>
-            </div>
-            <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
-          </div>
+          <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
         </div>
       </div>
     </div>

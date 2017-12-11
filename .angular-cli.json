@@ -25,7 +25,6 @@
       ],
       "scripts": [
         "js/jquery-2.1.1.min.js",
-        "js/materialize.js",
         "js/qrcode.min.js"
       ],
       "environmentSource": "environments/environment.ts",

@@ -13,8 +13,8 @@ export class SearchBarComponent {
     private router: Router,
   ) { }
 
-  search(hashVal: string) {
-    hashVal = this.query.trim();
+  search() {
+    const hashVal = this.query.trim();
     if (hashVal.length === 34 || hashVal.length === 35 ) {
       this.router.navigate(['/app/address', hashVal]);
     } else if (hashVal.length === 64) {

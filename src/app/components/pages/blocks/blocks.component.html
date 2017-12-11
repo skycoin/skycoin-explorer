@@ -27,14 +27,14 @@
     </div>
   </div>
   <div class="pagination">
-    <span class="-first" [ngClass]="{ disabled: pageIndex <= 0 }" (click)="navigate(0 - pageIndex)">«</span>
-    <span class="-previous" [ngClass]="{ disabled: pageIndex <= 0 }" (click)="navigate(-1)">‹</span>
-    <span class="-page" *ngIf="pageIndex > 1" (click)="navigate(-2)">{{ pageIndex - 1 }}</span>
-    <span class="-page" *ngIf="pageIndex > 0" (click)="navigate(-1)">{{ pageIndex }}</span>
-    <span class="-page disabled">{{ pageIndex + 1 }}</span>
-    <span class="-page" *ngIf="pageIndex < pageCount - 1" (click)="navigate(1)">{{ pageIndex + 2 }}</span>
-    <span class="-page" *ngIf="pageIndex < pageCount - 1" (click)="navigate(2)">{{ pageIndex + 3 }}</span>
-    <span class="-next" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" (click)="navigate(1)">›</span>
-    <span class="-last" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" (click)="navigate(pageCount - pageIndex)">»</span>
+    <a class="-first" [ngClass]="{ disabled: pageIndex <= 0 }" routerLink="/app/blocks/1">«</a>
+    <a class="-previous" [ngClass]="{ disabled: pageIndex <= 0 }" routerLink="/app/blocks/{{--pageIndex}}">‹</a>
+    <a class="-page" *ngIf="pageIndex > 1" routerLink="/app/blocks/{{pageIndex - 1}}">{{ pageIndex - 1 }}</a>
+    <a class="-page" *ngIf="pageIndex > 0" routerLink="/app/blocks/{{pageIndex}}">{{ pageIndex }}</a>
+    <a class="-page disabled">{{ pageIndex + 1 }}</a>
+    <a class="-page" *ngIf="pageIndex < pageCount - 1" routerLink="/app/blocks/{{pageIndex + 2}}">{{ pageIndex + 2 }}</a>
+    <a class="-page" *ngIf="pageIndex < pageCount - 2" routerLink="/app/blocks/{{pageIndex + 3}}">{{ pageIndex + 3 }}</a>
+    <a class="-next" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" routerLink="/app/blocks/{{pageIndex + 2}}">›</a>
+    <a class="-last" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" routerLink="/app/blocks/{{pageCount}}">»</a>
   </div>
 </div>

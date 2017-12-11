@@ -30,6 +30,10 @@ const ROUTES = [
     component: BlocksComponent
   },
   {
+    path: 'app/blocks/:page',
+    component: BlocksComponent
+  },
+  {
     path: 'app/block/:id',
     component: BlockDetailsComponent
   },

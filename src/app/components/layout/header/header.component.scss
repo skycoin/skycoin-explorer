@@ -6,9 +6,11 @@ nav {
   background-color: white;
   box-shadow: none;
   height: $header-height;
+  margin-bottom: 80px;
   margin-top: 20px;
 
   img {
+    cursor: pointer;
     height: $header-height;
   }
 

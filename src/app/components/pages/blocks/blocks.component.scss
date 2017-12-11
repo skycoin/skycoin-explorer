@@ -1,11 +1,60 @@
-tr:hover{
-  cursor: pointer;
+@import '../../../../assets/scss/_variables.scss';
+
+h2 {
+  color: $primary;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 42px;
+  margin-top: 40px;
+  text-align: left;
 }
 
-.wrap{
-  word-break: break-all;
+.-details {
+  text-align: right;
+
+  p {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 3px 0;
+    margin-bottom: 5px;
+
+    .-label {
+      display: inline-block;
+      opacity: 0.25;
+    }
+
+    .-value {
+      display: inline-block;
+      width: 100px;
+    }
+  }
 }
 
-.blockchain-metadata {
-    padding: 0px;
+.-table {
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 40px;
+  margin-top: 20px;
+  padding: 0 15px;
+  text-align: left;
+
+  .row {
+    margin-bottom: 0;
+  }
+
+  .-headers > .row > div {
+    background-color: #F7F7F7;
+    color: #cdcdcd;
+    padding: 18px 20px;
+  }
+
+  .-body > .row > div {
+    background-color: #FBFBFB;
+    border-bottom: 1px solid #EFF0F0;
+    padding: 28px 20px;
+
+    &.-gray {
+      color: #8D8D91;
+    }
+  }
 }

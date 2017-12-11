@@ -3,45 +3,27 @@
     <h2>Blocks</h2>
   </div>
   <div class="col-sm-6 -details">
-    <p>Block Height <span>{{ pageCount }}</span> </p>
-    <p>Current Supply <span>{{ currentSupply }}</span> </p>
-    <p>Total Supply <span>{{ totalSupply }}</span> </p>
+    <p><span class="-label">Block Height:</span> <span class="-value">{{ pageCount | number : '1.0-0' }}</span> </p>
+    <p><span class="-label">Current Supply:</span> <span class="-value">{{ currentSupply | number : '1.0-0' }}</span> </p>
+    <p><span class="-label">Total Supply:</span> <span class="-value">{{ totalSupply | number : '1.0-0' }}</span> </p>
   </div>
 </div>
 
-<ngx-datatable #table
-               class="material"
-               [rows]="blocks"
-               columnMode="flex"
-               [headerHeight]="50"
-               [footerHeight]="50"
-               [rowHeight]="50"
-               [limit]="pageSize"
-               [externalPaging]="true"
-               [scrollbarH]="true"
-               [count]="pageCount"
-               [offset]="pageIndex"
-               (page)="setPage($event)"
-               (activate)="onActivate($event)">
-  <ngx-datatable-column name="Timestamp" prop="timestamp" [flexGrow]="1">
-    <ng-template let-value="value" ngx-datatable-cell-template>
-      {{ value }}
-    </ng-template>
-  </ngx-datatable-column>
-  <ngx-datatable-column name="Block height" prop="id" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column name="Transactions" prop="transactions" [flexGrow]="1">
-    <ng-template let-value="value" ngx-datatable-cell-template>
-      {{ value.length }}
-    </ng-template>
-  </ngx-datatable-column>
-  <ngx-datatable-column name="Amount" prop="transactions" [flexGrow]="1">
-    <ng-template let-value="value" ngx-datatable-cell-template>
-      {{ value | transactionsValue }}
-    </ng-template>
-  </ngx-datatable-column>
-  <ngx-datatable-column name="Hash" prop="hash" [flexGrow]="2">
-    <ng-template let-value="value" ngx-datatable-cell-template>
-      {{ value }}
-    </ng-template>
-  </ngx-datatable-column>
-</ngx-datatable>
+<div class="-table">
+  <div class="-headers">
+    <div class="row">
+      <div class="col-sm-2">Time</div>
+      <div class="col-sm-2">Block Number</div>
+      <div class="col-sm-2">Transactions</div>
+      <div class="col-sm-6">Blockhash</div>
+    </div>
+  </div>
+  <div class="-body">
+    <div class="row" *ngFor="let block of blocks">
+      <div class="col-sm-2">{{ block.timestamp }}</div>
+      <div class="col-sm-2 -gray">{{ block.id }}</div>
+      <div class="col-sm-2 -gray">{{ block.transactions.length }}</div>
+      <div class="col-sm-6">{{ block.hash }}</div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
@@ -17,6 +16,7 @@ import { AddressDetailComponent } from './components/pages/address-detail/addres
 import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
 import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
+import { FormsModule } from '@angular/forms';
 
 
 const ROUTES = [
@@ -60,8 +60,8 @@ const ROUTES = [
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpModule,
-    NgxDatatableModule,
     RouterModule.forRoot(ROUTES),
   ],
   providers: [

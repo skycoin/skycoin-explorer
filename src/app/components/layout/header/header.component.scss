@@ -1,0 +1,24 @@
+@import '../../../../assets/scss/_variables.scss';
+
+$header-height: 68px;
+
+nav {
+  background-color: white;
+  box-shadow: none;
+  height: $header-height;
+  margin-bottom: 80px;
+  margin-top: 20px;
+
+  img {
+    cursor: pointer;
+    height: $header-height;
+  }
+
+  .-back-link {
+    color: $primary;
+    float: right;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: $header-height;
+  }
+}

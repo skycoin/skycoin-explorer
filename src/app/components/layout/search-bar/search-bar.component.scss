@@ -1,0 +1,24 @@
+.-search-bar-container {
+  margin-top: 13px;
+  position: relative;
+
+  img {
+    display: inline-block;
+    height: 20px;
+    margin: 11px;
+    position: absolute;
+  }
+
+  input {
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    font-size: 12px;
+    height: 42px;
+    padding: 0 0 0 40px;
+    width: 100%;
+
+    &::placeholder {
+      color: #cdcdcd;
+    }
+  }
+}

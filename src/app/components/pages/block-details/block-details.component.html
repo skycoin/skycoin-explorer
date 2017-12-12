@@ -1,61 +1,45 @@
-<div class="row">
+<div class="container">
   <h2>Block Details</h2>
-  <div class="card" *ngIf="block">
-    <div class="card-content" >
-      <table class="block-header">
-        <tbody>
-
-        <tr>
-
-          <td>Height</td><td>{{ block.header.seq }}</td>
-
-        </tr>
-        <tr>
-          <td>Timestamp</td><td>{{getTime(block.header.timestamp)}}</td>
-        </tr>
-        <tr>
-          <td>Hash</td><td>{{ block.header.block_hash }}</td>
-        </tr>
-
-        <tr>
-          <td>Parent Hash</td><td>{{ block.header.previous_block_hash }}</td>
-        </tr>
-
-        <tr>
-          <td>Total Amount</td><td>{{ getAmount(block) | number : '1.0-0' }} SKY</td>
-        </tr>
-
-        </tbody>
-      </table>
+  <div class="block-details">
+    <div class="-row"><span>Height</span> {{ block ? block.id : 'loading ..' }} </div>
+    <div class="-row"><span>Timestamp</span> {{ block ? ((block.timestamp * 1000) | date: 'short') : 'loading ..' }} </div>
+    <div class="-row"><span>Hash</span> {{ block ? block.hash : 'loading ..' }} </div>
+    <div class="-row"><span>Parent Hash</span> {{ block ? block.parent_hash : 'loading ..' }} </div>
+    <div class="-row"><span>Total Amount</span> {{ block ? (block.transactions | transactionsValue) + ' SKY' : 'loading ..' }} </div>
+  </div>
+  <div class="transactions" *ngIf="block && block.transactions.length >= 0">
+    <div class="-header">
+      <div class="row">
+        <div class="col-sm-2">Transaction ID</div>
+        <div class="col-sm-5">
+          <div class="width-4-5 gutter-right">Inputs</div>
+          <div class="width-1-5 gutter-left">Value</div>
+        </div>
+        <div class="col-sm-5">
+          <div class="width-4-5 gutter-right">Outputs</div>
+          <div class="width-1-5 gutter-left">Value</div>
+        </div>
+      </div>
     </div>
-  </div>
-
-
-  <div class="col s12">Transactions</div>
-  <div class="col s12">
-    <div class="col s3">Transaction ID</div>
-    <div class="col s3">Inputs</div>
-    <div class="col s4">Outputs</div>
-    <div class="col s2">Amount</div>
-  </div>
-  <div *ngIf="block">
-    <div  class="col s12" *ngFor="let transaction of block.body.txns">
-      <div class="col s3 wrap">
-        <a [routerLink]="['/app/transaction', transaction.txid ]" >{{transaction.txid}}</a>
-      </div>
-      <div class="col s3 wrap">
-        <p *ngFor="let input of transaction.inputs;" class="input">{{input}}</p>
-      </div>
-      <div class="col s4 wrap">
-        <p *ngFor="let output of transaction.outputs;" class="input"><a [routerLink]="['/app/address', output.dst ]" >{{output.dst}}</a></p>
-      </div>
-      <div class="col s2 wrap">
-        <p *ngFor="let output of transaction.outputs;" class="input">{{output.coins | number : '1.0-0' }}</p>
+    <div class="-body">
+      <div class="row" *ngFor="let transaction of block.transactions">
+        <div class="col-sm-2 -primary">
+          <div class="-cell -pointer" (click)="openTransaction(transaction)">
+            {{ transaction.id }}
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="-row" *ngFor="let input of transaction.inputs">
+            <div class="width-4-5 gutter-right">{{ input.hash }}</div>
+            <div class="width-1-5 gutter-left">{{ input.coins }}</div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="-row" *ngFor="let output of transaction.outputs">
+            <div class="width-4-5 gutter-right"><span (click)="openAddress(output)">{{ output.address }}</span></div>
+            <div class="width-1-5 gutter-left">{{ output.coins }}</div>
+          </div>
       </div>
     </div>
   </div>
-
 </div>
-
-<app-loading [loading]="loading"></app-loading>
-

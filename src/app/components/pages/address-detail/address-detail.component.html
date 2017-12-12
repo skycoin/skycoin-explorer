@@ -1,54 +1,45 @@
-<div class="row" *ngIf="transactions">
-  <div class="col s8" >
-    <div class="card-content" *ngIf="transactions.length>0">
-      <ul class="collection">
-        <li class="collection-item"><h5>Address: {{currentAddress}}</h5></li>
-        <li class="collection-item">Number of transactions: {{transactions.length| number : '1.0-0'}} </li>
-        <li class="collection-item">Balance: {{currentBalance| number : '1.0-0'}} SKY</li>
-      </ul>
-    </div>
+<div class="row">
+  <div class="col-sm-8 -details">
+    <h2>{{ address }}</h2>
+    <p><span># of Transactions</span> {{ this.transactions ? this.transactions.length : 0 }} </p>
+    <p><span>Balance</span> {{ balance }} </p>
   </div>
-
-  <div class="card col s4">
-    <!--<qr-code *ngIf="currentAddress!=null" [value]="currentAddress" [size]="300"></qr-code>-->
-    <div class="qr-code" id="qr-code"></div>
-    <p class="address-qr">{{currentAddress}}</p>
-  </div>
-
-
-  <div class=" card col s12" *ngFor="let transaction of transactions">
-    <div class="card-title">Transaction ID: <a href="/app/transaction/{{transaction.txid}}">{{transaction.txid}}</a></div>
-    <div class="col s5">
-      <ul class="collection">
-        <li class="collection-item"><h5>Inputs</h5></li>
-        <li class="collection-item" *ngFor="let input of transaction.inputs">
-          <!--<a href="/app/address/{{input.uxid}}">uxid</a>-->
-          <p><a data-position="bottom" href="/app/address/{{input.owner}}">{{input.owner}}</a></p>
-          <span class="uxid">
-            <p>UxId:</p>
-            <p>{{input.uxid}}</p>
-           </span>
-        </li>
-
-      </ul>
-    </div>
-    <div class="accent-1 col s1 right-arrow center">
-      <i class="material-icons">trending_flat</i>
-    </div>
-
-    <div class="col s4">
-      <ul class="collection">
-        <li class="collection-item"><h5>Outputs</h5></li>
-        <li class="collection-item" *ngFor="let output of transaction.outputs"><a href="/app/address/{{output.dst}}">{{output.dst}}</a></li>
-      </ul>
-    </div>
-    <div class="col s2">
-      <ul class="collection">
-        <li class="collection-item"><h5>Coins</h5></li>
-        <li class="collection-item" *ngFor="let output of transaction.outputs">{{output.coins| number : '1.0-0'}}</li>
-      </ul>
-    </div>
+  <div class="col-sm-4 -qr-code">
+    <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
   </div>
 </div>
 
-<app-loading [loading]="loading"></app-loading>
+<div class="transaction" *ngFor="let transaction of transactions">
+  <div class="-title">
+    <div class="row">
+      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span></div>
+      <div class="col-sm-4 -right">{{ transaction.timestamp }}</div>
+    </div>
+  </div>
+  <div class="-header">
+    <div class="row">
+      <div class="col-sm-5 -left">Inputs</div>
+      <div class="col-sm-7">
+        <div class="width-3-4 gutter-right -left">Outputs</div>
+        <div class="width-1-4 gutter-left -right">Value</div>
+      </div>
+    </div>
+  </div>
+  <div class="-body">
+    <div class="row">
+      <div class="col-sm-5 -left">
+        <div class="-row" *ngFor="let input of transaction.inputs">
+          {{ input.hash }}
+        </div>
+      </div>
+      <div class="col-sm-7">
+        <div class="-row" *ngFor="let output of transaction.outputs">
+          <div class="width-3-4 gutter-right -left -link">
+            <span (click)="openAddress(output)">{{ output.address }}</span>
+          </div>
+          <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

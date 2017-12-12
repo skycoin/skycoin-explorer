@@ -1,71 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
-
-declare var QRCode: any;
+import { ExplorerService } from '../../../services/explorer/explorer.service';
+import { Output } from '../../../app.datatypes';
 
 @Component({
   selector: 'app-address-detail',
   templateUrl: './address-detail.component.html',
-  styleUrls: ['./address-detail.component.css']
+  styleUrls: ['./address-detail.component.scss']
 })
 export class AddressDetailComponent implements OnInit {
-
-  UxOutputs: Observable<any>;
-  transactions: any[];
-  currentAddress: string;
-  currentBalance: number;
-  loading: boolean;
+  address: string;
+  balance: number;
+  transactions = [];
 
   constructor(
     private api: ApiService,
+    private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {
-    this.UxOutputs = null;
-    this.currentBalance = 0;
-    this.transactions = [];
-    this.currentAddress = null;
-    this.loading = false;
-  }
+    private router: Router,
+  ) {}
 
   ngOnInit() {
+    this.route.params.switchMap((params: Params) => {
+      this.address = params['address'];
+      return this.explorer.getTransactions(this.address);
+    }).subscribe(transactions => this.transactions = transactions);
 
+    this.route.params.switchMap((params: Params) => this.api.getCurrentBalance(params['address']))
+      .subscribe(response => this.balance = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0));
   }
 
-  ngAfterViewInit(){
-    this.loading = true;
-
-    this.UxOutputs = this.route.params
-      .switchMap((params: Params) => {
-        let address = params['address'];
-        this.currentAddress = address;
-        let qrcode = new QRCode("qr-code");
-        qrcode.makeCode(this.currentAddress);
-        return this.api.getUxOutputsForAddress(address);
-      });
-
-    this.UxOutputs.subscribe(uxoutputs => {
-      this.loading = false;
-      this.transactions = uxoutputs;
-      console.log(uxoutputs);
-    }, error => {
-      // TODO -- error message
-      this.loading = false;
-      console.log(error);
-    });
-
-    this.route.params
-      .switchMap((params: Params) => {
-        let address = params['address'];
-        return this.api.getCurrentBalanceOfAddress(address);
-      }).subscribe((addressDetails) => {
-      if (addressDetails.head_outputs.length > 0) {
-        for (var i = 0; i < addressDetails.head_outputs.length;i++) {
-          this.currentBalance = this.currentBalance + parseInt(addressDetails.head_outputs[i].coins);
-        }
-      }
-    });
+  openAddress(output: Output) {
+    this.router.navigate(['/app/address', output.address]);
   }
 }

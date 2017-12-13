@@ -8,6 +8,30 @@ h2 {
   text-align: left;
 }
 
+.block-details {
+  background-color: #F7F7F7;
+  padding: 10px 20px 0;
+  text-align: left;
+
+  > .-row {
+    border-bottom: 1px solid #EFF0F0;
+    color: #1E2227;
+    font-size: 12px;
+    padding: 13px 0;
+    line-height: 14px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    span {
+      display: inline-block;
+      opacity: 0.25;
+      width: 100px;
+    }
+  }
+}
+
 .width-1-4 {
   display: inline-block;
   width: 25%;

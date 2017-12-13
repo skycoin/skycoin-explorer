@@ -1,10 +1,11 @@
+<script src="../../../../typings.d.ts"></script>
 <div class="container">
   <h2>Block Details</h2>
   <div class="block-details">
     <div class="-row"><span>Height</span> {{ block ? block.id : 'loading ..' }} </div>
     <div class="-row"><span>Timestamp</span> {{ block ? ((block.timestamp * 1000) | date: 'short') : 'loading ..' }} </div>
-    <div class="-row"><span>Hash</span> {{ block ? block.hash : 'loading ..' }} </div>
-    <div class="-row"><span>Parent Hash</span> {{ block ? block.parent_hash : 'loading ..' }} </div>
+    <div class="-row"><span>Hash</span> <span (click)="openBlock(block.id)">{{ block ? block.hash : 'loading ..' }}</span> </div>
+    <div class="-row"><span>Parent Hash</span> <span (click)="openBlock(block.id - 1)">{{ block && block.parent_hash ? block.parent_hash : 'loading ..' }}</span> </div>
     <div class="-row"><span>Total Amount</span> {{ block ? (block.transactions | transactionsValue) + ' SKY' : 'loading ..' }} </div>
   </div>
   <div class="transactions" *ngIf="block && block.transactions.length >= 0">

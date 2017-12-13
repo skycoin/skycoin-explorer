@@ -1,9 +1,11 @@
 <div class="row">
   <div class="col-sm-12">
     <h2>Transaction</h2>
-    <p><span>Status</span> {{ transaction ? (transaction.status ? 'Confirmed' : 'Unconfirmed') : 'loading...' }} </p>
-    <p><span>Timestamp</span> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : 'loading...' }} </p>
-    <p><span>Block</span> {{ transaction ? transaction.block : 'loading...' }} </p>
+    <div class="block-details">
+      <div class="-row"><span>Status</span> {{ transaction ? (transaction.status ? 'Confirmed' : 'Unconfirmed') : 'loading...' }} </div>
+      <div class="-row"><span>Timestamp</span> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : 'loading...' }} </div>
+      <div class="-row"><span>Block</span> {{ transaction ? transaction.block : 'loading...' }} </div>
+    </div>
   </div>
 </div>
 

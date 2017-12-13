@@ -31,6 +31,10 @@ export class BlockDetailsComponent implements OnInit {
     this.router.navigate(['/app/address', output.address]);
   }
 
+  openBlock(blockId: number) {
+    this.router.navigate(['/app/block', blockId]);
+  }
+
   openTransaction(transaction: Transaction) {
     this.router.navigate(['/app/transaction', transaction.id])
   }

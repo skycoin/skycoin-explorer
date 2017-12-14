@@ -4,27 +4,24 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.css']
+  styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent {
+  query: string;
 
   constructor(
     private router: Router,
   ) { }
 
-  ngOnInit() {
-  }
-
-  searchBlockHistory(hashVal:string){
-    if(hashVal.length ==34 || hashVal.length ==35 ){
+  search() {
+    const hashVal = this.query.trim();
+    if (hashVal.length === 34 || hashVal.length === 35 ) {
       this.router.navigate(['/app/address', hashVal]);
-      return;
-    }
-    if(hashVal.length ==64){
+    } else if (hashVal.length === 64) {
       this.router.navigate(['/app/transaction', hashVal]);
-      return;
+    } else {
+      this.router.navigate(['/app/block', hashVal]);
     }
-    this.router.navigate(['/app/block', hashVal]);
-    return;
+    this.query = null;
   }
 }

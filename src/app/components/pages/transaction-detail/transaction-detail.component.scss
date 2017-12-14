@@ -1,0 +1,115 @@
+@import '../../../../assets/scss/_variables.scss';
+
+h2 {
+  color: $primary;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 42px;
+  text-align: left;
+}
+
+.block-details {
+  background-color: #F7F7F7;
+  padding: 10px 20px 0;
+  text-align: left;
+
+  > .-row {
+    border-bottom: 1px solid #EFF0F0;
+    color: #1E2227;
+    font-size: 12px;
+    padding: 13px 0;
+    line-height: 14px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    span {
+      display: inline-block;
+      opacity: 0.25;
+      width: 100px;
+    }
+  }
+}
+
+.width-1-4 {
+  display: inline-block;
+  width: 25%;
+}
+
+.width-3-4 {
+  display: inline-block;
+  width: 75%;
+}
+
+.-details {
+  text-align: left;
+}
+
+.-qr-code {
+  text-align: right;
+
+  app-qr-code {
+    display: inline-block;
+    width: 130px;
+  }
+}
+
+.transaction {
+  margin-top: 20px;
+
+  .row {
+    margin-bottom: 0;
+  }
+
+  .-title {
+    background-color: #F0F0F0;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 15px 20px;
+
+    span {
+      color: $primary;
+      display: inline-block;
+      margin-left: 15px;
+    }
+  }
+
+  .-header {
+    background-color: #F7F7F7;
+    border-bottom: 1px solid #EFF0F0;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 15px 20px;
+  }
+
+  .-body {
+    background-color: #FBFBFB;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 10px 20px;
+
+    .-row {
+      border-bottom: 1px solid #EFF0F0;
+      padding: 10px 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .-left {
+    text-align: left;
+  }
+
+  .-link {
+    color: $primary;
+    cursor: pointer;
+  }
+
+  .-right {
+    text-align: right;
+  }
+}

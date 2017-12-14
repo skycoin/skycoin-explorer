@@ -1,12 +1,13 @@
-<nav class="light-blue lighten-1" role="navigation">
-  <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Skycoin Explorer</a>
-    <ul class="right hide-on-med-and-down">
-      <li><a href="http://skycoin.net/downloads.html">Download Wallet</a></li>
-    </ul>
-
-    <ul id="nav-mobile" class="side-nav">
-      <li><a href="http://skycoin.net/downloads.html">Download Wallet</a></li>
-    </ul>
-    <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+<nav>
+  <div class="row">
+    <div class="col-sm-4">
+      <img src="/assets/img/logo.png" (click)="openBlocks()">
+    </div>
+    <div class="col-sm-5">
+      <app-search-bar></app-search-bar>
+    </div>
+    <div class="col-sm-3">
+      <a class="-back-link" href="https://www.skycoin.net/">← Back to Skycoin.net</a>
+    </div>
   </div>
 </nav>

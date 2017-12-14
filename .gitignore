@@ -41,4 +41,4 @@ testem.log
 Thumbs.db
 
 # compiled binaries
-explorer
+/explorer.*

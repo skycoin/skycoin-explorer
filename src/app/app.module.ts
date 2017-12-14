@@ -7,14 +7,17 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { HeaderComponent } from './components/layout/header/header.component';
 import { SearchBarComponent } from './components/layout/search-bar/search-bar.component';
 import { LoadingComponent } from './components/layout/loading/loading.component';
-import { BlockChainTableComponent } from './components/pages/block-chain-table/block-chain-table.component';
+import { BlocksComponent } from './components/pages/blocks/blocks.component';
 import { ApiService } from './services/api/api.service';
 import { HttpModule } from '@angular/http';
-import { PaginationComponent } from './components/pages/block-chain-table/pagination/pagination.component';
-import { CoinSupplyComponent } from './components/pages/block-chain-table/coin-supply/coin-supply.component';
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
 import { TransactionDetailComponent } from './components/pages/transaction-detail/transaction-detail.component';
 import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
+import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
+import { ExplorerService } from './services/explorer/explorer.service';
+import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
+import { FormsModule } from '@angular/forms';
+
 
 const ROUTES = [
   {
@@ -24,7 +27,7 @@ const ROUTES = [
   },
   {
     path: 'app/blocks',
-    component: BlockChainTableComponent
+    component: BlocksComponent
   },
   {
     path: 'app/block/:id',
@@ -43,25 +46,27 @@ const ROUTES = [
 
 @NgModule({
   declarations: [
+    AddressDetailComponent,
     AppComponent,
+    BlockDetailsComponent,
+    BlocksComponent,
     FooterComponent,
     HeaderComponent,
-    BlockChainTableComponent,
-    SearchBarComponent,
     LoadingComponent,
-    PaginationComponent,
-    CoinSupplyComponent,
-    BlockDetailsComponent,
+    QrCodeComponent,
+    SearchBarComponent,
     TransactionDetailComponent,
-    AddressDetailComponent,
+    TransactionsValuePipe,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES),
   ],
   providers: [
     ApiService,
+    ExplorerService,
   ],
   bootstrap: [AppComponent]
 })

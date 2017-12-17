@@ -35,7 +35,7 @@ export class BlocksComponent implements OnInit {
       this.blockCount = blockchain.blocks;
       this.route.paramMap
         .subscribe(params => {
-          const pageIndex = parseInt(params.get('page'), 10) - 1
+          const pageIndex = parseInt(params.get('page'), 10) - 1;
           this.navigate(pageIndex)
         });
     });

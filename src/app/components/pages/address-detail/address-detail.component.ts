@@ -25,7 +25,15 @@ export class AddressDetailComponent implements OnInit {
     this.route.params.switchMap((params: Params) => {
       this.address = params['address'];
       return this.explorer.getTransactions(this.address);
-    }).subscribe(transactions => this.transactions = transactions);
+    }).subscribe(transactions => {
+      //The order is reversed
+      for (let i:number = 0; i < transactions.length / 2; i++) {
+        let temp = transactions[i];
+        transactions[i] = transactions[transactions.length-(i+1)]
+        transactions[transactions.length-(i+1)] = temp;
+      }
+      this.transactions = transactions;
+    });
 
     this.route.params.switchMap((params: Params) => this.api.getCurrentBalance(params['address']))
       .subscribe(response => this.balance = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0));

@@ -41,6 +41,7 @@ export class Transaction {
   outputs: Output[];
   status: boolean;
   timestamp: number;
+  coins_change: number;
 }
 
 export class Wallet {
@@ -63,7 +64,24 @@ export class GetAddressResponseTransaction {
   txid: string;
 }
 
-export function parseGetAddressTransaction(raw: GetAddressResponseTransaction): Transaction {
+export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, address: string): Transaction {
+
+  //Detect if the address sent or received the coins.
+  let incoming: boolean = true;
+  if (raw.inputs[0].owner.toLowerCase() == address.toLowerCase()) { incoming = false; }
+
+  //Calculate the amount of incoming or outgoing coins, as appropriate.
+  let coins:number = 0;
+  for (let output of raw.outputs) {
+    if ((incoming == true) && (output.dst.toLowerCase() == address.toLowerCase())) {
+      coins += parseFloat(output.coins);
+    } else if ((incoming == false) && (output.dst.toLowerCase() != address.toLowerCase())) {
+      coins -= parseFloat(output.coins);
+    }
+  }
+  //Limit to a maximum of 6 decimals
+  coins = Math.round(coins * 1000000) / 1000000
+
   return {
     block: null,
     id: raw.txid,
@@ -71,6 +89,7 @@ export function parseGetAddressTransaction(raw: GetAddressResponseTransaction): 
     inputs: raw.inputs.map(input => parseGetAddressInput(input)),
     outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
     status: null,
+    coins_change: coins,
   }
 }
 
@@ -131,6 +150,7 @@ function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransa
     inputs: transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
     status: null,
+    coins_change: 0,
   }
 }
 
@@ -215,6 +235,7 @@ export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
     outputs: raw.txn.outputs.map(output => parseGetTransactionOutput(output)),
     status: raw.status.confirmed,
     timestamp: raw.txn.timestamp,
+    coins_change: 0,
   }
 }
 

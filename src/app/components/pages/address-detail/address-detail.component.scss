@@ -88,4 +88,18 @@ h2 {
   .-right {
     text-align: right;
   }
+
+  .coins_change_box {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 2px 15px;
+    color: white;
+    float: right;
+  }
+  .-green {
+    background-color: $green;
+  }
+  .-red {
+    background-color: $red;
+  }
 }

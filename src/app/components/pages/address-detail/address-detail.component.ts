@@ -25,13 +25,13 @@ export class AddressDetailComponent implements OnInit {
     this.route.params.switchMap((params: Params) => {
       this.address = params['address'];
       return this.explorer.getTransactions(this.address);
-    }).subscribe(transactions => {
-      //The order is reversed
-      for (let i:number = 0; i < transactions.length / 2; i++) {
-        let temp = transactions[i];
-        transactions[i] = transactions[transactions.length-(i+1)]
-        transactions[transactions.length-(i+1)] = temp;
-      }
+    }).subscribe(transactions => { 
+      //The transactions are ordered from the most recent to the oldest.
+      transactions.sort((t1:Transaction, t2:Transaction) => {
+        if (t1.timestamp > t2.timestamp) { return -1; }
+        if (t1.timestamp < t2.timestamp) { return 1; }
+        return 0;
+      });
       this.transactions = transactions;
     });
 

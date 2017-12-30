@@ -30,7 +30,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"time"
+    "time"
+    "io/ioutil"
+    "path/filepath"
 
 	"github.com/NYTimes/gziphandler"
 )
@@ -46,14 +48,17 @@ const (
 	// timeout for requests to the explorer
 	serverReadTimeout  = time.Second * 10
 	serverWriteTimeout = time.Second * 60
-	serverIdleTimeout  = time.Second * 120
+    serverIdleTimeout  = time.Second * 120
+    
+    coinSupplyfileName  = "Explorer_CS.tmp"
 )
 
 var (
 	explorerHost = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
 	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
 	apiOnly      bool     // set to true with -api-only cli flag
-	verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
+    verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
+    lastCoinSupply []byte // saves the last body obtained when calling /api/coinSupply.
 )
 
 func init() {
@@ -92,7 +97,15 @@ func init() {
 
 	if apiOnly {
 		log.Println("Running in api-only mode")
+    }
+    
+    //Load the last saved coin supply
+    file := filepath.Join( os.TempDir(), coinSupplyfileName)
+    content, err := ioutil.ReadFile(file)
+	if err == nil {
+        lastCoinSupply = content
 	}
+
 }
 
 func buildSkycoinURL(path string, query url.Values) string {
@@ -140,18 +153,47 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := c.Get(skycoinURL)
 	if err != nil {
-		msg := "Request to skycoin node failed"
-		log.Println("ERROR:", msg, skycoinURL)
-		http.Error(w, msg, http.StatusInternalServerError)
-		return
+        //Cancel the operation, but not if the request was to get the coin supply and a previous saved value is available.
+        if s.ExplorerPath != "/api/coinSupply" || len(lastCoinSupply) == 0 {
+            msg := "Request to skycoin node failed"
+            log.Println("ERROR:", msg, skycoinURL)
+            http.Error(w, msg, http.StatusInternalServerError)
+            return
+        }
 	}
 
-	defer resp.Body.Close()
+    var responseBody io.Reader
 
-	w.WriteHeader(resp.StatusCode)
+    if err != nil {
+        //Simulated a correct answer and use the previously saved.
+        w.WriteHeader(200)
+        responseBody = bytes.NewReader(lastCoinSupply)
+	} else {
+
+        defer resp.Body.Close()
+
+        w.WriteHeader(resp.StatusCode)
+        responseBody = resp.Body
+
+        if s.ExplorerPath == "/api/coinSupply" {
+            //Retrieve the body
+            bodyBuffer := new(bytes.Buffer)
+            bodyBuffer.ReadFrom(resp.Body)
+            responseContent := bodyBuffer.Bytes()
+            responseBody = bytes.NewReader(responseContent)
+
+            //If the body is different from the one stored, the new body is stored on memory and on disk.
+            if (bytes.Compare(responseContent, lastCoinSupply) != 0) {
+                lastCoinSupply = responseContent;
+                file := filepath.Join( os.TempDir(), coinSupplyfileName)
+                ioutil.WriteFile(file, lastCoinSupply, 0644)
+            }
+        }
+    }
+    
 	w.Header().Set("Content-Type", "application/json")
-
-	if n, err := io.Copy(w, resp.Body); err != nil {
+    
+	if n, err := io.Copy(w, responseBody); err != nil {
 		msg := "Copying response from skycoin node to client failed"
 		if n != 0 {
 			msg += fmt.Sprintf(", after %d bytes were written", n)

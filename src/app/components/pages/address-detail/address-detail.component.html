@@ -12,7 +12,7 @@
 <div class="transaction" *ngFor="let transaction of transactions">
   <div class="-title">
     <div class="row">
-      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span></div>
+      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span><div class="incoming_outgoing_box" [ngClass]="{'-red' : !transaction.incoming, '-green' : transaction.incoming}">{{ transaction.incoming ? "incoming":"outgoing" }}</div></div>
       <div class="col-sm-4 -right">{{ transaction.timestamp }}</div>
     </div>
   </div>
@@ -41,6 +41,5 @@
         </div>
       </div>
     </div>
-    <div class="row -row"><div attr.class="{{'coins_change_box '+(transaction.coins_change < 0 ? '-red' : '-green')}}">{{ (transaction.coins_change<0?"":"+")+transaction.coins_change.toString() }}</div></div>
   </div>
 </div>

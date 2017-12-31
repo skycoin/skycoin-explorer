@@ -89,12 +89,12 @@ h2 {
     text-align: right;
   }
 
-  .coins_change_box {
+  .incoming_outgoing_box {
     display: inline-block;
     margin-right: 15px;
     padding: 2px 15px;
     color: white;
-    float: right;
+    margin-left: 15px;
   }
   .-green {
     background-color: $green;

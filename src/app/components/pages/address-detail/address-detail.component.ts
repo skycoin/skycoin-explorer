@@ -27,12 +27,7 @@ export class AddressDetailComponent implements OnInit {
       return this.explorer.getTransactions(this.address);
     }).subscribe(transactions => { 
       //The transactions are ordered from the most recent to the oldest.
-      transactions.sort((t1:Transaction, t2:Transaction) => {
-        if (t1.timestamp > t2.timestamp) { return -1; }
-        if (t1.timestamp < t2.timestamp) { return 1; }
-        return 0;
-      });
-      this.transactions = transactions;
+      this.transactions = transactions.sort((a, b) => b.timestamp - a.timestamp);
     });
 
     this.route.params.switchMap((params: Params) => this.api.getCurrentBalance(params['address']))

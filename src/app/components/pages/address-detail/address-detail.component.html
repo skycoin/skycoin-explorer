@@ -13,7 +13,7 @@
   <div class="-title">
     <div class="row">
       <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span><div class="incoming_outgoing_box" [ngClass]="{'-red' : !transaction.incoming, '-green' : transaction.incoming}">{{ transaction.incoming ? "incoming":"outgoing" }}</div></div>
-      <div class="col-sm-4 -right">{{ transaction.timestamp }}</div>
+      <div class="col-sm-4 -right">{{ transaction.timestamp * 1000 | date: 'short' }}</div>
     </div>
   </div>
   <div class="-header">

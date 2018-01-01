@@ -527,7 +527,7 @@ var apiEndpoints = []APIEndpoint{
 		ExplorerPath:   "/api/richlist",
 		SkycoinPath:    "/richlist",
 		QueryArgs:      []string{"n"},
-		Description:    "Returns top N ( N<= 20) richer with unspect outputs, If no n are specified, n is 20.",
+		Description:    "Returns top N richer with unspect outputs, If no n are specified, returns 20.",
 		ExampleRequest: "/api/richlist?n=2",
 		ExampleResponse: `[
     {

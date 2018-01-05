@@ -31,9 +31,12 @@ import (
 	"net/url"
 	"os"
     "time"
+    "encoding/gob"
     "io/ioutil"
     "path/filepath"
+    "sync"
 
+    "github.com/patrickmn/go-cache"
 	"github.com/NYTimes/gziphandler"
 )
 
@@ -50,7 +53,7 @@ const (
 	serverWriteTimeout = time.Second * 60
     serverIdleTimeout  = time.Second * 120
     
-    coinSupplyfileName  = "Explorer_CS.tmp"
+    cacheFileName  = "ExplorerCS.tmp" // File in which the cache is saved
 )
 
 var (
@@ -58,7 +61,7 @@ var (
 	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
 	apiOnly      bool     // set to true with -api-only cli flag
     verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
-    lastCoinSupply []byte // saves the last body obtained when calling /api/coinSupply.
+    cacheMgr     *cache.Cache   // Go-Cache instance
 )
 
 func init() {
@@ -99,12 +102,27 @@ func init() {
 		log.Println("Running in api-only mode")
     }
     
-    //Load the last saved coin supply
-    file := filepath.Join( os.TempDir(), coinSupplyfileName)
+    // Load the last saved cache
+    file := filepath.Join( os.TempDir(), cacheFileName)
     content, err := ioutil.ReadFile(file)
 	if err == nil {
-        lastCoinSupply = content
-	}
+
+        // Decode the serialized data
+        bytesBuffer := bytes.NewBuffer(content)
+        d := gob.NewDecoder(bytesBuffer)
+        var decodedMap map[string]cache.Item
+        err = d.Decode(&decodedMap)
+
+        if err != nil {
+            msg := "The cache could not be loaded"
+            log.Println("ERROR:", msg)
+            cacheMgr = cache.New(0, 0)
+        } else {
+            cacheMgr = cache.NewFrom(0, 0, decodedMap)
+        }
+    } else {
+        cacheMgr = cache.New(0, 0)
+    }
 
 }
 
@@ -151,10 +169,17 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Timeout: skycoinRequestTimeout,
 	}
 
-	resp, err := c.Get(skycoinURL)
+    resp, err := c.Get(skycoinURL)
+    var cachedResponse []byte
+    var cachedResponseFound bool
 	if err != nil {
-        //Cancel the operation, but not if the request was to get the coin supply and a previous saved value is available.
-        if s.ExplorerPath != "/api/coinSupply" || len(lastCoinSupply) == 0 {
+        // Cancel the operation, but not if a previous cached value is available
+        cachedData, found := cacheMgr.Get(s.ExplorerPath)
+        cachedResponseFound = found;
+
+        if cachedResponseFound {
+            cachedResponse = cachedData.([]byte)
+        } else {
             msg := "Request to skycoin node failed"
             log.Println("ERROR:", msg, skycoinURL)
             http.Error(w, msg, http.StatusInternalServerError)
@@ -165,9 +190,9 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     var responseBody io.Reader
 
     if err != nil {
-        //Simulated a correct answer and use the previously saved.
+        // Simulate a correct answer and use the previously saved one
         w.WriteHeader(200)
-        responseBody = bytes.NewReader(lastCoinSupply)
+        responseBody = bytes.NewReader(cachedResponse)
 	} else {
 
         defer resp.Body.Close()
@@ -175,18 +200,22 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(resp.StatusCode)
         responseBody = resp.Body
 
-        if s.ExplorerPath == "/api/coinSupply" {
-            //Retrieve the body
+        // Save the response in the cache, but only if the consulted URL is defined in cacheableUrls
+        if cacheableUrls[s.ExplorerPath] == true {
+            //Retrieve the body.
             bodyBuffer := new(bytes.Buffer)
             bodyBuffer.ReadFrom(resp.Body)
             responseContent := bodyBuffer.Bytes()
             responseBody = bytes.NewReader(responseContent)
 
-            //If the body is different from the one stored, the new body is stored on memory and on disk.
-            if (bytes.Compare(responseContent, lastCoinSupply) != 0) {
-                lastCoinSupply = responseContent;
-                file := filepath.Join( os.TempDir(), coinSupplyfileName)
-                ioutil.WriteFile(file, lastCoinSupply, 0644)
+            cachedData, found := cacheMgr.Get(s.ExplorerPath)
+            cachedResponseFound = found;
+            if cachedResponseFound { cachedResponse = cachedData.([]byte) }
+
+            // If the body is different from the cached data, the new body is stored on memory and on disk
+            if bytes.Compare(responseContent, cachedResponse) != 0 {
+                cacheMgr.Set(s.ExplorerPath, responseContent, cache.NoExpiration)
+                saveCache()
             }
         }
     }
@@ -207,6 +236,34 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+}
+
+var lock sync.Mutex
+
+func saveCache() {
+
+    // Make the function thread safe
+    lock.Lock()
+    defer lock.Unlock()
+
+    buffer := new(bytes.Buffer)
+    encoder := gob.NewEncoder(buffer)
+
+    // Encode the cache data
+    err := encoder.Encode(cacheMgr.Items())
+    if err != nil {
+        msg := "The cache could not be saved"
+        log.Println("ERROR:", msg)
+        return
+    }
+
+    // Save on disk
+    file := filepath.Join( os.TempDir(), cacheFileName)
+    ioutil.WriteFile(file, buffer.Bytes(), 0644)
+}
+
+var cacheableUrls = map[string]bool{
+    "/api/coinSupply": true,
 }
 
 var apiEndpoints = []APIEndpoint{

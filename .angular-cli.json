@@ -21,6 +21,7 @@
       "prefix": "app",
       "styles": [
         "assets/bootstrap.min.css",
+        "../node_modules/font-awesome/css/font-awesome.css",
         "styles.css"
       ],
       "scripts": [

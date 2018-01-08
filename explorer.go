@@ -21,23 +21,23 @@ package main
 
 import (
 	"bytes"
+	"encoding/gob"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"html/template"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
-    "time"
-    "encoding/gob"
-    "io/ioutil"
-    "path/filepath"
-    "sync"
+	"path/filepath"
+	"sync"
+	"time"
 
-    "github.com/patrickmn/go-cache"
 	"github.com/NYTimes/gziphandler"
+	"github.com/patrickmn/go-cache"
 )
 
 const (
@@ -51,17 +51,17 @@ const (
 	// timeout for requests to the explorer
 	serverReadTimeout  = time.Second * 10
 	serverWriteTimeout = time.Second * 60
-    serverIdleTimeout  = time.Second * 120
-    
-    cacheFileName  = "ExplorerCS.tmp" // File in which the cache is saved
+	serverIdleTimeout  = time.Second * 120
+
+	cacheFileName = "ExplorerCS.tmp" // File in which the cache is saved
 )
 
 var (
-	explorerHost = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
-	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
-	apiOnly      bool     // set to true with -api-only cli flag
-    verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
-    cacheMgr     *cache.Cache   // Go-Cache instance
+	explorerHost = ""         // override with envvar EXPLORER_HOST.  Must not have scheme
+	skycoinAddr  *url.URL     // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
+	apiOnly      bool         // set to true with -api-only cli flag
+	verify       bool         // set to true with -verify cli flag. Check init() conditions and quits.
+	cacheMgr     *cache.Cache // Go-Cache instance
 )
 
 func init() {
@@ -100,29 +100,35 @@ func init() {
 
 	if apiOnly {
 		log.Println("Running in api-only mode")
-    }
-    
-    // Load the last saved cache
-    file := filepath.Join( os.TempDir(), cacheFileName)
-    content, err := ioutil.ReadFile(file)
+	}
+
+	// Load the last saved cache
+	var errorLoadingCache = true
+	file := filepath.Join(os.TempDir(), cacheFileName)
+	content, err := ioutil.ReadFile(file)
 	if err == nil {
 
-        // Decode the serialized data
-        bytesBuffer := bytes.NewBuffer(content)
-        d := gob.NewDecoder(bytesBuffer)
-        var decodedMap map[string]cache.Item
-        err = d.Decode(&decodedMap)
+		// Decode the serialized data
+		bytesBuffer := bytes.NewBuffer(content)
+		d := gob.NewDecoder(bytesBuffer)
+		var decodedMap map[string]cache.Item
+		err = d.Decode(&decodedMap)
 
-        if err != nil {
-            msg := "The cache could not be loaded"
-            log.Println("ERROR:", msg)
-            cacheMgr = cache.New(0, 0)
-        } else {
-            cacheMgr = cache.NewFrom(0, 0, decodedMap)
-        }
-    } else {
-        cacheMgr = cache.New(0, 0)
-    }
+		if err == nil {
+			log.Println("Cache loaded from disk", file)
+			cacheMgr = cache.NewFrom(0, 0, decodedMap)
+			errorLoadingCache = false
+		}
+	}
+
+	if errorLoadingCache {
+		msg := "The cache could not be loaded from disk while starting the server (this is normal if this is the first time the explorer is started)"
+		log.Println("ERROR:", msg, file)
+		cacheMgr = cache.New(0, 0)
+
+		// Create the cache file, to avoid future errors
+		saveCache()
+	}
 
 }
 
@@ -169,59 +175,62 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Timeout: skycoinRequestTimeout,
 	}
 
-    resp, err := c.Get(skycoinURL)
-    var cachedResponse []byte
-    var cachedResponseFound bool
+	resp, err := c.Get(skycoinURL)
+	var cachedResponse []byte
+	var cachedResponseFound bool
 	if err != nil {
-        // Cancel the operation, but not if a previous cached value is available
-        cachedData, found := cacheMgr.Get(s.ExplorerPath)
-        cachedResponseFound = found;
+		// Cancel the operation, but not if a previous cached value is available
+		cachedData, found := cacheMgr.Get(s.ExplorerPath)
+		cachedResponseFound = found
 
-        if cachedResponseFound {
-            cachedResponse = cachedData.([]byte)
-        } else {
-            msg := "Request to skycoin node failed"
-            log.Println("ERROR:", msg, skycoinURL)
-            http.Error(w, msg, http.StatusInternalServerError)
-            return
-        }
+		if cachedResponseFound {
+			cachedResponse = cachedData.([]byte)
+		} else {
+			msg := "Request to skycoin node failed"
+			log.Println("ERROR:", msg, skycoinURL)
+			http.Error(w, msg, http.StatusInternalServerError)
+			return
+		}
 	}
 
-    var responseBody io.Reader
+	var responseBody io.Reader
 
-    if err != nil {
-        // Simulate a correct answer and use the previously saved one
-        w.WriteHeader(200)
-        responseBody = bytes.NewReader(cachedResponse)
+	if err != nil {
+		// Simulate a correct answer and use the previously saved one
+		w.WriteHeader(200)
+		responseBody = bytes.NewReader(cachedResponse)
 	} else {
 
-        defer resp.Body.Close()
+		defer resp.Body.Close()
 
-        w.WriteHeader(resp.StatusCode)
-        responseBody = resp.Body
+		w.WriteHeader(resp.StatusCode)
+		responseBody = resp.Body
 
-        // Save the response in the cache, but only if the consulted URL is defined in cacheableUrls
-        if cacheableUrls[s.ExplorerPath] == true {
-            //Retrieve the body.
-            bodyBuffer := new(bytes.Buffer)
-            bodyBuffer.ReadFrom(resp.Body)
-            responseContent := bodyBuffer.Bytes()
-            responseBody = bytes.NewReader(responseContent)
+		// Save the response in the cache, but only if the consulted URL is defined in cacheableUrls
+		// and the connection to the server was successful
+		if cacheableUrls[s.ExplorerPath] == true && resp.StatusCode >= 200 && resp.StatusCode < 300 {
+			//Retrieve the body.
+			bodyBuffer := new(bytes.Buffer)
+			bodyBuffer.ReadFrom(resp.Body)
+			responseContent := bodyBuffer.Bytes()
+			responseBody = bytes.NewReader(responseContent)
 
-            cachedData, found := cacheMgr.Get(s.ExplorerPath)
-            cachedResponseFound = found;
-            if cachedResponseFound { cachedResponse = cachedData.([]byte) }
+			cachedData, found := cacheMgr.Get(s.ExplorerPath)
+			cachedResponseFound = found
+			if cachedResponseFound {
+				cachedResponse = cachedData.([]byte)
+			}
 
-            // If the body is different from the cached data, the new body is stored on memory and on disk
-            if bytes.Compare(responseContent, cachedResponse) != 0 {
-                cacheMgr.Set(s.ExplorerPath, responseContent, cache.NoExpiration)
-                saveCache()
-            }
-        }
-    }
-    
+			// If the body is different from the cached data, the new body is stored on memory and on disk
+			if bytes.Compare(responseContent, cachedResponse) != 0 {
+				cacheMgr.Set(s.ExplorerPath, responseContent, cache.NoExpiration)
+				saveCache()
+			}
+		}
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-    
+
 	if n, err := io.Copy(w, responseBody); err != nil {
 		msg := "Copying response from skycoin node to client failed"
 		if n != 0 {
@@ -242,28 +251,33 @@ var lock sync.Mutex
 
 func saveCache() {
 
-    // Make the function thread safe
-    lock.Lock()
-    defer lock.Unlock()
+	// Make the function thread safe
+	lock.Lock()
+	defer lock.Unlock()
 
-    buffer := new(bytes.Buffer)
-    encoder := gob.NewEncoder(buffer)
+	buffer := new(bytes.Buffer)
+	encoder := gob.NewEncoder(buffer)
 
-    // Encode the cache data
-    err := encoder.Encode(cacheMgr.Items())
-    if err != nil {
-        msg := "The cache could not be saved"
-        log.Println("ERROR:", msg)
-        return
-    }
+	// Encode the cache data
+	err := encoder.Encode(cacheMgr.Items())
+	if err != nil {
+		msg := "The cache could not be saved because the data has an incorrect format"
+		log.Println("ERROR:", msg)
+		return
+	}
 
-    // Save on disk
-    file := filepath.Join( os.TempDir(), cacheFileName)
-    ioutil.WriteFile(file, buffer.Bytes(), 0644)
+	// Save on disk
+	file := filepath.Join(os.TempDir(), cacheFileName)
+	err = ioutil.WriteFile(file, buffer.Bytes(), 0644)
+	if err != nil {
+		msg := "The cache could not be saved on the disk"
+		log.Println("ERROR:", msg, file)
+		return
+	}
 }
 
 var cacheableUrls = map[string]bool{
-    "/api/coinSupply": true,
+	"/api/coinSupply": true,
 }
 
 var apiEndpoints = []APIEndpoint{

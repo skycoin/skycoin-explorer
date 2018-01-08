@@ -6,6 +6,7 @@ import moment from 'moment-es6';
 import 'rxjs/add/operator/mergeMap';
 import { Output, Transaction } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
+import { SearchDataService } from '../../../services/search-data.service';
 
 @Component({
   selector: 'app-transaction-detail',
@@ -19,12 +20,21 @@ export class TransactionDetailComponent implements OnInit {
   constructor(
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private searchDataService: SearchDataService
   ) {}
 
   ngOnInit() {
-    this.route.params.flatMap((params: Params) => this.explorer.getTransaction(params['txid']))
-      .subscribe(transaction => this.transaction = transaction);
+    this.route.params. flatMap((params: Params) => {
+        if (params['txid'] == this.searchDataService.hash)
+          return Observable.create(obs => {
+            obs.next(this.searchDataService.data as Transaction);
+            obs.complete();
+          }) as Observable<Transaction>;
+        else
+          return this.explorer.getTransaction(params['txid'])
+      })
+      .subscribe(transaction => {this.searchDataService.hash = null, this.transaction = transaction});
   }
 
   openAddress(output: Output) {

@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'loader',
-  templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.scss']
+  selector: 'loading',
+  templateUrl: './loading.component.html',
+  styleUrls: ['./loading.component.scss']
 })
-export class LoaderComponent implements OnInit {
+export class LoadingComponent implements OnInit {
     
     @Input() name: string;
     @Input() size: string;

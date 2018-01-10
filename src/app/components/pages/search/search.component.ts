@@ -30,7 +30,7 @@ export class SearchComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       if (params['term'].length === 64 )
         this.searchTransaction(params['term'])
-      else if (params['term'].length === 34 || params['term'].length === 35 )
+      else if (params['term'].length > 26 && params['term'].length < 35 )
         this.searchAddress(params['term'])
       else
         this.searchBlock(params['term'])

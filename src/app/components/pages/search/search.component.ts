@@ -34,6 +34,9 @@ export class SearchComponent implements OnInit {
         if (regexSha256.test(params['term'])) {
           this.searchTransaction(params['term']);
           return;
+        } else {
+          this.error = true;
+          return;
         }
       
       let termIsNumber = false;

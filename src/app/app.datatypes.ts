@@ -108,7 +108,7 @@ export class GetBlocksResponse {
   blocks: GetBlocksResponseBlock[];
 }
 
-class GetBlocksResponseBlock {
+export class GetBlocksResponseBlock {
   body: GetBlocksResponseBlockBody;
   header: GetBlocksResponseBlockHeader;
 }

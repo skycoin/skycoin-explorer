@@ -48,7 +48,7 @@ export class BlocksComponent implements OnInit {
   }
 
   open(block: Block) {
-    this.router.navigate(['/app/block', block.id]);
+    this.router.navigate(['/app/block', block.hash]);
   }
 
   navigate(pageIndex) {

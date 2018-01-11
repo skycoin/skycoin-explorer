@@ -14,14 +14,11 @@ export class SearchBarComponent {
   ) { }
 
   search() {
-    const hashVal = this.query.trim();
-    if (hashVal.length === 34 || hashVal.length === 35 ) {
-      this.router.navigate(['/app/address', hashVal]);
-    } else if (hashVal.length === 64) {
-      this.router.navigate(['/app/transaction', hashVal]);
-    } else {
-      this.router.navigate(['/app/block', hashVal]);
+    if (this.query != undefined) {
+      const hashVal = this.query.trim();
+      if (hashVal.length > 0) {
+        this.router.navigate(['/app/search', hashVal]);
+      }
     }
-    this.query = null;
   }
 }

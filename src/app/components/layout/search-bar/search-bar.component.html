@@ -1,6 +1,6 @@
 <form (submit)="search()">
   <div class="-search-bar-container">
     <img src="/assets/img/search.png" (click)="search()">
-    <input [(ngModel)]="query" name="query" placeholder="Address, block number, or transaction ID">
+    <input [(ngModel)]="query" name="query" placeholder="Address, block hash, block number, or transaction ID" maxlength="70">
   </div>
 </form>

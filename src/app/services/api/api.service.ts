@@ -6,7 +6,7 @@ import 'rxjs/add/operator/catch';
 
 import { CoinSupply } from '../../components/pages/blocks/block';
 import { AddressBalanceResponse, UnspentOutput } from '../../components/pages/address-detail/UnspentOutput';
-import { Block, Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, parseGetBlocksBlock, GetUxoutResponse, GetAddressResponseTransaction, GetCurrentBalanceResponse } from '../../app.datatypes';
+import { Block, Blockchain, GetBlocksResponse, GetBlocksResponseBlock, GetBlockchainMetadataResponse, parseGetBlocksBlock, GetUxoutResponse, GetAddressResponseTransaction, GetCurrentBalanceResponse } from '../../app.datatypes';
 
 @Injectable()
 export class ApiService {
@@ -23,6 +23,10 @@ export class ApiService {
 
   getBlocks(startNumber: number, endNumber: number): Observable<GetBlocksResponse> {
     return this.get('blocks', { start: startNumber, end: endNumber });
+  }
+
+  getBlock(hash: string): Observable<GetBlocksResponseBlock> {
+    return this.get('block', { hash: hash });
   }
 
   getBlockchainMetadata(): Observable<Blockchain> {
@@ -57,7 +61,7 @@ export class ApiService {
   private get(url, options = null) {
     return this.http.get(this.getUrl(url, options))
       .map((res: any) => res.json())
-      .catch((error: any) => Observable.throw(error || 'Server error'));
+      .catch((error: any) => Observable.throw(error || 'Server error') );
   }
 
   private getQueryString(parameters = null) {

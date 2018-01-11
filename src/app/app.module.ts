@@ -8,6 +8,7 @@ import { HeaderComponent } from './components/layout/header/header.component';
 import { SearchBarComponent } from './components/layout/search-bar/search-bar.component';
 import { LoadingComponent } from './components/layout/loading/loading.component';
 import { BlocksComponent } from './components/pages/blocks/blocks.component';
+import { SearchComponent } from './components/pages/search/search.component';
 import { ApiService } from './services/api/api.service';
 import { HttpModule } from '@angular/http';
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
@@ -15,6 +16,7 @@ import { TransactionDetailComponent } from './components/pages/transaction-detai
 import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
 import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
 import { ExplorerService } from './services/explorer/explorer.service';
+import { SearchDataService } from './services/search-data.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 import { FormsModule } from '@angular/forms';
 
@@ -44,6 +46,10 @@ const ROUTES = [
   {
     path: 'app/transaction/:txid',
     component: TransactionDetailComponent
+  },
+  {
+    path: 'app/search/:term',
+    component: SearchComponent
   }
   ,
 ];
@@ -54,6 +60,7 @@ const ROUTES = [
     AppComponent,
     BlockDetailsComponent,
     BlocksComponent,
+    SearchComponent,
     FooterComponent,
     HeaderComponent,
     LoadingComponent,
@@ -71,6 +78,7 @@ const ROUTES = [
   providers: [
     ApiService,
     ExplorerService,
+    SearchDataService,
   ],
   bootstrap: [AppComponent]
 })

@@ -25,6 +25,10 @@ export class ExplorerService {
     });
   }
 
+  getBlockByHash(hash: string): Observable<Block> {
+    return this.api.getBlock(hash).map(response => parseGetBlocksBlock(response));
+  }
+
   getBlocks(start: number, end: number): Observable<Block[]> {
     return this.api.getBlocks(start, end)
       .map(response => response.blocks.map(block => parseGetBlocksBlock(block)).sort((a, b) => b.id - a.id));

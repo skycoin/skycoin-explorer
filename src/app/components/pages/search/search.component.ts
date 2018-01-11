@@ -28,18 +28,45 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
+
+      var regexSha256 = new RegExp("^[a-fA-F0-9]+$");
       if (params['term'].length === 64 )
-        this.searchTransaction(params['term'])
-      else if (params['term'].length > 26 && params['term'].length < 35 )
-        this.searchAddress(params['term'])
-      else
+        if (regexSha256.test(params['term'])) {
+          this.searchTransaction(params['term']);
+          return;
+        }
+      
+      let termIsNumber = false;
+      if (this.isPositiveInteger(params['term']))
+        termIsNumber = true;
+
+      if (termIsNumber == true) {
         this.searchBlock(params['term'])
+        return;
+      } else if (params['term'].length > 10) {
+        var regexBase58 = new RegExp("^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$");
+        if (regexBase58.test(params['term'])) {
+          this.searchAddress(params['term'])
+          return;
+        }
+      }
+
+      this.error = true;
     });
+  }
+
+  isPositiveInteger(term:string) : boolean {
+    let parsedTerm = parseInt(term);
+    if (isNaN(parsedTerm))
+      return false;
+    
+    var Number = Math.floor(parsedTerm);
+    return String(parsedTerm) === term && Number >= 0;
   }
 
   searchAddress(term:string) {
     this.explorer.getTransactions(term)
-      .subscribe((transactions) => this.navigate(term, ResultsUrls.Address, transactions), (error: any) => this.searchBlockByHash(term));
+      .subscribe((transactions) => this.navigate(term, ResultsUrls.Address, transactions), (error: any) => this.error = true);
   }
   searchTransaction(term:string) {
     this.explorer.getTransaction(term)
@@ -50,9 +77,6 @@ export class SearchComponent implements OnInit {
       .subscribe((block: Block) => this.navigate(term, ResultsUrls.Block, block), (error: any) => this.error = true);
   }
   searchBlock(term:string) {
-    if (isNaN(parseInt(term)))
-      this.error = true;
-    else
       this.explorer.getBlock(parseInt(term))
         .subscribe((block: Block) => this.navigate(block.hash, ResultsUrls.Block, block), (error: any) => this.error = true);
   }

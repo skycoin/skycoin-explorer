@@ -14,7 +14,11 @@ export class SearchBarComponent {
   ) { }
 
   search() {
-    const hashVal = this.query.trim();
-    this.router.navigate(['/app/search', hashVal]);
+    if (this.query != undefined) {
+      const hashVal = this.query.trim();
+      if (hashVal.length > 0) {
+        this.router.navigate(['/app/search', hashVal]);
+      }
+    }
   }
 }

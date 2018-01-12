@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Output } from '../../../app.datatypes';
+import { Output, Transaction } from '../../../app.datatypes';
 
 @Component({
   selector: 'app-address-detail',
@@ -34,6 +34,9 @@ export class AddressDetailComponent implements OnInit {
       .subscribe(response => this.balance = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0));
   }
 
+  openTransaction(transaction: Transaction) {
+    this.router.navigate(['/app/transaction', transaction.id])
+  }
   openAddress(output: Output) {
     this.router.navigate(['/app/address', output.address]);
   }

@@ -42,3 +42,4 @@ Thumbs.db
 
 # compiled binaries
 /explorer.*
+/dist

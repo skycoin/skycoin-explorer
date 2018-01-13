@@ -9,14 +9,13 @@ import { SearchBarComponent } from './components/layout/search-bar/search-bar.co
 import { LoadingComponent } from './components/layout/loading/loading.component';
 import { BlocksComponent } from './components/pages/blocks/blocks.component';
 import { ApiService } from './services/api/api.service';
-import { HttpModule } from '@angular/http';
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
 import { TransactionDetailComponent } from './components/pages/transaction-detail/transaction-detail.component';
 import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
 import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
 import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
-import { FormsModule } from '@angular/forms';
+import { SharedModule } from "app/modules/shared/shared.module";
 
 
 const ROUTES = [
@@ -64,9 +63,8 @@ const ROUTES = [
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule,
     RouterModule.forRoot(ROUTES),
+    SharedModule
   ],
   providers: [
     ApiService,

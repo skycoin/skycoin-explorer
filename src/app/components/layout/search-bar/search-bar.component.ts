@@ -14,8 +14,9 @@ export class SearchBarComponent {
   ) { }
 
   search() {
-    const hashVal = this.query.trim();
-    if (hashVal.length === 34 || hashVal.length === 35 ) {
+      const hashVal = this.query.trim();
+      console.log(hashVal.length)
+    if (hashVal.length >= 27 && hashVal.length <= 34 ) {
       this.router.navigate(['/app/address', hashVal]);
     } else if (hashVal.length === 64) {
       this.router.navigate(['/app/transaction', hashVal]);

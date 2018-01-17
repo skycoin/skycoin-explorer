@@ -30,6 +30,10 @@ export class ExplorerService {
       .map(response => response.blocks.map(block => parseGetBlocksBlock(block)).sort((a, b) => b.id - a.id));
   }
 
+  getBlockByHash(hash: string): Observable<Block> {
+    return this.api.getBlock(hash).map(response => parseGetBlocksBlock(response));
+  }
+
   getTransactions(address: string): Observable<Transaction[]> {
     return this.api.getAddress(address)
       .map(response => response.map(rawTx => parseGetAddressTransaction(rawTx, address)))

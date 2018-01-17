@@ -2,7 +2,7 @@
   <div class="col-sm-8 -details">
     <h2>{{ address }}</h2>
     <p><span># of Transactions</span> {{ this.transactions ? this.transactions.length : 0 }} </p>
-    <p><span>Balance</span> {{ balance }} </p>
+    <p><span>Balance</span> {{ balance | number:'1.0-6'}} </p>
   </div>
   <div class="col-sm-4 -qr-code">
     <app-qr-code [string]="address" *ngIf="address"></app-qr-code>

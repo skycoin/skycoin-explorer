@@ -32,7 +32,7 @@ export class ExplorerService {
 
   getTransactions(address: string): Observable<Transaction[]> {
     return this.api.getAddress(address)
-      .map(response => response.map(rawTx => parseGetAddressTransaction(rawTx)))
+      .map(response => response.map(rawTx => parseGetAddressTransaction(rawTx, address)))
   }
 
   getTransaction(transactionId: string): Observable<Transaction> {

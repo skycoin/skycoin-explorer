@@ -41,6 +41,7 @@ export class Transaction {
   outputs: Output[];
   status: boolean;
   timestamp: number;
+  incoming: boolean;
 }
 
 export class Wallet {
@@ -63,7 +64,16 @@ export class GetAddressResponseTransaction {
   txid: string;
 }
 
-export function parseGetAddressTransaction(raw: GetAddressResponseTransaction): Transaction {
+export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, address: string): Transaction {
+
+  //Detect if the address sent or received the coins.
+  let incoming = true;
+  for (let input of raw.inputs)
+    if (input.owner.toLowerCase() == address.toLowerCase()) {
+      incoming = false;
+      break;
+    }
+
   return {
     block: null,
     id: raw.txid,
@@ -71,6 +81,7 @@ export function parseGetAddressTransaction(raw: GetAddressResponseTransaction): 
     inputs: raw.inputs.map(input => parseGetAddressInput(input)),
     outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
     status: null,
+    incoming: incoming,
   }
 }
 
@@ -131,6 +142,7 @@ function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransa
     inputs: transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
     status: null,
+    incoming: null,
   }
 }
 
@@ -215,6 +227,7 @@ export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
     outputs: raw.txn.outputs.map(output => parseGetTransactionOutput(output)),
     status: raw.status.confirmed,
     timestamp: raw.txn.timestamp,
+    incoming: null,
   }
 }
 

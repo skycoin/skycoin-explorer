@@ -49,6 +49,7 @@ h2 {
       color: $primary;
       display: inline-block;
       margin-left: 15px;
+      cursor: pointer;
     }
   }
 
@@ -87,5 +88,19 @@ h2 {
 
   .-right {
     text-align: right;
+  }
+
+  .incoming_outgoing_box {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 2px 15px;
+    color: white;
+    margin-left: 15px;
+  }
+  .-green {
+    background-color: $green;
+  }
+  .-red {
+    background-color: $red;
   }
 }

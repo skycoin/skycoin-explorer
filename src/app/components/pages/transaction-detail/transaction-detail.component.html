@@ -12,8 +12,12 @@
 <div class="transaction">
   <div class="-title">
     <div class="row">
-      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction ? transaction.id : 'loading...' }}</span></div>
-      <div class="col-sm-4 -right">{{ transaction ? transaction.timestamp : 'loading...' }}</div>
+      <div class="col-sm-8 -left">
+        Transaction ID
+        <span (click)="openTransaction(transaction)" *ngIf="transaction">{{ transaction.id }}</span>
+        <span *ngIf="transaction === undefined">loading ..</span>
+      </div>
+      <div class="col-sm-4 -right">{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : 'loading...' }}</div>
     </div>
   </div>
   <div class="-header">

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ExplorerService } from '../../../services/explorer/explorer.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -10,15 +11,19 @@ export class SearchBarComponent {
   query: string;
 
   constructor(
+    private explorer: ExplorerService,
     private router: Router,
   ) { }
 
   search() {
     const hashVal = this.query.trim();
-    if (hashVal.length === 34 || hashVal.length === 35 ) {
+    if (hashVal.length >= 27 && hashVal.length <= 34) {
       this.router.navigate(['/app/address', hashVal]);
     } else if (hashVal.length === 64) {
-      this.router.navigate(['/app/transaction', hashVal]);
+      this.explorer.getBlockByHash(hashVal).subscribe(
+          block => this.router.navigate(['/app/block', block.id]),
+        () => this.router.navigate(['/app/transaction', hashVal])
+    )
     } else {
       this.router.navigate(['/app/block', hashVal]);
     }

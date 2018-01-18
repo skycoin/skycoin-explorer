@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ApiService } from '../../../services/api/api.service';
-import moment from 'moment-es6';
 import 'rxjs/add/operator/mergeMap';
 import { Output, Transaction } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';

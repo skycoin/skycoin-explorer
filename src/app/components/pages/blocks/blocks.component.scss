@@ -64,7 +64,7 @@ h2 {
   margin-top: 20px;
   text-align: right;
 
-  span {
+  a {
     background-color: #fbfbfb;
     border: 1px solid #eff0f0;
     cursor: pointer;
@@ -73,6 +73,7 @@ h2 {
     line-height: 30px;
     min-width: 30px;
     text-align: center;
+    text-decoration: none;
     user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;

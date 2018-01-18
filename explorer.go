@@ -523,6 +523,34 @@ var apiEndpoints = []APIEndpoint{
     "spent_tx": "1ffa69520c15a8eb89cf68bb1a7ef9bdfcecbc490f8b70ed01206f480fa6b8ea"
 }`,
 	},
+	{
+		ExplorerPath:   "/api/richlist",
+		SkycoinPath:    "/richlist",
+		QueryArgs:      []string{"n", "include-distribution"},
+		Description:    "Returns top N richer with unspect outputs, If no n are specified, returns 20.",
+		ExampleRequest: "/api/richlist?n=2&include-distribution=false",
+		ExampleResponse: `[
+    {
+        "address": "tWZ11Nvor9parjg4FkwxNVcby59WVTw2iL",
+        "coins": "1000000.000000",
+        "locked": false
+    },
+    {
+        "address": "2UYPbDBnHUEc67e7qD4eXtQQ6zfU2cyvAvk",
+        "coins": "1000000.000000",
+        "locked": false
+    }
+]`,
+	},
+	{
+		ExplorerPath:   "/api/addresscount",
+		SkycoinPath:    "/addresscount",
+		Description:    "Returns count number of unique addresses with unspent outputs",
+		ExampleRequest: "/api/addresscount",
+		ExampleResponse: `{
+    "count": 10103
+}`,
+	},
 }
 
 var docEndpoint APIEndpoint = APIEndpoint{

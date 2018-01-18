@@ -22,11 +22,15 @@ import { FormsModule } from '@angular/forms';
 const ROUTES = [
   {
     path: '',
-    redirectTo: 'app/blocks',
+    redirectTo: 'app/blocks/1',
     pathMatch: 'full'
   },
   {
     path: 'app/blocks',
+    component: BlocksComponent
+  },
+  {
+    path: 'app/blocks/:page',
     component: BlocksComponent
   },
   {

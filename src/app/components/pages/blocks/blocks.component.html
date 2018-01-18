@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div class="-table">
+<div class="-table" *ngIf="blocks">
   <div class="-headers">
     <div class="row">
       <div class="col-sm-2">Time</div>
@@ -19,6 +19,11 @@
     </div>
   </div>
   <div class="-body">
+    <div class="row" *ngIf="!blocks.length">
+      <div class="col-sm-12 -center">
+        Waiting for blocks <i class="fa fa-spinner fa-spin fa-fw"></i>
+      </div>
+    </div>
     <div class="row" *ngFor="let block of blocks" (click)="open(block)">
       <div class="col-sm-2">{{ block.timestamp * 1000 | date:'short' }}</div>
       <div class="col-sm-2 -gray">{{ block.id }}</div>

@@ -12,7 +12,7 @@ import { Output, Transaction } from '../../../app.datatypes';
 export class AddressDetailComponent implements OnInit {
   address: string;
   balance: number;
-  transactions = [];
+  transactions: any[];
 
   constructor(
     private api: ApiService,
@@ -25,10 +25,7 @@ export class AddressDetailComponent implements OnInit {
     this.route.params.switchMap((params: Params) => {
       this.address = params['address'];
       return this.explorer.getTransactions(this.address);
-    }).subscribe(transactions => { 
-      //The transactions are ordered from the most recent to the oldest.
-      this.transactions = transactions.sort((a, b) => b.timestamp - a.timestamp);
-    });
+    }).subscribe(transactions => this.transactions = transactions.sort((a, b) => b.timestamp - a.timestamp));
 
     this.route.params.switchMap((params: Params) => this.api.getCurrentBalance(params['address']))
       .subscribe(response => this.balance = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0));

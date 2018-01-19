@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { Observable } from 'rxjs/Observable';
-import { Block, Output, parseGetAddressTransaction, parseGetBlocksBlock, parseGetTransaction, parseGetUxout, Transaction } from '../../app.datatypes';
+import { Block, Output, parseGetAddressTransaction, parseGetBlocksBlock, parseGetTransaction, parseGetUnconfirmedTransaction, parseGetUxout, UnconfirmedTransaction, Transaction } from '../../app.datatypes';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -37,6 +37,11 @@ export class ExplorerService {
   getTransactions(address: string): Observable<Transaction[]> {
     return this.api.getAddress(address)
       .map(response => response.map(rawTx => parseGetAddressTransaction(rawTx, address)))
+  }
+
+  getUnconfirmedTransactions(): Observable<UnconfirmedTransaction[]> {
+    return this.api.getUnconfirmedTransactions()
+      .map(response => response.map(rawTx => parseGetUnconfirmedTransaction(rawTx)));
   }
 
   getTransaction(transactionId: string): Observable<Transaction> {

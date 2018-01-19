@@ -44,6 +44,14 @@ export class Transaction {
   incoming: boolean;
 }
 
+export class UnconfirmedTransaction {
+  id: string;
+  inputs: string[];
+  outputs: Output[];
+  valid: boolean;
+  timestamp: number;
+}
+
 export class Wallet {
   label: string;
   addresses: Address[];
@@ -112,6 +120,28 @@ function parseGetAddressOutput(raw: GetAddressResponseTransactionOutput): Output
     coins: parseFloat(raw.coins),
     hash: raw.uxid,
     hours: raw.hours,
+  }
+}
+
+export class GetUnconfirmedTransaction {
+  transaction: GetUnconfirmedTransactionBody;
+  received: string;
+  is_valid: boolean;
+}
+
+export class GetUnconfirmedTransactionBody {
+  txid: string;
+  inputs: string[];
+  outputs: GetAddressResponseTransactionOutput[];
+}
+
+export function parseGetUnconfirmedTransaction(raw: GetUnconfirmedTransaction): UnconfirmedTransaction {
+  return {
+    id: raw.transaction.txid,
+    inputs: raw.transaction.inputs,
+    outputs: raw.transaction.outputs.map(output => parseGetAddressOutput(output)),
+    valid: raw.is_valid,
+    timestamp: new Date(raw.received).getTime(),
   }
 }
 

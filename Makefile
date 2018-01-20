@@ -2,7 +2,7 @@ EXPLORER := explorer
 
 .DEFAULT_GOAL := help
 
-.PHONY: run build-go build-ng all setcap deploy help lint check install-linters format
+.PHONY: run build-go build-ng all setcap deploy help lint check install-linters format verify
 
 run: ## Run explorer.go
 	go run explorer.go
@@ -21,11 +21,21 @@ all: build-go build-ng ## Build explorer.go and the angular frontend
 setcap: ## Use setcap to allow the binary to bind to port 80
 	sudo setcap 'cap_net_bind_service=+ep' $(EXPLORER)
 
+test: ## Run tests
+	go test . -timeout=1m
+
+verify: ## Run explorer self-verification
+	go build -o explorer.verify explorer.go
+	@./explorer.verify -verify; \
+	status=$$?; \
+	rm -f explorer.verify; \
+	exit $$status
+
 lint: ## Run linters. Use make install-linters first.
 	vendorcheck ./...
 	gometalinter --disable-all -E goimports --tests --vendor ./...
 
-check: lint ## Run tests and linters
+check: lint test verify ## Run tests, linters and self-verification
 
 install-linters: ## Install linters
 	go get -u github.com/FiloSottile/vendorcheck

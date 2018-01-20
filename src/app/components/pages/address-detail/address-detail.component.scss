@@ -90,7 +90,7 @@ h2 {
     text-align: right;
   }
 
-  .incoming_outgoing_box {
+  .-label {
     display: inline-block;
     margin-right: 15px;
     padding: 2px 15px;
@@ -102,5 +102,8 @@ h2 {
   }
   .-red {
     background-color: $red;
+  }
+  .-warning {
+    background-color: $warning;
   }
 }

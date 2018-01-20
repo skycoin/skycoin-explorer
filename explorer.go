@@ -522,9 +522,9 @@ var apiEndpoints = []APIEndpoint{
     "spent_block_seq": 866,
     "spent_tx": "1ffa69520c15a8eb89cf68bb1a7ef9bdfcecbc490f8b70ed01206f480fa6b8ea"
 }`,
-    },
-    
-    {
+	},
+
+	{
 		ExplorerPath:   "/api/pendingTxs",
 		SkycoinPath:    "/pendingTxs",
 		Description:    "Returns the unconfirmed transactions in the pool.",

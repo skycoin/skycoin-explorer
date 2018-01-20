@@ -17,7 +17,7 @@ export class SearchBarComponent {
 
   search() {
     const hashVal = this.query.trim();
-    if (hashVal.length >= 27 && hashVal.length <= 34) {
+    if (hashVal.length >= 27 && hashVal.length <= 35) {
       this.router.navigate(['/app/address', hashVal]);
     } else if (hashVal.length === 64) {
       this.explorer.getBlockByHash(hashVal).subscribe(

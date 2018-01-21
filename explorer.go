@@ -170,7 +170,7 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 var apiEndpoints = []APIEndpoint{
 	{
 		ExplorerPath:   "/api/coinSupply",
-		SkycoinPath:    "/explorer/getEffectiveOutputs",
+		SkycoinPath:    "/coinSupply",
 		Description:    "Returns metadata about the coin distribution.",
 		ExampleRequest: "/api/coinSupply",
 		ExampleResponse: `{

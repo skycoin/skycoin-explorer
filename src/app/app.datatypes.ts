@@ -60,19 +60,21 @@ export class Wallet {
 export class GetAddressResponseTransaction {
   inputs: GetAddressResponseTransactionInput[];
   outputs: GetAddressResponseTransactionOutput[];
+  status: any;
   timestamp: number;
   txid: string;
 }
 
 export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, address: string): Transaction {
 
-  //Detect if the address sent or received the coins.
+  // Detect if the address sent or received the coins.
   let incoming = true;
-  for (let input of raw.inputs)
-    if (input.owner.toLowerCase() == address.toLowerCase()) {
-      incoming = false;
-      break;
-    }
+  for (const input of raw.inputs) {
+      if (input.owner.toLowerCase() === address.toLowerCase()) {
+          incoming = false;
+          break;
+      }
+  }
 
   return {
     block: null,
@@ -80,7 +82,7 @@ export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, a
     timestamp: raw.timestamp,
     inputs: raw.inputs.map(input => parseGetAddressInput(input)),
     outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
-    status: null,
+    status: raw.status.confirmed,
     incoming: incoming,
   }
 }

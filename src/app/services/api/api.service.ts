@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CoinSupply } from '../../components/pages/blocks/block';
-import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUxoutResponse, GetAddressResponseTransaction,
+import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransaction, GetUxoutResponse, GetAddressResponseTransaction,
     GetCurrentBalanceResponse, GetBlocksResponseBlock } from '../../app.datatypes';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
@@ -19,6 +19,10 @@ export class ApiService {
 
   getAddress(address: string): Observable<GetAddressResponseTransaction[]> {
     return this.get('address', { address: address });
+  }
+
+  getUnconfirmedTransactions(): Observable<GetUnconfirmedTransaction[]> {
+    return this.get('pendingTxs');
   }
 
   getBlock(hash: string): Observable<GetBlocksResponseBlock> {

@@ -50,6 +50,9 @@ export class BlocksComponent implements OnInit {
   open(block: Block) {
     this.router.navigate(['/app/block', block.id]);
   }
+  openUnconfirmedTransactions() {
+    this.router.navigate(['/app/unconfirmedtransactions']);
+  }
 
   navigate(pageIndex) {
     this.pageIndex = pageIndex;

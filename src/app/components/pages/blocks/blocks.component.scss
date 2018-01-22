@@ -23,6 +23,12 @@ h2 {
       opacity: 0.25;
     }
 
+    .-link {
+      color: $primary;
+      display: inline-block;
+      cursor: pointer;
+    }
+
     .-value {
       display: inline-block;
       width: 100px;

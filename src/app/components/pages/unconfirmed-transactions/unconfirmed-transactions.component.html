@@ -1,0 +1,45 @@
+<h2>Unconfirmed Transactions</h2>
+<div class="transactions-details">
+  <div class="-row"><span>Quantity</span> {{ transactions ? (transactions.length > 0 ? transactions.length : 'Currently there are no unconfirmed transactions.') : 'loading ..' }} </div>
+  <div class="-row"><span>Newest</span> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : 'loading ..' }} </div>
+  <div class="-row"><span>Oldest</span> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : 'loading ..' }} </div>
+</div>
+
+<p *ngIf="transactions === undefined">
+  Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
+</p>
+
+<div class="transaction" *ngFor="let transaction of (transactions || [])">
+  <div class="-title">
+    <div class="row">
+      <div class="col-sm-8 -left">Transaction ID <span (click)="openTransaction(transaction)">{{ transaction.id }}</span></div>
+      <div class="col-sm-4 -right">First seen at: {{ transaction.timestamp | date: 'short' }}</div>
+    </div>
+  </div>
+  <div class="-header">
+    <div class="row">
+      <div class="col-sm-5 -left">Inputs</div>
+      <div class="col-sm-7">
+        <div class="width-3-4 gutter-right -left">Outputs</div>
+        <div class="width-1-4 gutter-left -right">Value</div>
+      </div>
+    </div>
+  </div>
+  <div class="-body">
+    <div class="row">
+      <div class="col-sm-5 -left">
+        <div class="-row" *ngFor="let input of transaction.inputs">
+          {{ input }}
+        </div>
+      </div>
+      <div class="col-sm-7">
+        <div class="-row" *ngFor="let output of transaction.outputs">
+          <div class="width-3-4 gutter-right -left -link">
+            <span (click)="openAddress(output)">{{ output.address }}</span>
+          </div>
+          <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

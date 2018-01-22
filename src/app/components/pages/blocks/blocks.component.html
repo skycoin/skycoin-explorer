@@ -6,6 +6,7 @@
     <p><span class="-label">Block Height:</span> <span class="-value">{{ blockCount | number : '1.0-0' }}</span> </p>
     <p><span class="-label">Current Supply:</span> <span class="-value">{{ currentSupply | number : '1.0-0' }}</span> </p>
     <p><span class="-label">Total Supply:</span> <span class="-value">{{ totalSupply | number : '1.0-0' }}</span> </p>
+    <p><span (click)="openUnconfirmedTransactions()" class="-link">Unconfirmed Transactions</span></p>
   </div>
 </div>
 

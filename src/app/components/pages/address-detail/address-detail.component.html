@@ -14,8 +14,11 @@
 </div>
 
 <p *ngIf="transactions === undefined">
-  Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
-</p>
+    <span *ngIf="!longErrorMsg; else error_msg">
+      Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
+    </span>
+    <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
+  </p>
 
 <div class="transaction" *ngFor="let transaction of (transactions || [])">
   <div class="-title">

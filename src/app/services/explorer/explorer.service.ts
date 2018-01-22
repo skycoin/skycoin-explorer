@@ -15,13 +15,18 @@ export class ExplorerService {
 
   getBlock(id: number): Observable<Block> {
     return this.api.getBlocks(id, id).flatMap(response => {
-      const block = parseGetBlocksBlock(response.blocks[0]);
-      return Observable.forkJoin(block.transactions.map(transaction => {
-        return this.retrieveInputsForTransaction(transaction);
-      })).map(transactions => {
-        block.transactions = transactions;
-        return block;
-      });
+      if (response.blocks.length > 0) {
+        const block = parseGetBlocksBlock(response.blocks[0]);
+        return Observable.forkJoin(block.transactions.map(transaction => {
+          return this.retrieveInputsForTransaction(transaction);
+        })).map(transactions => {
+          block.transactions = transactions;
+          return block;
+        });
+      } else {
+        let emptyArray: Block[] = [null];
+        return emptyArray;
+      }
     });
   }
 

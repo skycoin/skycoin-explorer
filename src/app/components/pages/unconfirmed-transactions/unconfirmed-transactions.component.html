@@ -1,12 +1,15 @@
 <h2>Unconfirmed Transactions</h2>
 <div class="transactions-details">
-  <div class="-row"><span>Quantity</span> {{ transactions ? (transactions.length > 0 ? transactions.length : 'Currently there are no unconfirmed transactions.') : 'loading ..' }} </div>
-  <div class="-row"><span>Newest</span> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : 'loading ..' }} </div>
-  <div class="-row"><span>Oldest</span> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : 'loading ..' }} </div>
+  <div class="-row"><span>Quantity</span> {{ transactions ? (transactions.length > 0 ? transactions.length : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div>
+  <div class="-row"><span>Newest</span> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div>
+  <div class="-row"><span>Oldest</span> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div>
 </div>
 
-<p *ngIf="transactions === undefined">
-  Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
+<p *ngIf="transactions === null">
+  <span *ngIf="!longErrorMsg; else error_msg">
+    Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
+  </span>
+  <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
 </p>
 
 <div class="transaction" *ngFor="let transaction of (transactions || [])">

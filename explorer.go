@@ -277,8 +277,8 @@ var apiEndpoints = []APIEndpoint{
 	{
 		ExplorerPath:   "/api/block",
 		SkycoinPath:    "/block",
-		QueryArgs:      []string{"hash"},
-		Description:    "Returns information about a block, given a hash.",
+		QueryArgs:      []string{"hash", "seq"},
+		Description:    "Returns information about a block, given a hash or sequence number.",
 		ExampleRequest: "/api/block?hash=e20d5832b3f9bea4da58e149e4805b4e4a962ea7c5ce3cd9f31c6d7fc72e3300",
 		ExampleResponse: `{
     "header": {

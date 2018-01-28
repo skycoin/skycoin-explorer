@@ -41,7 +41,7 @@ export class Transaction {
   outputs: Output[];
   status: boolean;
   timestamp: number;
-  incoming: boolean;
+  balance: number;
 }
 
 export class UnconfirmedTransaction {
@@ -75,13 +75,16 @@ export class GetAddressResponseTransaction {
 
 export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, address: string): Transaction {
 
-  // Detect if the address sent or received the coins.
-  let incoming = true;
+  let balance = 0;
   for (const input of raw.inputs) {
-      if (input.owner.toLowerCase() === address.toLowerCase()) {
-          incoming = false;
-          break;
-      }
+    if (input.owner.toLowerCase() === address.toLowerCase()) {
+      balance -= parseFloat(input.coins);
+    }
+  }
+  for (let output of raw.outputs) {
+    if (output.dst.toLowerCase() === address.toLowerCase()) {
+      balance += parseFloat(output.coins);
+    }
   }
 
   return {
@@ -91,21 +94,23 @@ export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, a
     inputs: raw.inputs.map(input => parseGetAddressInput(input)),
     outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
     status: raw.status.confirmed,
-    incoming: incoming,
+    balance: balance,
   }
 }
 
 class GetAddressResponseTransactionInput {
   uxid: string;
   owner: string;
+  coins: string;
+  hours: string;
 }
 
 function parseGetAddressInput(raw: GetAddressResponseTransactionInput): Output {
   return {
     address: raw.owner,
-    coins: null,
+    coins: parseFloat(raw.coins),
     hash: raw.uxid,
-    hours: null,
+    hours: parseInt(raw.hours),
   }
 }
 
@@ -174,7 +179,7 @@ function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransa
     inputs: transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
     status: null,
-    incoming: null,
+    balance: null,
   }
 }
 
@@ -259,7 +264,7 @@ export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
     outputs: raw.txn.outputs.map(output => parseGetTransactionOutput(output)),
     status: raw.status.confirmed,
     timestamp: raw.txn.timestamp,
-    incoming: null,
+    balance: null,
   }
 }
 

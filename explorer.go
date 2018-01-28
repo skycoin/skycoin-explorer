@@ -202,7 +202,7 @@ var apiEndpoints = []APIEndpoint{
         "status": {
             "confirmed": true,
             "unconfirmed": false,
-            "height": 1,
+            "height": 10161,
             "block_seq": 1893,
             "unknown": false
         },
@@ -219,28 +219,34 @@ var apiEndpoints = []APIEndpoint{
         "inputs": [
             {
                 "uxid": "0922a7b41d1b76b6b56bfad0d5d0f6845517bbd895c660eab0ebe3899b5f63c4",
-                "owner": "2Q2VViWhgBzz6c8GkXQyDVFdQUWcBcDon4L"
+                "owner": "2Q2VViWhgBzz6c8GkXQyDVFdQUWcBcDon4L",
+                "coins": "7.000000",
+                "hours": "851106"
             },
             {
                 "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
-                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5"
+                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
+                "coins": "5.000000",
+                "hours": "6402335"
             },
             {
                 "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
-                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5"
+                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
+                "coins": "2400.000000",
+                "hours": "800291"
             }
         ],
         "outputs": [
             {
                 "uxid": "8a941208d3f2d2c4a32438e05645fb64dba3b4b7d83c48d52f51bc1eb9a4117a",
                 "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
-                "coins": "2361",
+                "coins": "2361.000000",
                 "hours": 1006716
             },
             {
                 "uxid": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
                 "dst": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
-                "coins": "51",
+                "coins": "51.000000",
                 "hours": 2013433
             }
         ]

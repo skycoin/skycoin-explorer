@@ -42,6 +42,7 @@ export class Transaction {
   status: boolean;
   timestamp: number;
   balance: number;
+  addressBalance: number;
 }
 
 export class UnconfirmedTransaction {
@@ -95,6 +96,7 @@ export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, a
     outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
     status: raw.status.confirmed,
     balance: balance,
+    addressBalance: null,
   }
 }
 
@@ -180,6 +182,7 @@ function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransa
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
     status: null,
     balance: null,
+    addressBalance: null,
   }
 }
 
@@ -265,6 +268,7 @@ export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
     status: raw.status.confirmed,
     timestamp: raw.txn.timestamp,
     balance: null,
+    addressBalance: null,
   }
 }
 

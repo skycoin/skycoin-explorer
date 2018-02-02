@@ -174,9 +174,11 @@ var apiEndpoints = []APIEndpoint{
 		Description:    "Returns metadata about the coin distribution.",
 		ExampleRequest: "/api/coinSupply",
 		ExampleResponse: `{
-    "current_supply": "5791552.000000",
+    "current_supply": "7187500.000000",
     "total_supply": "25000000.000000",
     "max_supply": "100000000.000000",
+    "current_coinhour_supply": "23499025077",
+    "total_coinhour_supply": "93679828577",
     "unlocked_distribution_addresses": [
         "R6aHqKWSQfvpdo2fGSrq4F1RYXkBWR9HHJ",
         "2EYM4WFHe4Dgz6kjAdUkM6Etep7ruz2ia6h",
@@ -200,7 +202,7 @@ var apiEndpoints = []APIEndpoint{
         "status": {
             "confirmed": true,
             "unconfirmed": false,
-            "height": 1,
+            "height": 10161,
             "block_seq": 1893,
             "unknown": false
         },
@@ -217,28 +219,34 @@ var apiEndpoints = []APIEndpoint{
         "inputs": [
             {
                 "uxid": "0922a7b41d1b76b6b56bfad0d5d0f6845517bbd895c660eab0ebe3899b5f63c4",
-                "owner": "2Q2VViWhgBzz6c8GkXQyDVFdQUWcBcDon4L"
+                "owner": "2Q2VViWhgBzz6c8GkXQyDVFdQUWcBcDon4L",
+                "coins": "7.000000",
+                "hours": "851106"
             },
             {
                 "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
-                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5"
+                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
+                "coins": "5.000000",
+                "hours": "6402335"
             },
             {
                 "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
-                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5"
+                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
+                "coins": "2400.000000",
+                "hours": "800291"
             }
         ],
         "outputs": [
             {
                 "uxid": "8a941208d3f2d2c4a32438e05645fb64dba3b4b7d83c48d52f51bc1eb9a4117a",
                 "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
-                "coins": "2361",
+                "coins": "2361.000000",
                 "hours": 1006716
             },
             {
                 "uxid": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
                 "dst": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
-                "coins": "51",
+                "coins": "51.000000",
                 "hours": 2013433
             }
         ]
@@ -269,8 +277,8 @@ var apiEndpoints = []APIEndpoint{
 	{
 		ExplorerPath:   "/api/block",
 		SkycoinPath:    "/block",
-		QueryArgs:      []string{"hash"},
-		Description:    "Returns information about a block, given a hash.",
+		QueryArgs:      []string{"hash", "seq"},
+		Description:    "Returns information about a block, given a hash or sequence number.",
 		ExampleRequest: "/api/block?hash=e20d5832b3f9bea4da58e149e4805b4e4a962ea7c5ce3cd9f31c6d7fc72e3300",
 		ExampleResponse: `{
     "header": {

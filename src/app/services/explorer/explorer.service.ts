@@ -41,7 +41,17 @@ export class ExplorerService {
 
   getTransactions(address: string): Observable<Transaction[]> {
     return this.api.getAddress(address)
-      .map(response => response.map(rawTx => parseGetAddressTransaction(rawTx, address)))
+      .map(response => {
+        response = response.sort((a, b) => b.timestamp - a.timestamp)
+
+        let currentBalance = 0;
+        return response.reverse().map(rawTx => {
+          let parsedTx = parseGetAddressTransaction(rawTx, address);
+          currentBalance += parsedTx.balance;
+          parsedTx.addressBalance = currentBalance;
+          return parsedTx;
+        }).reverse()
+      })
   }
 
   getUnconfirmedTransactions(): Observable<UnconfirmedTransaction[]> {

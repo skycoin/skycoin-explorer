@@ -27,7 +27,7 @@ export class AddressDetailComponent implements OnInit {
       this.address = params['address'];
       return this.explorer.getTransactions(this.address);
     }).subscribe(
-      transactions => this.transactions = transactions.sort((a, b) => b.timestamp - a.timestamp),
+      transactions => this.transactions = transactions),
       error => {
         if (error.status >= 500)
           this.longErrorMsg = "Error loading data, try again later...";

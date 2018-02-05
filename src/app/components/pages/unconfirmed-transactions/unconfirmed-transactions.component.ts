@@ -15,6 +15,8 @@ export class UnconfirmedTransactionsComponent implements OnInit {
   transactions: UnconfirmedTransaction[];
   leastRecent: number;
   mostRecent: number;
+  loadingMsg = "Loading...";
+  longErrorMsg: string;
 
   constructor(
     private explorer: ExplorerService,
@@ -31,6 +33,9 @@ export class UnconfirmedTransactionsComponent implements OnInit {
         this.mostRecent = orderedList[0].timestamp;
         this.leastRecent = orderedList[orderedList.length-1].timestamp;
       }
+    }, error => {
+      this.loadingMsg = "Loading error";
+      this.longErrorMsg = "Error loading data, try again later...";
     });
   }
 

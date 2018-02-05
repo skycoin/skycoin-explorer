@@ -12,6 +12,8 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
 export class TransactionDetailComponent implements OnInit {
 
   transaction: Transaction;
+  loadingMsg = "Loading...";
+  longErrorMsg: string;
 
   constructor(
     private explorer: ExplorerService,
@@ -21,7 +23,16 @@ export class TransactionDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.flatMap((params: Params) => this.explorer.getTransaction(params['txid']))
-      .subscribe(transaction => this.transaction = transaction);
+      .subscribe(
+        transaction => this.transaction = transaction,
+        error => {
+          this.loadingMsg = "Loading error";
+          if (error.status >= 500)
+            this.longErrorMsg = "Error loading data, try again later...";
+          else if (error.status >= 400)
+            this.longErrorMsg = "Unable to find the transaction";
+        }
+      );
   }
 
   openAddress(output: Output) {

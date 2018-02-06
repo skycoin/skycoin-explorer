@@ -72,6 +72,8 @@ export interface CoinSupply {
   current_supply: number,
   total_supply: number,
   max_supply: number,
+  current_coinhour_supply: number,
+  total_coinhour_supply: number,
 }
 
 export class BlockResponse {

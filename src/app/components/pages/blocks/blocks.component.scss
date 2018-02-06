@@ -54,10 +54,13 @@ h2 {
     padding: 18px 20px;
   }
 
+  .-body > .row {
+    display: block;
+  }
+
   .-body > .row > div {
     background-color: #FBFBFB;
     border-bottom: 1px solid #EFF0F0;
-    cursor: pointer;
     padding: 28px 20px;
 
     &.-gray {

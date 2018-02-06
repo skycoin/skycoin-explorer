@@ -34,12 +34,4 @@ export class TransactionDetailComponent implements OnInit {
         }
       );
   }
-
-  openAddress(output: Output) {
-    this.router.navigate(['/app/address', output.address]);
-  }
-
-  openTransaction(transaction: Transaction) {
-    this.router.navigate(['/app/transaction', transaction.id])
-  }
 }

@@ -24,7 +24,7 @@
   <div class="-title">
     <div class="row">
       <div class="col-sm-8 -left">
-        Transaction ID <span (click)="openTransaction(transaction)">{{ transaction.id }}</span>
+        Transaction ID <a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a>
         <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">
           {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} SKY <ng-container *ngIf="!transaction.status">(pending)</ng-container>
         </div>
@@ -51,7 +51,7 @@
       <div class="col-sm-7">
         <div class="-row" *ngFor="let output of transaction.outputs">
           <div class="width-3-4 gutter-right -left -link">
-            <span (click)="openAddress(output)">{{ output.address }}</span>
+            <a [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
           </div>
           <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
         </div>

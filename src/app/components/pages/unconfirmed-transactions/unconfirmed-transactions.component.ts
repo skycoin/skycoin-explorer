@@ -38,12 +38,4 @@ export class UnconfirmedTransactionsComponent implements OnInit {
       this.longErrorMsg = "Error loading data, try again later...";
     });
   }
-
-  openAddress(output: Output) {
-    this.router.navigate(['/app/address', output.address]);
-  }
-
-  openTransaction(transaction: UnconfirmedTransaction) {
-    this.router.navigate(['/app/transaction', transaction.id])
-  }
 }

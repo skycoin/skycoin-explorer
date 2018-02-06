@@ -6,7 +6,7 @@
     <p><span class="-label">Block Height:</span> <span class="-value">{{ blockCount > 0 ? (blockCount | number : '1.0-0') : loadingMetadataMsg }}</span> </p>
     <p><span class="-label">Current Supply:</span> <span class="-value">{{ currentSupply ? (currentSupply | number : '1.0-0') : loadingCoinSupplyMsg }}</span> </p>
     <p><span class="-label">Total Supply:</span> <span class="-value">{{ totalSupply ? (totalSupply | number : '1.0-0') : loadingCoinSupplyMsg }}</span> </p>
-    <p><span (click)="openUnconfirmedTransactions()" class="-link">Unconfirmed Transactions</span></p>
+    <p><a routerLink="/app/unconfirmedtransactions" class="-link">Unconfirmed Transactions</a></p>
   </div>
 </div>
 
@@ -28,12 +28,12 @@
         <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
       </div>
     </div>
-    <div class="row" *ngFor="let block of blocks" (click)="open(block)">
+    <a class="row" *ngFor="let block of blocks" [routerLink]="'/app/block/' + block.id">
       <div class="col-sm-2">{{ block.timestamp * 1000 | date:'short' }}</div>
       <div class="col-sm-2 -gray">{{ block.id }}</div>
       <div class="col-sm-2 -gray">{{ block.transactions.length }}</div>
       <div class="col-sm-6">{{ block.hash }}</div>
-    </div>
+    </a>
   </div>
   <div class="pagination">
     <a class="-first" [ngClass]="{ disabled: pageIndex <= 0 }" routerLink="/app/blocks/1">«</a>

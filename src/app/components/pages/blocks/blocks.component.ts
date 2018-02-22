@@ -15,6 +15,8 @@ export class BlocksComponent implements OnInit {
   blocks: Block[] = [];
   currentSupply: number;
   totalSupply: number;
+  currentCoinhourSupply: number;
+  totalCoinhourSupply: number;
   blockCount = 0;
   pageIndex = 0;
   pageSize = 10;
@@ -49,6 +51,8 @@ export class BlocksComponent implements OnInit {
     this.api.getCoinSupply().first().subscribe(response => {
       this.currentSupply = response.current_supply;
       this.totalSupply = response.total_supply;
+      this.currentCoinhourSupply = response.current_coinhour_supply;
+      this.totalCoinhourSupply = response.total_coinhour_supply;
     }, error => {
       this.loadingCoinSupplyMsg = "Loading error";
     });

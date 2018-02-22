@@ -39,11 +39,4 @@ export class AddressDetailComponent implements OnInit {
     this.route.params.switchMap((params: Params) => this.api.getCurrentBalance(params['address']))
       .subscribe(response => this.balance = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0));
   }
-
-  openTransaction(transaction: Transaction) {
-    this.router.navigate(['/app/transaction', transaction.id])
-  }
-  openAddress(output: Output) {
-    this.router.navigate(['/app/address', output.address]);
-  }
 }

@@ -67,10 +67,7 @@ h2 {
 
       .-cell {
         margin: 10px 0;
-
-        &.-pointer {
-          cursor: pointer;
-        }
+        display: block;
       }
 
       .-row {
@@ -84,9 +81,8 @@ h2 {
         > div {
           vertical-align: top;
 
-          span {
+          a {
             color: $primary;
-            cursor: pointer;
           }
         }
       }

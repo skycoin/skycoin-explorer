@@ -15,7 +15,7 @@
 <div class="transaction" *ngFor="let transaction of (transactions || [])">
   <div class="-title">
     <div class="row">
-      <div class="col-sm-8 -left">Transaction ID <span (click)="openTransaction(transaction)">{{ transaction.id }}</span></div>
+      <div class="col-sm-8 -left">Transaction ID <a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a></div>
       <div class="col-sm-4 -right">First seen at: {{ transaction.timestamp | date: 'short' }}</div>
     </div>
   </div>
@@ -38,7 +38,7 @@
       <div class="col-sm-7">
         <div class="-row" *ngFor="let output of transaction.outputs">
           <div class="width-3-4 gutter-right -left -link">
-            <span (click)="openAddress(output)">{{ output.address }}</span>
+            <a [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
           </div>
           <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
         </div>

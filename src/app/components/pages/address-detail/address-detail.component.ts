@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Output } from '../../../app.datatypes';
+import { Output, Transaction } from '../../../app.datatypes';
 
 @Component({
   selector: 'app-address-detail',
@@ -12,7 +12,8 @@ import { Output } from '../../../app.datatypes';
 export class AddressDetailComponent implements OnInit {
   address: string;
   balance: number;
-  transactions = [];
+  transactions: any[];
+  longErrorMsg: string;
 
   constructor(
     private api: ApiService,
@@ -25,13 +26,17 @@ export class AddressDetailComponent implements OnInit {
     this.route.params.switchMap((params: Params) => {
       this.address = params['address'];
       return this.explorer.getTransactions(this.address);
-    }).subscribe(transactions => this.transactions = transactions);
+    }).subscribe(
+      transactions => this.transactions = transactions,
+      error => {
+        if (error.status >= 500)
+          this.longErrorMsg = "Error loading data, try again later...";
+        else if (error.status >= 400)
+          this.longErrorMsg = "Without transactions";
+      }
+    );
 
     this.route.params.switchMap((params: Params) => this.api.getCurrentBalance(params['address']))
       .subscribe(response => this.balance = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0));
-  }
-
-  openAddress(output: Output) {
-    this.router.navigate(['/app/address', output.address]);
   }
 }

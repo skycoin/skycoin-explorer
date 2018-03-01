@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { CoinSupply } from '../../components/pages/blocks/block';
+import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransaction, GetUxoutResponse, GetAddressResponseTransaction,
+    GetCurrentBalanceResponse, GetBlocksResponseBlock } from '../../app.datatypes';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-
-import { CoinSupply } from '../../components/pages/blocks/block';
-import { AddressBalanceResponse, UnspentOutput } from '../../components/pages/address-detail/UnspentOutput';
-import { Block, Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, parseGetBlocksBlock, GetUxoutResponse, GetAddressResponseTransaction, GetCurrentBalanceResponse } from '../../app.datatypes';
 
 @Injectable()
 export class ApiService {
@@ -19,6 +19,14 @@ export class ApiService {
 
   getAddress(address: string): Observable<GetAddressResponseTransaction[]> {
     return this.get('address', { address: address });
+  }
+
+  getUnconfirmedTransactions(): Observable<GetUnconfirmedTransaction[]> {
+    return this.get('pendingTxs');
+  }
+
+  getBlock(hash: string): Observable<GetBlocksResponseBlock> {
+    return this.get('block', { hash: hash });
   }
 
   getBlocks(startNumber: number, endNumber: number): Observable<GetBlocksResponse> {

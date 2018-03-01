@@ -3,13 +3,16 @@
     <h2>Blocks</h2>
   </div>
   <div class="col-sm-6 -details">
-    <p><span class="-label">Block Height:</span> <span class="-value">{{ blockCount | number : '1.0-0' }}</span> </p>
-    <p><span class="-label">Current Supply:</span> <span class="-value">{{ currentSupply | number : '1.0-0' }}</span> </p>
-    <p><span class="-label">Total Supply:</span> <span class="-value">{{ totalSupply | number : '1.0-0' }}</span> </p>
+    <p><span class="-label">Block Height:</span> <span class="-value">{{ blockCount > 0 ? (blockCount | number : '1.0-0') : loadingMetadataMsg }}</span> </p>
+    <p><span class="-label">Current Supply:</span> <span class="-value">{{ currentSupply ? (currentSupply | number : '1.0-0') : loadingCoinSupplyMsg }}</span> </p>
+    <p><span class="-label">Total Supply:</span> <span class="-value">{{ totalSupply ? (totalSupply | number : '1.0-0') : loadingCoinSupplyMsg }}</span> </p>
+    <p><span class="-label">Current Coinhour Supply:</span> <span class="-value">{{ currentCoinhourSupply ? (currentCoinhourSupply | number : '1.0-0') : loadingCoinSupplyMsg }}</span> </p>
+    <p><span class="-label">Total Coinhour Supply:</span> <span class="-value">{{ totalCoinhourSupply ? (totalCoinhourSupply | number : '1.0-0') : loadingCoinSupplyMsg }}</span> </p>
+    <p><a routerLink="/app/unconfirmedtransactions" class="-link">Unconfirmed Transactions</a></p>
   </div>
 </div>
 
-<div class="-table">
+<div class="-table" *ngIf="blocks">
   <div class="-headers">
     <div class="row">
       <div class="col-sm-2">Time</div>
@@ -19,22 +22,30 @@
     </div>
   </div>
   <div class="-body">
-    <div class="row" *ngFor="let block of blocks" (click)="open(block)">
+    <div class="row" *ngIf="!blocks.length">
+      <div class="col-sm-12 -center -msg">
+        <span *ngIf="!longErrorMsg; else error_msg">
+          Waiting for blocks <i class="fa fa-spinner fa-spin fa-fw"></i>
+        </span>
+        <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
+      </div>
+    </div>
+    <a class="row" *ngFor="let block of blocks" [routerLink]="'/app/block/' + block.id">
       <div class="col-sm-2">{{ block.timestamp * 1000 | date:'short' }}</div>
       <div class="col-sm-2 -gray">{{ block.id }}</div>
       <div class="col-sm-2 -gray">{{ block.transactions.length }}</div>
       <div class="col-sm-6">{{ block.hash }}</div>
-    </div>
+    </a>
   </div>
   <div class="pagination">
-    <span class="-first" [ngClass]="{ disabled: pageIndex <= 0 }" (click)="navigate(0 - pageIndex)">«</span>
-    <span class="-previous" [ngClass]="{ disabled: pageIndex <= 0 }" (click)="navigate(-1)">‹</span>
-    <span class="-page" *ngIf="pageIndex > 1" (click)="navigate(-2)">{{ pageIndex - 1 }}</span>
-    <span class="-page" *ngIf="pageIndex > 0" (click)="navigate(-1)">{{ pageIndex }}</span>
-    <span class="-page disabled">{{ pageIndex + 1 }}</span>
-    <span class="-page" *ngIf="pageIndex < pageCount - 1" (click)="navigate(1)">{{ pageIndex + 2 }}</span>
-    <span class="-page" *ngIf="pageIndex < pageCount - 1" (click)="navigate(2)">{{ pageIndex + 3 }}</span>
-    <span class="-next" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" (click)="navigate(1)">›</span>
-    <span class="-last" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" (click)="navigate(pageCount - pageIndex)">»</span>
+    <a class="-first" [ngClass]="{ disabled: pageIndex <= 0 }" routerLink="/app/blocks/1">«</a>
+    <a class="-previous" [ngClass]="{ disabled: pageIndex <= 0 }" routerLink="/app/blocks/{{ pageIndex > 0 ? pageIndex : 1}}">‹</a>
+    <a class="-page" *ngIf="pageIndex > 1" routerLink="/app/blocks/{{pageIndex - 1}}">{{ pageIndex - 1 }}</a>
+    <a class="-page" *ngIf="pageIndex > 0" routerLink="/app/blocks/{{pageIndex}}">{{ pageIndex }}</a>
+    <a class="-page disabled">{{ pageIndex + 1 }}</a>
+    <a class="-page" *ngIf="pageIndex < pageCount - 1" routerLink="/app/blocks/{{pageIndex + 2}}">{{ pageIndex + 2 }}</a>
+    <a class="-page" *ngIf="pageIndex < pageCount - 2" routerLink="/app/blocks/{{pageIndex + 3}}">{{ pageIndex + 3 }}</a>
+    <a class="-next" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" routerLink="/app/blocks/{{ pageIndex + 2 < pageCount ? pageIndex + 2 : pageCount }}">›</a>
+    <a class="-last" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" routerLink="/app/blocks/{{ pageCount }}">»</a>
   </div>
 </div>

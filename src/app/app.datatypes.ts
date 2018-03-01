@@ -41,6 +41,16 @@ export class Transaction {
   outputs: Output[];
   status: boolean;
   timestamp: number;
+  balance: number;
+  addressBalance: number;
+}
+
+export class UnconfirmedTransaction {
+  id: string;
+  inputs: string[];
+  outputs: Output[];
+  valid: boolean;
+  timestamp: number;
 }
 
 export class Wallet {
@@ -59,32 +69,50 @@ export class Wallet {
 export class GetAddressResponseTransaction {
   inputs: GetAddressResponseTransactionInput[];
   outputs: GetAddressResponseTransactionOutput[];
+  status: any;
   timestamp: number;
   txid: string;
 }
 
-export function parseGetAddressTransaction(raw: GetAddressResponseTransaction): Transaction {
+export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, address: string): Transaction {
+
+  let balance = 0;
+  for (const input of raw.inputs) {
+    if (input.owner.toLowerCase() === address.toLowerCase()) {
+      balance -= parseFloat(input.coins);
+    }
+  }
+  for (let output of raw.outputs) {
+    if (output.dst.toLowerCase() === address.toLowerCase()) {
+      balance += parseFloat(output.coins);
+    }
+  }
+
   return {
     block: null,
     id: raw.txid,
     timestamp: raw.timestamp,
     inputs: raw.inputs.map(input => parseGetAddressInput(input)),
     outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
-    status: null,
+    status: raw.status.confirmed,
+    balance: balance,
+    addressBalance: null,
   }
 }
 
 class GetAddressResponseTransactionInput {
   uxid: string;
   owner: string;
+  coins: string;
+  hours: string;
 }
 
 function parseGetAddressInput(raw: GetAddressResponseTransactionInput): Output {
   return {
     address: raw.owner,
-    coins: null,
+    coins: parseFloat(raw.coins),
     hash: raw.uxid,
-    hours: null,
+    hours: parseInt(raw.hours),
   }
 }
 
@@ -104,11 +132,33 @@ function parseGetAddressOutput(raw: GetAddressResponseTransactionOutput): Output
   }
 }
 
+export class GetUnconfirmedTransaction {
+  transaction: GetUnconfirmedTransactionBody;
+  received: string;
+  is_valid: boolean;
+}
+
+export class GetUnconfirmedTransactionBody {
+  txid: string;
+  inputs: string[];
+  outputs: GetAddressResponseTransactionOutput[];
+}
+
+export function parseGetUnconfirmedTransaction(raw: GetUnconfirmedTransaction): UnconfirmedTransaction {
+  return {
+    id: raw.transaction.txid,
+    inputs: raw.transaction.inputs,
+    outputs: raw.transaction.outputs.map(output => parseGetAddressOutput(output)),
+    valid: raw.is_valid,
+    timestamp: new Date(raw.received).getTime(),
+  }
+}
+
 export class GetBlocksResponse {
   blocks: GetBlocksResponseBlock[];
 }
 
-class GetBlocksResponseBlock {
+export class GetBlocksResponseBlock {
   body: GetBlocksResponseBlockBody;
   header: GetBlocksResponseBlockHeader;
 }
@@ -131,6 +181,8 @@ function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransa
     inputs: transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
     status: null,
+    balance: null,
+    addressBalance: null,
   }
 }
 
@@ -215,6 +267,8 @@ export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
     outputs: raw.txn.outputs.map(output => parseGetTransactionOutput(output)),
     status: raw.status.confirmed,
     timestamp: raw.txn.timestamp,
+    balance: null,
+    addressBalance: null,
   }
 }
 

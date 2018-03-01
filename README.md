@@ -82,6 +82,30 @@ installing node and npm then running `npm install` and `npm run build`.
 make build-ng
 ```
 
+### Formatting
+
+`explorer.go` should be formatted with `goimports`. You can do this with:
+
+```sh
+make format
+```
+
+You must have goimports installed (use `make install-linters`).
+
+### Code Linting
+
+Install prerequisites:
+
+```sh
+make install-linters
+```
+
+Run linters:
+
+```sh
+make lint
+```
+
 ## Deployment
 
 Compile `explorer.go` to a binary:

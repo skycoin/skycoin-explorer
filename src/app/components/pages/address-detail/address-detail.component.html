@@ -1,19 +1,35 @@
 <div class="row">
   <div class="col-sm-8 -details">
     <h2>{{ address }}</h2>
-    <p><span># of Transactions</span> {{ this.transactions ? this.transactions.length : 0 }} </p>
-    <p><span>Balance</span> {{ balance }} </p>
+    <p *ngIf="transactions !== undefined">
+      <span># of Transactions</span> {{ transactions.length }}
+    </p>
+    <p *ngIf="balance !== undefined">
+      <span>Balance</span> {{ balance | number:'1.0-6'}}
+    </p>
   </div>
   <div class="col-sm-4 -qr-code">
     <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
   </div>
 </div>
 
-<div class="transaction" *ngFor="let transaction of transactions">
+<p *ngIf="transactions === undefined">
+    <span *ngIf="!longErrorMsg; else error_msg">
+      Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
+    </span>
+    <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
+  </p>
+
+<div class="transaction" *ngFor="let transaction of (transactions || [])">
   <div class="-title">
     <div class="row">
-      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction.id }}</span></div>
-      <div class="col-sm-4 -right">{{ transaction.timestamp }}</div>
+      <div class="col-sm-8 -left">
+        Transaction ID <a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a>
+        <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">
+          {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} SKY <ng-container *ngIf="!transaction.status">(pending)</ng-container>
+        </div>
+      </div>
+      <div class="col-sm-4 -right">{{ transaction.timestamp * 1000 | date: 'short' }}</div>
     </div>
   </div>
   <div class="-header">
@@ -35,10 +51,15 @@
       <div class="col-sm-7">
         <div class="-row" *ngFor="let output of transaction.outputs">
           <div class="width-3-4 gutter-right -left -link">
-            <span (click)="openAddress(output)">{{ output.address }}</span>
+            <a [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
           </div>
           <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="-final-balance -right"><span class="-transparent">Final address balance: </span>{{ transaction.addressBalance | number:'1.0-6' }}</div>
       </div>
     </div>
   </div>

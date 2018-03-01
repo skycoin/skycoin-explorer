@@ -2,18 +2,29 @@
   <div class="col-sm-12">
     <h2>Transaction</h2>
     <div class="block-details">
-      <div class="-row"><span>Status</span> {{ transaction ? (transaction.status ? 'Confirmed' : 'Unconfirmed') : 'loading...' }} </div>
-      <div class="-row"><span>Timestamp</span> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : 'loading...' }} </div>
-      <div class="-row"><span>Block</span> {{ transaction ? transaction.block : 'loading...' }} </div>
+      <div class="-row"><span>Status</span> {{ transaction ? (transaction.status ? 'Confirmed' : 'Unconfirmed') : loadingMsg }} </div>
+      <div class="-row"><span>Timestamp</span> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }} </div>
+      <div class="-row"><span>Block</span> {{ transaction ? transaction.block : loadingMsg }} </div>
     </div>
   </div>
 </div>
 
-<div class="transaction">
+<p *ngIf="!transaction">
+  <span *ngIf="!longErrorMsg; else error_msg">
+    Waiting for data <i class="fa fa-spinner fa-spin fa-fw"></i>
+  </span>
+  <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
+</p>
+
+<div class="transaction" *ngIf="transaction">
   <div class="-title">
     <div class="row">
-      <div class="col-sm-8 -left">Transaction ID <span>{{ transaction ? transaction.id : 'loading...' }}</span></div>
-      <div class="col-sm-4 -right">{{ transaction ? transaction.timestamp : 'loading...' }}</div>
+      <div class="col-sm-8 -left">
+        Transaction ID
+        <a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a>
+        <span *ngIf="transaction === undefined">loading ..</span>
+      </div>
+      <div class="col-sm-4 -right">{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : 'loading...' }}</div>
     </div>
   </div>
   <div class="-header">
@@ -35,7 +46,7 @@
       <div class="col-sm-7">
         <div class="-row" *ngFor="let output of transaction.outputs">
           <div class="width-3-4 gutter-right -left -link">
-            <span (click)="openAddress(output)">{{ output.address }}</span>
+            <a [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
           </div>
           <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
         </div>

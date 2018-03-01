@@ -45,7 +45,7 @@ h2 {
     line-height: 20px;
     padding: 15px 20px;
 
-    span {
+    a {
       color: $primary;
       display: inline-block;
       margin-left: 15px;
@@ -74,6 +74,14 @@ h2 {
         border-bottom: none;
       }
     }
+
+    .-final-balance {
+      border-top: 1px solid #EFF0F0;
+      padding: 10px 12px;
+    }
+    .-transparent {
+      opacity: 0.25;
+    }
   }
 
   .-left {
@@ -87,5 +95,22 @@ h2 {
 
   .-right {
     text-align: right;
+  }
+
+  .-label {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 2px 15px;
+    color: white;
+    margin-left: 15px;
+  }
+  .-green {
+    background-color: $green;
+  }
+  .-red {
+    background-color: $red;
+  }
+  .-warning {
+    background-color: $warning;
   }
 }

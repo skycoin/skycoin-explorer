@@ -18,7 +18,7 @@ export class UnconfirmedTransactionsPage {
   getDetailsRow() {
     return this.goToUnconfirmedTransactions().then(() => {
       return element
-        .all(by.css(".-row"))
+        .all(by.css(".transactions-details .-row"))
         .count()
         .then(count => {
           return count;

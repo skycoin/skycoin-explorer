@@ -37,8 +37,8 @@ describe("skycoin-explorer Block Details Page", () => {
     expect(page.getTransactionInput()).toEqual(64);
   });
 
-  it("should show One Transaction Output  and its length should be 64", () => {
+  it("should show One Transaction Output  and its length should be 35", () => {
     page.navigateTo();
-    expect(page.getOneTransactionOutput()).toEqual(64);
+    expect(page.getOneTransactionOutput()).toEqual(35);
   });
 });

@@ -14,7 +14,7 @@ describe("skycoin-explorer Unconfirmed Transactions Page", () => {
     );
   });
 
-  it("should display 3 Unconfirmed Transactions details", () => {
+  it("should display 3 Unconfirmed Transactions details Rows", () => {
     page.navigateTo();
     expect(page.getDetailsRow()).toEqual(3);
   });

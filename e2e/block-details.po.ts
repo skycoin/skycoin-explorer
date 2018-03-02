@@ -67,8 +67,8 @@ export class BlocksDetailsPage {
   getOneTransactionOutput() {
     return this.goToOneBlockDetails().then(() => {
       return element
-        .all(by.css(".-row > .width-4-5.gutter-right"))
-        .get(1)
+        .all(by.css(".-row > .width-4-5.gutter-right a"))
+        .get(0)
         .getText()
         .then(text => text.length);
     });

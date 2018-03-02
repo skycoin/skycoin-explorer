@@ -1,4 +1,4 @@
-import { browser, by, element } from "protractor";
+import { browser, by, element, protractor } from "protractor";
 
 export class SkycoinExplorerPage {
   navigateTo() {
@@ -59,5 +59,14 @@ export class SkycoinExplorerPage {
       .then(() => {
         return this.getBlocksListCount();
       });
+  }
+
+  putBlockInSearchCmp() {
+    return element(by.css(".-search-bar-container input")).sendKeys(
+      "b54777a8afb5573dec8388a416fa9e6e9eda577a445ff25ef4a2954e1426b817",
+      protractor.Key.ENTER
+    ).then(()=>{
+      return element(by.css("app-root h2")).getText();
+    })
   }
 }

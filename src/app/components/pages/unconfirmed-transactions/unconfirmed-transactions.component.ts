@@ -21,9 +21,7 @@ export class UnconfirmedTransactionsComponent implements OnInit {
   constructor(
     private explorer: ExplorerService,
     private router: Router
-  ) {
-    this.transactions = null;
-  }
+  ) {}
 
   ngOnInit() {
     this.explorer.getUnconfirmedTransactions().subscribe(transactions => {
@@ -37,13 +35,5 @@ export class UnconfirmedTransactionsComponent implements OnInit {
       this.loadingMsg = "Loading error";
       this.longErrorMsg = "Error loading data, try again later...";
     });
-  }
-
-  openAddress(output: Output) {
-    this.router.navigate(['/app/address', output.address]);
-  }
-
-  openTransaction(transaction: UnconfirmedTransaction) {
-    this.router.navigate(['/app/transaction', transaction.id])
   }
 }

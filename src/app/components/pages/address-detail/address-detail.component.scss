@@ -1,117 +1,37 @@
 @import '../../../../assets/scss/_variables.scss';
 
-h2 {
-  color: $primary;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 42px;
-  text-align: left;
-}
+.-right-margin {
+  padding-right: 150px;
 
-.width-1-4 {
-  display: inline-block;
-  width: 25%;
-}
-
-.width-3-4 {
-  display: inline-block;
-  width: 75%;
-}
-
-.-details {
-  text-align: left;
+  @media (max-width: $max-xs-width) {
+    & {
+      padding-right: 0px;
+    }
+  }
 }
 
 .-qr-code {
+  height: 1px;
   text-align: right;
+}
 
-  app-qr-code {
-    display: inline-block;
-    width: 130px;
+app-qr-code {
+  position: relative;
+  top: -131px;
+  width: 130px;
+  display: inline-block;
+
+  @media (max-width: $max-xs-width) {
+    & {
+      position: inherit;
+      display: block;
+      margin-bottom: 5px;
+    }
   }
 }
 
-.transaction {
-  margin-top: 20px;
-
-  .row {
-    margin-bottom: 0;
-  }
-
-  .-title {
-    background-color: #F0F0F0;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 20px;
-    padding: 15px 20px;
-
-    span {
-      color: $primary;
-      display: inline-block;
-      margin-left: 15px;
-      cursor: pointer;
-    }
-  }
-
-  .-header {
-    background-color: #F7F7F7;
-    border-bottom: 1px solid #EFF0F0;
-    font-size: 12px;
-    line-height: 20px;
-    padding: 15px 20px;
-  }
-
-  .-body {
-    background-color: #FBFBFB;
-    font-size: 12px;
-    line-height: 20px;
-    padding: 10px 20px;
-
-    .-row {
-      border-bottom: 1px solid #EFF0F0;
-      padding: 10px 0;
-
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-
-    .-final-balance {
-      border-top: 1px solid #EFF0F0;
-      padding: 10px 12px;
-    }
-    .-transparent {
-      opacity: 0.25;
-    }
-  }
-
-  .-left {
-    text-align: left;
-  }
-
-  .-link {
-    color: $primary;
-    cursor: pointer;
-  }
-
-  .-right {
-    text-align: right;
-  }
-
-  .-label {
-    display: inline-block;
-    margin-right: 15px;
-    padding: 2px 15px;
-    color: white;
-    margin-left: 15px;
-  }
-  .-green {
-    background-color: $green;
-  }
-  .-red {
-    background-color: $red;
-  }
-  .-warning {
-    background-color: $warning;
+@media (min-width: ($max-xs-width+1)) {
+  .-tx-number {
+    padding-top: 0 !important;
   }
 }

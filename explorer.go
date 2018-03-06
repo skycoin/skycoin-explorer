@@ -534,22 +534,22 @@ var apiEndpoints = []APIEndpoint{
         {
             "address": "zMDywYdGEDtTSvWnCyc3qsYHWwj9ogws74",
             "coins": "1000000.000000",
-            "locked": true
+            "locked": false
         },
         {
             "address": "z6CJZfYLvmd41GRVE8HASjRcy5hqbpHZvE",
             "coins": "1000000.000000",
-            "locked": true
+            "locked": false
         },
         {
             "address": "wyQVmno9aBJZmQ99nDSLoYWwp7YDJCWsrH",
             "coins": "1000000.000000",
-            "locked": true
+            "locked": false
         },
         {
             "address": "tBaeg9zE2sgmw5ZQENaPPYd6jfwpVpGTzS",
             "coins": "1000000.000000",
-            "locked": true
+            "locked": false
         }
     ]
 }`,

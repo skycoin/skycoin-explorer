@@ -60,6 +60,18 @@ SKYCOIN_ADDR=http://127.0.0.1:3333 ./explorer
 make run-api
 ```
 
+### Docker images
+
+```
+$ docker build -t skycoin/skycoint-explorer .
+$ docker run -p 8001:8001 skycoin/skycoin-explorer
+```
+
+Access the explorer: [http://localhost:8001](http://localhost:8001).
+
+The `SKYCOIN_ADDR` and the `EXPLORER_HOST` environment variables can be passed
+to the running container to modify the default behavior.
+
 ## API documentation
 
 HTML documentation:

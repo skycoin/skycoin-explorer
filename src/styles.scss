@@ -1,0 +1,197 @@
+@import './assets/scss/_variables.scss';
+/* You can add global styles to this file, and also import other style files */
+
+a, a:hover, a:focus {
+  color: inherit;
+}
+
+h2 {
+  color: $primary;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 42px;
+  text-align: left;
+}
+
+.element-details-wrapper {
+
+  width: 100%;
+    
+  .element-details {
+    background-color: $col-normal-background;
+    padding: $siz-normal-margin $siz-big-margin;
+    text-align: left;
+
+    > .-row {
+      border-bottom: 1px solid $col-normal-separator;
+      font-size: $siz-normal-text;
+      padding: $siz-normal-margin 0;
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      span:first-child {
+        display: inline-block;
+        opacity: $transparent;
+        width: 110px;
+      }
+
+      .-link {
+        color: $primary;
+      }
+    }
+  }
+}
+
+.-msg-container {
+  padding: $siz-normal-margin $siz-big-margin;
+}
+
+@media (min-width: ($max-sm-width+1)) {
+  .-xs-sm-only {
+    display: none !important;
+  }
+}
+@media (min-width: ($max-xs-width+1)) {
+  .-xs-only {
+    display: none !important;
+  }
+}
+@media (max-width: $max-xs-width) {
+  .-not-xs {
+    display: none !important;
+  }
+}
+
+.transaction {
+  margin-top: $siz-big-margin;
+  font-size: $siz-normal-text;
+
+  .row {
+    margin-bottom: 0;
+  }
+
+  .-title {
+    background-color: $col-hard-background;
+    font-weight: 700;
+    padding: $siz-normal-margin $siz-big-margin;
+
+    a {
+      color: $primary;
+      margin-left: 15px;
+    }
+    .-date {
+      text-align: right;
+    }
+    .-label {
+      display: inline-block;
+      margin: 0px 15px;
+      padding: 2px 15px;
+      color: white;
+    }
+  
+    @media (max-width: $max-sm-width) {
+      a {
+        margin-left: 0px;
+      }
+      .-date {
+        text-align: left;
+      }
+      .-label {
+        margin: 5px 0px 0px 0px;
+      }
+
+      .row {
+        > div {
+          .-row {
+            border-bottom: 1px solid $col-hard-separator;
+            padding: $siz-normal-margin 0;
+          }
+          &:last-child {
+            .-row {
+              border-bottom: none;
+              padding-bottom: 0px;
+            }
+          }
+          &:first-child {
+            .-row {
+              padding-top: 0px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .-header {
+    background-color: $col-normal-background;
+    border-bottom: 1px solid $col-normal-separator;
+    padding: $siz-normal-margin $siz-big-margin;
+
+    @media (max-width: $max-xs-width) {
+      & {
+        margin: 0px (-$siz-big-margin);
+      }
+    }
+  }
+
+  .-data {
+    background-color: $col-soft-background;
+    padding: 0px $siz-big-margin;
+
+    @media (max-width: $max-xs-width) {
+      & {
+        padding: 0px $siz-big-margin;
+      }
+    }
+
+    .-body {
+      border-bottom: 1px solid $col-normal-separator;
+      padding: $siz-normal-margin 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .-balance {
+        margin-top: 5px;
+      }
+
+      .-link {
+        color: $primary;
+      }
+    }
+
+    .-final-balance {
+      border-top: 1px solid $col-normal-separator;
+      padding: $siz-small-margin 0px;
+      text-align: right;
+
+      @media (max-width: $max-xs-width) {
+        & {
+          border-top: none;
+          text-align: left;
+        }
+      }
+    }
+    .-transparent {
+      opacity: $transparent;
+    }
+  }
+
+  .-green {
+    background-color: $green;
+  }
+  .-red {
+    background-color: $red;
+  }
+  .-warning {
+    background-color: $warning;
+  }
+}

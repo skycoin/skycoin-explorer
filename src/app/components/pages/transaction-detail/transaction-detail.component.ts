@@ -27,10 +27,10 @@ export class TransactionDetailComponent implements OnInit {
         transaction => this.transaction = transaction,
         error => {
           this.loadingMsg = "Loading error";
-          if (error.status >= 500)
-            this.longErrorMsg = "Error loading data, try again later...";
-          else if (error.status >= 400)
+          if (error.status >= 400 && error.status < 400)
             this.longErrorMsg = "Unable to find the transaction";
+          else
+            this.longErrorMsg = "Error loading data, try again later...";
         }
       );
   }

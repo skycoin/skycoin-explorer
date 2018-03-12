@@ -21,9 +21,7 @@ export class UnconfirmedTransactionsComponent implements OnInit {
   constructor(
     private explorer: ExplorerService,
     private router: Router
-  ) {
-    this.transactions = null;
-  }
+  ) {}
 
   ngOnInit() {
     this.explorer.getUnconfirmedTransactions().subscribe(transactions => {

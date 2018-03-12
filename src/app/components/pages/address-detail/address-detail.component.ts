@@ -13,6 +13,7 @@ export class AddressDetailComponent implements OnInit {
   address: string;
   balance: number;
   transactions: any[];
+  loadingMsg = "Loading...";
   longErrorMsg: string;
 
   constructor(
@@ -29,10 +30,13 @@ export class AddressDetailComponent implements OnInit {
     }).subscribe(
       transactions => this.transactions = transactions,
       error => {
-        if (error.status >= 500)
-          this.longErrorMsg = "Error loading data, try again later...";
-        else if (error.status >= 400)
+        if (error.status >= 400 && error.status < 500) {
+          this.loadingMsg = "Loading error";
           this.longErrorMsg = "Without transactions";
+        } else {
+          this.loadingMsg = "Loading error";
+          this.longErrorMsg = "Error loading data, try again later...";
+        }
       }
     );
 

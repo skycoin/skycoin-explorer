@@ -19,9 +19,7 @@ export class BlockDetailsComponent implements OnInit {
     private explorer: ExplorerService,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-    this.block = null;
-  }
+  ) { }
 
   ngOnInit() {
     this.route.params.filter(params => +params['id'] !== null)
@@ -35,10 +33,11 @@ export class BlockDetailsComponent implements OnInit {
         }
       }, error => {
         this.loadingMsg = "Loading error";
-        if (error.status >= 500)
-          this.longErrorMsg = "Error loading data, try again later...";
-        else if (error.status >= 400)
+        if (error.status >= 400 && error.status < 500)
           this.longErrorMsg = "The block does not exist";
+        else
+        this.longErrorMsg = "Error loading data, try again later...";
+          
       });
   }
 }

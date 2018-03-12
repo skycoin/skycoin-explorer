@@ -22,7 +22,7 @@
       "styles": [
         "assets/css/bootstrap.min.css",
         "assets/css/font-awesome.min.css",
-        "styles.css"
+        "styles.scss"
       ],
       "scripts": [
         "js/jquery-2.1.1.min.js",

@@ -1,26 +1,23 @@
 @import '../../../../assets/scss/_variables.scss';
 
-h2 {
-  color: $primary;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 42px;
-  margin-top: 40px;
-  text-align: left;
-}
-
 .-details {
   text-align: right;
 
+  @media (max-width: $max-xs-width) {
+    & {
+      text-align: left;
+    }
+  }
+
   p {
-    font-size: 12px;
+    font-size: $siz-normal-text;
     line-height: 14px;
     padding: 3px 0;
     margin-bottom: 5px;
 
     .-label {
       display: inline-block;
-      opacity: 0.25;
+      opacity: $transparent;
     }
 
     .-link {
@@ -36,50 +33,44 @@ h2 {
   }
 }
 
-.-table {
-  font-size: 12px;
-  line-height: 14px;
-  margin-bottom: 40px;
-  margin-top: 20px;
-  padding: 0 15px;
-  text-align: left;
+.table {
+  margin-top: $siz-big-margin;
+  font-size: $siz-normal-text;
 
   .row {
     margin-bottom: 0;
   }
 
-  .-headers > .row > div {
-    background-color: #F7F7F7;
-    color: #cdcdcd;
-    padding: 18px 20px;
+  .-header {
+    background-color: $col-normal-background;
+    border-bottom: 1px solid $col-normal-separator;
+    padding: $siz-normal-margin $siz-big-margin;
   }
 
-  .-body > .row {
+  .-row {
+    background-color: $col-soft-background;
+    padding: $siz-big-margin $siz-big-margin;
+    border-bottom: 1px solid $col-normal-separator;
     display: block;
-  }
 
-  .-body > .row > div {
-    background-color: #FBFBFB;
-    border-bottom: 1px solid #EFF0F0;
-    padding: 28px 20px;
-
-    &.-gray {
+    .-gray {
       color: #8D8D91;
     }
+  }
 
-    &.-msg {
-      cursor: auto;
-    }
+  .-fix-left {
+    padding-left: 0px;
   }
 }
 
 .pagination {
-  margin-top: 20px;
+  margin-top: $siz-big-margin;
   text-align: right;
+  font-size: $siz-normal-text;
 
   a {
-    background-color: #fbfbfb;
-    border: 1px solid #eff0f0;
+    background-color: $col-soft-background;
+    border: 1px solid $col-normal-separator;
     cursor: pointer;
     display: inline-block;
     height: 30px;
@@ -94,9 +85,15 @@ h2 {
     -o-user-select: none;
 
     &.disabled {
-      background-color: #fbfbfb;
+      background-color: $col-soft-background;
       color: #cdcdcd;
       cursor: not-allowed;
+    }
+  }
+
+  @media (max-width: $max-xs-width) {
+    .-hide-xs {
+      display: none;
     }
   }
 }

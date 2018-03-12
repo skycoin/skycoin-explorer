@@ -1,65 +1,72 @@
-<div class="row">
-  <div class="col-sm-8 -details">
-    <h2>{{ address }}</h2>
-    <p *ngIf="transactions !== undefined">
-      <span># of Transactions</span> {{ transactions.length }}
-    </p>
-    <p *ngIf="balance !== undefined">
-      <span>Balance</span> {{ balance | number:'1.0-6'}}
-    </p>
-  </div>
-  <div class="col-sm-4 -qr-code">
-    <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
+<div class="element-details-wrapper -right-margin">
+  <h2 class="-not-xs">{{ address }}</h2>
+  <h2 class="-xs-only">Address</h2>
+  <div class="element-details">
+    <div class="-row -xs-only">
+      <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
+      <span>Address</span><br class="-xs-only" /> {{ address ? address : loadingMsg }}
+    </div>
+    <div class="-row -tx-number"><span># of Transactions</span><br class="-xs-only" /> {{ transactions ? transactions.length : loadingMsg }} </div>
+    <div class="-row"><span>Balance</span><br class="-xs-only" /> {{ transactions ? ( balance | number:'1.0-6') : loadingMsg }} </div>
   </div>
 </div>
+<div class="-qr-code -not-xs">
+  <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
+</div>
 
-<p *ngIf="transactions === undefined">
+<div class="row -msg-container" *ngIf="transactions === undefined">
+  <div class="col-sm-12">
     <span *ngIf="!longErrorMsg; else error_msg">
       Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
     </span>
     <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
-  </p>
+  </div>
+</div>
 
-<div class="transaction" *ngFor="let transaction of (transactions || [])">
+<div class="transaction" *ngFor="let transaction of transactions">
   <div class="-title">
     <div class="row">
-      <div class="col-sm-8 -left">
-        Transaction ID <a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a>
-        <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">
-          {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} SKY <ng-container *ngIf="!transaction.status">(pending)</ng-container>
-        </div>
-      </div>
-      <div class="col-sm-4 -right">{{ transaction.timestamp * 1000 | date: 'short' }}</div>
-    </div>
-  </div>
-  <div class="-header">
-    <div class="row">
-      <div class="col-sm-5 -left">Inputs</div>
-      <div class="col-sm-7">
-        <div class="width-3-4 gutter-right -left">Outputs</div>
-        <div class="width-1-4 gutter-left -right">Value</div>
-      </div>
-    </div>
-  </div>
-  <div class="-body">
-    <div class="row">
-      <div class="col-sm-5 -left">
-        <div class="-row" *ngFor="let input of transaction.inputs">
-          {{ input.hash }}
-        </div>
-      </div>
-      <div class="col-sm-7">
-        <div class="-row" *ngFor="let output of transaction.outputs">
-          <div class="width-3-4 gutter-right -left -link">
-            <a [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
+      <div class="col-md-9 col-sm-12">
+        <div class="-row">
+          Transaction ID<span class="-xs-sm-only">:<br/></span>
+          <a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a>
+          <br class="-xs-sm-only" />
+          <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">
+            {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} SKY <ng-container *ngIf="!transaction.status">(pending)</ng-container>
           </div>
-          <div class="width-1-4 gutter-left -right">{{ output.coins }}</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">Date:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
+    </div>
+  </div>
+
+  <div class="-header -not-xs">
+    <div class="row">
+      <div class="col-sm-6">Inputs</div>
+      <div class="col-sm-6">Outputs</div>
+    </div>
+  </div>
+  <div class="-data">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="-header -xs-only">Inputs</div>
+        <div class="-body" *ngFor="let input of transaction.inputs">
+          {{ input.hash }}
+          <div class="-balance"><span class="-transparent">Coins:</span> {{ input.coins | number:'1.0-6' }}</div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="-header -xs-only">Outputs</div>
+        <div class="-body" *ngFor="let output of transaction.outputs">
+          <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
+          <div class="-balance"><span class="-transparent">Coins:</span> {{ output.coins | number:'1.0-6' }}</div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div class="-final-balance -right"><span class="-transparent">Final address balance: </span>{{ transaction.addressBalance | number:'1.0-6' }}</div>
+        <div class="-header -xs-only">Final address balance</div>
+        <div class="-final-balance -right"><span class="-transparent -not-xs">Final address balance: </span><span class="-transparent -xs-only">Coins: </span>{{ transaction.addressBalance | number:'1.0-6' }}</div>
       </div>
     </div>
   </div>

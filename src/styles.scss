@@ -195,3 +195,33 @@ h2 {
     background-color: $warning;
   }
 }
+
+.table {
+  margin-top: $siz-big-margin;
+  font-size: $siz-normal-text;
+
+  .row {
+    margin-bottom: 0;
+  }
+
+  .-header {
+    background-color: $col-normal-background;
+    border-bottom: 1px solid $col-normal-separator;
+    padding: $siz-normal-margin $siz-big-margin;
+  }
+
+  .-row {
+    background-color: $col-soft-background;
+    padding: $siz-big-margin $siz-big-margin;
+    border-bottom: 1px solid $col-normal-separator;
+    display: block;
+
+    .-gray {
+      color: #8D8D91;
+    }
+  }
+
+  .-fix-left {
+    padding-left: 0px;
+  }
+}

@@ -1,0 +1,26 @@
+<h2>Rich List</h2>
+
+<div class="table">
+  <div class="-header">
+    <div class="row">
+      <div class="col-sm-1 -not-xs">#</div>
+      <div class="col-xs-6 col-sm-8">Address</div>
+      <div class="col-xs-6 col-sm-3">Coins</div>
+    </div>
+  </div>
+  <div class="row -msg-container" *ngIf="!entries.length">
+    <div class="col-sm-12">
+      <span *ngIf="!longErrorMsg; else error_msg">
+        Waiting for data <i class="fa fa-spinner fa-spin fa-fw"></i>
+      </span>
+      <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
+    </div>
+  </div>
+  <a class="-row" *ngFor="let entry of entries; let i = index" [routerLink]="'/app/address/' + entry.address">
+    <div class="row">
+      <div class="col-sm-1 -not-xs -gray">{{ i+1 }}</div>
+      <div class="col-xs-6 col-sm-8">{{ entry.address }}</div>
+      <div class="col-xs-6 col-sm-3">{{ entry.coins | number:'1.0-6' }}</div>
+    </div>
+  </a>
+</div>

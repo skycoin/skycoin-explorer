@@ -62,6 +62,12 @@ export class Wallet {
   hidden?: boolean;
 }
 
+export class RichlistEntry {
+  address: string;
+  coins: string;
+  locked: boolean;
+}
+
 /**
  * Node Response Types
  */

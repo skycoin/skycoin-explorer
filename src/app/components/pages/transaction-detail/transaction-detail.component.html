@@ -41,7 +41,7 @@
       <div class="col-sm-6">
         <div class="-header -xs-only">Inputs</div>
         <div class="-body" *ngFor="let input of transaction.inputs">
-          {{ input.hash }}
+          <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a>
           <div class="-balance"><span class="-transparent">Coins:</span> {{ input.coins | number:'1.0-6' }}</div>
         </div>
       </div>

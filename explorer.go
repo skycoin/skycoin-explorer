@@ -614,6 +614,85 @@ var apiEndpoints = []APIEndpoint{
     "count": 10103
 }`,
 	},
+	{
+		ExplorerPath:   "/api/transactions",
+		SkycoinPath:    "/transactions",
+		QueryArgs:      []string{"addrs", "confirmed"},
+		Description:    "Returns transactions for a list of comma-separated addresses. If no addresses are specified, returns all transactions.",
+		ExampleRequest: "/api/transactions?addrs=7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD,6dkVxyKFbFKg9Vdg6HPg1UANLByYRqkrdY&confirmed=1",
+		ExampleResponse: `[
+			{
+					"status": {
+							"confirmed": true,
+							"unconfirmed": false,
+							"height": 10492,
+							"block_seq": 1177,
+							"unknown": false
+					},
+					"time": 1494275011,
+					"txn": {
+							"length": 317,
+							"type": 0,
+							"txid": "b09cd3a8baef6a449848f50a1b97943006ca92747d4e485d0647a3ea74550eca",
+							"inner_hash": "2cb370051c92521a04ba5357e229d8ffa90d9d1741ea223b44dd60a1483ee0e5",
+							"timestamp": 1494275011,
+							"sigs": [
+									"a55155ca15f73f0762f79c15917949a936658cff668647daf82a174eed95703a02622881f9cf6c7495536676f931b2d91d389a9e7b034232b3a1519c8da6fb8800",
+									"cc7d7cbd6f31adabd9bde2c0deaa9277c0f3cf807a4ec97e11872817091dc3705841a6adb74acb625ee20ab6d3525350b8663566003276073d94c3bfe22fe48e01"
+							],
+							"inputs": [
+									"4f4b0078a9cd19b3395e54b3f42af6adc997f77f04e0ca54016c67c4f2384e3c",
+									"36f4871646b6564b2f1ab72bd768a67579a1e0242bc68bcbcf1779bc75b3dddd"
+							],
+							"outputs": [
+									{
+											"uxid": "5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191",
+											"dst": "2K6NuLBBapWndAssUtkxKfCtyjDQDHrEhhT",
+											"coins": "8.000000",
+											"hours": 7454
+									},
+									{
+											"uxid": "a1268e9bd2033b49b44afa765d20876467254f51e5515626780467267a65c563",
+											"dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
+											"coins": "1.000000",
+											"hours": 7454
+									}
+							]
+					}
+			},
+			{
+					"status": {
+							"confirmed": true,
+							"unconfirmed": false,
+							"height": 10491,
+							"block_seq": 1178,
+							"unknown": false
+					},
+					"time": 1494275231,
+					"txn": {
+							"length": 183,
+							"type": 0,
+							"txid": "a6446654829a4a844add9f181949d12f8291fdd2c0fcb22200361e90e814e2d3",
+							"inner_hash": "075f255d42ddd2fb228fe488b8b468526810db7a144aeed1fd091e3fd404626e",
+							"timestamp": 1494275231,
+							"sigs": [
+									"9b6fae9a70a42464dda089c943fafbf7bae8b8402e6bf4e4077553206eebc2ed4f7630bb1bd92505131cca5bf8bd82a44477ef53058e1995411bdbf1f5dfad1f00"
+							],
+							"inputs": [
+									"5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191"
+							],
+							"outputs": [
+									{
+											"uxid": "70fa9dfb887f9ef55beb4e960f60e4703c56f98201acecf2cad729f5d7e84690",
+											"dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
+											"coins": "8.000000",
+											"hours": 931
+									}
+							]
+					}
+			}
+	]`,
+	},
 }
 
 var docEndpoint APIEndpoint = APIEndpoint{

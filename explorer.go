@@ -57,6 +57,8 @@ var (
 )
 
 func init() {
+	log.SetOutput(os.Stdout)
+
 	explorerHost = os.Getenv("EXPLORER_HOST")
 	if explorerHost == "" {
 		explorerHost = defaultExplorerHost

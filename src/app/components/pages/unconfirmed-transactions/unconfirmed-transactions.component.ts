@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Output, UnconfirmedTransaction } from '../../../app.datatypes';
+import { Output, Transaction } from '../../../app.datatypes';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 
@@ -12,7 +12,7 @@ import 'rxjs/add/operator/switchMap';
 })
 export class UnconfirmedTransactionsComponent implements OnInit {
 
-  transactions: UnconfirmedTransaction[];
+  transactions: Transaction[];
   leastRecent: number;
   mostRecent: number;
   loadingMsg = "Loading...";

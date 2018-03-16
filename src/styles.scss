@@ -13,6 +13,10 @@ h2 {
   text-align: left;
 }
 
+.-float-left {
+  float: left;
+}
+
 .element-details-wrapper {
 
   width: 100%;
@@ -36,8 +40,9 @@ h2 {
         padding-top: 0;
       }
 
-      span:first-child {
-        display: inline-block;
+      > span:first-child {
+        display: block;
+        float: left;
         opacity: $transparent;
         width: 110px;
       }
@@ -95,6 +100,9 @@ h2 {
       padding: 2px 15px;
       color: white;
     }
+    .-address {
+      float: left;
+    }
   
     @media (max-width: $max-sm-width) {
       a {
@@ -105,6 +113,10 @@ h2 {
       }
       .-label {
         margin: 5px 0px 0px 0px;
+      }
+      .-address {
+        float: none;
+        display: inline;
       }
 
       .row {
@@ -172,6 +184,13 @@ h2 {
       border-top: 1px solid $col-normal-separator;
       padding: $siz-small-margin 0px;
       text-align: right;
+
+      > div {
+        display: inline-block;
+        > div:last-child {
+          display: inline-block;
+        }
+      }
 
       @media (max-width: $max-xs-width) {
         & {

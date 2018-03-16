@@ -1,11 +1,11 @@
 <div class="element-details-wrapper">
   <h2>Block Details</h2>
   <div class="element-details">
-    <div class="-row"><span>Height</span><br class="-xs-only" /> {{ block ? block.id : loadingMsg }} </div>
-    <div class="-row"><span>Timestamp</span><br class="-xs-only" /> {{ block ? ((block.timestamp * 1000) | date: 'short') : loadingMsg }} </div>
-    <div class="-row"><span>Hash</span><br class="-xs-only" /> <a [routerLink]="'/app/block/' + block.id" class="-link" *ngIf="block">{{ block.hash }}</a> <span *ngIf="!block">{{ loadingMsg }}</span> </div>
-    <div class="-row"><span>Parent Hash</span><br class="-xs-only" /> <a [routerLink]="'/app/block/' + (block.id-1)" class="-link" *ngIf="block && block.parent_hash">{{ block.parent_hash }}</a> <span *ngIf="block && !block.parent_hash">Without parent block</span> <span *ngIf="!block">{{ loadingMsg }}</span> </div>
-    <div class="-row"><span>Total Amount</span><br class="-xs-only" /> {{ block ? ((block.transactions | transactionsValue) | number:'1.0-6') + ' SKY' : loadingMsg }} </div>
+    <div class="-row"><span>Height</span><br class="-xs-only" /><div> {{ block ? block.id : loadingMsg }} </div></div>
+    <div class="-row"><span>Timestamp</span><br class="-xs-only" /><div> {{ block ? ((block.timestamp * 1000) | date: 'short') : loadingMsg }} </div></div>
+    <div class="-row"><span>Hash</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + block.id" class="-link" *ngIf="block">{{ block.hash }}</a> <span *ngIf="!block">{{ loadingMsg }}</span> </div></div>
+    <div class="-row"><span>Parent Hash</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + (block.id-1)" class="-link" *ngIf="block && block.parent_hash">{{ block.parent_hash }}</a> <span *ngIf="block && !block.parent_hash">Without parent block</span> <span *ngIf="!block">{{ loadingMsg }}</span> </div></div>
+    <div class="-row"><span>Total Amount</span><br class="-xs-only" /><div> {{ block ? ((block.transactions | transactionsValue) | number:'1.0-6') + ' SKY' : loadingMsg }} </div></div>
   </div>
 </div>
 
@@ -24,8 +24,8 @@
       <div class="row">
         <div class="col-md-8 col-sm-12">
           <div class="-row">
-            Transaction ID<span class="-xs-sm-only">:<br/></span>
-            <a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a>
+            <div class="-float-left">Transaction ID<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+            <div><a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a></div>
           </div>
         </div>
       </div>
@@ -33,8 +33,8 @@
 
     <div class="-header -not-xs">
       <div class="row">
-        <div class="col-sm-6">Inputs</div>
-        <div class="col-sm-6">Outputs</div>
+        <div class="col-sm-6"><div>Inputs</div></div>
+        <div class="col-sm-6"><div>Outputs</div></div>
       </div>
     </div>
     <div class="-data">
@@ -42,15 +42,15 @@
         <div class="col-sm-6">
           <div class="-header -xs-only">Inputs</div>
           <div class="-body" *ngFor="let input of transaction.inputs">
-            {{ input.hash }}
-            <div class="-balance"><span class="-transparent">Coins:</span> {{ input.coins | number:'1.0-6' }}</div>
+            <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a>
+            <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
           </div>
         </div>
         <div class="col-sm-6">
           <div class="-header -xs-only">Outputs</div>
           <div class="-body" *ngFor="let output of transaction.outputs">
             <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
-            <div class="-balance"><span class="-transparent">Coins:</span> {{ output.coins | number:'1.0-6' }}</div>
+            <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
           </div>
         </div>
       </div>

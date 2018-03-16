@@ -45,14 +45,6 @@ export class Transaction {
   addressBalance: number;
 }
 
-export class UnconfirmedTransaction {
-  id: string;
-  inputs: string[];
-  outputs: Output[];
-  valid: boolean;
-  timestamp: number;
-}
-
 export class Wallet {
   label: string;
   addresses: Address[];
@@ -150,13 +142,16 @@ export class GetUnconfirmedTransactionBody {
   outputs: GetAddressResponseTransactionOutput[];
 }
 
-export function parseGetUnconfirmedTransaction(raw: GetUnconfirmedTransaction): UnconfirmedTransaction {
+export function parseGetUnconfirmedTransaction(raw: GetUnconfirmedTransaction): Transaction {
   return {
+    block: null,
     id: raw.transaction.txid,
-    inputs: raw.transaction.inputs,
+    inputs: raw.transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
     outputs: raw.transaction.outputs.map(output => parseGetAddressOutput(output)),
-    valid: raw.is_valid,
+    status: raw.is_valid,
     timestamp: new Date(raw.received).getTime(),
+    balance: null,
+    addressBalance: null,
   }
 }
 

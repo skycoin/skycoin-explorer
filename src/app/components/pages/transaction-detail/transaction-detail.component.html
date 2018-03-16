@@ -1,9 +1,9 @@
 <div class="element-details-wrapper">
   <h2>Transaction</h2>
   <div class="element-details">
-    <div class="-row"><span>Status</span><br class="-xs-only" /> {{ transaction ? (transaction.status ? 'Confirmed' : 'Unconfirmed') : loadingMsg }} </div>
-    <div class="-row"><span>Timestamp</span><br class="-xs-only" /> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }} </div>
-    <div class="-row"><span>Block</span><br class="-xs-only" /> {{ transaction ? transaction.block : loadingMsg }} </div>
+    <div class="-row"><span>Status</span><br class="-xs-only" /><div> {{ transaction ? (transaction.status ? 'Confirmed' : 'Unconfirmed') : loadingMsg }} </div></div>
+    <div class="-row"><span>Timestamp</span><br class="-xs-only" /><div> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }} </div></div>
+    <div class="-row"><span>Block</span><br class="-xs-only" /><div> {{ transaction ? transaction.block : loadingMsg }} </div></div>
   </div>
 </div>
 
@@ -21,9 +21,9 @@
     <div class="row">
       <div class="col-md-8 col-sm-12">
         <div class="-row">
-          Transaction ID<span class="-xs-sm-only">:<br/></span>
-          <a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a>
-          <span *ngIf="transaction === undefined">{{ loadingMsg }}</span>
+          <div class="-float-left">Transaction ID<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+          <div><a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a></div>
+          <div *ngIf="transaction === undefined">{{ loadingMsg }}</div>
         </div>
       </div>
       <div class="col-md-4 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">Date:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
@@ -32,8 +32,8 @@
 
   <div class="-header -not-xs">
     <div class="row">
-      <div class="col-sm-6">Inputs</div>
-      <div class="col-sm-6">Outputs</div>
+      <div class="col-sm-6"><div>Inputs</div></div>
+      <div class="col-sm-6"><div>Outputs</div></div>
     </div>
   </div>
   <div class="-data">
@@ -41,15 +41,15 @@
       <div class="col-sm-6">
         <div class="-header -xs-only">Inputs</div>
         <div class="-body" *ngFor="let input of transaction.inputs">
-          {{ input.hash }}
-          <div class="-balance"><span class="-transparent">Coins:</span> {{ input.coins | number:'1.0-6' }}</div>
+          <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a>
+          <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="-header -xs-only">Outputs</div>
         <div class="-body" *ngFor="let output of transaction.outputs">
           <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
-          <div class="-balance"><span class="-transparent">Coins:</span> {{ output.coins | number:'1.0-6' }}</div>
+          <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
         </div>
       </div>
     </div>

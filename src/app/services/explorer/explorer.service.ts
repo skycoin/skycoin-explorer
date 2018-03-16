@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { Observable } from 'rxjs/Observable';
-import { Block, Output, parseGetAddressTransaction, parseGetBlocksBlock, parseGetTransaction, parseGetUnconfirmedTransaction, parseGetUxout, UnconfirmedTransaction, Transaction } from '../../app.datatypes';
+import { Block, Output, parseGetAddressTransaction, parseGetBlocksBlock, parseGetTransaction, parseGetUnconfirmedTransaction, parseGetUxout, Transaction } from '../../app.datatypes';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -54,11 +54,18 @@ export class ExplorerService {
       })
   }
 
-  getUnconfirmedTransactions(): Observable<UnconfirmedTransaction[]> {
+  getUnconfirmedTransactions(): Observable<Transaction[]> {
     return this.api.getUnconfirmedTransactions()
-      .map(response => response.map(rawTx => parseGetUnconfirmedTransaction(rawTx)));
-  }
+      .flatMap(response => {
 
+        let parsedResponse = response.map(rawTx => parseGetUnconfirmedTransaction(rawTx));
+
+        return Observable.forkJoin(parsedResponse.map(transaction => {
+          return this.retrieveInputsForTransaction(transaction);
+        }));
+      })
+  }
+  
   getTransaction(transactionId: string): Observable<Transaction> {
     return this.api.getTransaction(transactionId)
       .map(response => parseGetTransaction(response))

@@ -57,7 +57,7 @@ export class ApiService {
   }
 
   getRichlist(): Observable<RichlistEntry[]> {
-    return this.get('richlist');
+    return this.get('richlist').map(response => response.richlist);
   }
 
   // Old methods

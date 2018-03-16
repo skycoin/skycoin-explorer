@@ -11,7 +11,7 @@ import 'rxjs/Subscription';
 export class RichlistComponent implements OnInit {
 
   entries: RichlistEntry[] = [];
-  loadingMsg = "Loading...";
+  loadingMsg = 'Loading...';
   longErrorMsg: string;
 
   constructor(
@@ -21,9 +21,9 @@ export class RichlistComponent implements OnInit {
   ngOnInit() {
 
     this.api.getRichlist().first().subscribe(entries => this.entries = entries,
-    error => {
-      this.loadingMsg = "Loading error";
-      this.longErrorMsg = "Error loading data, try again later...";
+        () => {
+      this.loadingMsg = 'Loading error';
+      this.longErrorMsg = 'Error loading data, try again later...';
     });
 
   }

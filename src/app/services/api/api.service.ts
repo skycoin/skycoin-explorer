@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CoinSupply } from '../../components/pages/blocks/block';
 import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransaction, GetUxoutResponse, GetAddressResponseTransaction,
-    GetCurrentBalanceResponse, GetBlocksResponseBlock } from '../../app.datatypes';
+    GetCurrentBalanceResponse, GetBlocksResponseBlock, RichlistEntry } from '../../app.datatypes';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -54,6 +54,10 @@ export class ApiService {
 
   getUxout(uxid: string): Observable<GetUxoutResponse> {
     return this.get('uxout', { uxid: uxid });
+  }
+
+  getRichlist(): Observable<RichlistEntry[]> {
+    return this.get('richlist').map(response => response.richlist);
   }
 
   // Old methods

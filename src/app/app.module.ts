@@ -18,6 +18,7 @@ import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
 import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 import { FormsModule } from '@angular/forms';
+import { RichlistComponent } from 'app/components/pages/richlist/richlist.component';
 
 
 const ROUTES = [
@@ -50,6 +51,10 @@ const ROUTES = [
     path: 'app/unconfirmedtransactions',
     component: UnconfirmedTransactionsComponent
   },
+  {
+    path: 'app/richlist',
+    component: RichlistComponent
+  },
 ];
 
 @NgModule({
@@ -66,6 +71,7 @@ const ROUTES = [
     SearchBarComponent,
     TransactionDetailComponent,
     TransactionsValuePipe,
+    RichlistComponent,
   ],
   imports: [
     BrowserModule,

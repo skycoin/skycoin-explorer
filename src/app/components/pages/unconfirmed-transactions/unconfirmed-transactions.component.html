@@ -1,9 +1,9 @@
 <div class="element-details-wrapper">
   <h2>Unconfirmed Transactions</h2>
   <div class="element-details">
-    <div class="-row"><span>Quantity</span><br class="-xs-only" /> {{ transactions ? (transactions.length > 0 ? transactions.length : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div>
-    <div class="-row"><span>Newest</span><br class="-xs-only" /> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div>
-    <div class="-row"><span>Oldest</span><br class="-xs-only" /> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div>
+    <div class="-row"><span>Quantity</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? transactions.length : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
+    <div class="-row"><span>Newest</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
+    <div class="-row"><span>Oldest</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
   </div>
 </div>
 
@@ -21,9 +21,9 @@
     <div class="row">
       <div class="col-md-8 col-sm-12">
         <div class="-row">
-          Transaction ID<span class="-xs-sm-only">:<br/></span>
-          <a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a>
-          <span *ngIf="transaction === undefined">{{ loadingMsg }}</span>
+          <div class="-float-left">Transaction ID<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+          <div><a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a></div>
+          <div *ngIf="transaction === undefined">{{ loadingMsg }}</div>
         </div>
       </div>
       <div class="col-md-4 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">First seen at:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
@@ -32,8 +32,8 @@
 
   <div class="-header -not-xs">
     <div class="row">
-      <div class="col-sm-6">Inputs</div>
-      <div class="col-sm-6">Outputs</div>
+      <div class="col-sm-6"><div>Inputs</div></div>
+      <div class="col-sm-6"><div>Outputs</div></div>
     </div>
   </div>
   <div class="-data">
@@ -49,7 +49,7 @@
         <div class="-header -xs-only">Outputs</div>
         <div class="-body" *ngFor="let output of transaction.outputs">
           <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
-          <div class="-balance"><span class="-transparent">Coins:</span> {{ output.coins | number:'1.0-6' }}</div>
+          <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
         </div>
       </div>
     </div>

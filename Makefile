@@ -21,6 +21,9 @@ all: build-go build-ng ## Build explorer.go and the angular frontend
 setcap: ## Use setcap to allow the binary to bind to port 80
 	sudo setcap 'cap_net_bind_service=+ep' $(EXPLORER)
 
+protractor: ## Run e2e tests. Must have explorer.go running (call "make run").
+	npm run e2e
+
 test: ## Run tests
 	go test . -timeout=1m
 

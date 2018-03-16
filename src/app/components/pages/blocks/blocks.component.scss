@@ -15,9 +15,14 @@
     padding: 3px 0;
     margin-bottom: 5px;
 
-    .-label {
+    >span:first-child {
       display: inline-block;
+    }
+
+    .-label {
+      display: block;
       opacity: $transparent;
+      float: left;
     }
 
     .-link {

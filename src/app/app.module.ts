@@ -41,6 +41,11 @@ const ROUTES = [
   },
   {
     path: 'app/address/:address',
+    redirectTo: 'app/address/:address/1',
+    pathMatch: 'full'
+  },
+  {
+    path: 'app/address/:address/:page',
     component: AddressDetailComponent
   },
   {

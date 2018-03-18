@@ -96,7 +96,7 @@ h2 {
     }
     .-label {
       display: inline-block;
-      margin: 0px 15px;
+      margin: 0px 30px;
       padding: 2px 15px;
       color: white;
     }
@@ -243,4 +243,15 @@ h2 {
   .-fix-left {
     padding-left: 0px;
   }
+}
+
+.hidden {
+  display: none !important;
+}
+
+copy-button {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  overflow: visible;
 }

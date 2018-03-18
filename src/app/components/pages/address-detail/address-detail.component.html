@@ -26,17 +26,17 @@
 <div class="transaction" *ngFor="let transaction of transactions">
   <div class="-title">
     <div class="row">
-      <div class="col-md-9 col-sm-12">
+      <div class="col-md-10 col-sm-12">
         <div class="-row">
           <div class="-float-left">Transaction ID<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
-          <div class="-address"><a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a></div>
+          <div class="-address"><a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a><copy-button [text]="transaction.id"></copy-button></div>
           <br class="-xs-sm-only" />
           <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">
             {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} SKY <ng-container *ngIf="!transaction.status">(pending)</ng-container>
           </div>
         </div>
       </div>
-      <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">Date:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
+      <div class="col-md-2 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">Date:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
     </div>
   </div>
 
@@ -51,14 +51,14 @@
       <div class="col-sm-6">
         <div class="-header -xs-only">Inputs</div>
         <div class="-body" *ngFor="let input of transaction.inputs">
-          <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a>
+          <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a><copy-button [text]="input.address"></copy-button>
           <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="-header -xs-only">Outputs</div>
         <div class="-body" *ngFor="let output of transaction.outputs">
-          <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a>
+          <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><copy-button [text]="output.address"></copy-button>
           <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
         </div>
       </div>

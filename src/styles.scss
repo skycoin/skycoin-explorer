@@ -75,7 +75,7 @@ h2 {
 }
 
 .transaction {
-  margin-top: $siz-big-margin;
+  margin-top: $siz-big-margin*3;
   font-size: $siz-normal-text;
 
   .row {
@@ -246,5 +246,13 @@ h2 {
 
   .-fix-left {
     padding-left: 0px;
+  }
+}
+
+.container{
+  padding: 80px 0;
+
+  @media (max-width: 479px) {
+    padding: 24px 0;
   }
 }

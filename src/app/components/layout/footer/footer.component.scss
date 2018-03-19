@@ -78,7 +78,7 @@ footer {
     align-items: center;
 
     & > div {
-      width: 50%;
+      width: 33.3333333333%;
 
       @media (max-width: 479px) {
         width: 100%;
@@ -105,11 +105,7 @@ footer {
       }
     }
     .contact p {
-      text-align: right;
-
-      @media (max-width: 479px) {
-        text-align: center;
-      }
+      text-align: center;
     }
   }
 

@@ -9,7 +9,7 @@
 @font-face {
   font-family: 'Skycoin';
   font-style: italic;
-  font-weight: 400;
+  font-weight: 200;
   src: url('fonts/skycoin/Skycoin-LightItalic.woff2') format('woff2'),
   url('fonts/skycoin/Skycoin-LightItalic.woff') format('woff');
 }

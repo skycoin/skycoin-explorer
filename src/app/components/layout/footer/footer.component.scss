@@ -1,25 +1,104 @@
 footer {
-  padding-top: 40px;
+  background-color: rgb(16, 31, 52);
 
-  a {
-    color: #616d7c;
+  .footer-container {
+    margin: 0 auto;
+    max-width: 115rem;
+    padding: 0 1rem;
+  }
+
+  .footer-first-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-top: 80px;
+    padding-bottom: 56px;
+
+    .footer-links {
+      text-align: left;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+
+      font-size: 0.875rem;
+
+      a {
+        margin-left: 3.25rem;
+        padding: 0.5rem;
+        font-weight: 100;
+        font-size: 14px;
+        color: white;
+        &:hover{
+          text-decoration: none;
+          opacity: .7;
+        }
+      }
+    }
+  }
+
+  .footer-second-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 24px 0;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+
+    .social-link {
+      padding: 16px 0;
+      text-align: center;
+      font-size: 0;
+      width: 8.333333333333332%;
+    }
+
+    img {
+      width: 21px;
+      height: 21px;
+    }
+  }
+
+  .footer-third-row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 40px 0;
+    align-items: center;
+
+    & > div {
+      width: 33.33333333333333%;
+
+      p {
+        line-height: 1.75rem;
+        font-size: 14px;
+        font-weight: 100;
+        color: #616d7c;
+        text-transform: none;
+      }
+    }
+
+    .copyright p {
+      text-align: left;
+    }
+    .contact p {
+      text-align: center;
+    }
+  }
+
+  .languages {
     display: block;
-    font-size: 15px;
-    line-height: 28px;
-  }
+    list-style: none;
+    margin: 0;
+    text-align: right;
 
-  img {
-    height: 40px;
-    margin-top: 20px;
-  }
+    span {
+      display: inline;
+      color: #616d7c;
+      font-size: 13px;
 
-  p {
-    color: #394049;
-    display: block;
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 28px;
+      &:not(:first-of-type):before {
+        content: ' · '
+      }
+    }
   }
-
-  padding-bottom: 40px;
 }

@@ -33,10 +33,12 @@ h1, h2, h3, h4, h5, h6, p, a, body, div {
 }
 html {
   -webkit-font-smoothing: antialiased;
+  height: 100%;
 }
 body {
   word-wrap: break-word;
   font-family: 'SkycoinSans', Verdana, sans-serif;
+  height: 100%;
 }
 
 .wrapper {

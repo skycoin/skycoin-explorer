@@ -14,28 +14,32 @@ footer {
     justify-content: space-between;
     flex-wrap: wrap;
     padding-top: 40px;
-    padding-bottom: 40px;
+    padding-bottom: 24px;
 
     @media (min-width: 40em) {
       flex-direction: row;
       align-items: center;
       padding-top: 80px;
+      padding-bottom: 80px;
     }
 
     .footer-links {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       flex-wrap: wrap;
       align-items: flex-start;
       text-align: left;
-
+      width: 100%;
+      margin-top: 24px;
 
       @media (min-width: 40em) {
-        flex-direction: row;
         align-items: center;
+        width: auto;
+        margin-top: 0;
       }
 
       a {
+        width: 33.3333%;
         padding: 0.4rem;
         font-size: 1.4rem;
         font-family: 'SkycoinSans';
@@ -43,6 +47,7 @@ footer {
         color: white;
 
         @media (min-width: 40em) {
+          width: auto;
           margin-left: 3.2rem;
           border-top: 2px solid transparent;
           border-bottom: 2px solid transparent;

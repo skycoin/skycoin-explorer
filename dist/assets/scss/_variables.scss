@@ -1,13 +1,17 @@
-$font-family: Skycoin, verdana, sans-serif;
+$font-family: "SkycoinSans", sans-serif;
 $primary: #0072ff;
 $green: #00FF92;
 $red: #FF004E;
 $warning: #ffad1a;
+$gray: #92A4BA;
+
+$text-heading: #394049;
 
 $transparent: 0.25;
 
 $col-hard-background: #F0F0F0;
-$col-normal-background: #F7F7F7;
+$col-normal-background: #fff;
+$col-odd-background: rgb(244, 249, 255);
 $col-soft-background: #FBFBFB;
 $col-hard-separator: #E2E2E2;
 $col-normal-separator: #EFF0F0;
@@ -20,4 +24,4 @@ $siz-big-margin: 20px;
 $siz-normal-margin: 15px;
 $siz-small-margin: 10px;
 
-$siz-normal-text: 12px;
+$siz-normal-text: 14px;

@@ -6,7 +6,7 @@ a, a:hover, a:focus {
 }
 
 h2 {
-  color: $primary;
+  color: $text-heading;
   font-size: 24px;
   font-weight: 700;
   line-height: 42px;
@@ -20,7 +20,7 @@ h2 {
 .element-details-wrapper {
 
   width: 100%;
-    
+
   .element-details {
     background-color: $col-normal-background;
     padding: $siz-normal-margin $siz-big-margin;
@@ -43,7 +43,7 @@ h2 {
       > span:first-child {
         display: block;
         float: left;
-        opacity: $transparent;
+        color: $gray;
         width: 110px;
       }
 
@@ -75,7 +75,7 @@ h2 {
 }
 
 .transaction {
-  margin-top: $siz-big-margin;
+  margin-top: $siz-big-margin*3;
   font-size: $siz-normal-text;
 
   .row {
@@ -83,7 +83,7 @@ h2 {
   }
 
   .-title {
-    background-color: $col-hard-background;
+    background-color: $col-odd-background;
     font-weight: 700;
     padding: $siz-normal-margin $siz-big-margin;
 
@@ -103,7 +103,7 @@ h2 {
     .-address {
       float: left;
     }
-  
+
     @media (max-width: $max-sm-width) {
       a {
         margin-left: 0px;
@@ -154,7 +154,7 @@ h2 {
   }
 
   .-data {
-    background-color: $col-soft-background;
+    background-color: $col-odd-background;
     padding: 0px $siz-big-margin;
 
     @media (max-width: $max-xs-width) {
@@ -200,7 +200,7 @@ h2 {
       }
     }
     .-transparent {
-      opacity: $transparent;
+      color: $gray;
     }
   }
 
@@ -218,6 +218,7 @@ h2 {
 .table {
   margin-top: $siz-big-margin;
   font-size: $siz-normal-text;
+  font-weight: normal !important;
 
   .row {
     margin-bottom: 0;
@@ -225,22 +226,33 @@ h2 {
 
   .-header {
     background-color: $col-normal-background;
-    border-bottom: 1px solid $col-normal-separator;
     padding: $siz-normal-margin $siz-big-margin;
   }
 
   .-row {
-    background-color: $col-soft-background;
+    background-color: $col-normal-background;
     padding: $siz-big-margin $siz-big-margin;
-    border-bottom: 1px solid $col-normal-separator;
     display: block;
+    font-weight: normal;
+
+    &:nth-child(even) {
+      background-color: $col-odd-background;
+    }
 
     .-gray {
-      color: #8D8D91;
+      color: #92A4BA;
     }
   }
 
   .-fix-left {
     padding-left: 0px;
+  }
+}
+
+.container{
+  padding: 80px 0;
+
+  @media (max-width: 479px) {
+    padding: 24px 0;
   }
 }

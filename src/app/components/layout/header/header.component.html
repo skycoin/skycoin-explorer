@@ -1,13 +1,41 @@
-<nav>
-  <div class="row">
-    <div class="col-sm-4 col-xs-6">
-      <img src="/assets/img/logo.png" (click)="openBlocks()">
-    </div>
-    <div class="col-sm-3 col-sm-push-5 col-xs-6">
-      <a class="-back-link" href="https://www.skycoin.net/">←<span class="-back-to"> Back to</span> Skycoin.net</a>
-    </div>
-    <div class="col-sm-5 col-sm-pull-3 col-xs-12">
-      <app-search-bar></app-search-bar>
+<header class="page-header">
+  <div class="wrapper">
+    <div class="nav-wrapper">
+      <div class="header-inner">
+        <a href="https://www.skycoin.net/" class="logo">
+          <img src="/assets/img/logo.svg" alt="Skycoin">
+        </a>
+        <div>
+          <button class="menu-toggle-btn menu-show-btn" (click)="toggleMenu(true)"></button>
+          <div class="menu-overlay" *ngIf="menuVisible"></div>
+          <div class="nav">
+            <div class="nav-inner" [class.visible]="menuVisible">
+              <button class="menu-toggle-btn menu-hide-btn" (click)="toggleMenu(false)"></button>
+              <div class="nav-group">
+                <a href="https://www.skycoin.net/blog" class="nav-link">Blog</a>
+                <a href="/" class="nav-link active">Explorer</a>
+                <a href="https://www.skycoin.net/downloads/" class="nav-link">Wallet</a>
+                <a href="https://www.skycoin.net/team" class="nav-link">Team</a>
+                <a href="https://www.skycoin.net/ecosystem" class="nav-link">Ecosystem</a>
+              </div>
+              <div class="nav-group mobile">
+                <a href="https://t.me/Skycoin" target="_blank" class="nav-link">
+                  <img src="/assets/img/social/telegram.svg" alt="Telegram">
+                  Telegram
+                </a>
+                <a href="https://discordapp.com" target="_blank" class="nav-link">
+                  <img src="/assets/img/social/discord.svg" alt="Discord">
+                  Discord
+                </a>
+              </div>
+              <div class="nav-group">
+                <a href="https://www.skycoin.net/downloads/" class="nav-button">Buy Skycoin</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</nav>
+</header>
+

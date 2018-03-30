@@ -5,6 +5,7 @@ import { Block, Output, parseGetAddressTransaction, parseGetBlocksBlock, parseGe
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/observable/of';
 
 @Injectable()
 export class ExplorerService {
@@ -60,9 +61,13 @@ export class ExplorerService {
 
         let parsedResponse = response.map(rawTx => parseGetUnconfirmedTransaction(rawTx));
 
-        return Observable.forkJoin(parsedResponse.map(transaction => {
-          return this.retrieveInputsForTransaction(transaction);
-        }));
+        if (parsedResponse.length > 0) {
+          return Observable.forkJoin(parsedResponse.map(transaction => {
+            return this.retrieveInputsForTransaction(transaction);
+          }));
+        } else {
+          return Observable.of(parsedResponse);
+        }
       })
   }
   

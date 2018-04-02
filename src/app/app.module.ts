@@ -19,6 +19,7 @@ import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 import { FormsModule } from '@angular/forms';
 import { RichlistComponent } from 'app/components/pages/richlist/richlist.component';
+import { UnspentOutputsComponent } from 'app/components/pages/unspent-outputs/unspent-outputs.component';
 
 
 const ROUTES = [
@@ -55,6 +56,10 @@ const ROUTES = [
     path: 'app/richlist',
     component: RichlistComponent
   },
+  {
+    path: 'app/unspent/:address',
+    component: UnspentOutputsComponent
+  },
 ];
 
 @NgModule({
@@ -72,6 +77,7 @@ const ROUTES = [
     TransactionDetailComponent,
     TransactionsValuePipe,
     RichlistComponent,
+    UnspentOutputsComponent,
   ],
   imports: [
     BrowserModule,

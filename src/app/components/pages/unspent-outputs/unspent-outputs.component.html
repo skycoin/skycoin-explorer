@@ -1,0 +1,44 @@
+<div class="element-details-wrapper">
+  <h2>Unspent Outputs</h2>
+  <div class="element-details">
+    <div class="-row"><span>Address</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link" *ngIf="address">{{ address }}</a> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
+    <div class="-row"><span># of outputs</span><br class="-xs-only" /><div> {{ outputs ? outputs.head_outputs.length : loadingMsg }} </div></div>
+    <div class="-row"><span>Total</span><br class="-xs-only" /><div> {{ coins ? (coins | number:'1.0-6') + ' SKY' : loadingMsg }} </div></div>
+  </div>
+</div>
+
+<div class="row -msg-container" *ngIf="outputs === undefined">
+  <div class="col-sm-12">
+    <span *ngIf="!longErrorMsg; else error_msg">
+      Waiting for outputs <i class="fa fa-spinner fa-spin fa-fw"></i>
+    </span>
+    <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
+  </div>
+</div>
+
+<div *ngIf="outputs">
+  <div class="transaction" *ngFor="let output of outputs.head_outputs">
+    <div class="-title">
+      <div class="row">
+        <div class="col-md-9 col-sm-12">
+          <div class="-row">
+            <div class="-float-left">Origin<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+            <div class="-address"><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a></div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">Date:<br/></span>{{ output.time * 1000 | date: 'short' }}</div></div>
+      </div>
+    </div>
+
+    <div class="-data -clear-background">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="-body">
+            <div>{{ output.hash }}</div>
+            <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

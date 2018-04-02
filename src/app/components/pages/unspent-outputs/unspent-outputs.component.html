@@ -23,7 +23,7 @@
         <div class="col-md-9 col-sm-12">
           <div class="-row">
             <div class="-float-left">Origin<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
-            <div class="-address"><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a></div>
+            <div><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a></div>
           </div>
         </div>
         <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">Date:<br/></span>{{ output.time * 1000 | date: 'short' }}</div></div>

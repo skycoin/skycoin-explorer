@@ -7,7 +7,8 @@
       <span>Address</span><br class="-xs-only" /> {{ address ? address : loadingMsg }}
     </div>
     <div class="-row -tx-number"><span># of Transactions</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : loadingMsg }} </div></div>
-    <div class="-row"><span>Balance</span><br class="-xs-only" /><div> {{ transactions ? ( balance | number:'1.0-6') : loadingMsg }} </div></div>
+    <div class="-row"><span>Total Received</span><br class="-xs-only" /><div> {{ transactions ? ( totalReceived | number:'1.0-6') : loadingMsg }} </div></div>
+    <div class="-row"><span>Current Balance</span><br class="-xs-only" /><div> {{ transactions ? ( balance | number:'1.0-6') : loadingMsg }} </div></div>
   </div>
 </div>
 <div class="-qr-code -not-xs">

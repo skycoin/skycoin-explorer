@@ -11,6 +11,7 @@ import { Output, Transaction } from '../../../app.datatypes';
 })
 export class AddressDetailComponent implements OnInit {
   address: string;
+  totalReceived: number;
   balance: number;
   transactions: any[];
   loadingMsg = "Loading...";
@@ -27,9 +28,10 @@ export class AddressDetailComponent implements OnInit {
     this.route.params.switchMap((params: Params) => {
       this.address = params['address'];
       return this.explorer.getTransactions(this.address);
-    }).subscribe(
-      transactions => this.transactions = transactions,
-      error => {
+    }).subscribe(transactions => {
+        this.transactions = transactions;
+        this.totalReceived = transactions.reduce((a, b) => b.balance > 0 ? (a + b.balance) : a, 0);
+      }, error => {
         if (error.status >= 400 && error.status < 500) {
           this.loadingMsg = "Loading error";
           this.longErrorMsg = "Without transactions";

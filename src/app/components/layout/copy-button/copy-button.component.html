@@ -1,0 +1,4 @@
+<div class="icon" (click)="copy()" unselectable="on">
+  &#xf0c5;
+  <div class="label" [class.hidden]="!showLabel" [@showMessage]="animState" (@showMessage.done)="animationDone($event)">Copied</div>
+</div>

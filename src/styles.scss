@@ -237,10 +237,17 @@ h2 {
 
     &:nth-child(even) {
       background-color: $col-odd-background;
+      &:hover {
+        background-color: $col-odd-background-hover;
+      }
     }
 
     .-gray {
       color: #92A4BA;
+    }
+
+    &:hover {
+      background-color: $col-normal-background-hover;
     }
   }
 

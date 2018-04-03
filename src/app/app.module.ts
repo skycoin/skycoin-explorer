@@ -20,6 +20,8 @@ import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 import { FormsModule } from '@angular/forms';
 import { RichlistComponent } from 'app/components/pages/richlist/richlist.component';
 import { UnspentOutputsComponent } from 'app/components/pages/unspent-outputs/unspent-outputs.component';
+import { CopyButtonComponent } from 'app/components/layout/copy-button/copy-button.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 const ROUTES = [
@@ -42,6 +44,11 @@ const ROUTES = [
   },
   {
     path: 'app/address/:address',
+    redirectTo: 'app/address/:address/1',
+    pathMatch: 'full'
+  },
+  {
+    path: 'app/address/:address/:page',
     component: AddressDetailComponent
   },
   {
@@ -78,9 +85,11 @@ const ROUTES = [
     TransactionsValuePipe,
     RichlistComponent,
     UnspentOutputsComponent,
+    CopyButtonComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES),

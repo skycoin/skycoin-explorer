@@ -96,7 +96,7 @@ h2 {
     }
     .-label {
       display: inline-block;
-      margin: 0px 15px;
+      margin: 0px 30px;
       padding: 2px 15px;
       color: white;
     }
@@ -241,10 +241,17 @@ h2 {
 
     &:nth-child(even) {
       background-color: $col-odd-background;
+      &:hover {
+        background-color: $col-odd-background-hover;
+      }
     }
 
     .-gray {
       color: #92A4BA;
+    }
+
+    &:hover {
+      background-color: $col-normal-background-hover;
     }
   }
 
@@ -253,10 +260,56 @@ h2 {
   }
 }
 
+.hidden {
+  display: none !important;
+}
+
+copy-button {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  overflow: visible;
+}
+
 .container{
   padding: 80px 0;
 
   @media (max-width: 479px) {
     padding: 24px 0;
+  }
+}
+
+.pagination {
+  margin-top: $siz-big-margin;
+  text-align: right;
+  font-size: $siz-normal-text;
+
+  a {
+    background-color: $col-soft-background;
+    border: 1px solid $col-normal-separator;
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    line-height: 28px;
+    min-width: 30px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+
+    &.disabled {
+      background-color: $col-soft-background;
+      color: #cdcdcd;
+      cursor: not-allowed;
+    }
+  }
+
+  @media (max-width: $max-xs-width) {
+    .-hide-xs {
+      display: none;
+    }
   }
 }

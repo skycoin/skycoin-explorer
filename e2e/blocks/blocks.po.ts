@@ -13,6 +13,10 @@ export class BlocksPage {
     return element(by.css('.-link')).getText();
   }
 
+  getRichListText() {
+    return element.all(by.css('.-link')).get(1).getText();
+  }
+
   getDetailslabels() {
     return element.all(by.css('.-label'));
   }

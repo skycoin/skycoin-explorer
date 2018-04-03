@@ -15,6 +15,11 @@ describe('skycoin-explorer Blocks Page', () => {
     expect(page.getUnconfirmedTransactionsText()).toEqual('Unconfirmed Transactions');
   });
 
+  it('should display Rich List text', () => {
+    page.navigateTo();
+    expect(page.getRichListText()).toEqual('Rich List');
+  });
+
   it('should contain 5 Details Blocks Labels', () => {
     page.navigateTo();
     expect<any>(page.getDetailsLabelsCount()).toEqual(5);

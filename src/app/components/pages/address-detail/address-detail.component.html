@@ -23,7 +23,7 @@
   </div>
 </div>
 
-<div class="transaction" *ngFor="let transaction of transactions">
+<div class="transaction" *ngFor="let transaction of pageTransactions">
   <div class="-title">
     <div class="row">
       <div class="col-md-9 col-sm-12">
@@ -70,4 +70,16 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="pagination" *ngIf="transactions && transactions.length > pageSize">
+  <a class="-first" [ngClass]="{ disabled: pageIndex <= 0 }" [routerLink]="'/app/address/' + address + '/1'">«</a>
+  <a class="-previous" [ngClass]="{ disabled: pageIndex <= 0 }" [routerLink]="'/app/address/' + address + '/' + (pageIndex > 0 ? pageIndex : 1)">‹</a>
+  <a class="-page -hide-xs" *ngIf="pageIndex > 1" [routerLink]="'/app/address/' + address + '/' + (pageIndex - 1)">{{ pageIndex - 1 }}</a>
+  <a class="-page" *ngIf="pageIndex > 0" [routerLink]="'/app/address/' + address + '/' + pageIndex">{{ pageIndex }}</a>
+  <a class="-page disabled">{{ pageIndex + 1 }}</a>
+  <a class="-page" *ngIf="pageIndex < pageCount - 1" [routerLink]="'/app/address/' + address + '/' + (pageIndex + 2)">{{ pageIndex + 2 }}</a>
+  <a class="-page -hide-xs" *ngIf="pageIndex < pageCount - 2" [routerLink]="'/app/address/' + address + '/' + (pageIndex + 3)">{{ pageIndex + 3 }}</a>
+  <a class="-next" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" [routerLink]="'/app/address/' + address + '/' + (pageIndex + 2 < pageCount ? pageIndex + 2 : pageCount)">›</a>
+  <a class="-last" [ngClass]="{ disabled: pageIndex >= pageCount - 1 }" [routerLink]="'/app/address/' + address + '/' + pageCount">»</a>
 </div>

@@ -45,8 +45,8 @@ export class CopyButtonComponent {
   private static showAnimName = 'show';
   private static hideAnimName = 'hide';
 
-  private animState = CopyButtonComponent.hideAnimName;
-  private showLabel = false;
+  animState = CopyButtonComponent.hideAnimName;
+  showLabel = false;
   @Input() text: string;
   @HostBinding('attr.class') cssClass = 'copy-button'; 
 
@@ -72,7 +72,7 @@ export class CopyButtonComponent {
     this.showLabel = true;
   }
 
-  private animationDone(event: AnimationEvent) {
+  animationDone(event: AnimationEvent) {
     if (event.toState == CopyButtonComponent.showAnimName)
       this.animState = CopyButtonComponent.hideAnimName;
     else

@@ -153,6 +153,10 @@ h2 {
     }
   }
 
+  .-clear-background {
+    background-color: $col-normal-background !important;
+  }
+
   .-data {
     background-color: $col-odd-background;
     padding: 0px $siz-big-margin;

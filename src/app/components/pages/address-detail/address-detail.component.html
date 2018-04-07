@@ -8,6 +8,7 @@
     </div>
     <div class="-row -tx-number"><span># of Transactions</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : loadingMsg }} </div></div>
     <div class="-row"><span>Balance</span><br class="-xs-only" /><div> {{ transactions ? ( balance | number:'1.0-6') : loadingMsg }} </div></div>
+    <div class="-row"><span>Tools</span><br class="-xs-only" /><div> <a [routerLink]="'/app/unspent/' + address" class="-link" *ngIf="address">Unspent outputs</a> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
   </div>
 </div>
 <div class="-qr-code -not-xs">

@@ -19,6 +19,7 @@ import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 import { FormsModule } from '@angular/forms';
 import { RichlistComponent } from 'app/components/pages/richlist/richlist.component';
+import { UnspentOutputsComponent } from 'app/components/pages/unspent-outputs/unspent-outputs.component';
 import { CopyButtonComponent } from 'app/components/layout/copy-button/copy-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppReuseStrategy } from 'app/app.reuse-strategy';
@@ -63,6 +64,10 @@ const ROUTES = [
     path: 'app/richlist',
     component: RichlistComponent
   },
+  {
+    path: 'app/unspent/:address',
+    component: UnspentOutputsComponent
+  },
 ];
 
 @NgModule({
@@ -80,6 +85,7 @@ const ROUTES = [
     TransactionDetailComponent,
     TransactionsValuePipe,
     RichlistComponent,
+    UnspentOutputsComponent,
     CopyButtonComponent,
   ],
   imports: [

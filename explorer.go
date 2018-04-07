@@ -695,6 +695,23 @@ var apiEndpoints = []APIEndpoint{
 			}
 	]`,
 	},
+	{
+		ExplorerPath:   "/api/balance",
+		SkycoinPath:    "/balance",
+		QueryArgs:      []string{"addrs"},
+		Description:    "Returns the combined balance of a list of comma-separated addresses.",
+		ExampleRequest: "/api/balance?addrs=7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD,nu7eSpT6hr5P21uzw7bnbxm83B6ywSjHdq",
+		ExampleResponse: `{
+			"confirmed": {
+					"coins": 70000000,
+					"hours": 28052
+			},
+			"predicted": {
+					"coins": 9000000,
+					"hours": 8385
+			}
+		}`,
+	},
 }
 
 var docEndpoint APIEndpoint = APIEndpoint{

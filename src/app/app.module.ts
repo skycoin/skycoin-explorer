@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, RouteReuseStrategy } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
@@ -19,8 +19,10 @@ import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 import { FormsModule } from '@angular/forms';
 import { RichlistComponent } from 'app/components/pages/richlist/richlist.component';
+import { UnspentOutputsComponent } from 'app/components/pages/unspent-outputs/unspent-outputs.component';
 import { CopyButtonComponent } from 'app/components/layout/copy-button/copy-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppReuseStrategy } from 'app/app.reuse-strategy';
 
 
 const ROUTES = [
@@ -62,6 +64,10 @@ const ROUTES = [
     path: 'app/richlist',
     component: RichlistComponent
   },
+  {
+    path: 'app/unspent/:address',
+    component: UnspentOutputsComponent
+  },
 ];
 
 @NgModule({
@@ -79,6 +85,7 @@ const ROUTES = [
     TransactionDetailComponent,
     TransactionsValuePipe,
     RichlistComponent,
+    UnspentOutputsComponent,
     CopyButtonComponent,
   ],
   imports: [
@@ -91,6 +98,7 @@ const ROUTES = [
   providers: [
     ApiService,
     ExplorerService,
+    {provide: RouteReuseStrategy, useClass: AppReuseStrategy}
   ],
   bootstrap: [AppComponent]
 })

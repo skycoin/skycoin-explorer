@@ -44,7 +44,7 @@ h2 {
         display: block;
         float: left;
         color: $gray;
-        width: 110px;
+        width: 130px;
       }
 
       .-link {
@@ -151,6 +151,10 @@ h2 {
         margin: 0px (-$siz-big-margin);
       }
     }
+  }
+
+  .-clear-background {
+    background-color: $col-normal-background !important;
   }
 
   .-data {

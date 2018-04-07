@@ -35,9 +35,18 @@ export class AddressDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.switchMap((params: Params) => {
+      //Clear the content if the address, and not just the page, changes
+      if (this.address != params['address']) {
+        this.transactions = undefined;
+        this.balance = undefined;
+      }
+
       this.address = params['address'];
       if (params['page'])
         this.pageIndex = parseInt(params['page'], 10) - 1;
+
+      //Clear the list content.
+      this.pageTransactions = undefined;
 
       if (this.transactions)
         return Observable.of(this.transactions);

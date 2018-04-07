@@ -13,6 +13,8 @@ export class AppComponent {
 
     router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);
+      if (event instanceof NavigationEnd)
+        window.scrollTo(0, 0);
     });
   }
 

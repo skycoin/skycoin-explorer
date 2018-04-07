@@ -50,22 +50,22 @@ $img-height-small: 32px;
     }
 }
 .nav-inner {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    width: 270px;
+    display: block;
+    width: 100%;
     height: 100%;
     background: #fff;
     transform: translateX(0);
     transition: transform 400ms ease-in-out;
     text-align: left;
+    overflow-y: auto;
 
   &.visible {
     transform: translateX(-270px);
   }
 
   @media (min-width: 83.2rem) {
-    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
     width: auto;
     height: auto;
     background: transparent;
@@ -90,7 +90,7 @@ $img-height-small: 32px;
       margin-left: 1.6rem;
     }
   }
-
+  
   @media (min-width: 83.2rem) {
     flex-direction: row;
     padding: 0;

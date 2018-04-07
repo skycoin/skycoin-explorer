@@ -13,6 +13,7 @@ import 'rxjs/Rx';
 })
 export class AddressDetailComponent implements OnInit {
   address: string;
+  totalReceived: number;
   balance: number;
   transactions: any[];
   pageTransactions: any[];
@@ -55,6 +56,7 @@ export class AddressDetailComponent implements OnInit {
     }).subscribe(
       transactions => {
         this.transactions = transactions;
+        this.totalReceived = transactions.reduce((a, b) => b.balance > 0 ? (a + b.balance) : a, 0);
         this.updateTransactions();
       },
       error => {

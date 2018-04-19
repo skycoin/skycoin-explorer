@@ -228,6 +228,16 @@ export class GetBlockchainMetadataResponseHead {
   seq: number;
 }
 
+export class GetBalanceResponse {
+  confirmed: GetBalanceResponseElement;
+  predicted: GetBalanceResponseElement;
+}
+
+class GetBalanceResponseElement {
+  coins: number;
+  hours: number;
+}
+
 export class GetCurrentBalanceResponse {
   head_outputs: GetCurrentBalanceResponseOutput[];
 }

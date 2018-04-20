@@ -10,9 +10,9 @@ describe('skycoin-explorer Block Details Page', () => {
     expect(page.getOneBlockDetailsText()).toEqual('Block Details');
   });
 
-  it('should display 5 block details rows', () => {
+  it('should display 6 block details rows', () => {
     page.navigateTo();
-    expect(page.getDetailsRow()).toEqual(5);
+    expect(page.getDetailsRow()).toEqual(6);
   });
 
   it('should show the details of the Hash and its length should be 64', () => {

@@ -12,9 +12,9 @@ describe('skycoin-explorer Address Page', () => {
     expect(address).toBeGreaterThan(26);
   });
 
-  it('should show the Address Info row and its length should be 3', () => {
+  it('should show the Address Info row and its length should be 5', () => {
     page.navigateTo();
-    expect(page.getAddressInfo()).toEqual(3);
+    expect(page.getAddressInfo()).toEqual(5);
   });
 
   it('should show the Transactions Rows and its length should be more than 0', () => {

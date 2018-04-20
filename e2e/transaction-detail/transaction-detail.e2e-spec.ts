@@ -10,9 +10,9 @@ describe('skycoin-explorer Transaction Page', () => {
     expect(page.getTransactionText()).toEqual('Transaction');
   });
 
-  it('should display 5 Transaction details Rows', () => {
+  it('should display 4 Transaction details Rows', () => {
     page.navigateTo();
-    expect(page.getDetailsRow()).toEqual(5);
+    expect(page.getDetailsRow()).toEqual(4);
   });
 
   it('should show the Transaction Id  and its length should be 64', () => {

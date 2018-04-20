@@ -21,6 +21,7 @@ export class Block {
   parent_hash: string;
   timestamp: number;
   transactions: Transaction[];
+  size: number;
 }
 
 export class Blockchain {
@@ -43,6 +44,7 @@ export class Transaction {
   timestamp: number;
   balance: number;
   addressBalance: number;
+  length: number;
 }
 
 export class Wallet {
@@ -70,6 +72,7 @@ export class GetAddressResponseTransaction {
   status: any;
   timestamp: number;
   txid: string;
+  length: number;
 }
 
 export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, address: string): Transaction {
@@ -95,6 +98,7 @@ export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, a
     status: raw.status.confirmed,
     balance: balance,
     addressBalance: null,
+    length: raw.length,
   }
 }
 
@@ -138,6 +142,7 @@ export class GetUnconfirmedTransaction {
 
 export class GetUnconfirmedTransactionBody {
   txid: string;
+  length: number;
   inputs: string[];
   outputs: GetAddressResponseTransactionOutput[];
 }
@@ -152,6 +157,7 @@ export function parseGetUnconfirmedTransaction(raw: GetUnconfirmedTransaction): 
     timestamp: new Date(raw.received).getTime(),
     balance: null,
     addressBalance: null,
+    length: raw.transaction.length,
   }
 }
 
@@ -162,6 +168,7 @@ export class GetBlocksResponse {
 export class GetBlocksResponseBlock {
   body: GetBlocksResponseBlockBody;
   header: GetBlocksResponseBlockHeader;
+  size: number;
 }
 
 export function parseGetBlocksBlock(block: GetBlocksResponseBlock): Block {
@@ -170,7 +177,8 @@ export function parseGetBlocksBlock(block: GetBlocksResponseBlock): Block {
     hash: block.header.block_hash,
     parent_hash: block.header.previous_block_hash,
     timestamp: block.header.timestamp,
-    transactions: block.body.txns.map(transaction => parseGetBlocksTransaction(transaction))
+    transactions: block.body.txns.map(transaction => parseGetBlocksTransaction(transaction)),
+    size: block.size,
   }
 }
 
@@ -184,6 +192,7 @@ function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransa
     status: null,
     balance: null,
     addressBalance: null,
+    length: transaction.length,
   }
 }
 
@@ -202,6 +211,7 @@ class GetBlocksResponseBlockBody {
 
 class GetBlocksResponseBlockBodyTransaction {
   txid: string;
+  length: number;
   inputs: string[];
   outputs: GetBlocksResponseBlockBodyTransactionOutput[];
 }
@@ -270,6 +280,7 @@ export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
     timestamp: raw.txn.timestamp,
     balance: null,
     addressBalance: null,
+    length: raw.txn.length,
   }
 }
 
@@ -308,6 +319,7 @@ class GetTransactionTransaction {
   outputs: GetTransactionOutput[];
   timestamp: number;
   txid: string;
+  length: number;
 }
 
 export class GetUxoutResponse {

@@ -15,6 +15,7 @@ export class UnconfirmedTransactionsComponent implements OnInit {
   transactions: Transaction[];
   leastRecent: number;
   mostRecent: number;
+  totalSize: number;
   loadingMsg = "Loading...";
   longErrorMsg: string;
 
@@ -30,6 +31,7 @@ export class UnconfirmedTransactionsComponent implements OnInit {
         let orderedList = transactions.sort((a, b) => b.timestamp - a.timestamp);
         this.mostRecent = orderedList[0].timestamp;
         this.leastRecent = orderedList[orderedList.length-1].timestamp;
+        this.totalSize = orderedList.map(tx => tx.length).reduce((sum, current) => sum + current);
       }
     }, error => {
       this.loadingMsg = "Loading error";

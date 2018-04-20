@@ -2,6 +2,7 @@
   <h2>Unconfirmed Transactions</h2>
   <div class="element-details">
     <div class="-row"><span>Quantity</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? transactions.length : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
+    <div class="-row"><span>Total Size</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (totalSize | number) + ' bytes' : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
     <div class="-row"><span>Newest</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
     <div class="-row"><span>Oldest</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
   </div>

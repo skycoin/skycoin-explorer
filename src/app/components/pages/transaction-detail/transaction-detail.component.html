@@ -3,6 +3,7 @@
   <div class="element-details">
     <div class="-row"><span>Status</span><br class="-xs-only" /><div> {{ transaction ? (transaction.status ? 'Confirmed' : 'Unconfirmed') : loadingMsg }} </div></div>
     <div class="-row"><span>Timestamp</span><br class="-xs-only" /><div> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }} </div></div>
+    <div class="-row"><span>Size</span><br class="-xs-only" /><div> {{ transaction ? (transaction.length | number) + ' bytes' : loadingMsg }} </div></div>
     <div class="-row"><span>Block</span><br class="-xs-only" /><div> {{ transaction ? transaction.block : loadingMsg }} </div></div>
   </div>
 </div>

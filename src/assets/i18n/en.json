@@ -33,9 +33,10 @@
     "blockhash": "Blockhash"
   },
   "blockDetails": {
-    "title": "Blocks",
+    "title": "Block Details",
     "height": "Height",
     "timestamp": "Timestamp",
+    "size": "Size",
     "hash": "Hash",
     "parentHash": "Parent Hash",
     "totalAmount": "Total Amount",
@@ -64,14 +65,16 @@
     "title": "Transaction",
     "status": "Status",
     "timestamp": "Timestamp",
+    "size": "Size",
     "block": "Block",
     "confirmed": "Confirmed",
     "unconfirmed": "Unconfirmed",
     "canNotFind": "Unable to find the transaction"
   },
-  "UnconfirmedTx": {
+  "unconfirmedTx": {
     "title": "Unconfirmed Transactions",
     "quantity": "Quantity",
+    "size": "Total Size",
     "newest": "Newest",
     "oldest": "Oldest",
     "withoutTransactions": "Currently there are no unconfirmed transactions"

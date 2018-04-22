@@ -313,19 +313,20 @@ var apiEndpoints = []APIEndpoint{
                     {
                         "uxid": "8a941208d3f2d2c4a32438e05645fb64dba3b4b7d83c48d52f51bc1eb9a4117a",
                         "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
-                        "coins": "2361",
+                        "coins": "2361.000000",
                         "hours": 1006716
                     },
                     {
                         "uxid": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
                         "dst": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
-                        "coins": "51",
+                        "coins": "51.000000",
                         "hours": 2013433
                     }
                 ]
             }
         ]
-    }
+    },
+    "size": 414
 }`,
 	},
 
@@ -376,19 +377,20 @@ var apiEndpoints = []APIEndpoint{
                             {
                                 "uxid": "ce1075dd609622b0c28d4106f58943d7f0cae6baffbe9f048bb5bc5f23706b93",
                                 "dst": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
-                                "coins": "4900",
+                                "coins": "4900.000000",
                                 "hours": 6402335
                             },
                             {
                                 "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
                                 "dst": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
-                                "coins": "5",
+                                "coins": "5.000000",
                                 "hours": 6402335
                             }
                         ]
                     }
                 ]
-            }
+						},
+						"size": 802
         },
         {
             "header": {
@@ -417,19 +419,20 @@ var apiEndpoints = []APIEndpoint{
                             {
                                 "uxid": "c8b8eac053a5640bae40144cbc3dda02746071e3c7d00a4b5dfd06d28f928ec4",
                                 "dst": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
-                                "coins": "2500",
+                                "coins": "2500.000000",
                                 "hours": 800291
                             },
                             {
                                 "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
                                 "dst": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
-                                "coins": "2400",
+                                "coins": "2400.000000",
                                 "hours": 800291
                             }
                         ]
                     }
                 ]
-            }
+						},
+						"size": 220
         }
     ]
 }`,

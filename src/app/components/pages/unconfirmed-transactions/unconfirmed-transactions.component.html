@@ -2,6 +2,7 @@
   <h2>{{ 'UnconfirmedTx.title' | translate }}</h2>
   <div class="element-details">
     <div class="-row"><span>{{ 'UnconfirmedTx.quantity' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? transactions.length : ('UnconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
+    <div class="-row"><span>Total Size</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (totalSize | number) + ' bytes' : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'UnconfirmedTx.newest' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : ('UnconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'UnconfirmedTx.oldest' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : ('UnconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
   </div>

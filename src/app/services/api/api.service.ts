@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CoinSupply } from '../../components/pages/blocks/block';
 import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransaction, GetUxoutResponse, GetAddressResponseTransaction,
-    GetCurrentBalanceResponse, GetBlocksResponseBlock, RichlistEntry, GetBalanceResponse } from '../../app.datatypes';
+    GetCurrentBalanceResponse, GetBlocksResponseBlock, RichlistEntry, GetBalanceResponse, GetTransactionResponse } from '../../app.datatypes';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -52,7 +52,7 @@ export class ApiService {
     return this.get('balance', { addrs: address })
   }
 
-  getTransaction(transactionId:string): Observable<any> {
+  getTransaction(transactionId:string): Observable<GetTransactionResponse> {
     return this.get('transaction', { txid: transactionId });
   }
 

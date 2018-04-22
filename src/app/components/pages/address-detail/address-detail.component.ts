@@ -5,6 +5,7 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Output, Transaction } from '../../../app.datatypes';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-address-detail',
@@ -19,7 +20,7 @@ export class AddressDetailComponent implements OnInit {
   pageTransactions: any[];
   pageIndex = 0;
   pageSize = 25;
-  loadingMsg = "Loading...";
+  loadingMsg = "";
   longErrorMsg: string;
 
   get pageCount() {
@@ -31,7 +32,12 @@ export class AddressDetailComponent implements OnInit {
     private explorer: ExplorerService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private translate: TranslateService
+  ) {
+    translate.get('general.loadingMsg').subscribe((res: string) => {
+      this.loadingMsg = res;
+    });
+  }
 
   ngOnInit() {
     this.route.params.switchMap((params: Params) => {
@@ -61,11 +67,15 @@ export class AddressDetailComponent implements OnInit {
       },
       error => {
         if (error.status >= 400 && error.status < 500) {
-          this.loadingMsg = "Loading error";
-          this.longErrorMsg = "Without transactions";
+          this.translate.get(['general.shortLoadingErrorMsg', 'addressDetail.withoutTransactions']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.longErrorMsg = res['addressDetail.withoutTransactions'];
+          });
         } else {
-          this.loadingMsg = "Loading error";
-          this.longErrorMsg = "Error loading data, try again later...";
+          this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.longErrorMsg = res['general.longLoadingErrorMsg'];
+          });
         }
       }
     );

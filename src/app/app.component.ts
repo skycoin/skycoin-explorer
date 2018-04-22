@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, Event as RouterEvent } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,12 @@ import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationErr
 export class AppComponent {
   loading: boolean;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, translate: TranslateService) {
+
+    //Fallback.
+    translate.setDefaultLang('en');
+    //Lang to use.
+    translate.use('en');
 
     router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);

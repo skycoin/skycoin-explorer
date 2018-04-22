@@ -4,6 +4,7 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Block, Output, Transaction } from '../../../app.datatypes';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-block-details',
@@ -12,14 +13,19 @@ import 'rxjs/add/operator/switchMap';
 })
 export class BlockDetailsComponent implements OnInit {
   block: Block;
-  loadingMsg = "Loading...";
+  loadingMsg = "";
   longErrorMsg: string;
 
   constructor(
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private router: Router,
+    private translate: TranslateService
+  ) {
+    translate.get('general.loadingMsg').subscribe((res: string) => {
+      this.loadingMsg = res;
+    });
+  }
 
   ngOnInit() {
     this.route.params.filter(params => +params['id'] !== null)
@@ -28,15 +34,23 @@ export class BlockDetailsComponent implements OnInit {
         if (block != null)
           this.block = block
         else {
-          this.loadingMsg = "Loading error";
-          this.longErrorMsg = "The block does not exist";
+          this.translate.get(['general.shortLoadingErrorMsg', 'blockDetails.doesNotExist']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.longErrorMsg = res['blockDetails.doesNotExist'];
+          });
         }
       }, error => {
-        this.loadingMsg = "Loading error";
-        if (error.status >= 400 && error.status < 500)
-          this.longErrorMsg = "The block does not exist";
-        else
-        this.longErrorMsg = "Error loading data, try again later...";
+        if (error.status >= 400 && error.status < 500) {
+          this.translate.get(['general.shortLoadingErrorMsg', 'blockDetails.doesNotExist']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.longErrorMsg = res['blockDetails.doesNotExist'];
+          });
+        } else {
+          this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.longErrorMsg = res['general.longLoadingErrorMsg'];
+          });
+        }
           
       });
   }

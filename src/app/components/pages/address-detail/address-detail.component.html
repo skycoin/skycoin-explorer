@@ -1,15 +1,15 @@
 <div class="element-details-wrapper -right-margin">
   <h2 class="-not-xs">{{ address }}</h2>
-  <h2 class="-xs-only">Address</h2>
+  <h2 class="-xs-only">{{ 'addressDetail.title' | translate }}</h2>
   <div class="element-details">
     <div class="-row -xs-only">
       <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
-      <span>Address</span><br class="-xs-only" /> {{ address ? address : loadingMsg }}
+      <span>{{ 'general.address' | translate }}</span><br class="-xs-only" /> {{ address ? address : loadingMsg }}
     </div>
-    <div class="-row -tx-number"><span># of Transactions</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : loadingMsg }} </div></div>
-    <div class="-row"><span>Total Received</span><br class="-xs-only" /><div> {{ transactions ? ( totalReceived | number:'1.0-6') : loadingMsg }} </div></div>
-    <div class="-row"><span>Current Balance</span><br class="-xs-only" /><div> {{ transactions ? ( balance | number:'1.0-6') : loadingMsg }} </div></div>
-    <div class="-row"><span>Tools</span><br class="-xs-only" /><div> <a [routerLink]="'/app/unspent/' + address" class="-link" *ngIf="address">Unspent outputs</a> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
+    <div class="-row -tx-number"><span>{{ 'addressDetail.TxsNumber' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'addressDetail.totalReceived' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? ( totalReceived | number:'1.0-6') : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'addressDetail.currentBalance' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? ( balance | number:'1.0-6') : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'addressDetail.tools' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/unspent/' + address" class="-link" *ngIf="address">{{ 'addressDetail.unspentOutputs' | translate }}</a> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
   </div>
 </div>
 <div class="-qr-code -not-xs">
@@ -19,7 +19,7 @@
 <div class="row -msg-container" *ngIf="transactions === undefined">
   <div class="col-sm-12">
     <span *ngIf="!longErrorMsg; else error_msg">
-      Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
+      {{ 'general.waitingData' | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
     </span>
     <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
   </div>
@@ -30,45 +30,45 @@
     <div class="row">
       <div class="col-md-10 col-sm-12">
         <div class="-row">
-          <div class="-float-left">Transaction ID<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+          <div class="-float-left">{{ 'txBoxes.transsactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
           <div class="-address"><a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a><copy-button [text]="transaction.id"></copy-button></div>
           <br class="-xs-sm-only" />
           <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">
-            {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} SKY <ng-container *ngIf="!transaction.status">(pending)</ng-container>
+            {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} {{ 'general.coinIdentifier' | translate }} <ng-container *ngIf="!transaction.status">({{ 'txBoxes.pending' | translate }})</ng-container>
           </div>
         </div>
       </div>
-      <div class="col-md-2 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">Date:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
+      <div class="col-md-2 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.date' | translate }}:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
     </div>
   </div>
 
   <div class="-header -not-xs">
     <div class="row">
-      <div class="col-sm-6"><div>Inputs</div></div>
-      <div class="col-sm-6"><div>Outputs</div></div>
+      <div class="col-sm-6"><div>{{ 'txBoxes.inputs' | translate }}</div></div>
+      <div class="col-sm-6"><div>{{ 'txBoxes.outputs' | translate }}</div></div>
     </div>
   </div>
   <div class="-data">
     <div class="row">
       <div class="col-sm-6">
-        <div class="-header -xs-only">Inputs</div>
+        <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
         <div class="-body" *ngFor="let input of transaction.inputs">
           <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a><copy-button [text]="input.address"></copy-button>
-          <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="-header -xs-only">Outputs</div>
+        <div class="-header -xs-only">{{ 'txBoxes.outputs' | translate }}</div>
         <div class="-body" *ngFor="let output of transaction.outputs">
           <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><copy-button [text]="output.address"></copy-button>
-          <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div class="-header -xs-only">Final address balance</div>
-        <div class="-final-balance"><div><div class="-transparent -not-xs -float-left">Final address balance:&nbsp;</div><div class="-transparent -xs-only -float-left">Coins:&nbsp;</div><div>{{ transaction.addressBalance | number:'1.0-6' }}</div></div></div>
+        <div class="-header -xs-only">{{ 'txBoxes.finalBalance' | translate }}</div>
+        <div class="-final-balance"><div><div class="-transparent -not-xs -float-left">{{ 'txBoxes.finalBalance' | translate }}:&nbsp;</div><div class="-transparent -xs-only -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div>{{ transaction.addressBalance | number:'1.0-6' }}</div></div></div>
       </div>
     </div>
   </div>

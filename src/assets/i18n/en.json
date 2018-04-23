@@ -84,5 +84,8 @@
   },
   "copy": {
     "copied": "Copied"
+  },
+  "searchBar": {
+    "hint": "Address, block hash or number, or transaction ID"
   }
 }

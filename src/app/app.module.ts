@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, RouteReuseStrategy } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
@@ -25,7 +24,7 @@ import { CopyButtonComponent } from 'app/components/layout/copy-button/copy-butt
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppReuseStrategy } from 'app/app.reuse-strategy';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AppTranslateLoader } from 'app/app.translate-loader';
 
 
 const ROUTES = [
@@ -73,10 +72,6 @@ const ROUTES = [
   },
 ];
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
-
 @NgModule({
   declarations: [
     AddressDetailComponent,
@@ -101,12 +96,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES),
-    HttpClientModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
+        useClass: AppTranslateLoader
       }
     })
   ],

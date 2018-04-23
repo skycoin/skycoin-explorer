@@ -22,7 +22,7 @@
     <div class="row">
       <div class="col-md-8 col-sm-12">
         <div class="-row">
-          <div class="-float-left">{{ 'txBoxes.transsactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+          <div class="-float-left">{{ 'txBoxes.transactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
           <div><a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a><copy-button [text]="transaction.id"></copy-button></div>
           <div *ngIf="transaction === undefined">{{ loadingMsg }}</div>
         </div>

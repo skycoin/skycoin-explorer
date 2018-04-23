@@ -6,7 +6,7 @@
       <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
       <span>{{ 'general.address' | translate }}</span><br class="-xs-only" /> {{ address ? address : loadingMsg }}
     </div>
-    <div class="-row -tx-number"><span>{{ 'addressDetail.TxsNumber' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : loadingMsg }} </div></div>
+    <div class="-row -tx-number"><span>{{ 'addressDetail.txsNumber' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'addressDetail.totalReceived' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? ( totalReceived | number:'1.0-6') : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'addressDetail.currentBalance' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? ( balance | number:'1.0-6') : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'addressDetail.tools' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/unspent/' + address" class="-link" *ngIf="address">{{ 'addressDetail.unspentOutputs' | translate }}</a> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
@@ -30,7 +30,7 @@
     <div class="row">
       <div class="col-md-10 col-sm-12">
         <div class="-row">
-          <div class="-float-left">{{ 'txBoxes.transsactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+          <div class="-float-left">{{ 'txBoxes.transactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
           <div class="-address"><a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a><copy-button [text]="transaction.id"></copy-button></div>
           <br class="-xs-sm-only" />
           <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">

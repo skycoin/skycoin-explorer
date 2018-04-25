@@ -1,0 +1,16 @@
+<footer>
+  <div class="wrapper">
+    <div class="top-separator"></div>
+
+    <div class="links-row" *ngIf="config.contactLinks && config.contactLinks.length > 0">
+      <div class="link-icon" *ngFor="let link of config.contactLinks">
+        <div class="element"><a [href]="link.url" [innerHTML]="link.content"></a></div>
+      </div>
+    </div>
+
+    <div class="middle-separator" *ngIf="config.contactLinks && config.contactLinks.length > 0"></div>
+    <div class="credit-row">
+      Powered by Skyfiber
+    </div>
+  </div>
+</footer>

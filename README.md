@@ -118,6 +118,10 @@ Run linters:
 make lint
 ```
 
+### UI Customization
+
+[CUSTOMIZATION.md](CUSTOMIZATION.md)
+
 ## Deployment
 
 Compile `explorer.go` to a binary:

@@ -78,12 +78,16 @@ export class ExplorerService {
   }
 
   private retrieveInputsForTransaction(transaction: Transaction): Observable<Transaction> {
-    return Observable.forkJoin(transaction.inputs.map(input => {
-      return this.retrieveOutputById(input.hash);
-    })).map(inputs => {
-      transaction.inputs = inputs;
-      return transaction;
-    });
+    if (transaction.inputs.length != 0) {
+      return Observable.forkJoin(transaction.inputs.map(input => {
+        return this.retrieveOutputById(input.hash);
+      })).map(inputs => {
+        transaction.inputs = inputs;
+        return transaction;
+      });
+    } else {
+      return Observable.of(transaction);
+    }
   }
 
   private retrieveOutputById(id): Observable<Output> {

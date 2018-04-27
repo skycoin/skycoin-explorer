@@ -23,6 +23,8 @@ import { UnspentOutputsComponent } from 'app/components/pages/unspent-outputs/un
 import { CopyButtonComponent } from 'app/components/layout/copy-button/copy-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppReuseStrategy } from 'app/app.reuse-strategy';
+import { GenericHeaderComponent } from 'app/components/layout/generic-header/generic-header.component';
+import { GenericFooterComponent } from 'app/components/layout/generic-footer/generic-footer.component';
 
 
 const ROUTES = [
@@ -79,6 +81,8 @@ const ROUTES = [
     UnconfirmedTransactionsComponent,
     FooterComponent,
     HeaderComponent,
+    GenericFooterComponent,
+    GenericHeaderComponent,
     LoadingComponent,
     QrCodeComponent,
     SearchBarComponent,

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, Event as RouterEvent } from '@angular/router';
+import { HeaderConfig, FooterConfig } from 'app/app.config';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,9 @@ import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationErr
 })
 export class AppComponent {
   loading: boolean;
+
+  headerConfig = HeaderConfig;
+  footerConfig = FooterConfig;
 
   constructor(private router: Router) {
 

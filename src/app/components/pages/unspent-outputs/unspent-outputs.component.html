@@ -3,7 +3,7 @@
   <div class="element-details">
     <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link" *ngIf="address">{{ address }}</a> <copy-button [text]="address" *ngIf="address"></copy-button> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
     <div class="-row"><span>{{ 'unspentOutputs.outputsNumber' | translate }}</span><br class="-xs-only" /><div> {{ outputs ? outputs.head_outputs.length : loadingMsg }} </div></div>
-    <div class="-row"><span>{{ 'unspentOutputs.total' | translate }}</span><br class="-xs-only" /><div> {{ coins ? (coins | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unspentOutputs.total' | translate }}</span><br class="-xs-only" /><div> {{ coins != null ? (coins | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) : loadingMsg }} </div></div>
   </div>
 </div>
 

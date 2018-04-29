@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, Event as RouterEvent } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { HeaderConfig, FooterConfig } from 'app/app.config';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent {
   loading: boolean;
 
+  headerConfig = HeaderConfig;
+  footerConfig = FooterConfig;
+  
   constructor(private router: Router, translate: TranslateService) {
 
     //Fallback.

@@ -25,6 +25,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppReuseStrategy } from 'app/app.reuse-strategy';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { AppTranslateLoader } from 'app/app.translate-loader';
+import { GenericHeaderComponent } from 'app/components/layout/generic-header/generic-header.component';
+import { GenericFooterComponent } from 'app/components/layout/generic-footer/generic-footer.component';
 
 
 const ROUTES = [
@@ -81,6 +83,8 @@ const ROUTES = [
     UnconfirmedTransactionsComponent,
     FooterComponent,
     HeaderComponent,
+    GenericFooterComponent,
+    GenericHeaderComponent,
     LoadingComponent,
     QrCodeComponent,
     SearchBarComponent,

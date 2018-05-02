@@ -1,19 +1,19 @@
 <div class="element-details-wrapper">
-  <h2>Block Details</h2>
+  <h2>{{ 'blockDetails.title' | translate }}</h2>
   <div class="element-details">
-    <div class="-row"><span>Height</span><br class="-xs-only" /><div> {{ block ? block.id : loadingMsg }} </div></div>
-    <div class="-row"><span>Timestamp</span><br class="-xs-only" /><div> {{ block ? ((block.timestamp * 1000) | date: 'short') : loadingMsg }} </div></div>
-    <div class="-row"><span>Size</span><br class="-xs-only" /><div> {{ block ? (block.size | number) + ' bytes' : loadingMsg }} </div></div>
-    <div class="-row"><span>Hash</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + block.id" class="-link" *ngIf="block">{{ block.hash }}</a> <copy-button [text]="block.hash" *ngIf="block"></copy-button> <span *ngIf="!block">{{ loadingMsg }}</span> </div></div>
-    <div class="-row"><span>Parent Hash</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + (block.id-1)" class="-link" *ngIf="block && block.id != 0">{{ block.parent_hash }}</a> <copy-button [text]="block.parent_hash" *ngIf="block && block.id != 0"></copy-button> <span *ngIf="block && block.id == 0">Without parent block</span> <span *ngIf="!block">{{ loadingMsg }}</span> </div></div>
-    <div class="-row"><span>Total Amount</span><br class="-xs-only" /><div> {{ block ? ((block.transactions | transactionsValue) | number:'1.0-6') + ' SKY' : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'blockDetails.height' | translate }}</span><br class="-xs-only" /><div> {{ block ? block.id : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'blockDetails.timestamp' | translate }}</span><br class="-xs-only" /><div> {{ block ? ((block.timestamp * 1000) | date: 'short') : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'blockDetails.size' | translate }}</span><br class="-xs-only" /><div> {{ block ? (block.size | number) + ' bytes' : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'blockDetails.hash' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + block.id" class="-link" *ngIf="block">{{ block.hash }}</a> <copy-button [text]="block.hash" *ngIf="block"></copy-button> <span *ngIf="!block">{{ loadingMsg }}</span> </div></div>
+    <div class="-row"><span>{{ 'blockDetails.parentHash' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + (block.id-1)" class="-link" *ngIf="block && block.id != 0">{{ block.parent_hash }}</a> <copy-button [text]="block.parent_hash" *ngIf="block && block.id != 0"></copy-button> <span *ngIf="block && block.id == 0">{{ 'blockDetails.withoutParent' | translate }}</span> <span *ngIf="!block">{{ loadingMsg }}</span> </div></div>
+    <div class="-row"><span>{{ 'blockDetails.totalAmount' | translate }}</span><br class="-xs-only" /><div> {{ block ? ((block.transactions | transactionsValue) | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) : loadingMsg }} </div></div>
   </div>
 </div>
 
 <div class="row -msg-container" *ngIf="block === undefined">
   <div class="col-sm-12">
     <span *ngIf="!longErrorMsg; else error_msg">
-      Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
+      {{ 'general.waitingData' | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
     </span>
     <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
   </div>
@@ -25,7 +25,7 @@
       <div class="row">
         <div class="col-md-8 col-sm-12">
           <div class="-row">
-            <div class="-float-left">Transaction ID<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+            <div class="-float-left">{{ 'txBoxes.transactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
             <div><a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a><copy-button [text]="transaction.id"></copy-button></div>
           </div>
         </div>
@@ -34,24 +34,24 @@
 
     <div class="-header -not-xs">
       <div class="row">
-        <div class="col-sm-6"><div>Inputs</div></div>
-        <div class="col-sm-6"><div>Outputs</div></div>
+        <div class="col-sm-6"><div>{{ 'txBoxes.inputs' | translate }}</div></div>
+        <div class="col-sm-6"><div>{{ 'txBoxes.outputs' | translate }}</div></div>
       </div>
     </div>
     <div class="-data">
       <div class="row">
         <div class="col-sm-6">
-          <div class="-header -xs-only">Inputs</div>
+          <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
           <div class="-body" *ngFor="let input of transaction.inputs">
             <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a><copy-button [text]="input.address"></copy-button>
-            <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
           </div>
         </div>
         <div class="col-sm-6">
-          <div class="-header -xs-only">Outputs</div>
+          <div class="-header -xs-only">{{ 'txBoxes.outputs' | translate }}</div>
           <div class="-body" *ngFor="let output of transaction.outputs">
             <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><copy-button [text]="output.address"></copy-button>
-            <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
           </div>
         </div>
       </div>

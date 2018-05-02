@@ -1,17 +1,17 @@
 <div class="element-details-wrapper">
-  <h2>Unconfirmed Transactions</h2>
+  <h2>{{ 'unconfirmedTx.title' | translate }}</h2>
   <div class="element-details">
-    <div class="-row"><span>Quantity</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? transactions.length : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
-    <div class="-row"><span>Total Size</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (totalSize | number) + ' bytes' : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
-    <div class="-row"><span>Newest</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
-    <div class="-row"><span>Oldest</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : 'Currently there are no unconfirmed transactions.') : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unconfirmedTx.quantity' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? transactions.length : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unconfirmedTx.size' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (totalSize | number) + ' bytes' : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unconfirmedTx.newest' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unconfirmedTx.oldest' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
   </div>
 </div>
 
 <div class="row -msg-container" *ngIf="transactions === undefined">
   <div class="col-sm-12">
     <span *ngIf="!longErrorMsg; else error_msg">
-      Waiting for transactions <i class="fa fa-spinner fa-spin fa-fw"></i>
+      {{ 'general.waitingData' | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
     </span>
     <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
   </div>
@@ -22,35 +22,35 @@
     <div class="row">
       <div class="col-md-8 col-sm-12">
         <div class="-row">
-          <div class="-float-left">Transaction ID<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+          <div class="-float-left">{{ 'txBoxes.transactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
           <div><a [routerLink]="'/app/transaction/' + transaction.id" *ngIf="transaction">{{ transaction.id }}</a><copy-button [text]="transaction.id"></copy-button></div>
           <div *ngIf="transaction === undefined">{{ loadingMsg }}</div>
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">First seen at:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
+      <div class="col-md-4 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.firstSeen' | translate }}:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
     </div>
   </div>
 
   <div class="-header -not-xs">
     <div class="row">
-      <div class="col-sm-6"><div>Inputs</div></div>
-      <div class="col-sm-6"><div>Outputs</div></div>
+      <div class="col-sm-6"><div>{{ 'txBoxes.inputs' | translate }}</div></div>
+      <div class="col-sm-6"><div>{{ 'txBoxes.outputs' | translate }}</div></div>
     </div>
   </div>
   <div class="-data">
     <div class="row">
       <div class="col-sm-6">
-        <div class="-header -xs-only">Inputs</div>
+        <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
         <div class="-body" *ngFor="let input of transaction.inputs">
           <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a><copy-button [text]="input.address"></copy-button>
-          <div class="-balance"><span class="-transparent">Coins:</span> {{ input.coins | number:'1.0-6' }}</div>
+          <div class="-balance"><span class="-transparent">{{ 'general.coins' | translate }}:</span> {{ input.coins | number:'1.0-6' }}</div>
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="-header -xs-only">Outputs</div>
+        <div class="-header -xs-only">{{ 'txBoxes.outputs' | translate }}</div>
         <div class="-body" *ngFor="let output of transaction.outputs">
           <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><copy-button [text]="output.address"></copy-button>
-          <div class="-balance"><div class="-transparent -float-left">Coins:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
         </div>
       </div>
     </div>

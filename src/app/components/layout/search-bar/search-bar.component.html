@@ -1,6 +1,6 @@
 <form (submit)="search()">
   <div class="-search-bar-container">
     <img src="/assets/img/search.png" (click)="search()">
-    <input [(ngModel)]="query" name="query" placeholder="Address, block hash or number, or transaction ID">
+    <input [(ngModel)]="query" name="query" placeholder="{{ 'searchBar.hint' | translate }}">
   </div>
 </form>

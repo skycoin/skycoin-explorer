@@ -23,6 +23,8 @@ import { UnspentOutputsComponent } from 'app/components/pages/unspent-outputs/un
 import { CopyButtonComponent } from 'app/components/layout/copy-button/copy-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppReuseStrategy } from 'app/app.reuse-strategy';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { AppTranslateLoader } from 'app/app.translate-loader';
 import { GenericHeaderComponent } from 'app/components/layout/generic-header/generic-header.component';
 import { GenericFooterComponent } from 'app/components/layout/generic-footer/generic-footer.component';
 
@@ -98,6 +100,12 @@ const ROUTES = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: AppTranslateLoader
+      }
+    })
   ],
   providers: [
     ApiService,

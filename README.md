@@ -118,7 +118,7 @@ Run linters:
 make lint
 ```
 
-### UI Customization
+### Customization
 
 [CUSTOMIZATION.md](CUSTOMIZATION.md)
 

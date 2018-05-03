@@ -1,3 +1,7 @@
+export const QrConfig = {
+  prefix: "skycoin:",
+};
+
 export const HeaderConfig = {
   useGenericHeader: false,
   genericHeaderUrl: "https://www.skycoin.net/",

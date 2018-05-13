@@ -1,76 +1,42 @@
 import { browser, by, element } from 'protractor';
 
 export class BlockDetailsPage {
-  navigateTo() {
-    return browser.get('/');
+
+  getBlockHeight() {
+    return element(by.css('.element-details > div:nth-of-type(1) > div'))
+      .getText()
+      .then(text => Number(text));
   }
 
-  goToOneBlockDetails() {
-    return element(by.css('.table a.-row')).click();
+  getTimestampValidity() {
+    return element(by.css('.element-details > div:nth-of-type(2) > div'))
+      .getText()
+      .then(text => !isNaN((new Date(text)).getTime()));
   }
 
-  getOneBlockDetailsText() {
-    return this.goToOneBlockDetails().then(() => {
-      return element(by.css('.element-details-wrapper h2')).getText();
-    });
+  getSize() {
+    return element(by.css('.element-details > div:nth-of-type(3) > div'))
+      .getText()
+      .then(text => Number(text.split(' ')[0]));
   }
 
-  getDetailsRow() {
-    return this.goToOneBlockDetails().then(() => {
-      return element
-        .all(by.css('.element-details .-row'))
-        .count()
-        .then(count => {
-          return count;
-        });
-    });
-  }
-
-  getHash() {
-    return this.goToOneBlockDetails().then(() => {
-      return element
-        .all(by.css('.element-details .-row a.-link'))
-        .get(0)
-        .getText()
-        .then(text => text.length);
-    });
+  getBlockHash() {
+    return element
+      .all(by.css('.element-details .-row a.-link'))
+      .get(0)
+      .getText();
   }
 
   getParentHash() {
-    return this.goToOneBlockDetails().then(() => {
-      return element
-        .all(by.css('.element-details .-row a.-link'))
-        .get(1)
-        .getText()
-        .then(text => text.length);
-    });
+    return element
+      .all(by.css('.element-details .-row a.-link'))
+      .get(1)
+      .getText();
   }
 
-  getTransactionId() {
-    return this.goToOneBlockDetails().then(() => {
-      return element(by.css('.transaction .-row a'))
-        .getText()
-        .then(text => text.length);
-    });
-  }
-
-  getOneTransactionInput() {
-    return this.goToOneBlockDetails().then(() => {
-      return element
-        .all(by.css('.transaction > .-data > .row > div:nth-of-type(1) a'))
-        .get(0)
-        .getText()
-        .then(text => text.length);
-    });
-  }
-
-  getOneTransactionOutput() {
-    return this.goToOneBlockDetails().then(() => {
-      return element
-        .all(by.css('.transaction > .-data > .row > div:nth-of-type(2) a'))
-        .get(0)
-        .getText()
-        .then(text => text.length);
-    });
+  getAmount() {
+    return element(by.css('.element-details > div:nth-of-type(6) > div'))
+      .getText()
+      .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }
 }

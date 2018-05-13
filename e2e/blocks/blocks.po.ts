@@ -1,76 +1,102 @@
 import { browser, by, element, protractor } from 'protractor';
 
 export class BlocksPage {
-  navigateTo() {
-    return browser.get('/');
-  }
-
-  getBlocksText() {
-    return element(by.css('app-root h2')).getText();
+  getPageTitle(titleNumber: number) {
+    return element
+    .all(by.css('app-root h2'))
+    .get(titleNumber)
+    .getAttribute('textContent');
   }
 
   getUnconfirmedTransactionsText() {
-    return element(by.css('.-link')).getText();
+    return element.all(by.css('.-link')).get(0).getText();
   }
 
   getRichListText() {
     return element.all(by.css('.-link')).get(1).getText();
   }
 
-  getDetailslabels() {
-    return element.all(by.css('.-label'));
+  getStatsLabelsCount() {
+    return element
+      .all(by.css('.-label'))
+      .count();
   }
 
-  getDetailsLabelsCount() {
-    return this.getDetailslabels()
-      .count()
-      .then(count => {
-        return count;
-      });
-  }
-
-  getDetailsValues() {
-    return element.all(by.css('.-value'));
-  }
-
-  getDetailsValuesCount() {
-    return this.getDetailsValues()
-      .count()
-      .then(count => {
-        return count;
-      });
+  getStat(statIndex: number) {
+    return element
+      .all(by.css('.-value'))
+      .get(statIndex)
+      .getText()
+      .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
   }
 
   getBlocksList() {
     return element.all(by.css('.table a.-row'));
   }
 
-  getBlocksListCount() {
-    return this.getBlocksList()
-      .count()
-      .then(count => {
-        return count;
-      });
+  getBlocksListRowCount() {
+    return element
+      .all(by.css('.table a.-row'))
+      .count();
   }
 
-  getPagination() {
+  private getTableCellValue(row: number, column: number) {
+    return element
+      .all(by.css('.table a.-row'))
+      .get(row)
+      .all(by.css('div'))
+      .get(column)
+      .getText();
+  }
+
+  getTimeValidity(row: number) {
+    return this.getTableCellValue(row, 1)
+      .then(text => !isNaN((new Date(text)).getTime()));
+  }
+
+  getBlockNumber(row: number) {
+    return this.getTableCellValue(row, 2)
+      .then(text => Number(text));
+  }
+
+  getTransactionCount(row: number) {
+    return this.getTableCellValue(row, 3)
+      .then(text => Number(text));
+  }
+
+  getBlockHashLength(row: number) {
+    return this.getTableCellValue(row, 4)
+      .then(text => text.length);
+  }
+
+  getIfPaginationControlExists() {
     return element(by.css('.pagination')).isPresent();
   }
 
-  changePage() {
-    return element(by.css('.-page'))
-      .click()
-      .then(() => {
-        return this.getBlocksListCount();
-      });
+  navigateToTheNextPage() {
+    return element(by.css('.-next'))
+      .click();
   }
 
-  putBlockInSearchCmp() {
-    return element(by.css('.-search-bar-container input')).sendKeys(
-      'b54777a8afb5573dec8388a416fa9e6e9eda577a445ff25ef4a2954e1426b817',
-      protractor.Key.ENTER
-    ).then(()=>{
-      return element(by.css('.element-details-wrapper h2')).getText();
-    })
+  navigateToThePreviousPage() {
+    return element(by.css('.-previous'))
+      .click();
+  }
+
+  navigateToTheLastPage() {
+    return element(by.css('.-last'))
+      .click();
+  }
+
+  navigateToTheFirstPage() {
+    return element(by.css('.-first'))
+      .click();
+  }
+
+  pressPageButton(index: number) {
+    return element
+      .all(by.css('.-page'))
+      .get(index)
+      .click();
   }
 }

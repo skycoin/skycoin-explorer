@@ -38,7 +38,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.date' | translate }}:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
+      <div class="col-md-2 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.date' | translate }}:<br/></span>{{ transaction ? (transaction.timestamp | explorerDate) : loadingMsg }}</div></div>
     </div>
   </div>
 

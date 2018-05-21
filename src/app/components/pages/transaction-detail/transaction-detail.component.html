@@ -2,7 +2,7 @@
   <h2>{{ 'transactionDetail.title' | translate }}</h2>
   <div class="element-details">
     <div class="-row"><span>{{ 'transactionDetail.status' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.status ? ('transactionDetail.confirmed' | translate) : ('transactionDetail.unconfirmed' | translate)) : loadingMsg }} </div></div>
-    <div class="-row"><span>{{ 'transactionDetail.timestamp' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'transactionDetail.timestamp' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.timestamp | explorerDate) : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'transactionDetail.size' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.length | number) + ' bytes' : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'transactionDetail.block' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? transaction.block : loadingMsg }} </div></div>
   </div>
@@ -27,7 +27,7 @@
           <div *ngIf="transaction === undefined">{{ loadingMsg }}</div>
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.date' | translate }}:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
+      <div class="col-md-4 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.date' | translate }}:<br/></span>{{ transaction ? (transaction.timestamp | explorerDate) : loadingMsg }}</div></div>
     </div>
   </div>
 

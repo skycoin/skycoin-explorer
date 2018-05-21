@@ -27,6 +27,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { AppTranslateLoader } from 'app/app.translate-loader';
 import { GenericHeaderComponent } from 'app/components/layout/generic-header/generic-header.component';
 import { GenericFooterComponent } from 'app/components/layout/generic-footer/generic-footer.component';
+import { ExplorerDatePipe } from 'app/pipes/explorer-date.pipe';
+import { DatePipe } from '@angular/common';
 
 
 const ROUTES = [
@@ -93,6 +95,7 @@ const ROUTES = [
     RichlistComponent,
     UnspentOutputsComponent,
     CopyButtonComponent,
+    ExplorerDatePipe,
   ],
   imports: [
     BrowserModule,
@@ -110,7 +113,8 @@ const ROUTES = [
   providers: [
     ApiService,
     ExplorerService,
-    {provide: RouteReuseStrategy, useClass: AppReuseStrategy}
+    {provide: RouteReuseStrategy, useClass: AppReuseStrategy},
+    DatePipe,
   ],
   bootstrap: [AppComponent]
 })

@@ -3,8 +3,8 @@
   <div class="element-details">
     <div class="-row"><span>{{ 'unconfirmedTx.quantity' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? transactions.length : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'unconfirmedTx.size' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (totalSize | number) + ' bytes' : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
-    <div class="-row"><span>{{ 'unconfirmedTx.newest' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (mostRecent | date: 'short') : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
-    <div class="-row"><span>{{ 'unconfirmedTx.oldest' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (leastRecent | date: 'short') : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unconfirmedTx.newest' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (mostRecent | explorerDate:false) : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unconfirmedTx.oldest' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? (transactions.length > 0 ? (leastRecent | explorerDate:false) : ('unconfirmedTx.withoutTransactions' | translate)) : loadingMsg }} </div></div>
   </div>
 </div>
 
@@ -27,7 +27,7 @@
           <div *ngIf="transaction === undefined">{{ loadingMsg }}</div>
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.firstSeen' | translate }}:<br/></span>{{ transaction ? (transaction.timestamp * 1000 | date: 'short') : loadingMsg }}</div></div>
+      <div class="col-md-4 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.firstSeen' | translate }}:<br/></span>{{ transaction ? (transaction.timestamp | explorerDate:false) : loadingMsg }}</div></div>
     </div>
   </div>
 

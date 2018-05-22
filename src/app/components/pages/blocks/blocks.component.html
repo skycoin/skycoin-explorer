@@ -34,7 +34,7 @@
   </div>
   <a class="-row" *ngFor="let block of blocks" [routerLink]="'/app/block/' + block.id">
     <div class="row">
-      <div class="col-sm-2 col-xs-4">{{ block.timestamp * 1000 | date:'short' }}</div>
+      <div class="col-sm-2 col-xs-4">{{ block.timestamp | explorerDate }}</div>
       <div class="col-sm-2 col-xs-4 -gray">{{ block.id }}</div>
       <div class="col-sm-2 col-xs-4 -gray">{{ block.transactions.length }}</div>
       <div class="col-sm-6 -fix-left -not-xs">{{ block.hash }}</div>

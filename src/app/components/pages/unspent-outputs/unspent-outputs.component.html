@@ -26,7 +26,7 @@
             <div><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a><copy-button [text]="output.src_tx"></copy-button></div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span>{{ output.time * 1000 | date: 'short' }}</div></div>
+        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span>{{ output.time | explorerDate }}</div></div>
       </div>
     </div>
 

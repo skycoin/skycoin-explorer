@@ -12,6 +12,7 @@ Environment options:
 
 CLI Options:
 * -api-only - Don't serve static content from ./dist, only proxy the skycoin node
+* -use-unversioned-api - Use the deprecated unversioned API endpoints without /api/v1 prefix, when communicating with the node
 
 Run the explorer and navigate to http://127.0.0.1:8001/api.html for API documentation.
 
@@ -50,10 +51,11 @@ const (
 )
 
 var (
-	explorerHost = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
-	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
-	apiOnly      bool     // set to true with -api-only cli flag
-	verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
+	explorerHost      = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
+	skycoinAddr       *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
+	apiOnly           bool     // set to true with -api-only cli flag
+	useUnversionedAPI bool     // calls unversioned API endpoints on the node (without the /api/v1 prefix)
+	verify            bool     // set to true with -verify cli flag. Check init() conditions and quits.
 )
 
 func init() {
@@ -85,6 +87,7 @@ func init() {
 	}
 
 	flag.BoolVar(&apiOnly, "api-only", false, "Only run the API, don't serve static content")
+	flag.BoolVar(&useUnversionedAPI, "use-unversioned-api", false, "Use the deprecated unversioned API endpoints without /api/v1 prefix, when communicating with the node")
 	flag.BoolVar(&verify, "verify", false, "Run init() checks and quit")
 	flag.Parse()
 
@@ -95,12 +98,20 @@ func init() {
 	if apiOnly {
 		log.Println("Running in api-only mode")
 	}
+
+	if useUnversionedAPI {
+		log.Println("Using the deprecated unversioned API endpoints")
+	}
 }
 
 func buildSkycoinURL(path string, query url.Values) string {
 	rawQuery := ""
 	if query != nil {
 		rawQuery = query.Encode()
+	}
+
+	if !useUnversionedAPI {
+		path = "/api/v1" + path
 	}
 
 	u := &url.URL{

@@ -1,72 +1,49 @@
 import { browser, by, element } from 'protractor';
 
 export class AddressDetailPage {
-  navigateTo() {
-    return browser.get('/');
+  getPageTitleForSmallScreens() {
+    return element(by.css('.element-details-wrapper > h2:nth-child(2)'))
+      .getAttribute('textContent');
   }
 
-  goToAddressPage() {
-    return element(by.css('.table a.-row'))
-      .click()
-      .then(() => {
-        return element(by.css('.transaction > .-data > .row > div:nth-of-type(2) a'))
-          .click();
-      });
+  getAddressForSmallScreens() {
+    return element(by.css('.element-details > div:nth-of-type(1) > span:nth-of-type(2)'))
+      .getAttribute('textContent');
   }
 
-  getAddressText() {
-    return this.goToAddressPage().then(() => {
-      return element(by.css('.element-details-wrapper h2:nth-of-type(1)'))
-        .getText()
-        .then(text => text.length);
-    });
+  getNumberOfTransactions() {
+    return element(by.css('.element-details > div:nth-of-type(2) > div'))
+      .getText()
+      .then(text => Number(text));
   }
 
-  getAddressInfo() {
-    return this.goToAddressPage().then(() => {
-      return element
-        .all(by.css('.element-details > div'))
-        .count()
-        .then(count => count);
-    });
+  getTotalReceived() {
+    return element(by.css('.element-details > div:nth-of-type(3) > div'))
+      .getText()
+      .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
   }
 
-  getTransactions() {
-    return this.goToAddressPage().then(() => {
-      return element
-        .all(by.css('.transaction'))
-        .count()
-        .then(count => count > 0);
-    });
+  getCurrentBalance() {
+    return element(by.css('.element-details > div:nth-of-type(3) > div'))
+      .getText()
+      .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
   }
 
-  getOneTransactionId() {
-    return this.goToAddressPage().then(() => {
-      return element
-        .all(by.css('.transaction .-title .col-sm-8.-left a'))
-        .get(0)
-        .getText()
-        .then(text => text.length);
-    });
+  getFinalBalance(transsactionIndex: number) {
+    return element
+      .all(by.css('.transaction'))
+      .get(transsactionIndex)
+      .element(by.css('.-final-balance > div > div:nth-of-type(3)'))
+      .getText()
+      .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
   }
 
-  getOneTransactionInput() {
-    return this.goToAddressPage().then(() => {
-      return element
-        .all(by.css('.transaction > .-data > .row > div:nth-of-type(1) a'))
-        .get(0)
-        .getText()
-        .then(text => text.length);
-    });
-  }
-
-  getOneTransactionOutput() {
-    return this.goToAddressPage().then(() => {
-      return element
-        .all(by.css('.transaction > .-data > .row > div:nth-of-type(2) a'))
-        .get(0)
-        .getText()
-        .then(text => text.length);
-    });
+  getBalanceChange(transsactionIndex: number) {
+    return element
+      .all(by.css('.transaction'))
+      .get(transsactionIndex)
+      .element(by.css('.-label'))
+      .getText()
+      .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }
 }

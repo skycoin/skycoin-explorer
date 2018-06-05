@@ -34,6 +34,8 @@
   },
   "blockDetails": {
     "title": "Block Details",
+    "next": "Next block",
+    "previous": "Previous block",
     "height": "Height",
     "timestamp": "Timestamp",
     "size": "Size",

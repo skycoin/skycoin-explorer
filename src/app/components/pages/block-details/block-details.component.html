@@ -1,5 +1,18 @@
 <div class="element-details-wrapper">
-  <h2>{{ 'blockDetails.title' | translate }}</h2>
+  <div>
+    <div class="header-container">
+      <h2>{{ 'blockDetails.title' | translate }}</h2>
+      <div class="nav-button-container" *ngIf="blockCount && block != undefined">
+        <a [routerLink]="'/app/block/' + (block.id - 1)" class="nav-button" *ngIf="block.id > 0">
+          <span class="font-awesome">&#xf104;</span> <span class="-not-xs">{{ 'blockDetails.previous' | translate }}</span>
+        </a>
+        <span *ngIf="block.id > 0 && block.id < blockCount" class="-not-xs">&nbsp;</span>
+        <a [routerLink]="'/app/block/' + (block.id + 1)" class="nav-button" *ngIf="block.id < blockCount">
+          <span class="-not-xs">{{ 'blockDetails.next' | translate }}</span> <span class="font-awesome">&#xf105;</span>
+        </a>
+      </div>
+    </div>
+  </div>
   <div class="element-details">
     <div class="-row"><span>{{ 'blockDetails.height' | translate }}</span><br class="-xs-only" /><div> {{ block ? block.id : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'blockDetails.timestamp' | translate }}</span><br class="-xs-only" /><div> {{ block ? (block.timestamp | explorerDate) : loadingMsg }} </div></div>

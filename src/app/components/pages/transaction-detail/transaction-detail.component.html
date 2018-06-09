@@ -4,7 +4,7 @@
     <div class="-row"><span>{{ 'transactionDetail.status' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.status ? ('transactionDetail.confirmed' | translate) : ('transactionDetail.unconfirmed' | translate)) : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'transactionDetail.timestamp' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.timestamp | explorerDate) : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'transactionDetail.size' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.length | number) + ' bytes' : loadingMsg }} </div></div>
-    <div class="-row"><span>{{ 'transactionDetail.block' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? transaction.block : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'transactionDetail.block' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + transaction.block" class="-link" *ngIf="transaction">{{ transaction.block }}</a> <copy-button [text]="transaction.block" *ngIf="transaction"></copy-button> <span *ngIf="!transaction">{{ loadingMsg }}</span> </div></div>
   </div>
 </div>
 

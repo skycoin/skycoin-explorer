@@ -20,7 +20,7 @@
     <div class="row">
       <div class="col-sm-1 -not-xs -gray">{{ i+1 }}</div>
       <div class="col-xs-6 col-sm-8">{{ entry.address }}</div>
-      <div class="col-xs-6 col-sm-3">{{ entry.coins | number:'1.0-6' }}</div>
+      <div class="col-xs-6 col-sm-3"><coins-formatter [amount]="entry.coins | number:'1.0-6'"></coins-formatter></div>
     </div>
   </a>
 </div>

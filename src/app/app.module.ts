@@ -29,6 +29,8 @@ import { GenericHeaderComponent } from 'app/components/layout/generic-header/gen
 import { GenericFooterComponent } from 'app/components/layout/generic-footer/generic-footer.component';
 import { ExplorerDatePipe } from 'app/pipes/explorer-date.pipe';
 import { DatePipe } from '@angular/common';
+import { CoinsFormatterComponent } from 'app/components/layout/coins-formatter/coins-formatter.component';
+import { DateFormatterComponent } from 'app/components/layout/date-formatter/date-formatter.component';
 
 
 const ROUTES = [
@@ -96,6 +98,8 @@ const ROUTES = [
     UnspentOutputsComponent,
     CopyButtonComponent,
     ExplorerDatePipe,
+    CoinsFormatterComponent,
+    DateFormatterComponent,
   ],
   imports: [
     BrowserModule,

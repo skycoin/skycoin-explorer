@@ -17,6 +17,10 @@ h2 {
   float: left;
 }
 
+.-gray {
+  color: $gray-text;
+}
+
 .element-details-wrapper {
 
   width: 100%;
@@ -226,6 +230,12 @@ h2 {
 
   .row {
     margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    
+    a {
+      text-decoration: none;
+    }
   }
 
   .-header {
@@ -244,10 +254,6 @@ h2 {
       &:hover {
         background-color: $col-odd-background-hover;
       }
-    }
-
-    .-gray {
-      color: #92A4BA;
     }
 
     &:hover {

@@ -29,6 +29,7 @@
     "richList": "Rich List",
     "time": "Time",
     "blockNumber": "Block Number",
+    "blockNumberSmall": "Block #",
     "transactions": "Transactions",
     "blockhash": "Blockhash"
   },

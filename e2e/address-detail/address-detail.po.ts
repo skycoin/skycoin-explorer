@@ -20,13 +20,13 @@ export class AddressDetailPage {
   getTotalReceived() {
     return element(by.css('.element-details > div:nth-of-type(3) > div'))
       .getText()
-      .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
+      .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }
 
   getCurrentBalance() {
     return element(by.css('.element-details > div:nth-of-type(3) > div'))
       .getText()
-      .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
+      .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }
 
   getFinalBalance(transsactionIndex: number) {

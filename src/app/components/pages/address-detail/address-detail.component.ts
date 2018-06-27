@@ -67,8 +67,8 @@ export class AddressDetailComponent implements OnInit {
       },
       error => {
         if (error.status >= 400 && error.status < 500) {
-          this.translate.get(['general.shortLoadingErrorMsg', 'addressDetail.withoutTransactions']).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+          this.translate.get(['general.noData', 'addressDetail.withoutTransactions']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.noData'];
             this.longErrorMsg = res['addressDetail.withoutTransactions'];
           });
         } else {

@@ -14,7 +14,11 @@
     "outputs": "Outputs",
     "pending": "pending",
     "date": "Date",
+    "balance": "Balance",
+    "initialBalance": "Initial address balance",
     "finalBalance": "Final address balance",
+    "initialBalanceShort": "Initial",
+    "finalBalanceShort": "Final",
     "firstSeen": "First seen at"
   },
   "blocks": {

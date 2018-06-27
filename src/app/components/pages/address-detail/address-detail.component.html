@@ -67,8 +67,20 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div class="-header -xs-only">{{ 'txBoxes.finalBalance' | translate }}</div>
-        <div class="-final-balance"><div><div class="-transparent -not-xs -float-left">{{ 'txBoxes.finalBalance' | translate }}:&nbsp;</div><div class="-transparent -xs-only -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div><coins-formatter [amount]="transaction.addressBalance | number:'1.0-6'"></coins-formatter> </div></div></div>
+        <div class="-header -xs-only">{{ 'txBoxes.balance' | translate }}</div>
+        <div class="-balance-variation">
+          <div>
+            <div class="-transparent -not-xs -float-left">{{ 'txBoxes.initialBalance' | translate }}:&nbsp;</div>
+            <div class="-transparent -xs-only -float-left">{{ 'txBoxes.initialBalanceShort' | translate }}:&nbsp;</div>
+            <div><coins-formatter [amount]="transaction.initialBalance | number:'1.0-6'"></coins-formatter> </div>
+          </div>
+          <span class="separator -not-xs">&#xf105;</span>
+          <div>
+            <div class="-transparent -not-xs -float-left">{{ 'txBoxes.finalBalance' | translate }}:&nbsp;</div>
+            <div class="-transparent -xs-only -float-left">{{ 'txBoxes.finalBalanceShort' | translate }}:&nbsp;</div>
+            <div><coins-formatter [amount]="transaction.finalBalance | number:'1.0-6'"></coins-formatter> </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

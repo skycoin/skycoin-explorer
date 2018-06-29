@@ -6,7 +6,8 @@
     "loadingMsg": "Loading...",
     "shortLoadingErrorMsg": "Loading error",
     "longLoadingErrorMsg": "Error loading data, try again later...",
-    "waitingData": "Waiting for data..."
+    "waitingData": "Waiting for data...",
+    "noData": "No data to show"
   },
   "txBoxes": {
     "transactionID": "Transaction ID",
@@ -48,7 +49,7 @@
     "parentHash": "Parent Hash",
     "totalAmount": "Total Amount",
     "withoutParent": "Without parent block",
-    "doesNotExist": "The block does not exist"
+    "doesNotExist": "The block \"{{number}}\" does not exist"
   },
   "addressDetail": {
     "title": "Address",

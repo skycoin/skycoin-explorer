@@ -34,21 +34,24 @@ export class BlockDetailsComponent implements OnInit {
 
     this.api.getBlockchainMetadata().first().subscribe(blockchain => this.blockCount = blockchain.blocks);
 
+    let blockID = '';
     this.route.params.filter(params => +params['id'] !== null)
-      .switchMap((params: Params) => this.explorer.getBlock(+params['id']))
-      .subscribe((block: Block) => {
+      .switchMap((params: Params) => {
+        blockID = params['id'];
+        return this.explorer.getBlock(+blockID)
+      }).subscribe((block: Block) => {
         if (block != null)
           this.block = block
         else {
-          this.translate.get(['general.shortLoadingErrorMsg', 'blockDetails.doesNotExist']).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+          this.translate.get(['general.noData', 'blockDetails.doesNotExist'], {number: blockID}).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.noData'];
             this.longErrorMsg = res['blockDetails.doesNotExist'];
           });
         }
       }, error => {
         if (error.status >= 400 && error.status < 500) {
-          this.translate.get(['general.shortLoadingErrorMsg', 'blockDetails.doesNotExist']).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+          this.translate.get(['general.noData', 'blockDetails.doesNotExist'], {number: blockID}).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.noData'];
             this.longErrorMsg = res['blockDetails.doesNotExist'];
           });
         } else {

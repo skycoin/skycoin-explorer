@@ -43,7 +43,8 @@ export class Transaction {
   status: boolean;
   timestamp: number;
   balance: number;
-  addressBalance: number;
+  initialBalance: number;
+  finalBalance: number;
   length: number;
 }
 
@@ -97,7 +98,8 @@ export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, a
     outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
     status: raw.status.confirmed,
     balance: balance,
-    addressBalance: null,
+    initialBalance: null,
+    finalBalance: null,
     length: raw.length,
   }
 }
@@ -156,7 +158,8 @@ export function parseGetUnconfirmedTransaction(raw: GetUnconfirmedTransaction): 
     status: raw.is_valid,
     timestamp: new Date(raw.received).getTime(),
     balance: null,
-    addressBalance: null,
+    initialBalance: null,
+    finalBalance: null,
     length: raw.transaction.length,
   }
 }
@@ -191,7 +194,8 @@ function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransa
     outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
     status: null,
     balance: null,
-    addressBalance: null,
+    initialBalance: null,
+    finalBalance: null,
     length: transaction.length,
   }
 }
@@ -289,7 +293,8 @@ export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
     status: raw.status.confirmed,
     timestamp: raw.txn.timestamp,
     balance: null,
-    addressBalance: null,
+    initialBalance: null,
+    finalBalance: null,
     length: raw.txn.length,
   }
 }

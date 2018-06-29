@@ -188,16 +188,38 @@ h2 {
       }
     }
 
-    .-final-balance {
+    .-balance-variation {
       border-top: 1px solid $col-normal-separator;
-      padding: $siz-small-margin 0px;
       text-align: right;
 
       > div {
         display: inline-block;
+        padding: $siz-small-margin 0px;
+
+        @media (max-width: $max-xs-width) {
+          width: 100%;
+          border-bottom: 1px solid $col-normal-separator;
+          padding: $siz-normal-margin 0;
+  
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+  
+        &:last-child {
+          border-bottom: none;
+        }
+
         > div:last-child {
           display: inline-block;
         }
+      }
+
+      .separator {
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        opacity: 0.2;
+        margin: 0 10px
       }
 
       @media (max-width: $max-xs-width) {

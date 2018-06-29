@@ -29,11 +29,20 @@ export class AddressDetailPage {
       .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }
 
+  getInitialBalance(transsactionIndex: number) {
+    return element
+      .all(by.css('.transaction'))
+      .get(transsactionIndex)
+      .element(by.css('.-balance-variation > div:nth-of-type(1) > div:nth-of-type(3)'))
+      .getText()
+      .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
+  }
+
   getFinalBalance(transsactionIndex: number) {
     return element
       .all(by.css('.transaction'))
       .get(transsactionIndex)
-      .element(by.css('.-final-balance > div > div:nth-of-type(3)'))
+      .element(by.css('.-balance-variation > div:nth-of-type(2) > div:nth-of-type(3)'))
       .getText()
       .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
   }

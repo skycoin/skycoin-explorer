@@ -56,6 +56,10 @@ describe('skycoin-explorer Address Page', () => {
     expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(6.002);
   });
 
+  it('should show the correct initial address balance', () => {
+    expect(page.getInitialBalance(0)).toBe(0);
+  });
+
   it('should show the correct final address balance', () => {
     expect(page.getFinalBalance(0)).toBe(0.001);
   });

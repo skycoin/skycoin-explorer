@@ -15,7 +15,7 @@ export class CoinsFormatterComponent {
 
     if (value == undefined || value == null) return;
 
-    const number = typeof value == "number" ? value : Number((value as string).replace(',', ''));
+    const number = typeof value == "number" ? value : Number((value as string).replace(new RegExp(',', 'g'), ''));
 
     this.integerPart = Math.trunc(number);
 

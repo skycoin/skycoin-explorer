@@ -4,7 +4,26 @@
 
 [![Build Status](https://travis-ci.org/skycoin/skycoin-explorer.svg)](https://travis-ci.org/skycoin/skycoin-explorer)
 
-https://explorer.skycoin.net
+Skycoin Explorer is a tool to interact with Skycoin ecosystem.
+
+You can check blocks, transactions, buy our cryptocurrency , access our blog and meet the team.
+
+[https://explorer.skycoin.net](https://explorer.skycoin.net)
+
+  - [Installation](#installation)
+    - [Requirements](#requirements)
+  - [Usage](#usage)
+    - [Run a skycoin node](#run-a-skycoin-node)
+    - [Run the explorer](#run-the-explorer)
+    - [Docker images](#docker-images)
+  - [API documentation](#API-documentation)
+  - [Development](#development)
+    - [Compiling the angular frontend](#compiling-the-angular-frontend)
+    - [Formating](#formating)
+    - [Code Linting](#code-linting)
+  - [Deployment](#deployment)
+
+# Installation
 
 ## Requirements
 

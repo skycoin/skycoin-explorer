@@ -1,7 +1,6 @@
 # skycoin build
 # reference https://github.com/skycoin/skycoin
-FROM golang:1.9 AS build
-
+FROM golang:1.10.2-stretch AS build
 # dirs
 RUN mkdir -p $GOPATH/src/github.com/skycoin/
 

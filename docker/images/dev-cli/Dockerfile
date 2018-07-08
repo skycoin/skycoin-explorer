@@ -46,17 +46,6 @@ RUN set -ex; \
     xz-utils \
     zlib1g-dev \
     \
-# No need for MySQL client
-#
-# # https://lists.debian.org/debian-devel-announce/2016/09/msg00000.html
-#     $( \
-# # if we use just "apt-cache show" here, it returns zero because "Can't select versions from package 'libmysqlclient-dev' as it is purely virtual", hence the pipe to grep
-#       if apt-cache show 'default-libmysqlclient-dev' 2>/dev/null | grep -q '^Version:'; then \
-#         echo 'default-libmysqlclient-dev'; \
-#       else \
-#         echo 'libmysqlclient-dev'; \
-#       fi \
-#     ) \
    ; \
   apt-get clean; \
   rm -rf /var/lib/apt/lists/*
@@ -140,15 +129,6 @@ RUN set -ex ; \
     apt-get clean ; \
     rm -rf /var/lib/apt/lists/* ; \
     npm install moxygen -g ; \
-    \
-    \
-    echo 'Installing Criterion ...' ; \
-    git clone --recurse-submodules -j8 https://github.com/skycoin/Criterion /go/Criterion ; \
-    cd /go/Criterion ; \
-    cmake . ; \
-    make install ; \
-    rm -r /go/Criterion ; \
-    echo 'Success nstalling Criterion ...'
 
 # Installs go development tools
 RUN go get -u github.com/derekparker/delve/cmd/dlv  && \
@@ -176,15 +156,7 @@ RUN git clone https://github.com/fatih/vim-go /usr/share/vim/vim80/pack/dev/star
     git clone https://github.com/Shougo/vimproc.vim /usr/share/vim/vim80/pack/dev/start/0vimproc && \
     cd /usr/share/vim/vim80/pack/dev/start/0vimproc && make 
 
-# Install SWIG-3.0.12
-RUN cd /tmp/; \
-    wget http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz && \
-    tar -zxf swig-3.0.12.tar.gz ; \
-    cd swig-3.0.12 ;\
-    ./configure --prefix=/usr && make && make install && \
-    rm -rf /tmp/swig-*
-    
-WORKDIR $GOPATH/src/github.com/skycoin
+WORKDIR $GOPATH/src/github.com/skycoin-explorer
 VOLUME $GOPATH/src/
 
 ENV LD_LIBRARY_PATH=/usr/local/lib

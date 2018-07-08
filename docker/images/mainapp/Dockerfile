@@ -12,7 +12,7 @@ RUN cd $GOPATH/src/github.com/skycoin/skycoin-explorer && \
   CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/skycoin-explorer .
 
 # skycoin image
-FROM alpine:3.7
+FROM busybox:latest
 
 # copy all the binaries
 COPY --from=build /go/bin/* /usr/bin/

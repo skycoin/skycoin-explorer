@@ -39,4 +39,20 @@ export class BlockDetailsPage {
       .getText()
       .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }
+
+  getNavigationButtonText(index: number) {
+    return element
+      .all(by.css('.header-container > div > a'))
+      .get(index)
+      .element(by.css('.-not-xs'))
+      .getAttribute('textContent');
+  }
+
+  clickNavigationButton(index: number) {
+    return element
+      .all(by.css('.header-container > div > a'))
+      .get(index)
+      .element(by.css('.-not-xs'))
+      .click();
+  }
 }

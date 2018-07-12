@@ -55,17 +55,17 @@ export class BlocksPage {
   }
 
   getBlockNumber(row: number) {
-    return this.getTableCellValue(row, 2)
+    return this.getTableCellValue(row, 4)
       .then(text => Number(text));
   }
 
   getTransactionCount(row: number) {
-    return this.getTableCellValue(row, 3)
+    return this.getTableCellValue(row, 5)
       .then(text => Number(text));
   }
 
   getBlockHashLength(row: number) {
-    return this.getTableCellValue(row, 4)
+    return this.getTableCellValue(row, 6)
       .then(text => text.length);
   }
 

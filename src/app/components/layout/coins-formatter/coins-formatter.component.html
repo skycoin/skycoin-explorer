@@ -1,0 +1,1 @@
+<span *ngIf="integerPart != undefined">{{integerPart | number:'1.0-0'}}</span><span [class]="'decimal-part' + ' ' + (whiteText ? '-white' : '-gray')" *ngIf="decimalPart">.{{decimalPart}}</span>

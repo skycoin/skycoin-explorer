@@ -19,6 +19,7 @@ You can check blocks, transactions, buy our cryptocurrency , access our blog and
 
 # Table of Contents
 
+  - [Releases Notes](#releases-notes)
   - [Installation](#installation)
     - [Requirements](#requirements)
   - [Usage](#usage)
@@ -31,6 +32,18 @@ You can check blocks, transactions, buy our cryptocurrency , access our blog and
     - [Formatting](#formatting)
     - [Code Linting](#code-linting)
   - [Deployment](#deployment)
+
+
+#  Release Notes
+
+## Jul 13, 2018
+
+## New Features
+
+## Updates
+
+## Bug fixes
+
 
 # Installation
 
@@ -157,3 +170,5 @@ Run it on port 80:
 ```sh
 EXPLORER_HOST=:80 ./explorer
 ```
+
+

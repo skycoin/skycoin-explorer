@@ -25,10 +25,10 @@ You can check blocks, transactions, buy our cryptocurrency , access our blog and
     - [Run a skycoin node](#run-a-skycoin-node)
     - [Run the explorer](#run-the-explorer)
     - [Docker images](#docker-images)
-  - [API documentation](#API-documentation)
+  - [API documentation](#api-documentation)
   - [Development](#development)
     - [Compiling the angular frontend](#compiling-the-angular-frontend)
-    - [Formating](#formating)
+    - [Formatting](#formatting)
     - [Code Linting](#code-linting)
   - [Deployment](#deployment)
 
@@ -90,7 +90,7 @@ make run-api
 
 ## Docker images
 
-If you want to run Explorer on Docker refer to [Docker instructions](docker/images/mainapp/Docker.md)
+If you want to run Explorer on Docker refer to [Docker instructions](docker/images/mainapp/)
 
 ## API documentation
 

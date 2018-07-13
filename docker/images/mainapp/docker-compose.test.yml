@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+    sut:
+        build:
+            context: .
+            dockerfile: Dockerfile.test
+        command: /opt/tests/run_test.sh
+        depends_on:
+            - explorer
+        image: prueba:latest
+
+    explorer:
+        build:
+            context: ../../../.
+            dockerfile: docker/images/mainapp/Dockerfile

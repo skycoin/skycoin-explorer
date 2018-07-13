@@ -1,0 +1,11 @@
+FROM node:9-alpine
+
+ADD tests /opt/tests
+
+WORKDIR ["/opt/tests"]
+
+RUN npm install -g newman; \
+    chmod +x run_test.sh
+
+
+CMD []

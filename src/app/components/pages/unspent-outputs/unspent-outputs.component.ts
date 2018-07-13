@@ -38,8 +38,8 @@ export class UnspentOutputsComponent implements OnInit {
       this.coins = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0);
     }, error => {
       if (error.status >= 400 && error.status < 500) {
-        this.translate.get(['general.shortLoadingErrorMsg', 'unspentOutputs.withoutOutputs']).subscribe((res: string[]) => {
-          this.loadingMsg = res['general.shortLoadingErrorMsg'];
+        this.translate.get(['general.noData', 'unspentOutputs.withoutOutputs']).subscribe((res: string[]) => {
+          this.loadingMsg = res['general.noData'];
           this.longErrorMsg = res['unspentOutputs.withoutOutputs'];
         });
       } else {

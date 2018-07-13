@@ -3,7 +3,7 @@
   <div class="element-details">
     <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link" *ngIf="address">{{ address }}</a> <copy-button [text]="address" *ngIf="address"></copy-button> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
     <div class="-row"><span>{{ 'unspentOutputs.outputsNumber' | translate }}</span><br class="-xs-only" /><div> {{ outputs ? outputs.head_outputs.length : loadingMsg }} </div></div>
-    <div class="-row"><span>{{ 'unspentOutputs.total' | translate }}</span><br class="-xs-only" /><div> {{ coins != null ? (coins | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unspentOutputs.total' | translate }}</span><br class="-xs-only" /><div> <coins-formatter *ngIf="coins" [amount]="coins | number:'1.0-6'"></coins-formatter> <span *ngIf="coins">{{'general.coinIdentifier' | translate}}</span> <span *ngIf="!coins">{{loadingMsg}}</span> </div></div>
   </div>
 </div>
 
@@ -26,7 +26,7 @@
             <div><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a><copy-button [text]="output.src_tx"></copy-button></div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span>{{ output.time | explorerDate }}</div></div>
+        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span><date-formatter *ngIf="output" [date]="output.time"></date-formatter></div></div>
       </div>
     </div>
 
@@ -35,7 +35,7 @@
         <div class="col-sm-12">
           <div class="-body">
             <div>{{ output.hash }}</div>
-            <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> <coins-formatter [amount]="output.coins | number:'1.0-6'"></coins-formatter></div></div>
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ You can check blocks, transactions, buy our cryptocurrency , access our blog and
 ### Quick reference
 
 - **Where to file issues**:
-    [https://github.com/gliderlabs/docker-alpine/issues](https://github.com/gliderlabs/docker-alpine/issues)
+    [https://github.com/skycoin/skycoin-explorer/issues](https://github.com/skycoin/skycoin-explorer/issues)
 
 # Table of Contents
 
@@ -90,7 +90,7 @@ make run-api
 
 ## Docker images
 
-The project offer two Docker images,for [main app](docker/images/mainapp/README.md) and for [develop](docker/images/dev-cli/README.md)
+If you want to run Explorer on Docker refer to [Docker instructions](docker/images/mainapp/Docker.md)
 
 ## API documentation
 

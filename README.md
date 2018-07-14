@@ -38,11 +38,13 @@ You can check blocks, transactions, buy our cryptocurrency , access our blog and
 
 ## Jul 13, 2018
 
-## New Features
+### New Features
 
-## Updates
+### Updates
 
-## Bug fixes
+* Update Docker base image to golang-1.10.2
+
+### Bug fixes
 
 
 # Installation

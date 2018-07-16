@@ -33,8 +33,8 @@ export class TransactionDetailComponent implements OnInit {
         transaction => this.transaction = transaction,
         error => {
           if (error.status >= 400 && error.status < 500) {
-            this.translate.get(['general.shortLoadingErrorMsg', 'transactionDetail.canNotFind']).subscribe((res: string[]) => {
-              this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.translate.get(['general.noData', 'transactionDetail.canNotFind']).subscribe((res: string[]) => {
+              this.loadingMsg = res['general.noData'];
               this.longErrorMsg = res['transactionDetail.canNotFind'];
             });
           } else {

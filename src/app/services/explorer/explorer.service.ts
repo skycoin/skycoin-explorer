@@ -48,8 +48,9 @@ export class ExplorerService {
         let currentBalance = 0;
         return response.reverse().map(rawTx => {
           let parsedTx = parseGetAddressTransaction(rawTx, address);
+          parsedTx.initialBalance = currentBalance;
           currentBalance += parsedTx.balance;
-          parsedTx.addressBalance = currentBalance;
+          parsedTx.finalBalance = currentBalance;
           return parsedTx;
         }).reverse()
       })

@@ -122,6 +122,19 @@
           }
         }
       }
+    },
+    "skycoin-explorer-e2e-blockchain-180": {
+      "root": "",
+      "sourceRoot": "",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor-blockchain-180.conf.js"
+          }
+        }
+      }
     }
   },
   "defaultProject": "skycoin-explorer",

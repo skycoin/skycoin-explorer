@@ -4,6 +4,8 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Block, Output, Transaction } from '../../../app.datatypes';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
+import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from 'app/services/api/api.service';
 
 @Component({
   selector: 'app-block-details',
@@ -12,33 +14,53 @@ import 'rxjs/add/operator/switchMap';
 })
 export class BlockDetailsComponent implements OnInit {
   block: Block;
-  loadingMsg = "Loading...";
+  loadingMsg = "";
   longErrorMsg: string;
+  blockCount:number;
 
   constructor(
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService,
+    private api: ApiService,
   ) {
-    this.block = null;
+    translate.get('general.loadingMsg').subscribe((res: string) => {
+      this.loadingMsg = res;
+    });
   }
 
   ngOnInit() {
+
+    this.api.getBlockchainMetadata().first().subscribe(blockchain => this.blockCount = blockchain.blocks);
+
+    let blockID = '';
     this.route.params.filter(params => +params['id'] !== null)
-      .switchMap((params: Params) => this.explorer.getBlock(+params['id']))
-      .subscribe((block: Block) => {
+      .switchMap((params: Params) => {
+        blockID = params['id'];
+        return this.explorer.getBlock(+blockID)
+      }).subscribe((block: Block) => {
         if (block != null)
           this.block = block
         else {
-          this.loadingMsg = "Loading error";
-          this.longErrorMsg = "The block does not exist";
+          this.translate.get(['general.noData', 'blockDetails.doesNotExist'], {number: blockID}).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.noData'];
+            this.longErrorMsg = res['blockDetails.doesNotExist'];
+          });
         }
       }, error => {
-        this.loadingMsg = "Loading error";
-        if (error.status >= 500)
-          this.longErrorMsg = "Error loading data, try again later...";
-        else if (error.status >= 400)
-          this.longErrorMsg = "The block does not exist";
+        if (error.status >= 400 && error.status < 500) {
+          this.translate.get(['general.noData', 'blockDetails.doesNotExist'], {number: blockID}).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.noData'];
+            this.longErrorMsg = res['blockDetails.doesNotExist'];
+          });
+        } else {
+          this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.longErrorMsg = res['general.longLoadingErrorMsg'];
+          });
+        }
+          
       });
   }
 }

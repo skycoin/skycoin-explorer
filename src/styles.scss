@@ -1,0 +1,343 @@
+@import './assets/scss/_variables.scss';
+/* You can add global styles to this file, and also import other style files */
+
+a, a:hover, a:focus {
+  color: inherit;
+}
+
+h2 {
+  color: $text-heading;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 42px;
+  text-align: left;
+}
+
+.-float-left {
+  float: left;
+}
+
+.-gray {
+  color: $gray-text;
+}
+
+.element-details-wrapper {
+
+  width: 100%;
+
+  .element-details {
+    background-color: $col-normal-background;
+    padding: $siz-normal-margin $siz-big-margin;
+    text-align: left;
+
+    > .-row {
+      border-bottom: 1px solid $col-normal-separator;
+      font-size: $siz-normal-text;
+      padding: $siz-normal-margin 0;
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      > span:first-child {
+        display: block;
+        float: left;
+        color: $gray;
+        width: 130px;
+      }
+
+      .-link {
+        color: $primary;
+      }
+    }
+  }
+}
+
+.-msg-container {
+  padding: $siz-normal-margin $siz-big-margin;
+}
+
+@media (min-width: ($max-sm-width+1)) {
+  .-xs-sm-only {
+    display: none !important;
+  }
+}
+@media (min-width: ($max-xs-width+1)) {
+  .-xs-only {
+    display: none !important;
+  }
+}
+@media (max-width: $max-xs-width) {
+  .-not-xs {
+    display: none !important;
+  }
+}
+
+.transaction {
+  margin-top: $siz-big-margin*3;
+  font-size: $siz-normal-text;
+
+  .row {
+    margin-bottom: 0;
+  }
+
+  .-title {
+    background-color: $col-odd-background;
+    font-weight: 700;
+    padding: $siz-normal-margin $siz-big-margin;
+
+    a {
+      color: $primary;
+      margin-left: 15px;
+    }
+    .-date {
+      text-align: right;
+    }
+    .-label {
+      display: inline-block;
+      margin: 0px 30px;
+      padding: 2px 15px;
+      color: white;
+    }
+    .-address {
+      float: left;
+    }
+
+    @media (max-width: $max-sm-width) {
+      a {
+        margin-left: 0px;
+      }
+      .-date {
+        text-align: left;
+      }
+      .-label {
+        margin: 5px 0px 0px 0px;
+      }
+      .-address {
+        float: none;
+        display: inline;
+      }
+
+      .row {
+        > div {
+          .-row {
+            border-bottom: 1px solid $col-hard-separator;
+            padding: $siz-normal-margin 0;
+          }
+          &:last-child {
+            .-row {
+              border-bottom: none;
+              padding-bottom: 0px;
+            }
+          }
+          &:first-child {
+            .-row {
+              padding-top: 0px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .-header {
+    background-color: $col-normal-background;
+    border-bottom: 1px solid $col-normal-separator;
+    padding: $siz-normal-margin $siz-big-margin;
+
+    @media (max-width: $max-xs-width) {
+      & {
+        margin: 0px (-$siz-big-margin);
+      }
+    }
+  }
+
+  .-clear-background {
+    background-color: $col-normal-background !important;
+  }
+
+  .-data {
+    background-color: $col-odd-background;
+    padding: 0px $siz-big-margin;
+
+    @media (max-width: $max-xs-width) {
+      & {
+        padding: 0px $siz-big-margin;
+      }
+    }
+
+    .-body {
+      border-bottom: 1px solid $col-normal-separator;
+      padding: $siz-normal-margin 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .-balance {
+        margin-top: 5px;
+      }
+
+      .-link {
+        color: $primary;
+      }
+    }
+
+    .-balance-variation {
+      border-top: 1px solid $col-normal-separator;
+      text-align: right;
+
+      > div {
+        display: inline-block;
+        padding: $siz-small-margin 0px;
+
+        @media (max-width: $max-xs-width) {
+          width: 100%;
+          border-bottom: 1px solid $col-normal-separator;
+          padding: $siz-normal-margin 0;
+  
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+  
+        &:last-child {
+          border-bottom: none;
+        }
+
+        > div:last-child {
+          display: inline-block;
+        }
+      }
+
+      .separator {
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        opacity: 0.2;
+        margin: 0 10px
+      }
+
+      @media (max-width: $max-xs-width) {
+        & {
+          border-top: none;
+          text-align: left;
+        }
+      }
+    }
+    .-transparent {
+      color: $gray;
+    }
+  }
+
+  .-green {
+    background-color: $green;
+  }
+  .-red {
+    background-color: $red;
+  }
+  .-warning {
+    background-color: $warning;
+  }
+}
+
+.table {
+  margin-top: $siz-big-margin;
+  font-size: $siz-normal-text;
+  font-weight: normal !important;
+
+  .row {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .-header {
+    background-color: $col-normal-background;
+    padding: $siz-normal-margin $siz-big-margin;
+  }
+
+  .-row {
+    background-color: $col-normal-background;
+    padding: $siz-big-margin $siz-big-margin;
+    display: block;
+    font-weight: normal;
+
+    &:nth-child(even) {
+      background-color: $col-odd-background;
+      &:hover {
+        background-color: $col-odd-background-hover;
+      }
+    }
+
+    &:hover {
+      background-color: $col-normal-background-hover;
+    }
+  }
+
+  .-fix-left {
+    padding-left: 0px;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+copy-button {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  overflow: visible;
+}
+
+.container{
+  padding: 80px 0;
+
+  @media (max-width: 479px) {
+    padding: 24px 0;
+  }
+}
+
+.pagination {
+  margin-top: $siz-big-margin;
+  text-align: right;
+  font-size: $siz-normal-text;
+
+  a {
+    background-color: $col-soft-background;
+    border: 1px solid $col-normal-separator;
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    line-height: 28px;
+    min-width: 30px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+
+    &.disabled {
+      background-color: $col-soft-background;
+      color: #cdcdcd;
+      cursor: not-allowed;
+    }
+  }
+
+  @media (max-width: $max-xs-width) {
+    .-hide-xs {
+      display: none;
+    }
+  }
+}

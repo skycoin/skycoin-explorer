@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { QrConfig } from 'app/app.config';
 
 declare var QRCode: any;
 
@@ -19,7 +20,7 @@ export class QrCodeComponent implements OnInit {
 
   ngOnInit() {
     new QRCode(this.qr.nativeElement, {
-      text: this.string,
+      text: QrConfig.prefix + this.string,
       width: this.size,
       height: this.size,
       colorDark: this.colordark,

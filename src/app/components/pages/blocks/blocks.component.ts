@@ -5,6 +5,7 @@ import { Block } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import 'rxjs/add/operator/first';
 import 'rxjs/Subscription';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './blocks.component.html',
@@ -20,8 +21,8 @@ export class BlocksComponent implements OnInit {
   blockCount = 0;
   pageIndex = 0;
   pageSize = 10;
-  loadingCoinSupplyMsg = "Loading...";
-  loadingMetadataMsg = "Loading...";
+  loadingCoinSupplyMsg = "";
+  loadingMetadataMsg = "";
   longErrorMsg: string;
 
   get pageCount() {
@@ -32,8 +33,13 @@ export class BlocksComponent implements OnInit {
     private api: ApiService,
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private translate: TranslateService
+  ) {
+    translate.get('general.loadingMsg').subscribe((res: string) => {
+      this.loadingCoinSupplyMsg = this.loadingMetadataMsg = res;
+    });
+  }
 
   ngOnInit() {
     this.api.getBlockchainMetadata().first().subscribe(blockchain => {
@@ -44,8 +50,10 @@ export class BlocksComponent implements OnInit {
           this.navigate(pageIndex)
         });
     }, error => {
-      this.loadingMetadataMsg = "Loading error";
-      this.longErrorMsg = "Error loading data, try again later...";
+      this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
+        this.loadingMetadataMsg = res['general.shortLoadingErrorMsg'];
+        this.longErrorMsg = res['general.longLoadingErrorMsg'];
+      });
     });
 
     this.api.getCoinSupply().first().subscribe(response => {
@@ -54,7 +62,9 @@ export class BlocksComponent implements OnInit {
       this.currentCoinhourSupply = response.current_coinhour_supply;
       this.totalCoinhourSupply = response.total_coinhour_supply;
     }, error => {
-      this.loadingCoinSupplyMsg = "Loading error";
+      this.translate.get('general.shortLoadingErrorMsg').subscribe((res: string) => {
+        this.loadingCoinSupplyMsg = res;
+      });
     });
 
   }

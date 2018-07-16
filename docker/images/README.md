@@ -33,7 +33,7 @@ You can check blocks, transactions and their states.
 ```sh
 $ git clone https://github.com/simelo/skycoin-explorer ${HOME}/workdir/skycoin-explorer
 $ cd ${HOME}/workdir/skycoin-explorer
-$ docker build -t skycoin/skycoint-explorer -f docker/images/mainapp/Dockerfile .
+$ docker build -t skycoin/skycoint-explorer -f docker/images/Dockerfile .
 $ docker run --rm -p 8001:8001 skycoin/skycoin-explorer
 ```
 

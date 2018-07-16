@@ -1,0 +1,11 @@
+FROM node:9-alpine
+
+ADD ./docker/images/tests /opt/tests
+ADD ./e2e /opt/tests/e2e
+
+WORKDIR ["/opt/tests"]
+
+RUN npm install -g newman protractor; \
+    chmod +x /opt/tests/run_test.sh
+
+CMD []

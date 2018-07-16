@@ -3,13 +3,13 @@ version: "3"
 services:
     sut:
         build:
-            context: .
-            dockerfile: Dockerfile.test
+            context: ../../.
+            dockerfile: docker/images/Dockerfile.test
         command: /opt/tests/run_test.sh
         depends_on:
             - explorer
 
     explorer:
         build:
-            context: ../../../.
-            dockerfile: docker/images/mainapp/Dockerfile
+            context: ../../.
+            dockerfile: docker/images/Dockerfile

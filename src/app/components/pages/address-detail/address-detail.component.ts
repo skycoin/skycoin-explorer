@@ -3,6 +3,9 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Output, Transaction } from '../../../app.datatypes';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/Rx';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-address-detail',
@@ -11,32 +14,83 @@ import { Output, Transaction } from '../../../app.datatypes';
 })
 export class AddressDetailComponent implements OnInit {
   address: string;
+  totalReceived: number;
   balance: number;
   transactions: any[];
+  pageTransactions: any[];
+  pageIndex = 0;
+  pageSize = 25;
+  loadingMsg = "";
   longErrorMsg: string;
+
+  get pageCount() {
+    return Math.ceil(this.transactions.length / this.pageSize);
+  }
 
   constructor(
     private api: ApiService,
     private explorer: ExplorerService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private translate: TranslateService
+  ) {
+    translate.get('general.loadingMsg').subscribe((res: string) => {
+      this.loadingMsg = res;
+    });
+  }
 
   ngOnInit() {
     this.route.params.switchMap((params: Params) => {
+      //Clear the content if the address, and not just the page, changes
+      if (this.address != params['address']) {
+        this.transactions = undefined;
+        this.balance = undefined;
+      }
+
       this.address = params['address'];
-      return this.explorer.getTransactions(this.address);
+      if (params['page'])
+        this.pageIndex = parseInt(params['page'], 10) - 1;
+
+      //Clear the list content.
+      this.pageTransactions = undefined;
+
+      if (this.transactions)
+        return Observable.of(this.transactions);
+      else
+        return this.explorer.getTransactions(this.address);
+
     }).subscribe(
-      transactions => this.transactions = transactions,
+      transactions => {
+        this.transactions = transactions;
+        this.totalReceived = transactions.reduce((a, b) => b.balance > 0 ? (a + b.balance) : a, 0);
+        this.updateTransactions();
+      },
       error => {
-        if (error.status >= 500)
-          this.longErrorMsg = "Error loading data, try again later...";
-        else if (error.status >= 400)
-          this.longErrorMsg = "Without transactions";
+        if (error.status >= 400 && error.status < 500) {
+          this.translate.get(['general.shortLoadingErrorMsg', 'addressDetail.withoutTransactions']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.longErrorMsg = res['addressDetail.withoutTransactions'];
+          });
+        } else {
+          this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
+            this.loadingMsg = res['general.shortLoadingErrorMsg'];
+            this.longErrorMsg = res['general.longLoadingErrorMsg'];
+          });
+        }
       }
     );
+    
+    this.route.params.switchMap((params: Params) => this.api.getBalance(params['address']))
+      .subscribe(response => this.balance = response.confirmed.coins / 1000000);
+  }
 
-    this.route.params.switchMap((params: Params) => this.api.getCurrentBalance(params['address']))
-      .subscribe(response => this.balance = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0));
+  updateTransactions() {
+    if (this.pageIndex > this.transactions.length / this.pageSize)
+      this.pageIndex = Math.floor(this.transactions.length / this.pageSize);
+
+    this.pageTransactions = [];
+    for (let i=this.pageIndex * this.pageSize; i<(this.pageIndex+1)*this.pageSize && i<this.transactions.length; i++) {
+      this.pageTransactions.push(this.transactions[i]);
+    }
   }
 }

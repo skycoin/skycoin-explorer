@@ -1,24 +1,231 @@
 @import '../../../../assets/scss/_variables.scss';
 
-$header-height: 68px;
+$img-height-big: 68px;
+$img-height-small: 32px;
 
-nav {
-  background-color: white;
-  box-shadow: none;
-  height: $header-height;
-  margin-bottom: 80px;
-  margin-top: 20px;
+.page-header {
+}
+
+.nav-wrapper {
+  padding: 3.2rem 0;
+  width: 100%;
+  border-bottom: 2px solid #eceef0;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: block;
 
   img {
-    cursor: pointer;
-    height: $header-height;
+    display: block;
+    height: 3.3rem;
+    max-width: 100%;
+
+    @media (min-width: 83.2rem) {
+      height: 3.8rem;
+    }
+  }
+}
+
+.nav-wrapper {}
+.nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: -270px;
+    z-index: 1;
+
+
+    @media (min-width: 83.2rem) {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+    }
+}
+.nav-inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform: translateX(0);
+    transition: transform 400ms ease-in-out;
+    text-align: left;
+    overflow-y: auto;
+
+  &.visible {
+    transform: translateX(-270px);
   }
 
-  .-back-link {
-    color: $primary;
-    float: right;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: $header-height;
+  @media (min-width: 83.2rem) {
+    display: flex;
+    flex-wrap: wrap;
+    width: auto;
+    height: auto;
+    background: transparent;
+    box-shadow: none;
+    transform: translateX(0);
+  }
+}
+
+.nav-group {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 2.8rem 0;
+    font-size: 1.4rem;
+    text-align: left;
+
+  & + .nav-group {
+    border-top: 2px solid rgba(146,164,186,0.2);
+
+    @media (min-width: 83.2rem) {
+      border-top: none;
+      margin-left: 1.6rem;
+    }
+  }
+  
+  @media (min-width: 83.2rem) {
+    flex-direction: row;
+    padding: 0;
+
+    &.mobile {
+      display: none;
+    }
+  }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  font-family: "SkycoinSans", sans-serif;
+  color: #0072FF;
+  text-decoration: none;
+
+  &.active {
+    color: #101F34;
+  }
+
+  img {
+    height: auto;
+    margin-right: 0.8rem;
+    width: 23px;
+  }
+
+  @media (min-width: 64rem) {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    color: #0072FF;
+    text-decoration: none;
+  }
+
+  @media (min-width: 83.2rem) {
+    margin-left: 3.2rem;
+    padding: 0.4rem;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    color: #0072FF;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &.active {
+      border-bottom-color: #0072FF;
+    }
+  }
+}
+
+.nav-button {
+  display: inline-block;
+  border: 1px solid transparent;
+  cursor: pointer;
+  line-height: 1;
+  box-sizing: border-box;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 1000px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  font-family: "SkycoinSans", sans-serif;
+  font-weight: 200;
+  font-size: 1.4rem;
+  padding: 1.2rem 2.4rem;
+  -webkit-transition: 150ms ease-in-out;
+  transition: 150ms ease-in-out;
+  text-transform: uppercase;
+  color: white;
+  background-color: #0072FF;
+  margin-left: 32px;
+  margin-right: 32px;
+
+  @media (min-width: 64rem) {
+    margin-right: 3.2rem;
+  }
+  @media (min-width: 83.2rem) {
+    margin-right: 0;
+  }
+}
+
+.menu-toggle-btn {
+  display: block;
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (min-width: 83.2rem) {
+    display: none;
+  }
+}
+
+.menu-show-btn {
+  background: url("/assets/img/icMenuBlue.svg") 0 0 no-repeat;
+}
+.menu-hide-btn {
+  background: url("/assets/img/icCancel.svg") 0 0 no-repeat;
+  position: absolute;
+  top: 32px;
+  right: 36px;
+}
+
+.menu-overlay {
+  display: block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(7,23,46,0.5);
+  opacity: 1;
+  -webkit-transition: opacity 400ms linear;
+  transition: opacity 400ms linear;
+  z-index: 1;
+
+  @media (min-width: 83.2rem) {
+    display: none;
   }
 }

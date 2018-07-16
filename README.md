@@ -153,6 +153,10 @@ Run linters:
 make lint
 ```
 
+### Customization
+
+[CUSTOMIZATION.md](CUSTOMIZATION.md)
+
 ## Deployment
 
 Compile `explorer.go` to a binary:

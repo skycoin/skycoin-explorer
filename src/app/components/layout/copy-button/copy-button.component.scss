@@ -1,0 +1,33 @@
+@import '../../../../assets/scss/_variables.scss';
+
+.icon {
+  padding: 5px 12px;
+  position: absolute;
+  margin-top: -8px;
+  font-family: 'Font Awesome 5 Free';
+  font-size: 14px;
+  color: rgb(223, 223, 223);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 300;
+}
+
+.icon:hover {
+  color: rgb(187, 187, 187);
+}
+
+.icon:active {
+  color: rgb(155, 155, 155);
+}
+
+.label {
+  position: absolute;
+  font-size: $siz-normal-text;
+  top: -30px;
+  left: 5px;
+  margin-left: -50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  pointer-events:none;
+}

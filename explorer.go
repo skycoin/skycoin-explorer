@@ -12,6 +12,7 @@ Environment options:
 
 CLI Options:
 * -api-only - Don't serve static content from ./dist, only proxy the skycoin node
+* -use-unversioned-api - Use the deprecated unversioned API endpoints without /api/v1 prefix, when communicating with the node
 
 Run the explorer and navigate to http://127.0.0.1:8001/api.html for API documentation.
 
@@ -50,13 +51,16 @@ const (
 )
 
 var (
-	explorerHost = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
-	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
-	apiOnly      bool     // set to true with -api-only cli flag
-	verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
+	explorerHost      = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
+	skycoinAddr       *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
+	apiOnly           bool     // set to true with -api-only cli flag
+	useUnversionedAPI bool     // calls unversioned API endpoints on the node (without the /api/v1 prefix)
+	verify            bool     // set to true with -verify cli flag. Check init() conditions and quits.
 )
 
 func init() {
+	log.SetOutput(os.Stdout)
+
 	explorerHost = os.Getenv("EXPLORER_HOST")
 	if explorerHost == "" {
 		explorerHost = defaultExplorerHost
@@ -83,6 +87,7 @@ func init() {
 	}
 
 	flag.BoolVar(&apiOnly, "api-only", false, "Only run the API, don't serve static content")
+	flag.BoolVar(&useUnversionedAPI, "use-unversioned-api", false, "Use the deprecated unversioned API endpoints without /api/v1 prefix, when communicating with the node")
 	flag.BoolVar(&verify, "verify", false, "Run init() checks and quit")
 	flag.Parse()
 
@@ -93,12 +98,20 @@ func init() {
 	if apiOnly {
 		log.Println("Running in api-only mode")
 	}
+
+	if useUnversionedAPI {
+		log.Println("Using the deprecated unversioned API endpoints")
+	}
 }
 
 func buildSkycoinURL(path string, query url.Values) string {
 	rawQuery := ""
 	if query != nil {
 		rawQuery = query.Encode()
+	}
+
+	if !useUnversionedAPI {
+		path = "/api/v1" + path
 	}
 
 	u := &url.URL{
@@ -311,19 +324,20 @@ var apiEndpoints = []APIEndpoint{
                     {
                         "uxid": "8a941208d3f2d2c4a32438e05645fb64dba3b4b7d83c48d52f51bc1eb9a4117a",
                         "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
-                        "coins": "2361",
+                        "coins": "2361.000000",
                         "hours": 1006716
                     },
                     {
                         "uxid": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
                         "dst": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
-                        "coins": "51",
+                        "coins": "51.000000",
                         "hours": 2013433
                     }
                 ]
             }
         ]
-    }
+    },
+    "size": 414
 }`,
 	},
 
@@ -374,19 +388,20 @@ var apiEndpoints = []APIEndpoint{
                             {
                                 "uxid": "ce1075dd609622b0c28d4106f58943d7f0cae6baffbe9f048bb5bc5f23706b93",
                                 "dst": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
-                                "coins": "4900",
+                                "coins": "4900.000000",
                                 "hours": 6402335
                             },
                             {
                                 "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
                                 "dst": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
-                                "coins": "5",
+                                "coins": "5.000000",
                                 "hours": 6402335
                             }
                         ]
                     }
                 ]
-            }
+						},
+						"size": 802
         },
         {
             "header": {
@@ -415,19 +430,20 @@ var apiEndpoints = []APIEndpoint{
                             {
                                 "uxid": "c8b8eac053a5640bae40144cbc3dda02746071e3c7d00a4b5dfd06d28f928ec4",
                                 "dst": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
-                                "coins": "2500",
+                                "coins": "2500.000000",
                                 "hours": 800291
                             },
                             {
                                 "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
                                 "dst": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
-                                "coins": "2400",
+                                "coins": "2400.000000",
                                 "hours": 800291
                             }
                         ]
                     }
                 ]
-            }
+						},
+						"size": 220
         }
     ]
 }`,
@@ -579,19 +595,31 @@ var apiEndpoints = []APIEndpoint{
 		SkycoinPath:    "/richlist",
 		QueryArgs:      []string{"n", "include-distribution"},
 		Description:    "Returns top N richer with unspect outputs, If no n are specified, returns 20.",
-		ExampleRequest: "/api/richlist?n=2&include-distribution=false",
-		ExampleResponse: `[
-    {
-        "address": "tWZ11Nvor9parjg4FkwxNVcby59WVTw2iL",
-        "coins": "1000000.000000",
-        "locked": false
-    },
-    {
-        "address": "2UYPbDBnHUEc67e7qD4eXtQQ6zfU2cyvAvk",
-        "coins": "1000000.000000",
-        "locked": false
-    }
-]`,
+		ExampleRequest: "/api/richlist?n=4&include-distribution=false",
+		ExampleResponse: `{
+    "richlist": [
+        {
+            "address": "zMDywYdGEDtTSvWnCyc3qsYHWwj9ogws74",
+            "coins": "1000000.000000",
+            "locked": false
+        },
+        {
+            "address": "z6CJZfYLvmd41GRVE8HASjRcy5hqbpHZvE",
+            "coins": "1000000.000000",
+            "locked": false
+        },
+        {
+            "address": "wyQVmno9aBJZmQ99nDSLoYWwp7YDJCWsrH",
+            "coins": "1000000.000000",
+            "locked": false
+        },
+        {
+            "address": "tBaeg9zE2sgmw5ZQENaPPYd6jfwpVpGTzS",
+            "coins": "1000000.000000",
+            "locked": false
+        }
+    ]
+}`,
 	},
 	{
 		ExplorerPath:   "/api/addresscount",
@@ -601,6 +629,102 @@ var apiEndpoints = []APIEndpoint{
 		ExampleResponse: `{
     "count": 10103
 }`,
+	},
+	{
+		ExplorerPath:   "/api/transactions",
+		SkycoinPath:    "/transactions",
+		QueryArgs:      []string{"addrs", "confirmed"},
+		Description:    "Returns transactions for a list of comma-separated addresses. If no addresses are specified, returns all transactions.",
+		ExampleRequest: "/api/transactions?addrs=7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD,6dkVxyKFbFKg9Vdg6HPg1UANLByYRqkrdY&confirmed=1",
+		ExampleResponse: `[
+			{
+					"status": {
+							"confirmed": true,
+							"unconfirmed": false,
+							"height": 10492,
+							"block_seq": 1177,
+							"unknown": false
+					},
+					"time": 1494275011,
+					"txn": {
+							"length": 317,
+							"type": 0,
+							"txid": "b09cd3a8baef6a449848f50a1b97943006ca92747d4e485d0647a3ea74550eca",
+							"inner_hash": "2cb370051c92521a04ba5357e229d8ffa90d9d1741ea223b44dd60a1483ee0e5",
+							"timestamp": 1494275011,
+							"sigs": [
+									"a55155ca15f73f0762f79c15917949a936658cff668647daf82a174eed95703a02622881f9cf6c7495536676f931b2d91d389a9e7b034232b3a1519c8da6fb8800",
+									"cc7d7cbd6f31adabd9bde2c0deaa9277c0f3cf807a4ec97e11872817091dc3705841a6adb74acb625ee20ab6d3525350b8663566003276073d94c3bfe22fe48e01"
+							],
+							"inputs": [
+									"4f4b0078a9cd19b3395e54b3f42af6adc997f77f04e0ca54016c67c4f2384e3c",
+									"36f4871646b6564b2f1ab72bd768a67579a1e0242bc68bcbcf1779bc75b3dddd"
+							],
+							"outputs": [
+									{
+											"uxid": "5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191",
+											"dst": "2K6NuLBBapWndAssUtkxKfCtyjDQDHrEhhT",
+											"coins": "8.000000",
+											"hours": 7454
+									},
+									{
+											"uxid": "a1268e9bd2033b49b44afa765d20876467254f51e5515626780467267a65c563",
+											"dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
+											"coins": "1.000000",
+											"hours": 7454
+									}
+							]
+					}
+			},
+			{
+					"status": {
+							"confirmed": true,
+							"unconfirmed": false,
+							"height": 10491,
+							"block_seq": 1178,
+							"unknown": false
+					},
+					"time": 1494275231,
+					"txn": {
+							"length": 183,
+							"type": 0,
+							"txid": "a6446654829a4a844add9f181949d12f8291fdd2c0fcb22200361e90e814e2d3",
+							"inner_hash": "075f255d42ddd2fb228fe488b8b468526810db7a144aeed1fd091e3fd404626e",
+							"timestamp": 1494275231,
+							"sigs": [
+									"9b6fae9a70a42464dda089c943fafbf7bae8b8402e6bf4e4077553206eebc2ed4f7630bb1bd92505131cca5bf8bd82a44477ef53058e1995411bdbf1f5dfad1f00"
+							],
+							"inputs": [
+									"5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191"
+							],
+							"outputs": [
+									{
+											"uxid": "70fa9dfb887f9ef55beb4e960f60e4703c56f98201acecf2cad729f5d7e84690",
+											"dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
+											"coins": "8.000000",
+											"hours": 931
+									}
+							]
+					}
+			}
+	]`,
+	},
+	{
+		ExplorerPath:   "/api/balance",
+		SkycoinPath:    "/balance",
+		QueryArgs:      []string{"addrs"},
+		Description:    "Returns the combined balance of a list of comma-separated addresses.",
+		ExampleRequest: "/api/balance?addrs=7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD,nu7eSpT6hr5P21uzw7bnbxm83B6ywSjHdq",
+		ExampleResponse: `{
+			"confirmed": {
+					"coins": 70000000,
+					"hours": 28052
+			},
+			"predicted": {
+					"coins": 9000000,
+					"hours": 8385
+			}
+		}`,
 	},
 }
 

@@ -31,6 +31,7 @@ You can check blocks, transactions and their states.
     - [Compiling the angular frontend](#compiling-the-angular-frontend)
     - [Formatting](#formatting)
     - [Code Linting](#code-linting)
+    - [Customization](#customization)
   - [Deployment](#deployment)
 
 # Installation

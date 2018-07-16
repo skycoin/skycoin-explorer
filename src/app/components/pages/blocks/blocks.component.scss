@@ -1,26 +1,28 @@
 @import '../../../../assets/scss/_variables.scss';
 
-h2 {
-  color: $primary;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 42px;
-  margin-top: 40px;
-  text-align: left;
-}
-
 .-details {
   text-align: right;
 
+  @media (max-width: $max-xs-width) {
+    & {
+      text-align: left;
+    }
+  }
+
   p {
-    font-size: 12px;
+    font-size: $siz-normal-text;
     line-height: 14px;
     padding: 3px 0;
     margin-bottom: 5px;
 
-    .-label {
+    >span:first-child {
       display: inline-block;
-      opacity: 0.25;
+    }
+
+    .-label {
+      display: block;
+      color: $gray;
+      float: left;
     }
 
     .-link {
@@ -31,72 +33,7 @@ h2 {
 
     .-value {
       display: inline-block;
-      width: 100px;
-    }
-  }
-}
-
-.-table {
-  font-size: 12px;
-  line-height: 14px;
-  margin-bottom: 40px;
-  margin-top: 20px;
-  padding: 0 15px;
-  text-align: left;
-
-  .row {
-    margin-bottom: 0;
-  }
-
-  .-headers > .row > div {
-    background-color: #F7F7F7;
-    color: #cdcdcd;
-    padding: 18px 20px;
-  }
-
-  .-body > .row {
-    display: block;
-  }
-
-  .-body > .row > div {
-    background-color: #FBFBFB;
-    border-bottom: 1px solid #EFF0F0;
-    padding: 28px 20px;
-
-    &.-gray {
-      color: #8D8D91;
-    }
-
-    &.-msg {
-      cursor: auto;
-    }
-  }
-}
-
-.pagination {
-  margin-top: 20px;
-  text-align: right;
-
-  a {
-    background-color: #fbfbfb;
-    border: 1px solid #eff0f0;
-    cursor: pointer;
-    display: inline-block;
-    height: 30px;
-    line-height: 30px;
-    min-width: 30px;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
-
-    &.disabled {
-      background-color: #fbfbfb;
-      color: #cdcdcd;
-      cursor: not-allowed;
+      width: 120px;
     }
   }
 }

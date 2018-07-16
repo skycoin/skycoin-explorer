@@ -1,5 +1,37 @@
-$font-family: Skycoin, verdana, sans-serif;
+$font-family: "SkycoinSans", sans-serif;
 $primary: #0072ff;
 $green: #00FF92;
 $red: #FF004E;
 $warning: #ffad1a;
+$gray: #92A4BA;
+
+$text-heading: #394049;
+
+$transparent: 0.25;
+
+$col-hard-background: #F0F0F0;
+$col-normal-background: #fff;
+$col-normal-background-hover: #F7F7F7;
+$col-odd-background: rgb(244, 249, 255);
+$col-odd-background-hover: rgb(241, 246, 252);
+$col-soft-background: #FBFBFB;
+$col-hard-separator: #E2E2E2;
+$col-normal-separator: #EFF0F0;
+
+$col-generic-header-background: #FFFFFF;
+$col-generic-header-text: $primary;
+$col-generic-header-border: #eceef0;
+$col-generic-footer-background: #333333;
+$col-generic-footer-text: #FFFFFF;
+$col-generic-footer-top-border: #333333;
+$col-generic-footer-middle-border: #111111;
+
+$max-xxs-width: 479px;
+$max-xs-width: 767px;
+$max-sm-width: 991px;
+
+$siz-big-margin: 20px;
+$siz-normal-margin: 15px;
+$siz-small-margin: 10px;
+
+$siz-normal-text: 14px;

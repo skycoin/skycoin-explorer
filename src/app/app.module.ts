@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, RouteReuseStrategy } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
@@ -18,6 +18,17 @@ import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
 import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 import { FormsModule } from '@angular/forms';
+import { RichlistComponent } from 'app/components/pages/richlist/richlist.component';
+import { UnspentOutputsComponent } from 'app/components/pages/unspent-outputs/unspent-outputs.component';
+import { CopyButtonComponent } from 'app/components/layout/copy-button/copy-button.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppReuseStrategy } from 'app/app.reuse-strategy';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { AppTranslateLoader } from 'app/app.translate-loader';
+import { GenericHeaderComponent } from 'app/components/layout/generic-header/generic-header.component';
+import { GenericFooterComponent } from 'app/components/layout/generic-footer/generic-footer.component';
+import { ExplorerDatePipe } from 'app/pipes/explorer-date.pipe';
+import { DatePipe } from '@angular/common';
 
 
 const ROUTES = [
@@ -40,6 +51,11 @@ const ROUTES = [
   },
   {
     path: 'app/address/:address',
+    redirectTo: 'app/address/:address/1',
+    pathMatch: 'full'
+  },
+  {
+    path: 'app/address/:address/:page',
     component: AddressDetailComponent
   },
   {
@@ -49,6 +65,14 @@ const ROUTES = [
   {
     path: 'app/unconfirmedtransactions',
     component: UnconfirmedTransactionsComponent
+  },
+  {
+    path: 'app/richlist',
+    component: RichlistComponent
+  },
+  {
+    path: 'app/unspent/:address',
+    component: UnspentOutputsComponent
   },
 ];
 
@@ -61,21 +85,36 @@ const ROUTES = [
     UnconfirmedTransactionsComponent,
     FooterComponent,
     HeaderComponent,
+    GenericFooterComponent,
+    GenericHeaderComponent,
     LoadingComponent,
     QrCodeComponent,
     SearchBarComponent,
     TransactionDetailComponent,
     TransactionsValuePipe,
+    RichlistComponent,
+    UnspentOutputsComponent,
+    CopyButtonComponent,
+    ExplorerDatePipe,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: AppTranslateLoader
+      }
+    })
   ],
   providers: [
     ApiService,
     ExplorerService,
+    {provide: RouteReuseStrategy, useClass: AppReuseStrategy},
+    DatePipe,
   ],
   bootstrap: [AppComponent]
 })

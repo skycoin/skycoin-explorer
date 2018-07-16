@@ -8,7 +8,7 @@
 
 Skycoin Explorer is a tool to interact with Skycoin ecosystem.
 
-You can check blocks, transactions, buy our cryptocurrency , access our blog and meet the team.
+You can check blocks, transactions and their states.
 
 [https://explorer.skycoin.net](https://explorer.skycoin.net)
 
@@ -19,7 +19,7 @@ You can check blocks, transactions, buy our cryptocurrency , access our blog and
 
 # Table of Contents
 
-  - [Releases Notes](#releases-notes)
+  - [Releases Notes](CHANGELOG.md)
   - [Installation](#installation)
     - [Requirements](#requirements)
   - [Usage](#usage)
@@ -32,20 +32,6 @@ You can check blocks, transactions, buy our cryptocurrency , access our blog and
     - [Formatting](#formatting)
     - [Code Linting](#code-linting)
   - [Deployment](#deployment)
-
-
-#  Release Notes
-
-## Jul 13, 2018
-
-### New Features
-
-### Updates
-
-* Update Docker base image to golang-1.10.2
-
-### Bug fixes
-
 
 # Installation
 

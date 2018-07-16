@@ -26,7 +26,7 @@
 # What is Skycoin explorer ?
 [Skycoin explorer](https://explorer.skycoin.net) is a tool to interact with Skycoin ecosystem.
 
-You can check blocks, transactions, buy our cryptocurrency , access our blog and meet the team.
+You can check blocks, transactions and their states.
 
 # How to use this image to run an skycoin-explorer node
 

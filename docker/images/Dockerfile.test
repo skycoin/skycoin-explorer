@@ -1,19 +1,8 @@
 FROM rogargon/angular-e2e:latest
 
-#RUN apt-get update && \
-#        apt-get install -y --no-install-recommends git \
-#        && rm -rf /var/lib/apt/lists/*
-
-#RUN cd /usr/src && \
-#    git clone https://github.com/skycoin/skycoin-explorer.git
-
 ADD . /usr/src/skycoin-explorer
 
 WORKDIR /usr/src/skycoin-explorer
-
-#RUN git checkout develop && \
-#    git pull origin && \
-#    npm install
 
 RUN npm install && \
     sh -c "sed -i 's/127.0.0.1/explorer/g' protractor-blockchain-180.conf.js"

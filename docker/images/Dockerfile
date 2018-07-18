@@ -26,4 +26,3 @@ ENV EXPLORER_HOST="0.0.0.0:8001" \
 EXPOSE 8001
 
 ENTRYPOINT ["/usr/bin/skycoin-explorer"]
-CMD []

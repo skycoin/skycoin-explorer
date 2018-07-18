@@ -5,11 +5,33 @@ services:
         build:
             context: ../../.
             dockerfile: docker/images/Dockerfile.test
-        command: /opt/tests/run_test.sh
         depends_on:
             - explorer
+        volumes:
+            - ./:/project-root
 
     explorer:
         build:
             context: ../../.
             dockerfile: docker/images/Dockerfile
+        environment:
+            - SKYCOIN_ADDR=http://sky-node:6420
+        ports:
+            - "8001:8001"
+
+    sky-node:
+        #buuild:
+        #    context: ../../.
+        image: skycoin/skycoin:develop
+        expose:
+            - "6000"
+            - "6420"
+        volumes:
+            - skycoin-data:/data
+            - skycoin-wallet:/wallet
+            - ./../../e2e:/project-root
+        command: ["-web-interface-addr", "0.0.0.0", "-db-path", "project-root/test-fixtures/blockchain-180.db", "-disable-networking"]
+
+volumes:
+    skycoin-data:
+    skycoin-wallet:

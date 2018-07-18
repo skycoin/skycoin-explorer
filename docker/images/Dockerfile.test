@@ -1,11 +1,21 @@
-FROM node:9-alpine
+FROM rogargon/angular-e2e:latest
 
-ADD ./docker/images/tests /opt/tests
-ADD ./e2e /opt/tests/e2e
+#RUN apt-get update && \
+#        apt-get install -y --no-install-recommends git \
+#        && rm -rf /var/lib/apt/lists/*
 
-WORKDIR ["/opt/tests"]
+#RUN cd /usr/src && \
+#    git clone https://github.com/skycoin/skycoin-explorer.git
 
-RUN npm install -g newman protractor; \
-    chmod +x /opt/tests/run_test.sh
+ADD . /usr/src/skycoin-explorer
 
-CMD []
+WORKDIR /usr/src/skycoin-explorer
+
+#RUN git checkout develop && \
+#    git pull origin && \
+#    npm install
+
+RUN npm install && \
+    sh -c "sed -i 's/127.0.0.1/explorer/g' protractor-blockchain-180.conf.js"
+
+CMD ["npm", "run", "e2e-blockchain-180"]

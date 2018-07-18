@@ -7,8 +7,6 @@ services:
             dockerfile: docker/images/Dockerfile.test
         depends_on:
             - explorer
-        volumes:
-            - ./:/project-root
 
     explorer:
         build:

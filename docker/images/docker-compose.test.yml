@@ -23,7 +23,7 @@ services:
         image: alpine:3.7
         volumes:
             - ./../../e2e:/project-root
-        command: sh -c "chmod -R 77 /7project-root/test-fixtures/blockchain-180.db"
+        command: sh -c "chmod -R 77 /project-root/test-fixtures/blockchain-180.db"
 
     sky-node:
         image: skycoin/skycoin:develop

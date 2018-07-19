@@ -20,7 +20,6 @@ addons:
 
 before_install:
   - nvm install 8.9
-  - go version
 
 install:
   - go get -t ./...

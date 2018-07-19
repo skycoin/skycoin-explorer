@@ -12,7 +12,7 @@ RUN cd $GOPATH/src/github.com/skycoin/skycoin-explorer && \
   CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/skycoin-explorer .
 
 # change to bash to be able to use `source` command
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN ln -sf /bin/bash /bin/sh
 
 # install node, explorer dependencies build Angular's project
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash && \
@@ -33,7 +33,7 @@ COPY --from=build /go/bin/* /usr/bin/
 # copy assets
 COPY --from=build /go/src/github.com/skycoin/skycoin-explorer/dist ./dist
 
-ENV EXPLORER_HOST="0.0.0.0:8001" \ 
+ENV EXPLORER_HOST="0.0.0.0:8001" \
     SKYCOIN_ADDRESS="http://127.0.0.1:6420"
 
 EXPOSE 8001

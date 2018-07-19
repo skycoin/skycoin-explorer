@@ -4,53 +4,12 @@
 
 [![Build Status](https://travis-ci.org/skycoin/skycoin-explorer.svg)](https://travis-ci.org/skycoin/skycoin-explorer)
 
-## What is Skycoin Explorer?
-
-Skycoin Explorer is a tool to interact with Skycoin ecosystem.
-
-You can check blocks, transactions, buy our cryptocurrency , access our blog and meet the team.
-
-[https://explorer.skycoin.net](https://explorer.skycoin.net)
-
-### Quick reference
-
-- **Where to file issues**:
-    [https://github.com/skycoin/skycoin-explorer/issues](https://github.com/skycoin/skycoin-explorer/issues)
-
-# Table of Contents
-
-  - [Releases Notes](#releases-notes)
-  - [Installation](#installation)
-    - [Requirements](#requirements)
-  - [Usage](#usage)
-    - [Run a skycoin node](#run-a-skycoin-node)
-    - [Run the explorer](#run-the-explorer)
-    - [Docker images](#docker-images)
-  - [API documentation](#api-documentation)
-  - [Development](#development)
-    - [Compiling the angular frontend](#compiling-the-angular-frontend)
-    - [Formatting](#formatting)
-    - [Code Linting](#code-linting)
-  - [Deployment](#deployment)
-
-
-#  Release Notes
-
-## Jul 13, 2018
-
-## New Features
-
-## Updates
-
-## Bug fixes
-
-
-# Installation
+https://explorer.skycoin.net
 
 ## Requirements
 
 ```
-go>=1.10
+go>=1.8
 node>=v6.9.0
 npm>=3.10.10
 ```
@@ -101,9 +60,17 @@ SKYCOIN_ADDR=http://127.0.0.1:3333 ./explorer
 make run-api
 ```
 
-## Docker images
+### Docker images
 
-If you want to run Explorer on Docker refer to [Docker instructions](docker/images/)
+```
+$ docker build -t skycoin/skycoint-explorer .
+$ docker run -p 8001:8001 skycoin/skycoin-explorer
+```
+
+Access the explorer: [http://localhost:8001](http://localhost:8001).
+
+The `SKYCOIN_ADDR` and the `EXPLORER_HOST` environment variables can be passed
+to the running container to modify the default behavior.
 
 ## API documentation
 
@@ -174,5 +141,3 @@ Run it on port 80:
 ```sh
 EXPLORER_HOST=:80 ./explorer
 ```
-
-

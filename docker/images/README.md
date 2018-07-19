@@ -16,11 +16,11 @@
 	[`amd64`](https://hub.docker.com/r/amd64/alpine/), [`arm32v6`](https://hub.docker.com/r/arm32v6/alpine/), [`arm64v8`](https://hub.docker.com/r/arm64v8/alpine/), [`i386`](https://hub.docker.com/r/i386/alpine/), [`ppc64le`](https://hub.docker.com/r/ppc64le/alpine/), [`s390x`](https://hub.docker.com/r/s390x/alpine/)
 
 -	**Published image artifact details**:
-	[repo-info repo's `repos/alpine/` directory](https://github.com/docker-library/repo-info/blob/master/repos/alpine) ([history](https://github.com/docker-library/repo-info/commits/master/repos/alpine))  
+	[repo-info repo's `repos/alpine/` directory](https://github.com/docker-library/repo-info/blob/master/repos/alpine) ([history](https://github.com/docker-library/repo-info/commits/master/repos/alpine))
 	(image metadata, transfer size, etc)
 
 -	**Image updates**:
-	[official-images PRs with label `library/alpine`](https://github.com/docker-library/official-images/pulls?q=label%3Alibrary%2Falpine)  
+	[official-images PRs with label `library/alpine`](https://github.com/docker-library/official-images/pulls?q=label%3Alibrary%2Falpine
 	[official-images repo's `library/alpine` file](https://github.com/docker-library/official-images/blob/master/library/alpine) ([history](https://github.com/docker-library/official-images/commits/master/library/alpine))
 -->
 
@@ -68,3 +68,6 @@ $ docker run -d --name explorer-node -p 8001:8001 -e SKYCOIN_ADDR="http://192.16
 
 To access the explorer visit [http://localhost:8001](http://localhost:8001)
 
+# Hooks
+
+The image has two hooks, one that is executed at the moment the image is built and adds to its name the ARM version and the other that is executed when the push is made to Docker Hub and changes the standard name by the modified in the build phase.

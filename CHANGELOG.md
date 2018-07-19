@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Add support to ARM architecture in Docker Cloud builds
+- Add docker-compose.test.yml file in order to test the skycoin-explorer container in Docker Cloud
 
 ### Fixed
 

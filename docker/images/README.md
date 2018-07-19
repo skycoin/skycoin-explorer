@@ -68,6 +68,10 @@ $ docker run -d --name explorer-node -p 8001:8001 -e SKYCOIN_ADDR="http://192.16
 
 To access the explorer visit [http://localhost:8001](http://localhost:8001)
 
+# Testing the image
+
+This image has built-in tests (Protractor), this ones will be executed on an instance of it in Docker Cloud. The containers that will run for the test are defined in docker-compose.test.yml, this file will be executed every time a pull request or a commit is made
+
 # Hooks
 
 The image has two hooks, one that is executed at the moment the image is built and adds to its name the ARM version and the other that is executed when the push is made to Docker Hub and changes the standard name by the modified in the build phase.

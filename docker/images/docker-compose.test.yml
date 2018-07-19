@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+    sut:
+        build:
+            context: ../../.
+            dockerfile: docker/images/Dockerfile.test
+        depends_on:
+            - explorer
+
+    explorer:
+        build:
+            context: ../../.
+            dockerfile: docker/images/Dockerfile
+        environment:
+            - SKYCOIN_ADDR=http://sky-node:6420
+        ports:
+            - "8001:8001"
+        depends_on:
+            - sky-node
+
+    permission:
+        image: alpine:3.7
+        volumes:
+            - ./../../e2e:/project-root
+        command: sh -c "chmod -R 77 /project-root/test-fixtures/blockchain-180.db"
+
+    sky-node:
+        image: skycoin/skycoin:develop
+        expose:
+            - "6000"
+            - "6420"
+        volumes:
+            - skycoin-data:/data
+            - skycoin-wallet:/wallet
+            - ./../../e2e:/project-root
+        command: ["-web-interface-addr", "0.0.0.0", "-db-path", "project-root/test-fixtures/blockchain-180.db", "-disable-networking"]
+        depends_on:
+            - permission
+
+volumes:
+    skycoin-data:
+    skycoin-wallet:

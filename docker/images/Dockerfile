@@ -1,7 +1,6 @@
 # skycoin build
 # reference https://github.com/skycoin/skycoin
-FROM golang:1.9 AS build
-
+FROM golang:1.10.2-stretch AS build
 # dirs
 RUN mkdir -p $GOPATH/src/github.com/skycoin/
 
@@ -12,8 +11,21 @@ ADD . $GOPATH/src/github.com/skycoin/skycoin-explorer
 RUN cd $GOPATH/src/github.com/skycoin/skycoin-explorer && \
   CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/skycoin-explorer .
 
+# change to bash to be able to use `source` command
+RUN ln -sf /bin/bash /bin/sh
+
+# install node, explorer dependencies build Angular's project
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash && \
+	source /root/.profile && \
+	nvm install 8.9 && \
+	nvm use 8.9 && \
+	cd $GOPATH/src/github.com/skycoin/skycoin-explorer && \
+	npm install webpack @angular-devkit/build-optimizer && \
+	npm install && \
+	npm run build
+
 # skycoin image
-FROM alpine:3.7
+FROM busybox:latest
 
 # copy all the binaries
 COPY --from=build /go/bin/* /usr/bin/
@@ -26,4 +38,4 @@ ENV EXPLORER_HOST="0.0.0.0:8001" \
 
 EXPOSE 8001
 
-CMD ["/usr/bin/skycoin-explorer"]
+ENTRYPOINT ["/usr/bin/skycoin-explorer"]

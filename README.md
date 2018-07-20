@@ -93,7 +93,7 @@ make run-api
 
 ## Docker images
 
-If you want to run Explorer on Docker refer to [Docker instructions](docker/images/)
+If you want to run Explorer on Docker refer to [Docker instructions](docker/images/README.md)
 
 ## API documentation
 

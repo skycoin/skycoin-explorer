@@ -6,6 +6,12 @@ The explorer is designed in such a way that it is possible to make simple custom
 
 To simplify copying addresses with mobile devices, the explorer shows qr codes. The qr codes contain the addresses prefixed with the name of the coin, in this way: `skycoin:abcd...` (More information in this link: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki). If needed, the `skycoin:` prefix can be changed by modifying the value of `QrConfig.prefix`, inside [app.config.ts](src/app/app.config.ts).
 
+## Search functionality
+
+The explorer is integrated with the browser's search functionality. This means that the user can search for elements of the blockchain directly from the search functionality of the browser. For this to work properly, you must modify the [search.xml](src/search.xml) file. Simply replace the `https://explorer.skycoin.net/` prefix of all URLs with the URL where the browser will reside (it is not necessary to replace the text that may be to the right of that prefix). Also, replace the `ShortName` and `Description` as deemed necessary.
+
+You can find more information about the file format in [opensearch-1-1-draft-6.md](https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md)
+
 ## Colors and general appearance
 
 Most explorer colors and other general UI parameters are defined in [_variables.scss](src/assets/scss/_variables.scss). Making changes to that file is the quickest way to change the explorer appearance.

@@ -6,3 +6,10 @@
 export const environment = {
   production: false
 };
+
+const searchLink = document.createElement('link');
+searchLink.type = 'application/opensearchdescription+xml';
+searchLink.rel = 'search';
+searchLink.href = 'search.dev.xml';
+searchLink.title = 'Skycoin Explorer Test';
+document.head.appendChild(searchLink);

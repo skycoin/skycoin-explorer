@@ -95,5 +95,9 @@
   },
   "searchBar": {
     "hint": "Address, block hash or number, or transaction ID"
+  },
+  "search": {
+    "title": "Search",
+    "unableToFind": "Unable to find \"{{ term }}\""
   }
 }

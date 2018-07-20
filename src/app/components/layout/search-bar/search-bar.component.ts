@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ExplorerService } from '../../../services/explorer/explorer.service';
+import { TranslateService } from '@ngx-translate/core';
+
+import { SearchService, SearchError } from '../../../services/search/search.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -9,24 +11,34 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
 })
 export class SearchBarComponent {
   query: string;
+  searching = false;
 
   constructor(
-    private explorer: ExplorerService,
+    public searchService: SearchService,
     private router: Router,
+    private translate: TranslateService,
   ) { }
 
   search() {
+    if (!this.query) return;
     const hashVal = this.query.trim();
-    if (hashVal.length >= 27 && hashVal.length <= 35) {
-      this.router.navigate(['/app/address', hashVal]);
-    } else if (hashVal.length === 64) {
-      this.explorer.getBlockByHash(hashVal).subscribe(
-          block => this.router.navigate(['/app/block', block.id]),
-        () => this.router.navigate(['/app/transaction', hashVal])
-    )
-    } else {
-      this.router.navigate(['/app/block', hashVal]);
+    if (hashVal.length < 1) return;
+
+    this.searching = true;
+
+    const navCommands = this.searchService.getResultNavCommands(hashVal);
+    if (navCommands.error) {
+      if (navCommands.error == SearchError.InvalidSearchTerm) {
+        alert(this.translate.instant('search.unableToFind', { term: hashVal }));
+      }
+      this.searching = false;
+      return;
     }
+
+    navCommands.resultNavCommands.subscribe(
+      navCommands => { this.searching = false; this.router.navigate(navCommands) },
+      () => this.searching = false
+    )
     this.query = null;
   }
 }

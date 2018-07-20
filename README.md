@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/skycoin/skycoin-explorer.svg)](https://travis-ci.org/skycoin/skycoin-explorer)
 
-## What is Skycoin Explorer?
+https://explorer.skycoin.net
 
 Skycoin Explorer is a tool to interact with Skycoin ecosystem.
 
@@ -164,5 +164,3 @@ Run it on port 80:
 ```sh
 EXPLORER_HOST=:80 ./explorer
 ```
-
-

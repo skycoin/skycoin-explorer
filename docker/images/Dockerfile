@@ -33,7 +33,7 @@ COPY --from=build /go/bin/* /usr/bin/
 # copy assets
 COPY --from=build /go/src/github.com/skycoin/skycoin-explorer/dist ./dist
 
-ENV EXPLORER_HOST="0.0.0.0:8001" \ 
+ENV EXPLORER_HOST="0.0.0.0:8001" \
     SKYCOIN_ADDRESS="http://127.0.0.1:6420"
 
 EXPOSE 8001

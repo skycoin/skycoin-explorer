@@ -6,10 +6,41 @@
 
 https://explorer.skycoin.net
 
+Skycoin Explorer is a tool to interact with Skycoin ecosystem.
+
+You can check blocks, transactions and their states.
+
+[https://explorer.skycoin.net](https://explorer.skycoin.net)
+
+### Quick reference
+
+- **Where to file issues**:
+    [https://github.com/skycoin/skycoin-explorer/issues](https://github.com/skycoin/skycoin-explorer/issues)
+
+# Table of Contents
+
+  - [Releases Notes](CHANGELOG.md)
+  - [Installation](#installation)
+    - [Requirements](#requirements)
+  - [Usage](#usage)
+    - [Run a skycoin node](#run-a-skycoin-node)
+    - [Run the explorer](#run-the-explorer)
+    - [Docker images](#docker-images)
+  - [API documentation](#api-documentation)
+  - [Development](#development)
+    - [Compiling the angular frontend](#compiling-the-angular-frontend)
+    - [Formatting](#formatting)
+    - [Code Linting](#code-linting)
+    - [Customization](#customization)
+  - [Deployment](#deployment)
+
+
+# Installation
+
 ## Requirements
 
 ```
-go>=1.8
+go>=1.10
 node>=v6.9.0
 npm>=3.10.10
 ```
@@ -60,17 +91,9 @@ SKYCOIN_ADDR=http://127.0.0.1:3333 ./explorer
 make run-api
 ```
 
-### Docker images
+## Docker images
 
-```
-$ docker build -t skycoin/skycoint-explorer .
-$ docker run -p 8001:8001 skycoin/skycoin-explorer
-```
-
-Access the explorer: [http://localhost:8001](http://localhost:8001).
-
-The `SKYCOIN_ADDR` and the `EXPLORER_HOST` environment variables can be passed
-to the running container to modify the default behavior.
+If you want to run Explorer on Docker refer to [Docker instructions](docker/images/README.md)
 
 ## API documentation
 

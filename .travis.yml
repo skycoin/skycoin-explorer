@@ -24,7 +24,6 @@ before_install:
 install:
   - go get -t ./...
   - make install-linters
-  - npm install webpack
   - npm install
 
 script:

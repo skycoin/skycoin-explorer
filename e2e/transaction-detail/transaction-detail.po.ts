@@ -14,7 +14,7 @@ export class TransactionDetailPage {
   }
 
   getBlockNumber() {
-    return element(by.css('.element-details > div:nth-of-type(4) > div'))
+    return element(by.css('.element-details > div:nth-of-type(4) > div > a'))
       .getText()
       .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
   }

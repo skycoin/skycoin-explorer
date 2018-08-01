@@ -6,6 +6,7 @@ $warning: #ffad1a;
 $gray: #92A4BA;
 
 $text-heading: #394049;
+$gray-text: #92A4BA;
 
 $transparent: 0.25;
 
@@ -18,6 +19,14 @@ $col-soft-background: #FBFBFB;
 $col-hard-separator: #E2E2E2;
 $col-normal-separator: #EFF0F0;
 
+$col-generic-header-background: #FFFFFF;
+$col-generic-header-text: $primary;
+$col-generic-header-border: #eceef0;
+$col-generic-footer-background: #333333;
+$col-generic-footer-text: #FFFFFF;
+$col-generic-footer-top-border: #333333;
+$col-generic-footer-middle-border: #111111;
+
 $max-xxs-width: 479px;
 $max-xs-width: 767px;
 $max-sm-width: 991px;
@@ -27,3 +36,4 @@ $siz-normal-margin: 15px;
 $siz-small-margin: 10px;
 
 $siz-normal-text: 14px;
+$siz-small-text: 12px;

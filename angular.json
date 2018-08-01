@@ -18,7 +18,8 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/search.dev.xml"
             ],
             "styles": [
               "src/assets/css/bootstrap.min.css",
@@ -46,6 +47,11 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
+              ],
+              "assets": [
+                "src/assets",
+                "src/favicon.ico",
+                "src/search.xml"
               ]
             }
           }
@@ -119,6 +125,19 @@
               "e2e/tsconfig.e2e.json"
             ],
             "exclude": []
+          }
+        }
+      }
+    },
+    "skycoin-explorer-e2e-blockchain-180": {
+      "root": "",
+      "sourceRoot": "",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor-blockchain-180.conf.js"
           }
         }
       }

@@ -1,0 +1,10 @@
+<h2>{{ 'search.title' | translate }}</h2>
+
+<div class="row -msg-container">
+  <div class="col-sm-12">
+    <span *ngIf="!errorMsg">
+      {{ 'general.waitingData' | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
+    </span>
+    <span *ngIf="errorMsg">{{ errorMsg | translate:{ term: searchTerm } }}</span>
+  </div>
+</div>

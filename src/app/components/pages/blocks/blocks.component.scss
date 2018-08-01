@@ -35,5 +35,19 @@
       display: inline-block;
       width: 120px;
     }
+
+    @media (max-width: $max-xs-width) {
+      .-value {
+        margin-top: 5px;
+      }
+    }
   }
+}
+
+.-small-font {
+  font-size: $siz-small-text;
+}
+
+.-link {
+  text-decoration: none;
 }

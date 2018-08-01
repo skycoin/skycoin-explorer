@@ -12,4 +12,9 @@ patch:
     - karma > socket.io > socket.io-adapter > socket.io-parser > debug > ms: null
     - karma > log4js > mailgun-js > debug > ms:
         patched: '2018-05-04T03:41:07.077Z'
+  'npm:tunnel-agent:20170305':
+    - karma > log4js > loggly > request > tunnel-agent:
+        patched: '2018-06-26T08:10:05.074Z'
+    - '@angular-devkit/build-angular > node-sass > request > tunnel-agent':
+        patched: '2018-06-26T08:10:05.074Z'
 patched: '2018-04-18T04:53:49.215Z'

@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class UnspentOutputsComponent implements OnInit {
   address: string;
   outputs: GetCurrentBalanceResponse;
-  coins: number;
+  coins: number = null;
   loadingMsg = "";
   longErrorMsg: string;
 

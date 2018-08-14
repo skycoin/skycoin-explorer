@@ -726,6 +726,35 @@ var apiEndpoints = []APIEndpoint{
 			}
 		}`,
 	},
+	{
+		ExplorerPath:   "/api/health",
+		SkycoinPath:    "/health",
+		Description:    "Returns information about the current state of the node.",
+		ExampleRequest: "/api/health",
+		ExampleResponse: `{
+      "blockchain": {
+          "head": {
+              "seq": 21175,
+              "block_hash": "8a3e0aac619551ae009cfb28c2b36bb1300925f74da770d1512072314f6a4c80",
+              "previous_block_hash": "001eb7911b6a6ab7c75feb88726dd2bc8b87133aebc82201c4404537eb74f7ac",
+              "timestamp": 1523168686,
+              "fee": 2,
+              "version": 0,
+              "tx_body_hash": "36be8d70d1e9f70b340ea7ecf0b247c27086bad10568044c1196fe150f6cea1b"
+          },
+          "unspents": 14750,
+          "unconfirmed": 0,
+          "time_since_last_block": "12m6s"
+      },
+      "version": {
+          "version": "0.23.0",
+          "commit": "f61b4319c2f146a5ad86f7cbda26a1ba6a09998d",
+          "branch": "develop"
+      },
+      "open_connections": 30,
+      "uptime": "13.686460853s"
+}`,
+	},
 }
 
 var docEndpoint APIEndpoint = APIEndpoint{

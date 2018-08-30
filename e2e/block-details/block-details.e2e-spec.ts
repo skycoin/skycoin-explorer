@@ -37,7 +37,7 @@ describe('skycoin-explorer Block Details Page', () => {
   });
 
   it('should show the correct amount', () => {
-    expect(page.getAmount()).toBe(999990);
+    expect(page.getAmount()).toBe(2003684);
   });
 
   it('should show the correct transaction ID', () => {
@@ -53,7 +53,7 @@ describe('skycoin-explorer Block Details Page', () => {
   });
 
   it('should have the correct coins amount', () => {
-    expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(1999980);
+    expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(2003684);
   });
 
   it('should display the "Previous block" button', () => {

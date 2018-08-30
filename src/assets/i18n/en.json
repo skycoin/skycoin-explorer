@@ -3,6 +3,7 @@
     "coinIdentifier": "SKY",
     "address": "Address",
     "coins": "Coins",
+    "hours": "Hours",
     "loadingMsg": "Loading...",
     "shortLoadingErrorMsg": "Loading error",
     "longLoadingErrorMsg": "Error loading data, try again later...",

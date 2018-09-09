@@ -20,7 +20,7 @@ describe('skycoin-explorer Address Page', () => {
   });
 
   it('should have 5 address details rows', () => {
-    expect(generalFunctions.getDetailsRowCount()).toEqual(5);
+    expect(generalFunctions.getDetailsRowCount()).toEqual(6);
   });
 
   it('should have the correct address for small screens', () => {
@@ -77,9 +77,9 @@ describe('skycoin-explorer Address Page', () => {
 
   it('should have the correct coins amount', () => {
     if (browser.params.chain == '180') {
-      expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(1318628);
+      expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(1655151);
     } else {
-      expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(6.002);
+      expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(158.002);
     }
   });
 

@@ -16,6 +16,7 @@ export class AddressDetailComponent implements OnInit {
   address: string;
   totalReceived: number;
   balance: number;
+  hoursBalance: number;
   transactions: any[];
   pageTransactions: any[];
   pageIndex = 0;
@@ -45,6 +46,7 @@ export class AddressDetailComponent implements OnInit {
       if (this.address != params['address']) {
         this.transactions = undefined;
         this.balance = undefined;
+        this.hoursBalance = undefined;        
       }
 
       this.address = params['address'];
@@ -81,7 +83,10 @@ export class AddressDetailComponent implements OnInit {
     );
     
     this.route.params.switchMap((params: Params) => this.api.getBalance(params['address']))
-      .subscribe(response => this.balance = response.confirmed.coins / 1000000);
+      .subscribe(response => {
+        this.balance = response.confirmed.coins / 1000000;
+        this.hoursBalance = response.confirmed.hours;
+      });
   }
 
   updateTransactions() {

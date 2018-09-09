@@ -42,8 +42,10 @@
       <div class="col-sm-6">
         <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
         <div class="-body" *ngFor="let input of transaction.inputs">
-          <a class="-link" [routerLink]="'/app/address/' + input.address">{{ input.address }}</a><copy-button [text]="input.address"></copy-button>
+          <a class="-link" [routerLink]="'/app/address/' + input.owner">{{ input.owner }}</a><copy-button [text]="input.owner"></copy-button>
           <div class="-balance"><span class="-transparent">{{ 'general.coins' | translate }}:</span> {{ input.coins | number:'1.0-6' }}</div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ input.hours | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.calculatedHours' | translate }}:&nbsp;</div><div> {{ input.calculatedHours | number:'1.0-6' }}</div></div>
         </div>
       </div>
       <div class="col-sm-6">
@@ -51,6 +53,7 @@
         <div class="-body" *ngFor="let output of transaction.outputs">
           <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><copy-button [text]="output.address"></copy-button>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours | number:'1.0-6' }}</div></div>
         </div>
       </div>
     </div>

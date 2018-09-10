@@ -23,8 +23,14 @@ export class AddressDetailPage {
       .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }
 
+  getTotalSent() {
+    return element(by.css('.element-details > div:nth-of-type(4) > div'))
+      .getText()
+      .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
+  }
+
   getCurrentBalance() {
-    return element(by.css('.element-details > div:nth-of-type(3) > div'))
+    return element(by.css('.element-details > div:nth-of-type(5) > div'))
       .getText()
       .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }

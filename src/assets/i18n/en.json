@@ -58,6 +58,7 @@
     "title": "Address",
     "txsNumber": "# of Transactions",
     "totalReceived": "Total Received",
+    "totalSent": "Total Sent",
     "currentBalance": "Current Coins",
     "hoursBalance": "Current Hours",
     "tools": "Tools",

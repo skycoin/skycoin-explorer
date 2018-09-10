@@ -53,7 +53,7 @@ describe('skycoin-explorer Block Details Page', () => {
   });
 
   it('should have the correct coins amount', () => {
-    expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(1999980);
+    expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(2013866);
   });
 
   it('should display the "Previous block" button', () => {

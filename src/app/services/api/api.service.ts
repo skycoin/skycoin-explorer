@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CoinSupply } from '../../components/pages/blocks/block';
-import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransaction, GetUxoutResponse, GetAddressResponseTransaction,
-    GetCurrentBalanceResponse, GetBlocksResponseBlock, RichlistEntry, GetBalanceResponse, GetTransactionResponse } from '../../app.datatypes';
+import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransactionResponse, GetUxoutResponse, GenericTransactionResponse,
+    GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse } from '../../app.datatypes';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -17,16 +17,20 @@ export class ApiService {
     private http: Http
   ) { }
 
-  getAddress(address: string): Observable<GetAddressResponseTransaction[]> {
+  getAddress(address: string): Observable<GenericTransactionResponse[]> {
     return this.get('address', { address: address });
   }
 
-  getUnconfirmedTransactions(): Observable<GetUnconfirmedTransaction[]> {
-    return this.get('pendingTxs');
+  getUnconfirmedTransactions(): Observable<GetUnconfirmedTransactionResponse[]> {
+    return this.get('pendingTxs', { verbose: 1 });
   }
 
-  getBlock(hash: string): Observable<GetBlocksResponseBlock> {
-    return this.get('block', { hash: hash });
+  getBlockById(id: number): Observable<GenericBlockResponse> {
+    return this.get('block', { seq: id, verbose: 1 });
+  }
+
+  getBlockByHash(hash: string): Observable<GenericBlockResponse> {
+    return this.get('block', { hash: hash, verbose: 1 });
   }
 
   getBlocks(startNumber: number, endNumber: number): Observable<GetBlocksResponse> {
@@ -53,7 +57,7 @@ export class ApiService {
   }
 
   getTransaction(transactionId:string): Observable<GetTransactionResponse> {
-    return this.get('transaction', { txid: transactionId });
+    return this.get('transaction', { txid: transactionId, verbose: 1 });
   }
 
   getUxout(uxid: string): Observable<GetUxoutResponse> {

@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AddressDetailComponent implements OnInit {
   address: string;
   totalReceived: number;
+  totalSent: number;
   balance: number;
   hoursBalance: number;
   transactions: any[];
@@ -65,6 +66,7 @@ export class AddressDetailComponent implements OnInit {
       transactions => {
         this.transactions = transactions;
         this.totalReceived = transactions.reduce((a, b) => b.balance > 0 ? (a + b.balance) : a, 0);
+        this.totalSent = transactions.reduce((a, b) => b.balance < 0 ? (a + b.balance) : a, 0) * -1;
         this.updateTransactions();
       },
       error => {

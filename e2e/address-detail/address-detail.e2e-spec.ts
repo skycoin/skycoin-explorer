@@ -19,8 +19,8 @@ describe('skycoin-explorer Address Page', () => {
     expect(page.getPageTitleForSmallScreens()).toBe("Address");
   });
 
-  it('should have 5 address details rows', () => {
-    expect(generalFunctions.getDetailsRowCount()).toEqual(6);
+  it('should have 6 address details rows', () => {
+    expect(generalFunctions.getDetailsRowCount()).toEqual(7);
   });
 
   it('should have the correct address for small screens', () => {
@@ -36,6 +36,14 @@ describe('skycoin-explorer Address Page', () => {
       expect(page.getTotalReceived()).toBe(100);
     } else {
       expect(page.getTotalReceived()).toBe(0.001);
+    }
+  });
+
+  it('should show the correct sent amount', () => {
+    if (browser.params.chain == '180') {
+      expect(page.getTotalSent()).toBe(0);
+    } else {
+      expect(page.getTotalSent()).toBe(0);
     }
   });
 

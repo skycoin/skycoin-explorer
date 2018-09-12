@@ -8,6 +8,7 @@
     </div>
     <div class="-row -tx-number"><span>{{ 'addressDetail.txsNumber' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'addressDetail.totalReceived' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? ((totalReceived | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'addressDetail.totalSent' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? ((totalSent | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'addressDetail.currentBalance' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? ((balance | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'addressDetail.hoursBalance' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? ((hoursBalance | number:'1.0-6')) : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'addressDetail.tools' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/unspent/' + address" class="-link" *ngIf="address">{{ 'addressDetail.unspentOutputs' | translate }}</a> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>

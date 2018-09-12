@@ -61,7 +61,7 @@ export class GeneralPageFunctions {
     return element
       .all(by.css('.-balance > div:nth-of-type(2)'))
       .map((element, i) => element.getText())
-      .then(texts => texts.map(text => Number((text as string).replace(',', ''))).reduce((total, val) => total+val, 0))
+      .then(texts => texts.map(text => Number((text as string).replace(new RegExp(',', 'g'), ''))).reduce((total, val) => total+val, 0))
       .then(result => Math.round(result * 1000000) / 1000000);
   }
 

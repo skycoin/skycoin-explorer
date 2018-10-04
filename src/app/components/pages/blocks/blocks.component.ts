@@ -25,6 +25,8 @@ export class BlocksComponent implements OnInit {
   loadingMetadataMsg = "";
   longErrorMsg: string;
 
+  mouseOver = -1;
+
   get pageCount() {
     return Math.ceil(this.blockCount / this.pageSize);
   }

@@ -1,4 +1,5 @@
 import { browser, by, element } from 'protractor';
+import { GeneralPageFunctions } from "../general.po";
 
 export class UnconfirmedTransactionsPage {
 
@@ -17,7 +18,7 @@ export class UnconfirmedTransactionsPage {
   getTimestampValidity(index: number) {
     return element(by.css('.element-details > div:nth-of-type(' + index + ') > div'))
       .getText()
-      .then(text => !isNaN((new Date(text)).getTime()));
+      .then(text => GeneralPageFunctions.processAndCheckDate(text));
   }
 
 }

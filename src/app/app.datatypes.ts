@@ -50,6 +50,7 @@ export class Transaction {
   initialBalance: number;
   finalBalance: number;
   length: number;
+  fee: number;
 }
 
 export class Wallet {
@@ -151,6 +152,7 @@ export function parseGenericTransaction(raw: GenericTransactionResponse, address
     initialBalance: null,
     finalBalance: null,
     length: raw.length,
+    fee: raw.fee,
   }
 
   if (raw.status) {

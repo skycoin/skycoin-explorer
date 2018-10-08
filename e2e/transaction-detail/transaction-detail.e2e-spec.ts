@@ -12,12 +12,8 @@ describe('skycoin-explorer Transaction Page', () => {
     expect(generalFunctions.getPageTitle()).toBe("Transaction");
   });
 
-  it('should display 4 transaction details rows', () => {
-    expect(generalFunctions.getDetailsRowCount()).toEqual(4);
-  });
-
-  it('should show a valid timestamp', () => {
-    expect(page.getTimestampValidity()).toBeTruthy();
+  it('should display 3 transaction details rows', () => {
+    expect(generalFunctions.getDetailsRowCount()).toEqual(3);
   });
 
   it('should show the correct size', () => {

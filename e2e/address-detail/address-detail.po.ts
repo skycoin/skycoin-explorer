@@ -39,7 +39,7 @@ export class AddressDetailPage {
     return element
       .all(by.css('.transaction'))
       .get(transsactionIndex)
-      .element(by.css('.-balance-variation > div:nth-of-type(1) > div:nth-of-type(3)'))
+      .element(by.css('.-balance-variation > div:nth-of-type(2) > div:nth-of-type(2)'))
       .getText()
       .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
   }
@@ -48,7 +48,7 @@ export class AddressDetailPage {
     return element
       .all(by.css('.transaction'))
       .get(transsactionIndex)
-      .element(by.css('.-balance-variation > div:nth-of-type(2) > div:nth-of-type(3)'))
+      .element(by.css('.-balance-variation > div:nth-of-type(3) > div:nth-of-type(2)'))
       .getText()
       .then(text => Number(text.replace(new RegExp(',', 'g'), '')));
   }

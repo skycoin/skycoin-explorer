@@ -191,10 +191,17 @@ h2 {
     .-balance-variation {
       border-top: 1px solid $col-normal-separator;
       text-align: right;
+      display: flex;
+      align-items: center;
+
+      .fee-box {
+        flex-grow: 1;
+      }
 
       > div {
         display: inline-block;
         padding: $siz-small-margin 0px;
+        text-align: left;
 
         @media (max-width: $max-xs-width) {
           width: 100%;
@@ -226,6 +233,7 @@ h2 {
         & {
           border-top: none;
           text-align: left;
+          display: unset;
         }
       }
     }

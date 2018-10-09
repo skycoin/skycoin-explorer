@@ -18,11 +18,10 @@
     "outputs": "Outputs",
     "pending": "pending",
     "date": "Date",
-    "balance": "Balance",
-    "initialBalance": "Initial address balance",
-    "finalBalance": "Final address balance",
-    "initialBalanceShort": "Initial",
-    "finalBalanceShort": "Final",
+    "balance": "More info",
+    "fee": "Transaction fee (in hours)",
+    "initialBalance": "Initial coins balance",
+    "finalBalance": "Final coins balance",
     "firstSeen": "First seen at"
   },
   "blocks": {

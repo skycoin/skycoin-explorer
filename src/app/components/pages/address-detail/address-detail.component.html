@@ -74,15 +74,17 @@
       <div class="col-sm-12">
         <div class="-header -xs-only">{{ 'txBoxes.balance' | translate }}</div>
         <div class="-balance-variation">
+          <div class="fee-box">
+            <div class="-transparent -float-left">{{ 'txBoxes.fee' | translate }}:&nbsp;</div>
+            <div>{{ transaction.fee | number:'1.0-0' }}</div>
+          </div>
           <div>
-            <div class="-transparent -not-xs -float-left">{{ 'txBoxes.initialBalance' | translate }}:&nbsp;</div>
-            <div class="-transparent -xs-only -float-left">{{ 'txBoxes.initialBalanceShort' | translate }}:&nbsp;</div>
+            <div class="-transparent -float-left">{{ 'txBoxes.initialBalance' | translate }}:&nbsp;</div>
             <div>{{ transaction.initialBalance | number:'1.0-6' }}</div>
           </div>
           <span class="separator -not-xs">&#xf105;</span>
           <div>
-            <div class="-transparent -not-xs -float-left">{{ 'txBoxes.finalBalance' | translate }}:&nbsp;</div>
-            <div class="-transparent -xs-only -float-left">{{ 'txBoxes.finalBalanceShort' | translate }}:&nbsp;</div>
+            <div class="-transparent -float-left">{{ 'txBoxes.finalBalance' | translate }}:&nbsp;</div>
             <div>{{ transaction.finalBalance | number:'1.0-6' }}</div>
           </div>
         </div>

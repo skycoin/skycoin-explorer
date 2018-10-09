@@ -36,7 +36,7 @@ export class GeneralPageFunctions {
       .get(transsactionIndex)
       .element(by.css('.-date'))
       .getText()
-      .then(text => !isNaN((new Date(text)).getTime()));
+      .then(text => GeneralPageFunctions.processAndCheckDate(text));
   }
 
   getTransactionInputs(transsactionIndex: number) {
@@ -68,5 +68,13 @@ export class GeneralPageFunctions {
   getErrorMessage() {
     return element(by.css('div.row.-msg-container > div'))
       .getText();
+  }
+
+  static processAndCheckDate(text: string): boolean {
+    let numberText = text;
+    if (isNaN(Number(numberText.substr(0,1)))) {
+      numberText = numberText.substr(1, numberText.length-1);
+    }
+    return !isNaN((new Date(numberText)).getTime())
   }
 }

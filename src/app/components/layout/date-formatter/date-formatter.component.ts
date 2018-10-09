@@ -9,6 +9,8 @@ export class DateFormatterComponent {
   @Input()date;
 
   @Input()dateMultiplier = 1000;
+
+  mouseOver = false;
   
   constructor() { }
 }

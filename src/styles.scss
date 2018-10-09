@@ -51,6 +51,10 @@ h2 {
         width: 130px;
       }
 
+      > div:last-of-type {
+        display: flex;
+      }
+
       .-link {
         color: $primary;
       }
@@ -348,4 +352,30 @@ copy-button {
       display: none;
     }
   }
+}
+
+.timezone-container {
+  height: 0px;
+  position: relative;
+  top: 1px;
+  font-size: 9px;
+}
+
+.timezone-label {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  display: inline;
+}
+
+.timezone-icon {
+  margin-right: 4px;
+  font-family: 'Font Awesome 5 Free';
+  font-size: 12px;
+  user-select: none;
+  font-weight: 600;
+  opacity: 0.25;
+}
+
+.timezone-icon-opaque {
+  opacity: 0.5 !important;
 }

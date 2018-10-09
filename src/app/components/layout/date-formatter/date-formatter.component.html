@@ -1,2 +1,7 @@
-<span *ngIf="date">{{date * dateMultiplier | date:'yyyy-MM-dd'}}</span>
-<span class="time -gray" *ngIf="date">{{date * dateMultiplier | date:'hh:mm:ss'}}</span>
+<div class="root" (mouseenter)="mouseOver = true" (mouseleave)="mouseOver = false">
+  <span *ngIf="date"><span class="timezone-icon" [ngClass]="{'timezone-icon-opaque': mouseOver}" >&#xf0ac;</span>{{date * dateMultiplier | date:'yyyy-MM-dd'}}</span>
+  <span class="time -gray" *ngIf="date">{{date * dateMultiplier | date:'HH:mm:ss'}}</span>
+  <div *ngIf="mouseOver" class="timezone-container">
+    <div class="timezone-label">{{date * dateMultiplier | date:'OOOO'}}</div>
+  </div>
+</div>

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { SearchService, SearchError } from '../../../services/search/search.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './search.component.html',
@@ -16,7 +15,6 @@ export class SearchComponent implements OnInit {
     private searchService: SearchService,
     private route: ActivatedRoute,
     private router: Router,
-    private translate: TranslateService,
   ) {}
 
   ngOnInit() {

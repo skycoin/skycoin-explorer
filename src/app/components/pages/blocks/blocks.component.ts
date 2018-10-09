@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { Block } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
@@ -35,7 +35,6 @@ export class BlocksComponent implements OnInit {
     private api: ApiService,
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router,
     private translate: TranslateService
   ) {
     translate.get('general.loadingMsg').subscribe((res: string) => {

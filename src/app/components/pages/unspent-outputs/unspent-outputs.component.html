@@ -7,14 +7,7 @@
   </div>
 </div>
 
-<div class="row -msg-container" *ngIf="outputs === undefined">
-  <div class="col-sm-12">
-    <span *ngIf="!longErrorMsg; else error_msg">
-      {{ 'general.waitingData' | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
-    </span>
-    <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
-  </div>
-</div>
+<app-loading [longErrorMsg]="longErrorMsg" *ngIf="outputs === undefined"></app-loading>
 
 <div *ngIf="outputs">
   <div class="transaction" *ngFor="let output of outputs.head_outputs">

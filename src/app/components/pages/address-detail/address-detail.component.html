@@ -18,14 +18,7 @@
   <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
 </div>
 
-<div class="row -msg-container" *ngIf="transactions === undefined">
-  <div class="col-sm-12">
-    <span *ngIf="!longErrorMsg; else error_msg">
-      {{ 'general.waitingData' | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
-    </span>
-    <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
-  </div>
-</div>
+<app-loading [longErrorMsg]="longErrorMsg" *ngIf="transactions === undefined"></app-loading>
 
 <div class="transaction" *ngFor="let transaction of pageTransactions">
   <div class="-title">

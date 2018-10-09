@@ -62,10 +62,6 @@ h2 {
   }
 }
 
-.-msg-container {
-  padding: $siz-normal-margin $siz-big-margin;
-}
-
 @media (min-width: ($max-sm-width+1)) {
   .-xs-sm-only {
     display: none !important;

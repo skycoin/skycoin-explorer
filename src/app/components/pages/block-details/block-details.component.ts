@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Block, Output, Transaction } from '../../../app.datatypes';
+import { Block } from '../../../app.datatypes';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 import { TranslateService } from '@ngx-translate/core';
@@ -21,7 +21,6 @@ export class BlockDetailsComponent implements OnInit {
   constructor(
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router,
     private translate: TranslateService,
     private api: ApiService,
   ) {

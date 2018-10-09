@@ -2,15 +2,6 @@
  * Elementary Types
  */
 
-export class Address {
-  address: string;
-  next_seed?: string;
-  secret_key?: string;
-  public_key?: string;
-  balance?: number;
-  hours?: number;
-}
-
 export class Block {
   id: number;
   hash: string;
@@ -51,15 +42,6 @@ export class Transaction {
   finalBalance: number;
   length: number;
   fee: number;
-}
-
-export class Wallet {
-  label: string;
-  addresses: Address[];
-  seed?: string;
-  balance?: number;
-  hours?: number;
-  hidden?: boolean;
 }
 
 export class RichlistEntry {
@@ -212,7 +194,7 @@ export class GetBlockchainMetadataResponse {
   head: GetBlockchainMetadataResponseHead;
 }
 
-export class GetBlockchainMetadataResponseHead {
+class GetBlockchainMetadataResponseHead {
   seq: number;
 }
 
@@ -231,20 +213,6 @@ export class GetCurrentBalanceResponse {
 }
 
 class GetCurrentBalanceResponseOutput {
-  hash: string;
-  src_tx: string;
-  address: string;
-  coins: string;
-  hours: number;
-}
-
-export class GetOutputsRequest {
-  head_outputs: GetOutputsRequestOutput[];
-  outgoing_outputs: any[];
-  incoming_outputs: any[];
-}
-
-export class GetOutputsRequestOutput {
   hash: string;
   src_tx: string;
   address: string;
@@ -277,4 +245,12 @@ export function parseGetUxout(raw: GetUxoutResponse): Output {
     hours: raw.hours,
     hash: raw.uxid,
   }
+}
+
+export interface GetCoinSupplyResponse {
+  current_supply: number,
+  total_supply: number,
+  max_supply: number,
+  current_coinhour_supply: number,
+  total_coinhour_supply: number,
 }

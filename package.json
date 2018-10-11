@@ -9,7 +9,7 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e skycoin-explorer-e2e",
     "e2e-blockchain-180": "ng e2e skycoin-explorer-e2e-blockchain-180",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"

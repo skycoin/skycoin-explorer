@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { CoinSupply } from '../../components/pages/blocks/block';
-import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransactionResponse, GetUxoutResponse, GenericTransactionResponse,
-    GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse } from '../../app.datatypes';
+import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransactionResponse, GenericTransactionResponse,
+    GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse, GetCoinSupplyResponse } from '../../app.datatypes';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -14,7 +13,7 @@ export class ApiService {
   private url = '/api/';
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) { }
 
   getAddress(address: string): Observable<GenericTransactionResponse[]> {
@@ -44,7 +43,7 @@ export class ApiService {
       }))
   }
 
-  getCoinSupply(): Observable<CoinSupply> {
+  getCoinSupply(): Observable<GetCoinSupplyResponse> {
     return this.get('coinSupply');
   }
 
@@ -60,27 +59,18 @@ export class ApiService {
     return this.get('transaction', { txid: transactionId, verbose: 1 });
   }
 
-  getUxout(uxid: string): Observable<GetUxoutResponse> {
-    return this.get('uxout', { uxid: uxid });
-  }
-
   getRichlist(): Observable<RichlistEntry[]> {
     return this.get('richlist').map(response => response.richlist);
   }
 
   // Old methods
 
-  getInputAddress(uxid:string): any{
-    return this.get('uxout?uxid=' + uxid);
-  }
-
-  private get(url, options = null) {
+  get(url: string, options: object = null): any {
     return this.http.get(this.getUrl(url, options))
-      .map((res: any) => res.json())
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
-  private getQueryString(parameters = null) {
+  private getQueryString(parameters: object = null): string {
     if (!parameters) {
       return '';
     }
@@ -91,7 +81,7 @@ export class ApiService {
     }, []).join('&');
   }
 
-  private getUrl(url, options = null) {
+  private getUrl(url: string, options: object = null): string {
     return this.url + url + '?' + this.getQueryString(options);
   }
 }

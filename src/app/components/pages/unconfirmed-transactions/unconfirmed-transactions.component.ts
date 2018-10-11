@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Output, Transaction } from '../../../app.datatypes';
+import { Transaction } from '../../../app.datatypes';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 import { TranslateService } from '@ngx-translate/core';
@@ -22,7 +21,6 @@ export class UnconfirmedTransactionsComponent implements OnInit {
 
   constructor(
     private explorer: ExplorerService,
-    private router: Router,
     private translate: TranslateService
   ) {
     translate.get('general.loadingMsg').subscribe((res: string) => {

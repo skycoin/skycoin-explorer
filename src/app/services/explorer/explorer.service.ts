@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { Observable } from 'rxjs/Observable';
-import { Block, Output, parseGenericTransaction, parseGenericBlock, parseGetUnconfirmedTransaction, parseGetUxout, Transaction, parseGetTransaction } from '../../app.datatypes';
+import { Block, parseGenericTransaction, parseGenericBlock, parseGetUnconfirmedTransaction, Transaction, parseGetTransaction } from '../../app.datatypes';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';

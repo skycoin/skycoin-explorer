@@ -51,7 +51,7 @@ describe('skycoin-explorer Unconfirmed Transactions Page', () => {
     });
 
     it('should have the correct coins amount', () => {
-      expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(63299981);
+      expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(63915681);
     });
   }
 });

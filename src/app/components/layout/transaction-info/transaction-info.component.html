@@ -1,0 +1,70 @@
+<div class="transaction">
+  <div class="-title">
+    <div class="row">
+      <div class="col-md-10 col-sm-12">
+        <div class="-row">
+          <div class="-float-left">{{ 'txBoxes.transactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+          <div class="-address"><a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a><copy-button [text]="transaction.id"></copy-button></div>
+          <ng-container *ngIf="transaction.balance || transaction.balance === 0">
+            <br class="-xs-sm-only" />
+            <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">
+              {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} {{ 'general.coinIdentifier' | translate }} <ng-container *ngIf="!transaction.status">({{ 'txBoxes.pending' | translate }})</ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-12 -date" *ngIf="transaction.timestamp && !unconfirmed"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.date' | translate }}:<br/></span><date-formatter [date]="transaction.timestamp"></date-formatter></div></div>
+      <div class="col-md-2 col-sm-12 -date" *ngIf="transaction.timestamp && unconfirmed"><div class="-row"><span class="-xs-sm-only">{{ 'txBoxes.firstSeen' | translate }}:<br/></span><date-formatter [date]="transaction.timestamp" [dateMultiplier]="1"></date-formatter></div></div>
+    </div>
+  </div>
+
+  <div class="-header -not-xs">
+    <div class="row">
+      <div class="col-sm-6"><div>{{ 'txBoxes.inputs' | translate }}</div></div>
+      <div class="col-sm-6"><div>{{ 'txBoxes.outputs' | translate }}</div></div>
+    </div>
+  </div>
+  <div class="-data">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
+        <div class="-body" *ngFor="let input of transaction.inputs">
+          <a class="-link" [routerLink]="'/app/address/' + input.owner">{{ input.owner }}</a><copy-button [text]="input.owner"></copy-button>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ input.hours | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.calculatedHours' | translate }}:&nbsp;</div><div> {{ input.calculatedHours | number:'1.0-6' }}</div></div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="-header -xs-only">{{ 'txBoxes.outputs' | translate }}</div>
+        <div class="-body" *ngFor="let output of transaction.outputs">
+          <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><copy-button [text]="output.address"></copy-button>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours | number:'1.0-6' }}</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="-header -xs-only">{{ 'txBoxes.balance' | translate }}</div>
+        <div class="-balance-variation">
+          <div class="fee-box">
+            <div class="-transparent -float-left">{{ 'txBoxes.fee' | translate }}:&nbsp;</div>
+            <div>{{ transaction.fee | number:'1.0-0' }}</div>
+          </div>
+          <ng-container *ngIf="transaction.initialBalance || transaction.initialBalance === 0">
+            <div>
+              <div class="-transparent -float-left">{{ 'txBoxes.initialBalance' | translate }}:&nbsp;</div>
+              <div>{{ transaction.initialBalance | number:'1.0-6' }}</div>
+            </div>
+            <span class="separator -not-xs">&#xf105;</span>
+            <div>
+              <div class="-transparent -float-left">{{ 'txBoxes.finalBalance' | translate }}:&nbsp;</div>
+              <div>{{ transaction.finalBalance | number:'1.0-6' }}</div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

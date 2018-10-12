@@ -31,6 +31,7 @@ import { DatePipe } from '@angular/common';
 import { DateFormatterComponent } from 'app/components/layout/date-formatter/date-formatter.component';
 import { SearchService } from './services/search/search.service';
 import { SearchComponent } from './components/pages/search/search.component';
+import { TransactionInfoComponent } from './components/layout/transaction-info/transaction-info.component';
 
 
 const ROUTES = [
@@ -108,6 +109,7 @@ const ROUTES = [
     CopyButtonComponent,
     DateFormatterComponent,
     SearchComponent,
+    TransactionInfoComponent,
   ],
   imports: [
     BrowserModule,

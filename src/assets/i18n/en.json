@@ -22,7 +22,8 @@
     "fee": "Transaction fee (in hours)",
     "initialBalance": "Initial coins balance",
     "finalBalance": "Final coins balance",
-    "firstSeen": "First seen at"
+    "firstSeen": "First seen at",
+    "loadMore": "Load {{number}} more ({{total}} in total)"
   },
   "blocks": {
     "blocksTitle": "Blocks",

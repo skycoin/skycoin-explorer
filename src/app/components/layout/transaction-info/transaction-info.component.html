@@ -28,19 +28,25 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
-        <div class="-body" *ngFor="let input of transaction.inputs">
+        <div class="-body" *ngFor="let input of inputsToShow">
           <a class="-link" [routerLink]="'/app/address/' + input.owner">{{ input.owner }}</a><copy-button [text]="input.owner"></copy-button>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ input.hours | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.calculatedHours' | translate }}:&nbsp;</div><div> {{ input.calculatedHours | number:'1.0-6' }}</div></div>
         </div>
+        <div class="-body" *ngIf="nextInputsGroup">
+          <a class="-link" (click)="showMoreInputs()">{{ 'txBoxes.loadMore' | translate:{ number: nextInputsGroup, total: totalInputs } }}</a>
+        </div>
       </div>
       <div class="col-sm-6">
         <div class="-header -xs-only">{{ 'txBoxes.outputs' | translate }}</div>
-        <div class="-body" *ngFor="let output of transaction.outputs">
+        <div class="-body" *ngFor="let output of outputsToShow">
           <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><copy-button [text]="output.address"></copy-button>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours | number:'1.0-6' }}</div></div>
+        </div>
+        <div class="-body" *ngIf="nextOutputsGroup">
+          <a class="-link" (click)="showMoreOutputs()">{{ 'txBoxes.loadMore' | translate:{ number: nextOutputsGroup, total: totalOutputs } }}</a>
         </div>
       </div>
     </div>

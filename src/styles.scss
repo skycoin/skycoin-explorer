@@ -51,6 +51,16 @@ h2 {
         width: 130px;
       }
 
+      > div:last-of-type {
+        display: flex;
+      }
+
+      @media (max-width: $max-xs-width) {
+        > div:last-of-type {
+          display: unset;
+        }
+      }
+
       .-link {
         color: $primary;
       }

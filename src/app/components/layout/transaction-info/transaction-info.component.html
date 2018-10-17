@@ -1,4 +1,4 @@
-<div class="transaction">
+<div class="transaction" [ngClass]="{'disable-clicks' : disableClicks}">
   <div class="-title">
     <div class="row">
       <div class="col-md-10 col-sm-12">
@@ -34,8 +34,8 @@
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ input.hours | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.calculatedHours' | translate }}:&nbsp;</div><div> {{ input.calculatedHours | number:'1.0-6' }}</div></div>
         </div>
-        <div class="-body" *ngIf="nextInputsGroup">
-          <a class="-link" (click)="showMoreInputs()">{{ 'txBoxes.loadMore' | translate:{ number: nextInputsGroup, total: totalInputs } }}</a>
+        <div class="-body" *ngIf="showMoreInputs !== showMoreStatus.DontShowMore">
+          <a class="-link" (click)="startShowingAllInputs()">{{ showMoreInputs === showMoreStatus.ShowMore ? ('txBoxes.loadAll' | translate:{ total: totalInputs }) : ('txBoxes.loading' | translate) }}</a>
         </div>
       </div>
       <div class="col-sm-6">
@@ -45,8 +45,8 @@
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours | number:'1.0-6' }}</div></div>
         </div>
-        <div class="-body" *ngIf="nextOutputsGroup">
-          <a class="-link" (click)="showMoreOutputs()">{{ 'txBoxes.loadMore' | translate:{ number: nextOutputsGroup, total: totalOutputs } }}</a>
+        <div class="-body" *ngIf="showMoreOutputs !== showMoreStatus.DontShowMore">
+          <a class="-link" (click)="startShowingAllOutputs()">{{ showMoreOutputs === showMoreStatus.ShowMore ? ('txBoxes.loadAll' | translate:{ total: totalOutputs }) : ('txBoxes.loading' | translate) }}</a>
         </div>
       </div>
     </div>

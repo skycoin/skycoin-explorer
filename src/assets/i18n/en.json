@@ -23,7 +23,8 @@
     "initialBalance": "Initial coins balance",
     "finalBalance": "Final coins balance",
     "firstSeen": "First seen at",
-    "loadMore": "Load {{number}} more ({{total}} in total)"
+    "loadAll": "Show all {{total}} elements",
+    "loading": "Loading, please wait..."
   },
   "blocks": {
     "blocksTitle": "Blocks",

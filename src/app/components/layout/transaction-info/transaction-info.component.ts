@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { HeaderConfig } from 'app/app.config';
+
+enum ShowMoreStatus {
+  ShowMore = 0,
+  Loading = 1,
+  DontShowMore = 2,
+}
 
 @Component({
   selector: 'transaction-info',
@@ -7,14 +12,16 @@ import { HeaderConfig } from 'app/app.config';
   styleUrls: ['./transaction-info.component.scss']
 })
 export class TransactionInfoComponent {
-  private maxElements = 10;
+  private readonly maxInitialElements = 10;
   private transactionInternal: any;
 
+  disableClicks = false;
+  showMoreStatus = ShowMoreStatus;
   totalInputs = 0;
-  nextInputsGroup = 0;
+  showMoreInputs: ShowMoreStatus = ShowMoreStatus.DontShowMore;
   inputsToShow: any[] = [];
   totalOutputs = 0;
-  nextOutputsGroup = 0;
+  showMoreOutputs: ShowMoreStatus = ShowMoreStatus.DontShowMore;
   outputsToShow: any[] = [];
 
   @Input()
@@ -24,8 +31,8 @@ export class TransactionInfoComponent {
     this.totalInputs = this.transaction.inputs.length;
     this.totalOutputs = this.transaction.outputs.length;
 
-    this.showMoreInputs();
-    this.showMoreOutputs();
+    this.showInitialInputs();
+    this.showInitialOutputs();
   }
   get transaction(): any {
     return this.transactionInternal;
@@ -35,19 +42,53 @@ export class TransactionInfoComponent {
   
   constructor() { }
 
-  showMoreInputs() {
-    const currentNumber = this.inputsToShow.length;
-    for (let i=currentNumber; i<Math.min(currentNumber + this.maxElements, this.totalInputs); i++) {
-      this.inputsToShow.push(this.transaction.inputs[i]);
+  showInitialInputs() {
+    if (this.totalInputs > this.maxInitialElements) {
+      for (let i=0; i<this.maxInitialElements; i++) {
+        this.inputsToShow.push(this.transaction.inputs[i]);
+      }
+      this.showMoreInputs = ShowMoreStatus.ShowMore;
+    } else {
+      this.showAllInputs();
     }
-    this.nextInputsGroup = Math.min(this.totalInputs - this.inputsToShow.length, this.maxElements);
   }
 
-  showMoreOutputs() {
-    const currentNumber = this.outputsToShow.length;
-    for (let i=currentNumber; i<Math.min(currentNumber + this.maxElements, this.totalOutputs); i++) {
-      this.outputsToShow.push(this.transaction.outputs[i]);
+  showInitialOutputs() {
+    if (this.totalOutputs > this.maxInitialElements) {
+      for (let i=0; i<this.maxInitialElements; i++) {
+        this.outputsToShow.push(this.transaction.outputs[i]);
+      }
+      this.showMoreOutputs = ShowMoreStatus.ShowMore;
+    } else {
+      this.showAllOutputs();
     }
-    this.nextOutputsGroup = Math.min(this.totalOutputs - this.outputsToShow.length, this.maxElements);
+  }
+
+  startShowingAllInputs() {
+    this.disableClicks = true;
+    this.showMoreInputs = ShowMoreStatus.Loading;
+    setTimeout(() => this.showAllInputs(), 32);
+  }
+
+  startShowingAllOutputs() {
+    this.disableClicks = true;
+    this.showMoreOutputs = ShowMoreStatus.Loading;
+    setTimeout(() => this.showAllOutputs(), 32);
+  }
+
+  private showAllInputs() {
+    this.inputsToShow = this.transaction.inputs;
+    setTimeout(() => {
+      this.showMoreInputs = ShowMoreStatus.DontShowMore;
+      this.disableClicks = false;
+    });
+  }
+
+  private showAllOutputs() {
+    this.outputsToShow = this.transaction.outputs;
+    setTimeout(() => {
+      this.showMoreOutputs = ShowMoreStatus.DontShowMore;
+      this.disableClicks = false;
+    });
   }
 }

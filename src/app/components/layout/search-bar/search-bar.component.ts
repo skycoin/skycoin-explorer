@@ -20,15 +20,15 @@ export class SearchBarComponent {
   ) { }
 
   search() {
-    if (!this.query) return;
+    if (!this.query) { return; }
     const hashVal = this.query.trim();
-    if (hashVal.length < 1) return;
+    if (hashVal.length < 1) { return; }
 
     this.searching = true;
 
     const navCommands = this.searchService.getResultNavCommands(hashVal);
     if (navCommands.error) {
-      if (navCommands.error == SearchError.InvalidSearchTerm) {
+      if (navCommands.error === SearchError.InvalidSearchTerm) {
         alert(this.translate.instant('search.unableToFind', { term: hashVal }));
       }
       this.searching = false;
@@ -36,9 +36,9 @@ export class SearchBarComponent {
     }
 
     navCommands.resultNavCommands.subscribe(
-      navCommands => { this.searching = false; this.router.navigate(navCommands) },
+      result => { this.searching = false; this.router.navigate(result); },
       () => this.searching = false
-    )
+    );
     this.query = null;
   }
 }

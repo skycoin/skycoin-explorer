@@ -16,7 +16,7 @@ export class UnconfirmedTransactionsComponent implements OnInit {
   leastRecent: number;
   mostRecent: number;
   totalSize: number;
-  loadingMsg = "";
+  loadingMsg = '';
   longErrorMsg: string;
 
   constructor(
@@ -32,9 +32,9 @@ export class UnconfirmedTransactionsComponent implements OnInit {
     this.explorer.getUnconfirmedTransactions().subscribe(transactions => {
       this.transactions = transactions;
       if (transactions.length > 0) {
-        let orderedList = transactions.sort((a, b) => b.timestamp - a.timestamp);
+        const orderedList = transactions.sort((a, b) => b.timestamp - a.timestamp);
         this.mostRecent = orderedList[0].timestamp;
-        this.leastRecent = orderedList[orderedList.length-1].timestamp;
+        this.leastRecent = orderedList[orderedList.length - 1].timestamp;
         this.totalSize = orderedList.map(tx => tx.length).reduce((sum, current) => sum + current);
       }
     }, error => {

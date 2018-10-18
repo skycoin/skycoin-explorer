@@ -40,7 +40,7 @@ export class ApiService {
     return this.get('blockchain/metadata')
       .map((res: GetBlockchainMetadataResponse) => ({
         blocks: res.head.seq,
-      }))
+      }));
   }
 
   getCoinSupply(): Observable<GetCoinSupplyResponse> {
@@ -48,14 +48,14 @@ export class ApiService {
   }
 
   getCurrentBalance(address: string): Observable<GetCurrentBalanceResponse> {
-    return this.get('currentBalance', { addrs: address })
+    return this.get('currentBalance', { addrs: address });
   }
 
   getBalance(address: string): Observable<GetBalanceResponse> {
-    return this.get('balance', { addrs: address })
+    return this.get('balance', { addrs: address });
   }
 
-  getTransaction(transactionId:string): Observable<GetTransactionResponse> {
+  getTransaction(transactionId: string): Observable<GetTransactionResponse> {
     return this.get('transaction', { txid: transactionId, verbose: 1 });
   }
 
@@ -75,7 +75,7 @@ export class ApiService {
       return '';
     }
 
-    return Object.keys(parameters).reduce((array,key) => {
+    return Object.keys(parameters).reduce((array, key) => {
       array.push(key + '=' + encodeURIComponent(parameters[key]));
       return array;
     }, []).join('&');

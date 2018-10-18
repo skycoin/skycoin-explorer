@@ -1,7 +1,7 @@
 <div class="element-details-wrapper">
   <h2>{{ 'unspentOutputs.title' | translate }}</h2>
   <div class="element-details">
-    <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link" *ngIf="address">{{ address }}</a> <copy-button [text]="address" *ngIf="address"></copy-button> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
+    <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link" *ngIf="address">{{ address }}</a> <app-copy-button [text]="address" *ngIf="address"></app-copy-button> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
     <div class="-row"><span>{{ 'unspentOutputs.outputsNumber' | translate }}</span><br class="-xs-only" /><div> {{ outputs ? outputs.head_outputs.length : loadingMsg }} </div></div>
     <div class="-row"><span>{{ 'unspentOutputs.total' | translate }}</span><br class="-xs-only" /><div> {{ coins != null ? (coins | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) : loadingMsg }} </div></div>
   </div>
@@ -16,10 +16,10 @@
         <div class="col-md-9 col-sm-12">
           <div class="-row">
             <div class="-float-left">{{ 'unspentOutputs.origin' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
-            <div><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a><copy-button [text]="output.src_tx"></copy-button></div>
+            <div><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a><app-copy-button [text]="output.src_tx"></app-copy-button></div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span><date-formatter *ngIf="output" [date]="output.time"></date-formatter></div></div>
+        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span><app-date-formatter *ngIf="output" [date]="output.time"></app-date-formatter></div></div>
       </div>
     </div>
 

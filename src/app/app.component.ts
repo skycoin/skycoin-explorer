@@ -11,17 +11,18 @@ import { HeaderConfig, FooterConfig } from 'app/app.config';
 export class AppComponent {
   headerConfig = HeaderConfig;
   footerConfig = FooterConfig;
-  
+
   constructor(private router: Router, translate: TranslateService) {
 
-    //Fallback.
+    // Fallback.
     translate.setDefaultLang('en');
-    //Lang to use.
+    // Lang to use.
     translate.use('en');
 
     router.events.subscribe((event: RouterEvent) => {
-      if (event instanceof NavigationEnd)
+      if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);
+      }
     });
   }
 }

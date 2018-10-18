@@ -104,7 +104,7 @@ export function parseGenericBlock(block: GenericBlockResponse): Block {
     timestamp: block.header.timestamp,
     transactions: block.body.txns.map(transaction => parseGenericTransaction(transaction)),
     size: block.size,
-  }
+  };
 }
 
 export function parseGenericTransaction(raw: GenericTransactionResponse, address: string = null): Transaction {
@@ -116,7 +116,7 @@ export function parseGenericTransaction(raw: GenericTransactionResponse, address
         balance -= parseFloat(input.coins);
       }
     }
-    for (let output of raw.outputs) {
+    for (const output of raw.outputs) {
       if (output.dst.toLowerCase() === address.toLowerCase()) {
         balance += parseFloat(output.coins);
       }
@@ -135,7 +135,7 @@ export function parseGenericTransaction(raw: GenericTransactionResponse, address
     finalBalance: null,
     length: raw.length,
     fee: raw.fee,
-  }
+  };
 
   if (raw.status) {
     if (raw.status.confirmed) {
@@ -157,7 +157,7 @@ function parseGenericTransactionInput(raw: GenericTransactionInputResponse): Inp
     uxid: raw.uxid,
     hours: raw.hours,
     calculatedHours: raw.calculated_hours,
-  }
+  };
 }
 
 function parseGenericTransactionOutput(raw: GenericTransactionOutputResponse): Output {
@@ -166,7 +166,7 @@ function parseGenericTransactionOutput(raw: GenericTransactionOutputResponse): O
     coins: parseFloat(raw.coins),
     hash: raw.uxid,
     hours: raw.hours,
-  }
+  };
 }
 
 /**
@@ -244,13 +244,13 @@ export function parseGetUxout(raw: GetUxoutResponse): Output {
     coins: raw.coins / 1000000,
     hours: raw.hours,
     hash: raw.uxid,
-  }
+  };
 }
 
 export interface GetCoinSupplyResponse {
-  current_supply: number,
-  total_supply: number,
-  max_supply: number,
-  current_coinhour_supply: number,
-  total_coinhour_supply: number,
+  current_supply: number;
+  total_supply: number;
+  max_supply: number;
+  current_coinhour_supply: number;
+  total_coinhour_supply: number;
 }

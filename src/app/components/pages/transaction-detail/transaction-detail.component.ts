@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class TransactionDetailComponent implements OnInit {
 
   transaction: Transaction;
-  loadingMsg = "";
+  loadingMsg = '';
   longErrorMsg: string;
 
   constructor(

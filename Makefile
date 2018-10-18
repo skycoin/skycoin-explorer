@@ -48,6 +48,9 @@ install-linters: ## Install linters
 format: ## Formats the code. Must have goimports installed (use make install-linters).
 	goimports -w explorer.go
 
+lint-ts: ## runs ts lint
+	npm run lint
+
 check-ui: ## runs e2e tests connecting to a containerized node
 	go run explorer.go &>/dev/null &
 	sleep 10

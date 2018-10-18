@@ -14,9 +14,9 @@ import { ApiService } from 'app/services/api/api.service';
 })
 export class BlockDetailsComponent implements OnInit {
   block: Block;
-  loadingMsg = "";
+  loadingMsg = '';
   longErrorMsg: string;
-  blockCount:number;
+  blockCount: number;
 
   constructor(
     private explorer: ExplorerService,
@@ -37,11 +37,11 @@ export class BlockDetailsComponent implements OnInit {
     this.route.params.filter(params => +params['id'] !== null)
       .switchMap((params: Params) => {
         blockID = params['id'];
-        return this.explorer.getBlock(+blockID)
+        return this.explorer.getBlock(+blockID);
       }).subscribe((block: Block) => {
-        if (block != null)
-          this.block = block
-        else {
+        if (block != null) {
+          this.block = block;
+        } else {
           this.translate.get(['general.noData', 'blockDetails.doesNotExist'], {number: blockID}).subscribe((res: string[]) => {
             this.loadingMsg = res['general.noData'];
             this.longErrorMsg = res['blockDetails.doesNotExist'];
@@ -59,7 +59,7 @@ export class BlockDetailsComponent implements OnInit {
             this.longErrorMsg = res['general.longLoadingErrorMsg'];
           });
         }
-          
+
       });
   }
 }

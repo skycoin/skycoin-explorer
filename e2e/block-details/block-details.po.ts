@@ -1,5 +1,5 @@
 import { browser, by, element } from 'protractor';
-import { GeneralPageFunctions } from "../general.po";
+import { GeneralPageFunctions } from '../general.po';
 
 export class BlockDetailsPage {
 

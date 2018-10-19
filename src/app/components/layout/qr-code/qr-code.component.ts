@@ -19,7 +19,7 @@ export class QrCodeComponent implements OnInit {
   usesvg = false;
 
   ngOnInit() {
-    new QRCode(this.qr.nativeElement, {
+    const qr = new QRCode(this.qr.nativeElement, {
       text: QrConfig.prefix + this.string,
       width: this.size,
       height: this.size,

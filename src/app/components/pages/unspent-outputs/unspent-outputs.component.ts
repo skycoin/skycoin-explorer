@@ -15,7 +15,7 @@ export class UnspentOutputsComponent implements OnInit {
   address: string;
   outputs: GetCurrentBalanceResponse;
   coins: number = null;
-  loadingMsg = "";
+  loadingMsg = '';
   longErrorMsg: string;
 
   constructor(
@@ -31,7 +31,7 @@ export class UnspentOutputsComponent implements OnInit {
   ngOnInit() {
     this.route.params.switchMap((params: Params) => {
       this.address = params['address'];
-      return this.api.getCurrentBalance(params['address'])
+      return this.api.getCurrentBalance(params['address']);
     }).subscribe(response => {
       this.outputs = response;
       this.coins = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0);

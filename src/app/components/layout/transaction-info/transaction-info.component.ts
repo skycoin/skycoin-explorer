@@ -7,7 +7,7 @@ enum ShowMoreStatus {
 }
 
 @Component({
-  selector: 'transaction-info',
+  selector: 'app-transaction-info',
   templateUrl: './transaction-info.component.html',
   styleUrls: ['./transaction-info.component.scss']
 })
@@ -39,12 +39,12 @@ export class TransactionInfoComponent {
   }
 
   @Input() unconfirmed = false;
-  
+
   constructor() { }
 
   showInitialInputs() {
     if (this.totalInputs > this.maxInitialElements) {
-      for (let i=0; i<this.maxInitialElements; i++) {
+      for (let i = 0; i < this.maxInitialElements; i++) {
         this.inputsToShow.push(this.transaction.inputs[i]);
       }
       this.showMoreInputs = ShowMoreStatus.ShowMore;
@@ -55,7 +55,7 @@ export class TransactionInfoComponent {
 
   showInitialOutputs() {
     if (this.totalOutputs > this.maxInitialElements) {
-      for (let i=0; i<this.maxInitialElements; i++) {
+      for (let i = 0; i < this.maxInitialElements; i++) {
         this.outputsToShow.push(this.transaction.outputs[i]);
       }
       this.showMoreOutputs = ShowMoreStatus.ShowMore;

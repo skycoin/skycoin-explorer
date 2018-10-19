@@ -20,7 +20,7 @@
 
 <app-loading [longErrorMsg]="longErrorMsg" *ngIf="transactions === undefined"></app-loading>
 
-<transaction-info *ngFor="let transaction of pageTransactions" [transaction]="transaction"></transaction-info>
+<app-transaction-info *ngFor="let transaction of pageTransactions" [transaction]="transaction"></app-transaction-info>
 
 <div class="pagination" *ngIf="transactions && transactions.length > pageSize">
   <a class="-first" [ngClass]="{ disabled: pageIndex <= 0 }" [routerLink]="'/app/address/' + address + '/1'">«</a>

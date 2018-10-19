@@ -1,10 +1,10 @@
 <div class="app">
   <app-header *ngIf="!headerConfig.useGenericHeader"></app-header>
-  <generic-header *ngIf="headerConfig.useGenericHeader"></generic-header>
+  <app-generic-header *ngIf="headerConfig.useGenericHeader"></app-generic-header>
   <div class="wrapper">
     <app-search-bar></app-search-bar>
     <router-outlet></router-outlet>
   </div>
 </div>
 <app-footer *ngIf="!footerConfig.useGenericFooter"></app-footer>
-<generic-footer *ngIf="footerConfig.useGenericFooter"></generic-footer>
+<app-generic-footer *ngIf="footerConfig.useGenericFooter"></app-generic-footer>

@@ -1,5 +1,5 @@
 import { BlocksPage } from './blocks.po';
-import { GeneralPageFunctions } from "../general.po";
+import { GeneralPageFunctions } from '../general.po';
 
 describe('skycoin-explorer Blocks Page', () => {
   const page = new BlocksPage();
@@ -9,15 +9,15 @@ describe('skycoin-explorer Blocks Page', () => {
 
   it('should display the title for big screens', () => {
     generalFunctions.navigateTo('/');
-    expect(page.getPageTitle(0)).toBe("Blocks");
+    expect(page.getPageTitle(0)).toBe('Blocks');
   });
 
   it('should display the first title for small screens', () => {
-    expect(page.getPageTitle(1)).toBe("Stats");
+    expect(page.getPageTitle(1)).toBe('Stats');
   });
 
   it('should display the second title for small screens', () => {
-    expect(page.getPageTitle(2)).toBe("Blocks");
+    expect(page.getPageTitle(2)).toBe('Blocks');
   });
 
   it('should display the Unconfirmed Transactions link', () => {
@@ -45,19 +45,19 @@ describe('skycoin-explorer Blocks Page', () => {
   });
 
   it('should have valid block times', () => {
-    for (let i=0; i<10; i++) expect(page.getTimeValidity(i)).toBeTruthy();
+    for (let i = 0; i < 10; i++) { expect(page.getTimeValidity(i)).toBeTruthy(); }
   });
 
   it('should have valid block numbers', () => {
-    for (let i=0; i<10; i++) expect(page.getBlockNumber(i)).toBeGreaterThan(0);
+    for (let i = 0; i < 10; i++) { expect(page.getBlockNumber(i)).toBeGreaterThan(0); }
   });
 
   it('should have valid transaction counts', () => {
-    for (let i=0; i<10; i++) expect(page.getTransactionCount(i)).toBeGreaterThan(0);
+    for (let i = 0; i < 10; i++) { expect(page.getTransactionCount(i)).toBeGreaterThan(0); }
   });
 
   it('should have valid block hashes', () => {
-    for (let i=0; i<10; i++) expect(page.getBlockHashLength(i)).toEqual(64);
+    for (let i = 0; i < 10; i++) { expect(page.getBlockHashLength(i)).toEqual(64); }
   });
 
   it('should contain a pagination control', () => {
@@ -65,7 +65,7 @@ describe('skycoin-explorer Blocks Page', () => {
   });
 
   it('should navigate to the next page and show 10 block items', () => {
-    let blockCount = page.navigateToTheNextPage().then(() => {
+    const blockCount = page.navigateToTheNextPage().then(() => {
       return page.getBlocksListRowCount();
     });
 
@@ -73,7 +73,7 @@ describe('skycoin-explorer Blocks Page', () => {
   });
 
   it('should navigate to the previous page and show 10 block items', () => {
-    let blockCount = page.navigateToThePreviousPage().then(() => {
+    const blockCount = page.navigateToThePreviousPage().then(() => {
       return page.getBlocksListRowCount();
     });
 
@@ -81,7 +81,7 @@ describe('skycoin-explorer Blocks Page', () => {
   });
 
   it('should navigate to the last page and show at least 1 block item', () => {
-    let blockCount = page.navigateToTheLastPage().then(() => {
+    const blockCount = page.navigateToTheLastPage().then(() => {
       return page.getBlocksListRowCount();
     });
 
@@ -89,7 +89,7 @@ describe('skycoin-explorer Blocks Page', () => {
   });
 
   it('should navigate to the first page and show 10 block items', () => {
-    let blockCount = page.navigateToTheFirstPage().then(() => {
+    const blockCount = page.navigateToTheFirstPage().then(() => {
       return page.getBlocksListRowCount();
     });
 
@@ -97,11 +97,11 @@ describe('skycoin-explorer Blocks Page', () => {
   });
 
   it('should navigate to the second page and show 10 block items', () => {
-    let blockCount = page.pressPageButton(2).then(() => {
+    const blockCount = page.pressPageButton(2).then(() => {
       return page.getBlocksListRowCount();
     });
 
     expect(blockCount).toEqual(10);
   });
-  
+
 });

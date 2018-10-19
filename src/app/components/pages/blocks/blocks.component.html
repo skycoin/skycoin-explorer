@@ -32,7 +32,7 @@
     <div class="row">
       <div class="col-sm-2 col-xs-4 -small-padding">
         <div class="-not-xs">
-          <date-formatter [date]="block.timestamp"></date-formatter>
+          <app-date-formatter [date]="block.timestamp"></app-date-formatter>
         </div>
         <div class="-xs-only -small-date" (mouseenter)="mouseOver = block.id" (mouseleave)="mouseOver === block.id ? mouseOver = -1 : null">
           <span class="-gray"><span class="timezone-icon" [ngClass]="{'timezone-icon-opaque': mouseOver === block.id}" >&#xf0ac;</span>{{ block.timestamp * 1000 | date:'yyyy' }}</span><br/>

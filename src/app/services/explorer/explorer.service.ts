@@ -30,24 +30,24 @@ export class ExplorerService {
   getTransactions(address: string): Observable<Transaction[]> {
     return this.api.getAddress(address)
       .map(response => {
-        response = response.sort((a, b) => a.timestamp - b.timestamp)
+        response = response.sort((a, b) => a.timestamp - b.timestamp);
 
         let currentBalance = 0;
         return response.map(rawTx => {
-          let parsedTx = parseGenericTransaction(rawTx, address);
+          const parsedTx = parseGenericTransaction(rawTx, address);
           parsedTx.initialBalance = currentBalance;
           currentBalance += parsedTx.balance;
           parsedTx.finalBalance = currentBalance;
           return parsedTx;
-        }).reverse()
-      })
+        }).reverse();
+      });
   }
 
   getUnconfirmedTransactions(): Observable<Transaction[]> {
     return this.api.getUnconfirmedTransactions()
       .map(response => response.map(rawTx => parseGetUnconfirmedTransaction(rawTx)));
   }
-  
+
   getTransaction(transactionId: string): Observable<Transaction> {
     return this.api.getTransaction(transactionId)
       .map(response => parseGetTransaction(response));

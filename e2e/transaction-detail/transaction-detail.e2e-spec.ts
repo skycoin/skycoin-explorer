@@ -1,5 +1,5 @@
 import { TransactionDetailPage } from './transaction-detail.po';
-import { GeneralPageFunctions } from "../general.po";
+import { GeneralPageFunctions } from '../general.po';
 
 describe('skycoin-explorer Transaction Page', () => {
   const page = new TransactionDetailPage();
@@ -9,7 +9,7 @@ describe('skycoin-explorer Transaction Page', () => {
 
   it('should display the title', () => {
     generalFunctions.navigateTo('/app/transaction/0579e7727627cd9815a8a8b5e1df86124f45a4132cc0dbd00d2f110e4f409b69');
-    expect(generalFunctions.getPageTitle()).toBe("Transaction");
+    expect(generalFunctions.getPageTitle()).toBe('Transaction');
   });
 
   it('should display 3 transaction details rows', () => {

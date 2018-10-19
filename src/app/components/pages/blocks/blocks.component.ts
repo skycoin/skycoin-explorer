@@ -21,8 +21,8 @@ export class BlocksComponent implements OnInit {
   blockCount = 0;
   pageIndex = 0;
   pageSize = 10;
-  loadingCoinSupplyMsg = "";
-  loadingMetadataMsg = "";
+  loadingCoinSupplyMsg = '';
+  loadingMetadataMsg = '';
   longErrorMsg: string;
 
   mouseOver = -1;
@@ -48,7 +48,7 @@ export class BlocksComponent implements OnInit {
       this.route.paramMap
         .subscribe(params => {
           const pageIndex = parseInt(params.get('page'), 10) - 1;
-          this.navigate(pageIndex)
+          this.navigate(pageIndex);
         });
     }, error => {
       this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {

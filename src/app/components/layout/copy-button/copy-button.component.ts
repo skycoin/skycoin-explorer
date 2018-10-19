@@ -3,7 +3,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { AnimationEvent } from '@angular/animations/src/animation_event';
 
 @Component({
-  selector: 'copy-button',
+  selector: 'app-copy-button',
   templateUrl: './copy-button.component.html',
   styleUrls: ['./copy-button.component.scss'],
   animations: [
@@ -48,10 +48,10 @@ export class CopyButtonComponent {
   animState = CopyButtonComponent.hideAnimName;
   showLabel = false;
   @Input() text: string;
-  @HostBinding('attr.class') cssClass = 'copy-button'; 
+  @HostBinding('attr.class') cssClass = 'copy-button';
 
   copy() {
-    let tempElement = document.createElement('textarea');
+    const tempElement = document.createElement('textarea');
 
     tempElement.style.position = 'fixed';
     tempElement.style.left = '1px';
@@ -73,9 +73,10 @@ export class CopyButtonComponent {
   }
 
   animationDone(event: AnimationEvent) {
-    if (event.toState == CopyButtonComponent.showAnimName)
+    if (event.toState === CopyButtonComponent.showAnimName) {
       this.animState = CopyButtonComponent.hideAnimName;
-    else
+    } else {
       this.showLabel = false;
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { UnconfirmedTransactionsPage } from './unconfirmed-transactions.po';
-import { GeneralPageFunctions } from "../general.po";
+import { GeneralPageFunctions } from '../general.po';
 import { browser } from 'protractor';
 
 describe('skycoin-explorer Unconfirmed Transactions Page', () => {
@@ -17,7 +17,7 @@ describe('skycoin-explorer Unconfirmed Transactions Page', () => {
     expect(generalFunctions.getDetailsRowCount()).toEqual(4);
   });
 
-  if (browser.params.chain == '180') {
+  if (browser.params.chain === '180') {
     it('should show the correct number of transactions', () => {
       expect(page.getNumberOfTransactions()).toBe(1);
     });
@@ -45,7 +45,7 @@ describe('skycoin-explorer Unconfirmed Transactions Page', () => {
     it('should show the correct transaction inputs', () => {
       expect(generalFunctions.getTransactionInputs(0)).toBe('R6aHqKWSQfvpdo2fGSrq4F1RYXkBWR9HHJ');
     });
-  
+
     it('should show the correct transaction outputs', () => {
       expect(generalFunctions.getTransactionOutputs(0)).toBe('R6aHqKWSQfvpdo2fGSrq4F1RYXkBWR9HHJ,212mwY3Dmey6vwnWpiph99zzCmopXTqeVEN');
     });

@@ -1,5 +1,5 @@
 import { BlockDetailsPage } from './block-details.po';
-import { GeneralPageFunctions } from "../general.po";
+import { GeneralPageFunctions } from '../general.po';
 
 describe('skycoin-explorer Block Details Page', () => {
   const page = new BlockDetailsPage();
@@ -29,11 +29,11 @@ describe('skycoin-explorer Block Details Page', () => {
   });
 
   it('should show the correct block hash', () => {
-    expect(page.getBlockHash()).toEqual("114fe60587a158428a47e0f9571d764f495912c299aa4e67fc88004cf21b0c24");
+    expect(page.getBlockHash()).toEqual('114fe60587a158428a47e0f9571d764f495912c299aa4e67fc88004cf21b0c24');
   });
 
   it('should show the correct parent block hash', () => {
-    expect(page.getParentHash()).toEqual("415e47348a1e642cb2e31d00ee500747d3aed0336aabfff7d783ed21465251c7");
+    expect(page.getParentHash()).toEqual('415e47348a1e642cb2e31d00ee500747d3aed0336aabfff7d783ed21465251c7');
   });
 
   it('should show the correct amount', () => {
@@ -57,22 +57,22 @@ describe('skycoin-explorer Block Details Page', () => {
   });
 
   it('should display the "Previous block" button', () => {
-    expect(page.getNavigationButtonText(0)).toBe("Previous block");
+    expect(page.getNavigationButtonText(0)).toBe('Previous block');
   });
 
   it('should display the "Next block" button', () => {
-    expect(page.getNavigationButtonText(1)).toBe("Next block");
+    expect(page.getNavigationButtonText(1)).toBe('Next block');
   });
 
   it('should navigate to the previous block using the nav button', () => {
     page.clickNavigationButton(0).then(() => {
-      expect(page.getBlockHash()).toEqual("415e47348a1e642cb2e31d00ee500747d3aed0336aabfff7d783ed21465251c7");
+      expect(page.getBlockHash()).toEqual('415e47348a1e642cb2e31d00ee500747d3aed0336aabfff7d783ed21465251c7');
     });
   });
 
   it('should navigate to the next block using the nav button', () => {
     page.clickNavigationButton(1).then(() => {
-      expect(page.getBlockHash()).toEqual("114fe60587a158428a47e0f9571d764f495912c299aa4e67fc88004cf21b0c24");
+      expect(page.getBlockHash()).toEqual('114fe60587a158428a47e0f9571d764f495912c299aa4e67fc88004cf21b0c24');
     });
   });
 

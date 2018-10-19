@@ -21,7 +21,7 @@ export class AddressDetailComponent implements OnInit {
   pageTransactions: any[];
   pageIndex = 0;
   pageSize = 25;
-  loadingMsg = "";
+  loadingMsg = '';
   longErrorMsg: string;
 
   get pageCount() {
@@ -41,24 +41,26 @@ export class AddressDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.switchMap((params: Params) => {
-      //Clear the content if the address, and not just the page, changes
-      if (this.address != params['address']) {
+      // Clear the content if the address, and not just the page, changes
+      if (this.address !== params['address']) {
         this.transactions = undefined;
         this.balance = undefined;
-        this.hoursBalance = undefined;        
+        this.hoursBalance = undefined;
       }
 
       this.address = params['address'];
-      if (params['page'])
+      if (params['page']) {
         this.pageIndex = parseInt(params['page'], 10) - 1;
+      }
 
-      //Clear the list content.
+      // Clear the list content.
       this.pageTransactions = undefined;
 
-      if (this.transactions)
+      if (this.transactions) {
         return Observable.of(this.transactions);
-      else
+      } else {
         return this.explorer.getTransactions(this.address);
+      }
 
     }).subscribe(
       transactions => {
@@ -81,7 +83,7 @@ export class AddressDetailComponent implements OnInit {
         }
       }
     );
-    
+
     this.route.params.switchMap((params: Params) => this.api.getBalance(params['address']))
       .subscribe(response => {
         this.balance = response.confirmed.coins / 1000000;
@@ -90,11 +92,12 @@ export class AddressDetailComponent implements OnInit {
   }
 
   updateTransactions() {
-    if (this.pageIndex > this.transactions.length / this.pageSize)
+    if (this.pageIndex > this.transactions.length / this.pageSize) {
       this.pageIndex = Math.floor(this.transactions.length / this.pageSize);
+    }
 
     this.pageTransactions = [];
-    for (let i=this.pageIndex * this.pageSize; i<(this.pageIndex+1)*this.pageSize && i<this.transactions.length; i++) {
+    for (let i = this.pageIndex * this.pageSize; i < (this.pageIndex + 1) * this.pageSize && i < this.transactions.length; i++) {
       this.pageTransactions.push(this.transactions[i]);
     }
   }

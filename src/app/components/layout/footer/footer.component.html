@@ -14,54 +14,9 @@
       </div>
     </div>
     <div class="footer-second-row">
-      <div class="social-link">
-        <a href="/">
-          <img alt="" src="/assets/img/social/medium.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://twitter.com/skycoinproject">
-          <img alt="" src="/assets/img/social/twitter.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://www.facebook.com/SkycoinOfficial">
-          <img alt="" src="/assets/img/social/facebook.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://www.instagram.com/skycoinproject/">
-          <img alt="" src="/assets/img/social/instagram.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://github.com/skycoin/skycoin">
-          <img alt="" src="/assets/img/social/github.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://www.youtube.com/c/Skycoin">
-          <img alt="" src="/assets/img/social/youtube.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://www.reddit.com/r/skycoin">
-          <img alt="" src="/assets/img/social/reddit.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://itunes.apple.com/nl/podcast/skycoin/id1348472259?l=en">
-          <img alt="" src="/assets/img/social/apple.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://discord.gg/EgBenrW">
-          <img alt="" src="/assets/img/social/discord.svg">
-        </a>
-      </div>
-      <div class="social-link">
-        <a href="https://t.me/Skycoin">
-          <img alt="" src="/assets/img/social/telegram.svg">
+      <div class="social-link" *ngFor="let link of links">
+        <a href={{link.href}} target="_blank" rel="noopener">
+          <img alt="" src="/assets/img/social/{{link.img}}">
         </a>
       </div>
     </div>

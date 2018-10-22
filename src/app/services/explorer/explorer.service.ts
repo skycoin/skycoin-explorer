@@ -6,6 +6,7 @@ import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/of';
+import { BigNumber } from 'bignumber.js';
 
 @Injectable()
 export class ExplorerService {
@@ -32,11 +33,11 @@ export class ExplorerService {
       .map(response => {
         response = response.sort((a, b) => a.timestamp - b.timestamp);
 
-        let currentBalance = 0;
+        let currentBalance = new BigNumber('0');
         return response.map(rawTx => {
           const parsedTx = parseGenericTransaction(rawTx, address);
           parsedTx.initialBalance = currentBalance;
-          currentBalance += parsedTx.balance;
+          currentBalance = currentBalance.plus(parsedTx.balance);
           parsedTx.finalBalance = currentBalance;
           return parsedTx;
         }).reverse();

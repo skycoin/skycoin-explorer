@@ -1,3 +1,5 @@
+import { BigNumber } from 'bignumber.js';
+
 /**
  * Elementary Types
  */
@@ -17,17 +19,17 @@ export class Blockchain {
 
 export class Input {
   owner: string;
-  coins: number;
+  coins: BigNumber;
   uxid: string;
-  hours: number;
-  calculatedHours: number;
+  hours: BigNumber;
+  calculatedHours: BigNumber;
 }
 
 export class Output {
   address: string;
-  coins: number;
+  coins: BigNumber;
   hash: string;
-  hours: number;
+  hours: BigNumber;
 }
 
 export class Transaction {
@@ -37,11 +39,11 @@ export class Transaction {
   outputs: Output[];
   status: boolean;
   timestamp: number;
-  balance: number;
-  initialBalance: number;
-  finalBalance: number;
+  balance: BigNumber;
+  initialBalance: BigNumber;
+  finalBalance: BigNumber;
   length: number;
-  fee: number;
+  fee: BigNumber;
 }
 
 export class RichlistEntry {
@@ -110,15 +112,15 @@ export function parseGenericBlock(block: GenericBlockResponse): Block {
 export function parseGenericTransaction(raw: GenericTransactionResponse, address: string = null): Transaction {
   let balance = null;
   if (address) {
-    balance = 0;
+    balance = new BigNumber('0');
     for (const input of raw.inputs) {
       if (input.owner.toLowerCase() === address.toLowerCase()) {
-        balance -= parseFloat(input.coins);
+        balance = balance.minus(input.coins);
       }
     }
     for (const output of raw.outputs) {
       if (output.dst.toLowerCase() === address.toLowerCase()) {
-        balance += parseFloat(output.coins);
+        balance = balance.plus(output.coins);
       }
     }
   }
@@ -134,7 +136,7 @@ export function parseGenericTransaction(raw: GenericTransactionResponse, address
     initialBalance: null,
     finalBalance: null,
     length: raw.length,
-    fee: raw.fee,
+    fee: new BigNumber(raw.fee),
   };
 
   if (raw.status) {
@@ -153,19 +155,19 @@ export function parseGenericTransaction(raw: GenericTransactionResponse, address
 function parseGenericTransactionInput(raw: GenericTransactionInputResponse): Input {
   return {
     owner: raw.owner,
-    coins: parseFloat(raw.coins),
+    coins: new BigNumber(raw.coins),
     uxid: raw.uxid,
-    hours: raw.hours,
-    calculatedHours: raw.calculated_hours,
+    hours: new BigNumber(raw.hours),
+    calculatedHours: new BigNumber(raw.calculated_hours),
   };
 }
 
 function parseGenericTransactionOutput(raw: GenericTransactionOutputResponse): Output {
   return {
     address: raw.dst,
-    coins: parseFloat(raw.coins),
+    coins: new BigNumber(raw.coins),
     hash: raw.uxid,
-    hours: raw.hours,
+    hours: new BigNumber(raw.hours),
   };
 }
 
@@ -241,8 +243,8 @@ export class GetUxoutResponse {
 export function parseGetUxout(raw: GetUxoutResponse): Output {
   return {
     address: raw.owner_address,
-    coins: raw.coins / 1000000,
-    hours: raw.hours,
+    coins: new BigNumber(raw.coins).dividedBy(1000000),
+    hours: new BigNumber(raw.hours),
     hash: raw.uxid,
   };
 }

@@ -5,10 +5,10 @@
         <div class="-row">
           <div class="-float-left">{{ 'txBoxes.transactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
           <div class="-address"><a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a><app-copy-button [text]="transaction.id"></app-copy-button></div>
-          <ng-container *ngIf="transaction.balance || transaction.balance === 0">
+          <ng-container *ngIf="transaction.balance">
             <br class="-xs-sm-only" />
-            <div class="-label" [ngClass]="{'-red' : transaction.balance < 0, '-green' : transaction.balance >= 0}">
-              {{ (transaction.balance<0?"":"+")+(transaction.balance | number:'1.0-6') }} {{ 'general.coinIdentifier' | translate }} <ng-container *ngIf="!transaction.status">({{ 'txBoxes.pending' | translate }})</ng-container>
+            <div class="-label" [ngClass]="{'-red' : transaction.balance.isLessThan(0), '-green' : transaction.balance.isGreaterThanOrEqualTo(0)}">
+              {{ (transaction.balance<0?"":"+")+(transaction.balance.decimalPlaces(6).toString() | number:'1.0-6') }} {{ 'general.coinIdentifier' | translate }} <ng-container *ngIf="!transaction.status">({{ 'txBoxes.pending' | translate }})</ng-container>
             </div>
           </ng-container>
         </div>
@@ -30,9 +30,9 @@
         <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
         <div class="-body" *ngFor="let input of inputsToShow">
           <a class="-link" [routerLink]="'/app/address/' + input.owner">{{ input.owner }}</a><app-copy-button [text]="input.owner"></app-copy-button>
-          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ input.coins | number:'1.0-6' }}</div></div>
-          <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ input.hours | number:'1.0-6' }}</div></div>
-          <div class="-balance"><div class="-transparent -float-left">{{ 'general.calculatedHours' | translate }}:&nbsp;</div><div> {{ input.calculatedHours | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ input.coins.decimalPlaces(6).toString() | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ input.hours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.calculatedHours' | translate }}:&nbsp;</div><div> {{ input.calculatedHours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
         </div>
         <div class="-body" *ngIf="showMoreInputs !== showMoreStatus.DontShowMore">
           <a class="-link" (click)="startShowingAllInputs()">{{ showMoreInputs === showMoreStatus.ShowMore ? ('txBoxes.loadAll' | translate:{ total: totalInputs }) : ('txBoxes.loading' | translate) }}</a>
@@ -42,8 +42,8 @@
         <div class="-header -xs-only">{{ 'txBoxes.outputs' | translate }}</div>
         <div class="-body" *ngFor="let output of outputsToShow">
           <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><app-copy-button [text]="output.address"></app-copy-button>
-          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
-          <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins.decimalPlaces(6).toString() | number:'1.0-6' }}</div></div>
+          <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
         </div>
         <div class="-body" *ngIf="showMoreOutputs !== showMoreStatus.DontShowMore">
           <a class="-link" (click)="startShowingAllOutputs()">{{ showMoreOutputs === showMoreStatus.ShowMore ? ('txBoxes.loadAll' | translate:{ total: totalOutputs }) : ('txBoxes.loading' | translate) }}</a>
@@ -56,17 +56,17 @@
         <div class="-balance-variation">
           <div class="fee-box">
             <div class="-transparent -float-left">{{ 'txBoxes.fee' | translate }}:&nbsp;</div>
-            <div>{{ transaction.fee | number:'1.0-0' }}</div>
+            <div>{{ transaction.fee.decimalPlaces(0).toString() | number:'1.0-0' }}</div>
           </div>
-          <ng-container *ngIf="transaction.initialBalance || transaction.initialBalance === 0">
+          <ng-container *ngIf="transaction.initialBalance">
             <div>
               <div class="-transparent -float-left">{{ 'txBoxes.initialBalance' | translate }}:&nbsp;</div>
-              <div>{{ transaction.initialBalance | number:'1.0-6' }}</div>
+              <div>{{ transaction.initialBalance.decimalPlaces(6).toString() | number:'1.0-6' }}</div>
             </div>
             <span class="separator -not-xs">&#xf105;</span>
             <div>
               <div class="-transparent -float-left">{{ 'txBoxes.finalBalance' | translate }}:&nbsp;</div>
-              <div>{{ transaction.finalBalance | number:'1.0-6' }}</div>
+              <div>{{ transaction.finalBalance.decimalPlaces(6).toString() | number:'1.0-6' }}</div>
             </div>
           </ng-container>
         </div>

@@ -5,6 +5,7 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
+import { BigNumber } from 'bignumber.js';
 
 @Component({
   selector: 'app-address-detail',
@@ -13,10 +14,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AddressDetailComponent implements OnInit {
   address: string;
-  totalReceived: number;
-  totalSent: number;
-  balance: number;
-  hoursBalance: number;
+  totalReceived: BigNumber;
+  totalSent: BigNumber;
+  balance: BigNumber;
+  hoursBalance: BigNumber;
   transactions: any[];
   pageTransactions: any[];
   pageIndex = 0;
@@ -65,8 +66,14 @@ export class AddressDetailComponent implements OnInit {
     }).subscribe(
       transactions => {
         this.transactions = transactions;
-        this.totalReceived = transactions.reduce((a, b) => b.balance > 0 ? (a + b.balance) : a, 0);
-        this.totalSent = transactions.reduce((a, b) => b.balance < 0 ? (a + b.balance) : a, 0) * -1;
+
+        this.totalReceived = new BigNumber(0);
+        transactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) ? tx.balance : 0));
+
+        this.totalSent = new BigNumber(0);
+        transactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) ? tx.balance : 0));
+        this.totalSent = this.totalSent.negated();
+
         this.updateTransactions();
       },
       error => {
@@ -86,8 +93,8 @@ export class AddressDetailComponent implements OnInit {
 
     this.route.params.switchMap((params: Params) => this.api.getBalance(params['address']))
       .subscribe(response => {
-        this.balance = response.confirmed.coins / 1000000;
-        this.hoursBalance = response.confirmed.hours;
+        this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
+        this.hoursBalance = new BigNumber(response.confirmed.hours);
       });
   }
 

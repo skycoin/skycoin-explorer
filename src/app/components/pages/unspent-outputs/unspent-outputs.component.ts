@@ -5,6 +5,7 @@ import { GetCurrentBalanceResponse } from '../../../app.datatypes';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 import { TranslateService } from '@ngx-translate/core';
+import { BigNumber } from 'bignumber.js';
 
 @Component({
   selector: 'app-unspent-outputs',
@@ -14,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class UnspentOutputsComponent implements OnInit {
   address: string;
   outputs: GetCurrentBalanceResponse;
-  coins: number = null;
+  coins: BigNumber = null;
   loadingMsg = '';
   longErrorMsg: string;
 
@@ -34,7 +35,9 @@ export class UnspentOutputsComponent implements OnInit {
       return this.api.getCurrentBalance(params['address']);
     }).subscribe(response => {
       this.outputs = response;
-      this.coins = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0);
+
+      this.coins = new BigNumber(0);
+      response.head_outputs.map(o => this.coins = this.coins.plus(o.coins));
     }, error => {
       if (error.status >= 400 && error.status < 500) {
         this.translate.get(['general.noData', 'unspentOutputs.withoutOutputs']).subscribe((res: string[]) => {

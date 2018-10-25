@@ -5,6 +5,7 @@
     "coins": "Coins",
     "iniialHours": "Initial Hours",
     "calculatedHours": "Final Hours",
+    "currentHours": "Current Hours",
     "hours": "Hours",
     "loadingMsg": "Loading...",
     "shortLoadingErrorMsg": "Loading error",
@@ -70,7 +71,8 @@
     "title": "Unspent Outputs",
     "address": "Address",
     "outputsNumber": "# of outputs",
-    "total": "Total",
+    "totalCoins": "Total Coins",
+    "totalHours": "Total Hours",
     "origin": "Origin",
     "date": "Date",
     "withoutOutputs": "Without outputs"

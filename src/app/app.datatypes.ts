@@ -220,6 +220,7 @@ class GetCurrentBalanceResponseOutput {
   address: string;
   coins: string;
   hours: number;
+  calculated_hours: number;
 }
 
 export class GetTransactionResponse {

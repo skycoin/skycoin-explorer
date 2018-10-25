@@ -15,8 +15,8 @@ describe('skycoin-explorer Unspent Outputs Page', () => {
     expect(generalFunctions.getPageTitle()).toBe('Unspent Outputs');
   });
 
-  it('should display 3 details rows', () => {
-    expect(generalFunctions.getDetailsRowCount()).toEqual(3);
+  it('should display 4 details rows', () => {
+    expect(generalFunctions.getDetailsRowCount()).toEqual(4);
   });
 
   it('should show the correct address', () => {
@@ -57,9 +57,9 @@ describe('skycoin-explorer Unspent Outputs Page', () => {
 
   it('should have the correct coins amount', () => {
     if (browser.params.chain === '180') {
-      expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(100);
+      expect(page.getOutputsTotalCoins()).toBe(100);
     } else {
-      expect(generalFunctions.getTransactionInputsAndOutputsTotalCoins()).toBe(0.001);
+      expect(page.getOutputsTotalCoins()).toBe(0.001);
     }
   });
 

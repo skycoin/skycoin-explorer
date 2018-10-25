@@ -26,4 +26,14 @@ export class UnspentOutputsPage {
       .element(by.css('.-data > .row .-body div'))
       .getText();
   }
+
+  getOutputsTotalCoins() {
+    return element
+      .all(by.css('.-balance'))
+      .get(0)
+      .all(by.css('div:nth-of-type(2)'))
+      .map((elem, i) => elem.getText())
+      .then(texts => texts.map(text => Number((text as string).replace(new RegExp(',', 'g'), ''))).reduce((total, val) => total + val, 0))
+      .then(result => Math.round(result * 1000000) / 1000000);
+  }
 }

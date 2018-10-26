@@ -672,27 +672,46 @@ var apiEndpoints = []APIEndpoint{
 		Description:    "Returns head outputs for a list of comma-separated addresses.  If no addresses are specified, returns all head outputs.",
 		ExampleRequest: "/api/currentBalance?addrs=SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17,iqi5BpPhEqt35SaeMLKA94XnzBG57hToNi",
 		ExampleResponse: `{
+    "head": {
+      "seq": 65796,
+      "block_hash": "3c869dfad2fdea444fe53f888c20ead67c5b0fccd8da34c3d7da580bc8a6d23c",
+      "previous_block_hash": "8dce9985e05f3ac648a0a17dd60bda2737395d646b1cb42f3039eccde2a6ce7a",
+      "timestamp": 1540423494,
+      "fee": 6892,
+      "version": 0,
+      "tx_body_hash": "bd9ea7068c96ca065f511635cddcc0fb7e13bdf0b5889dd52889292ca9e2a116",
+      "ux_hash": "572660420c0b463d00a1d87f320c9390456bbc93bc8be1e16808a3116f2152bc"
+    },
     "head_outputs": [
         {
             "hash": "fa8161308dee3accc99a35be1fb7921dff4d24a6fc804e98d7aae7aae99d0d0d",
+            "time": 1540423494,
+            "block_seq": 65796,
             "src_tx": "b125abb61f5d6ec0f44422e234007b07ab276923e9533023bdd58d51e0a0f9b7",
             "address": "iqi5BpPhEqt35SaeMLKA94XnzBG57hToNi",
             "coins": "50",
-            "hours": 248
+            "hours": 248,
+            "calculated_hours": 3445
         },
         {
             "hash": "38926afbb00c2f50d293de866bc44713eaa14c18286b24796819fbc190efcbce",
+            "time": 1540423494,
+            "block_seq": 50000,
             "src_tx": "8591837d905894142119923de1447ba855dcf8f34ba451970e83a2bbfea8eeca",
             "address": "iqi5BpPhEqt35SaeMLKA94XnzBG57hToNi",
             "coins": "375",
-            "hours": 9
+            "hours": 9,
+            "calculated_hours": 3445
         },
         {
             "hash": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
+            "time": 1540423494,
+            "block_seq": 20000,
             "src_tx": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3",
             "address": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
             "coins": "51",
-            "hours": 2013433
+            "hours": 2013433,
+            "calculated_hours": 3000000
         }
     ],
     "outgoing_outputs": [],

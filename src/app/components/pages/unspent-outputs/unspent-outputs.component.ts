@@ -16,6 +16,7 @@ export class UnspentOutputsComponent implements OnInit {
   address: string;
   outputs: GetCurrentBalanceResponse;
   coins: BigNumber = null;
+  hours: BigNumber = null;
   loadingMsg = '';
   longErrorMsg: string;
 
@@ -38,6 +39,9 @@ export class UnspentOutputsComponent implements OnInit {
 
       this.coins = new BigNumber(0);
       response.head_outputs.map(o => this.coins = this.coins.plus(o.coins));
+
+      this.hours = new BigNumber(0);
+      response.head_outputs.map(o => this.hours = this.hours.plus(o.calculated_hours));
     }, error => {
       if (error.status >= 400 && error.status < 500) {
         this.translate.get(['general.noData', 'unspentOutputs.withoutOutputs']).subscribe((res: string[]) => {

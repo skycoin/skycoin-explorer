@@ -1,20 +1,14 @@
 <div class="element-details-wrapper">
   <h2>{{ 'unspentOutputs.title' | translate }}</h2>
   <div class="element-details">
-    <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link" *ngIf="address">{{ address }}</a> <copy-button [text]="address" *ngIf="address"></copy-button> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
+    <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link" *ngIf="address">{{ address }}</a> <app-copy-button [text]="address" *ngIf="address"></app-copy-button> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>
     <div class="-row"><span>{{ 'unspentOutputs.outputsNumber' | translate }}</span><br class="-xs-only" /><div> {{ outputs ? outputs.head_outputs.length : loadingMsg }} </div></div>
-    <div class="-row"><span>{{ 'unspentOutputs.total' | translate }}</span><br class="-xs-only" /><div> <coins-formatter *ngIf="coins" [amount]="coins | number:'1.0-6'"></coins-formatter> <span *ngIf="coins">{{'general.coinIdentifier' | translate}}</span> <span *ngIf="!coins">{{loadingMsg}}</span> </div></div>
+    <div class="-row"><span>{{ 'unspentOutputs.totalCoins' | translate }}</span><br class="-xs-only" /><div> {{ coins != null ? (coins.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) : loadingMsg }} </div></div>
+    <div class="-row"><span>{{ 'unspentOutputs.totalHours' | translate }}</span><br class="-xs-only" /><div> {{ hours != null ? (hours.decimalPlaces(0).toString() | number:'1.0-0') : loadingMsg }} </div></div>
   </div>
 </div>
 
-<div class="row -msg-container" *ngIf="outputs === undefined">
-  <div class="col-sm-12">
-    <span *ngIf="!longErrorMsg; else error_msg">
-      {{ 'general.waitingData' | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
-    </span>
-    <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
-  </div>
-</div>
+<app-loading [longErrorMsg]="longErrorMsg" *ngIf="outputs === undefined"></app-loading>
 
 <div *ngIf="outputs">
   <div class="transaction" *ngFor="let output of outputs.head_outputs">
@@ -23,10 +17,10 @@
         <div class="col-md-9 col-sm-12">
           <div class="-row">
             <div class="-float-left">{{ 'unspentOutputs.origin' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
-            <div><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a><copy-button [text]="output.src_tx"></copy-button></div>
+            <div><a [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a><app-copy-button [text]="output.src_tx"></app-copy-button></div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span><date-formatter *ngIf="output" [date]="output.time"></date-formatter></div></div>
+        <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span><app-date-formatter *ngIf="output" [date]="output.time"></app-date-formatter></div></div>
       </div>
     </div>
 
@@ -35,7 +29,9 @@
         <div class="col-sm-12">
           <div class="-body">
             <div>{{ output.hash }}</div>
-            <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> <coins-formatter [amount]="output.coins | number:'1.0-6'"></coins-formatter></div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ output.hours | number:'1.0-0' }}</div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'general.currentHours' | translate }}:&nbsp;</div><div> {{ output.calculated_hours | number:'1.0-0' }}</div></div>
           </div>
         </div>
       </div>

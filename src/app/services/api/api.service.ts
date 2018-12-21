@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { CoinSupply } from '../../components/pages/blocks/block';
-import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransaction, GetUxoutResponse, GetAddressResponseTransaction,
-    GetCurrentBalanceResponse, GetBlocksResponseBlock, RichlistEntry, GetBalanceResponse, GetTransactionResponse } from '../../app.datatypes';
+import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransactionResponse, GenericTransactionResponse,
+    GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse, GetCoinSupplyResponse } from '../../app.datatypes';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -14,19 +13,23 @@ export class ApiService {
   private url = '/api/';
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) { }
 
-  getAddress(address: string): Observable<GetAddressResponseTransaction[]> {
+  getAddress(address: string): Observable<GenericTransactionResponse[]> {
     return this.get('address', { address: address });
   }
 
-  getUnconfirmedTransactions(): Observable<GetUnconfirmedTransaction[]> {
-    return this.get('pendingTxs');
+  getUnconfirmedTransactions(): Observable<GetUnconfirmedTransactionResponse[]> {
+    return this.get('pendingTxs', { verbose: 1 });
   }
 
-  getBlock(hash: string): Observable<GetBlocksResponseBlock> {
-    return this.get('block', { hash: hash });
+  getBlockById(id: number): Observable<GenericBlockResponse> {
+    return this.get('block', { seq: id, verbose: 1 });
+  }
+
+  getBlockByHash(hash: string): Observable<GenericBlockResponse> {
+    return this.get('block', { hash: hash, verbose: 1 });
   }
 
   getBlocks(startNumber: number, endNumber: number): Observable<GetBlocksResponse> {
@@ -37,27 +40,23 @@ export class ApiService {
     return this.get('blockchain/metadata')
       .map((res: GetBlockchainMetadataResponse) => ({
         blocks: res.head.seq,
-      }))
+      }));
   }
 
-  getCoinSupply(): Observable<CoinSupply> {
+  getCoinSupply(): Observable<GetCoinSupplyResponse> {
     return this.get('coinSupply');
   }
 
   getCurrentBalance(address: string): Observable<GetCurrentBalanceResponse> {
-    return this.get('currentBalance', { addrs: address })
+    return this.get('currentBalance', { addrs: address });
   }
 
   getBalance(address: string): Observable<GetBalanceResponse> {
-    return this.get('balance', { addrs: address })
+    return this.get('balance', { addrs: address });
   }
 
-  getTransaction(transactionId:string): Observable<GetTransactionResponse> {
-    return this.get('transaction', { txid: transactionId });
-  }
-
-  getUxout(uxid: string): Observable<GetUxoutResponse> {
-    return this.get('uxout', { uxid: uxid });
+  getTransaction(transactionId: string): Observable<GetTransactionResponse> {
+    return this.get('transaction', { txid: transactionId, verbose: 1 });
   }
 
   getRichlist(): Observable<RichlistEntry[]> {
@@ -66,28 +65,23 @@ export class ApiService {
 
   // Old methods
 
-  getInputAddress(uxid:string): any{
-    return this.get('uxout?uxid=' + uxid);
-  }
-
-  private get(url, options = null) {
+  get(url: string, options: object = null): any {
     return this.http.get(this.getUrl(url, options))
-      .map((res: any) => res.json())
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
-  private getQueryString(parameters = null) {
+  private getQueryString(parameters: object = null): string {
     if (!parameters) {
       return '';
     }
 
-    return Object.keys(parameters).reduce((array,key) => {
+    return Object.keys(parameters).reduce((array, key) => {
       array.push(key + '=' + encodeURIComponent(parameters[key]));
       return array;
     }, []).join('&');
   }
 
-  private getUrl(url, options = null) {
+  private getUrl(url: string, options: object = null): string {
     return this.url + url + '?' + this.getQueryString(options);
   }
 }

@@ -3,6 +3,15 @@ import { Observable } from 'rxjs/Observable';
 
 import { ExplorerService } from '../explorer/explorer.service';
 
+export class ResultNavCommandsResponse {
+  resultNavCommands: Observable<string[]>;
+  error: SearchError;
+}
+
+export enum SearchError {
+  InvalidSearchTerm = 1,
+}
+
 @Injectable()
 export class SearchService {
 
@@ -20,14 +29,14 @@ export class SearchService {
       response.resultNavCommands = this.explorer.getBlockByHash(searchTerm)
         .map(block => ['/app/block', block.id.toString()])
         .catch((error: any) => {
-          if (error && error.status && error.status == 404) {
+          if (error && error.status && error.status === 404) {
             return Observable.of(['/app/transaction', searchTerm]);
           } else {
             return Observable.throw(error);
           }
         });
     } else {
-      if (parseInt(searchTerm, 10).toString() == searchTerm && parseInt(searchTerm, 10) >= 0) {
+      if (parseInt(searchTerm, 10).toString() === searchTerm && parseInt(searchTerm, 10) >= 0) {
         response.resultNavCommands = Observable.of(['/app/block', searchTerm]);
       } else {
         response.error = SearchError.InvalidSearchTerm;
@@ -37,13 +46,4 @@ export class SearchService {
     return response;
   }
 
-}
-
-export class ResultNavCommandsResponse {
-  resultNavCommands: Observable<string[]>;
-  error: SearchError;
-}
-
-export enum SearchError {
-  InvalidSearchTerm = 1,
 }

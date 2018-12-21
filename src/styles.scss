@@ -44,11 +44,21 @@ h2 {
         padding-top: 0;
       }
 
-      > span:first-child {
+      > span:first-of-type {
         display: block;
         float: left;
         color: $gray;
         width: 130px;
+      }
+
+      > div:last-of-type {
+        display: flex;
+      }
+
+      @media (max-width: $max-xs-width) {
+        > div:last-of-type {
+          display: unset;
+        }
       }
 
       .-link {
@@ -56,10 +66,6 @@ h2 {
       }
     }
   }
-}
-
-.-msg-container {
-  padding: $siz-normal-margin $siz-big-margin;
 }
 
 @media (min-width: ($max-sm-width+1)) {
@@ -191,10 +197,17 @@ h2 {
     .-balance-variation {
       border-top: 1px solid $col-normal-separator;
       text-align: right;
+      display: flex;
+      align-items: center;
+
+      .fee-box {
+        flex-grow: 1;
+      }
 
       > div {
         display: inline-block;
         padding: $siz-small-margin 0px;
+        text-align: left;
 
         @media (max-width: $max-xs-width) {
           width: 100%;
@@ -226,6 +239,7 @@ h2 {
         & {
           border-top: none;
           text-align: left;
+          display: unset;
         }
       }
     }
@@ -292,7 +306,7 @@ h2 {
   display: none !important;
 }
 
-copy-button {
+app-copy-button {
   display: inline-block;
   height: 12px;
   width: 12px;
@@ -340,4 +354,30 @@ copy-button {
       display: none;
     }
   }
+}
+
+.timezone-container {
+  height: 0px;
+  position: relative;
+  top: 1px;
+  font-size: 9px;
+}
+
+.timezone-label {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  display: inline;
+}
+
+.timezone-icon {
+  margin-right: 4px;
+  font-family: 'Font Awesome 5 Free';
+  font-size: 12px;
+  user-select: none;
+  font-weight: 600;
+  opacity: 0.25;
+}
+
+.timezone-icon-opaque {
+  opacity: 0.5 !important;
 }

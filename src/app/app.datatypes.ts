@@ -1,19 +1,8 @@
-/**
- * Skycoin Data Types Version 0.1 - last updated december 9th
- */
+import { BigNumber } from 'bignumber.js';
 
 /**
  * Elementary Types
  */
-
-export class Address {
-  address: string;
-  next_seed?: string;
-  secret_key?: string;
-  public_key?: string;
-  balance?: number;
-  hours?: number;
-}
 
 export class Block {
   id: number;
@@ -28,33 +17,33 @@ export class Blockchain {
   blocks: number;
 }
 
+export class Input {
+  owner: string;
+  coins: BigNumber;
+  uxid: string;
+  hours: BigNumber;
+  calculatedHours: BigNumber;
+}
+
 export class Output {
   address: string;
-  coins: number;
+  coins: BigNumber;
   hash: string;
-  hours: number;
+  hours: BigNumber;
 }
 
 export class Transaction {
   block: number;
   id: string;
-  inputs: Output[];
+  inputs: Input[];
   outputs: Output[];
   status: boolean;
   timestamp: number;
-  balance: number;
-  initialBalance: number;
-  finalBalance: number;
+  balance: BigNumber;
+  initialBalance: BigNumber;
+  finalBalance: BigNumber;
   length: number;
-}
-
-export class Wallet {
-  label: string;
-  addresses: Address[];
-  seed?: string;
-  balance?: number;
-  hours?: number;
-  hidden?: boolean;
+  fee: BigNumber;
 }
 
 export class RichlistEntry {
@@ -64,181 +53,150 @@ export class RichlistEntry {
 }
 
 /**
- * Node Response Types
+ * Generic Node Response Types
  */
 
-export class GetAddressResponseTransaction {
-  inputs: GetAddressResponseTransactionInput[];
-  outputs: GetAddressResponseTransactionOutput[];
-  status: any;
-  timestamp: number;
-  txid: string;
-  length: number;
-}
-
-export function parseGetAddressTransaction(raw: GetAddressResponseTransaction, address: string): Transaction {
-
-  let balance = 0;
-  for (const input of raw.inputs) {
-    if (input.owner.toLowerCase() === address.toLowerCase()) {
-      balance -= parseFloat(input.coins);
-    }
-  }
-  for (let output of raw.outputs) {
-    if (output.dst.toLowerCase() === address.toLowerCase()) {
-      balance += parseFloat(output.coins);
-    }
-  }
-
-  return {
-    block: null,
-    id: raw.txid,
-    timestamp: raw.timestamp,
-    inputs: raw.inputs.map(input => parseGetAddressInput(input)),
-    outputs: raw.outputs.map(output => parseGetAddressOutput(output)),
-    status: raw.status.confirmed,
-    balance: balance,
-    initialBalance: null,
-    finalBalance: null,
-    length: raw.length,
-  }
-}
-
-class GetAddressResponseTransactionInput {
-  uxid: string;
-  owner: string;
-  coins: string;
-  hours: string;
-}
-
-function parseGetAddressInput(raw: GetAddressResponseTransactionInput): Output {
-  return {
-    address: raw.owner,
-    coins: parseFloat(raw.coins),
-    hash: raw.uxid,
-    hours: parseInt(raw.hours),
-  }
-}
-
-class GetAddressResponseTransactionOutput {
-  uxid: string;
-  dst: string;
-  coins: string;
-  hours: number;
-}
-
-function parseGetAddressOutput(raw: GetAddressResponseTransactionOutput): Output {
-  return {
-    address: raw.dst,
-    coins: parseFloat(raw.coins),
-    hash: raw.uxid,
-    hours: raw.hours,
-  }
-}
-
-export class GetUnconfirmedTransaction {
-  transaction: GetUnconfirmedTransactionBody;
-  received: string;
-  is_valid: boolean;
-}
-
-export class GetUnconfirmedTransactionBody {
-  txid: string;
-  length: number;
-  inputs: string[];
-  outputs: GetAddressResponseTransactionOutput[];
-}
-
-export function parseGetUnconfirmedTransaction(raw: GetUnconfirmedTransaction): Transaction {
-  return {
-    block: null,
-    id: raw.transaction.txid,
-    inputs: raw.transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
-    outputs: raw.transaction.outputs.map(output => parseGetAddressOutput(output)),
-    status: raw.is_valid,
-    timestamp: new Date(raw.received).getTime(),
-    balance: null,
-    initialBalance: null,
-    finalBalance: null,
-    length: raw.transaction.length,
-  }
-}
-
-export class GetBlocksResponse {
-  blocks: GetBlocksResponseBlock[];
-}
-
-export class GetBlocksResponseBlock {
-  body: GetBlocksResponseBlockBody;
-  header: GetBlocksResponseBlockHeader;
+export class GenericBlockResponse {
+  header: GenericBlockHeaderResponse;
+  body: GenericBlockBodyResponse;
   size: number;
 }
 
-export function parseGetBlocksBlock(block: GetBlocksResponseBlock): Block {
-  return {
-    id: block.header.seq,
-    hash: block.header.block_hash,
-    parent_hash: block.header.previous_block_hash,
-    timestamp: block.header.timestamp,
-    transactions: block.body.txns.map(transaction => parseGetBlocksTransaction(transaction)),
-    size: block.size,
-  }
-}
-
-function parseGetBlocksTransaction(transaction: GetBlocksResponseBlockBodyTransaction): Transaction {
-  return {
-    block: null,
-    id: transaction.txid,
-    timestamp: null,
-    inputs: transaction.inputs.map(input => ({ address: null, coins: null, hash: input, hours: null })),
-    outputs: transaction.outputs.map(output => parseGetBlocksOutput(output)),
-    status: null,
-    balance: null,
-    initialBalance: null,
-    finalBalance: null,
-    length: transaction.length,
-  }
-}
-
-function parseGetBlocksOutput(raw: GetBlocksResponseBlockBodyTransactionOutput): Output {
-  return {
-    address: raw.dst,
-    coins: parseFloat(raw.coins),
-    hash: raw.uxid,
-    hours: raw.hours,
-  }
-}
-
-class GetBlocksResponseBlockBody {
-  txns: GetBlocksResponseBlockBodyTransaction[];
-}
-
-class GetBlocksResponseBlockBodyTransaction {
-  txid: string;
-  length: number;
-  inputs: string[];
-  outputs: GetBlocksResponseBlockBodyTransactionOutput[];
-}
-
-class GetBlocksResponseBlockBodyTransactionOutput {
-  coins: string;
-  dst: string;
-  hours: number;
-  uxid: string;
-}
-
-class GetBlocksResponseBlockHeader {
+class GenericBlockHeaderResponse {
   block_hash: string;
   previous_block_hash: string;
   seq: number;
   timestamp: number;
 }
 
+class GenericBlockBodyResponse {
+  txns: GenericTransactionResponse[];
+}
+
+export class GenericTransactionResponse {
+  inputs: GenericTransactionInputResponse[];
+  outputs: GenericTransactionOutputResponse[];
+  status: any;
+  timestamp: number;
+  txid: string;
+  length: number;
+  fee: number;
+}
+
+class GenericTransactionInputResponse {
+  uxid: string;
+  owner: string;
+  coins: string;
+  hours: number;
+  calculated_hours: number;
+}
+
+class GenericTransactionOutputResponse {
+  coins: string;
+  dst: string;
+  hours: number;
+  uxid: string;
+}
+
+export function parseGenericBlock(block: GenericBlockResponse): Block {
+  return {
+    id: block.header.seq,
+    hash: block.header.block_hash,
+    parent_hash: block.header.previous_block_hash,
+    timestamp: block.header.timestamp,
+    transactions: block.body.txns.map(transaction => parseGenericTransaction(transaction)),
+    size: block.size,
+  };
+}
+
+export function parseGenericTransaction(raw: GenericTransactionResponse, address: string = null): Transaction {
+  let balance = null;
+  if (address) {
+    balance = new BigNumber('0');
+    for (const input of raw.inputs) {
+      if (input.owner.toLowerCase() === address.toLowerCase()) {
+        balance = balance.minus(input.coins);
+      }
+    }
+    for (const output of raw.outputs) {
+      if (output.dst.toLowerCase() === address.toLowerCase()) {
+        balance = balance.plus(output.coins);
+      }
+    }
+  }
+
+  const response = {
+    block: null,
+    id: raw.txid,
+    timestamp: raw.timestamp,
+    inputs: raw.inputs.map(input => parseGenericTransactionInput(input)),
+    outputs: raw.outputs.map(output => parseGenericTransactionOutput(output)),
+    status: null,
+    balance: balance,
+    initialBalance: null,
+    finalBalance: null,
+    length: raw.length,
+    fee: new BigNumber(raw.fee),
+  };
+
+  if (raw.status) {
+    if (raw.status.confirmed) {
+      response.status = raw.status.confirmed;
+    }
+
+    if (raw.status.height) {
+      response.block = raw.status.block_seq;
+    }
+  }
+
+  return response;
+}
+
+function parseGenericTransactionInput(raw: GenericTransactionInputResponse): Input {
+  return {
+    owner: raw.owner,
+    coins: new BigNumber(raw.coins),
+    uxid: raw.uxid,
+    hours: new BigNumber(raw.hours),
+    calculatedHours: new BigNumber(raw.calculated_hours),
+  };
+}
+
+function parseGenericTransactionOutput(raw: GenericTransactionOutputResponse): Output {
+  return {
+    address: raw.dst,
+    coins: new BigNumber(raw.coins),
+    hash: raw.uxid,
+    hours: new BigNumber(raw.hours),
+  };
+}
+
+/**
+ * Node Response Types
+ */
+
+export class GetUnconfirmedTransactionResponse {
+  transaction: GenericTransactionResponse;
+  received: string;
+  is_valid: boolean;
+}
+
+export function parseGetUnconfirmedTransaction(raw: GetUnconfirmedTransactionResponse): Transaction {
+  raw.transaction.timestamp = new Date(raw.received).getTime();
+  raw.transaction.status = { confirmed: raw.is_valid };
+
+  return parseGenericTransaction(raw.transaction);
+}
+
+export class GetBlocksResponse {
+  blocks: GenericBlockResponse[];
+}
+
 export class GetBlockchainMetadataResponse {
   head: GetBlockchainMetadataResponseHead;
 }
 
-export class GetBlockchainMetadataResponseHead {
+class GetBlockchainMetadataResponseHead {
   seq: number;
 }
 
@@ -262,79 +220,18 @@ class GetCurrentBalanceResponseOutput {
   address: string;
   coins: string;
   hours: number;
-}
-
-export class GetOutputsRequest {
-  head_outputs: GetOutputsRequestOutput[];
-  outgoing_outputs: any[];
-  incoming_outputs: any[];
-}
-
-export class GetOutputsRequestOutput {
-  hash: string;
-  src_tx: string;
-  address: string;
-  coins: string;
-  hours: number;
+  calculated_hours: number;
 }
 
 export class GetTransactionResponse {
-  status: GetTransactionStatus;
+  status: any;
   time: number;
-  txn: GetTransactionTransaction;
+  txn: GenericTransactionResponse;
 }
 
 export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
-  return {
-    block: raw.status.block_seq,
-    id: raw.txn.txid,
-    inputs: raw.txn.inputs.map(input => parseGetTransactionInput(input)),
-    outputs: raw.txn.outputs.map(output => parseGetTransactionOutput(output)),
-    status: raw.status.confirmed,
-    timestamp: raw.txn.timestamp,
-    balance: null,
-    initialBalance: null,
-    finalBalance: null,
-    length: raw.txn.length,
-  }
-}
-
-function parseGetTransactionInput(raw: string): Output {
-  return {
-    address: null,
-    coins: null,
-    hash: raw,
-    hours: null,
-  }
-}
-
-function parseGetTransactionOutput(raw: GetTransactionOutput): Output {
-  return {
-    address: raw.dst,
-    coins: parseFloat(raw.coins),
-    hash: raw.uxid,
-    hours: raw.hours,
-  }
-}
-
-class GetTransactionOutput {
-  uxid: string;
-  dst: string;
-  coins: string;
-  hours: number;
-}
-
-class GetTransactionStatus {
-  confirmed: boolean;
-  block_seq: number;
-}
-
-class GetTransactionTransaction {
-  inputs: string[];
-  outputs: GetTransactionOutput[];
-  timestamp: number;
-  txid: string;
-  length: number;
+  raw.txn.status = raw.status;
+  return parseGenericTransaction(raw.txn);
 }
 
 export class GetUxoutResponse {
@@ -347,23 +244,16 @@ export class GetUxoutResponse {
 export function parseGetUxout(raw: GetUxoutResponse): Output {
   return {
     address: raw.owner_address,
-    coins: raw.coins / 1000000,
-    hours: raw.hours,
+    coins: new BigNumber(raw.coins).dividedBy(1000000),
+    hours: new BigNumber(raw.hours),
     hash: raw.uxid,
-  }
+  };
 }
 
-/**
- * Web Cipher Types
- */
-
-export class TransactionInput {
-  hash: string;
-  secret: string;
-}
-
-export class TransactionOutput {
-  address: string;
-  coins: number;
-  hours: number;
+export interface GetCoinSupplyResponse {
+  current_supply: number;
+  total_supply: number;
+  max_supply: number;
+  current_coinhour_supply: number;
+  total_coinhour_supply: number;
 }

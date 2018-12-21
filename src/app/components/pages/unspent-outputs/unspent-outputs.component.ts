@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
-import { Block, Output, Transaction, GetCurrentBalanceResponse } from '../../../app.datatypes';
+import { GetCurrentBalanceResponse } from '../../../app.datatypes';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 import { TranslateService } from '@ngx-translate/core';
+import { BigNumber } from 'bignumber.js';
 
 @Component({
   selector: 'app-unspent-outputs',
@@ -14,14 +15,14 @@ import { TranslateService } from '@ngx-translate/core';
 export class UnspentOutputsComponent implements OnInit {
   address: string;
   outputs: GetCurrentBalanceResponse;
-  coins: number;
-  loadingMsg = "";
+  coins: BigNumber = null;
+  hours: BigNumber = null;
+  loadingMsg = '';
   longErrorMsg: string;
 
   constructor(
     private api: ApiService,
     private route: ActivatedRoute,
-    private router: Router,
     private translate: TranslateService
   ) {
     translate.get('general.loadingMsg').subscribe((res: string) => {
@@ -32,10 +33,15 @@ export class UnspentOutputsComponent implements OnInit {
   ngOnInit() {
     this.route.params.switchMap((params: Params) => {
       this.address = params['address'];
-      return this.api.getCurrentBalance(params['address'])
+      return this.api.getCurrentBalance(params['address']);
     }).subscribe(response => {
       this.outputs = response;
-      this.coins = response.head_outputs.reduce((a, b) => a + parseFloat(b.coins), 0);
+
+      this.coins = new BigNumber(0);
+      response.head_outputs.map(o => this.coins = this.coins.plus(o.coins));
+
+      this.hours = new BigNumber(0);
+      response.head_outputs.map(o => this.hours = this.hours.plus(o.calculated_hours));
     }, error => {
       if (error.status >= 400 && error.status < 500) {
         this.translate.get(['general.noData', 'unspentOutputs.withoutOutputs']).subscribe((res: string[]) => {

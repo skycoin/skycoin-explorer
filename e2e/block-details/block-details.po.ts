@@ -1,4 +1,5 @@
 import { browser, by, element } from 'protractor';
+import { GeneralPageFunctions } from '../general.po';
 
 export class BlockDetailsPage {
 
@@ -11,7 +12,7 @@ export class BlockDetailsPage {
   getTimestampValidity() {
     return element(by.css('.element-details > div:nth-of-type(2) > div'))
       .getText()
-      .then(text => !isNaN((new Date(text)).getTime()));
+      .then(text => GeneralPageFunctions.processAndCheckDate(text));
   }
 
   getSize() {

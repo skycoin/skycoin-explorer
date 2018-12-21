@@ -25,25 +25,23 @@
       <div class="col-sm-6 -fix-left -not-xs"><div>{{ 'blocks.blockhash' | translate }}</div></div>
     </div>
   </div>
-  <div class="row -msg-container" *ngIf="!blocks.length">
-    <div class="col-sm-12">
-      <span *ngIf="!longErrorMsg; else error_msg">
-        {{ 'general.waitingData' | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
-      </span>
-      <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
-    </div>
-  </div>
+
+  <app-loading [longErrorMsg]="longErrorMsg" *ngIf="!blocks.length"></app-loading>
+  
   <a class="-row -link" *ngFor="let block of blocks" [routerLink]="'/app/block/' + block.id">
     <div class="row">
-      <div class="col-sm-2 col-xs-4">
+      <div class="col-sm-2 col-xs-4 -small-padding">
         <div class="-not-xs">
-          <date-formatter [date]="block.timestamp"></date-formatter>
+          <app-date-formatter [date]="block.timestamp"></app-date-formatter>
         </div>
-        <div class="-xs-only">
-            <span class="-gray">{{ block.timestamp * 1000 | date:'yyyy' }}</span><br/>
-            <span class="-small-font">{{ (block.timestamp * 1000 | date:'MMM dd').toUpperCase() }}</span><br/>
-            <span class="-small-font">{{ block.timestamp * 1000 | date:'HH:mm' }}</span>
+        <div class="-xs-only -small-date" (mouseenter)="mouseOver = block.id" (mouseleave)="mouseOver === block.id ? mouseOver = -1 : null">
+          <span class="-gray"><span class="timezone-icon" [ngClass]="{'timezone-icon-opaque': mouseOver === block.id}" >&#xf0ac;</span>{{ block.timestamp * 1000 | date:'yyyy' }}</span><br/>
+          <span class="-small-font">{{ (block.timestamp * 1000 | date:'MMM dd').toUpperCase() }}</span><br/>
+          <span class="-small-font">{{ block.timestamp * 1000 | date:'HH:mm' }}</span>
+          <div *ngIf="mouseOver === block.id" class="timezone-container">
+            <div class="timezone-label">{{ block.timestamp * 1000 | date:'OOOO' }}</div>
           </div>
+        </div>
       </div>
 
       <div class="col-sm-2 col-xs-4">{{ block.id }}</div>

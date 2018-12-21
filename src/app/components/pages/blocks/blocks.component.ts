@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { Block } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
@@ -21,9 +21,11 @@ export class BlocksComponent implements OnInit {
   blockCount = 0;
   pageIndex = 0;
   pageSize = 10;
-  loadingCoinSupplyMsg = "";
-  loadingMetadataMsg = "";
+  loadingCoinSupplyMsg = '';
+  loadingMetadataMsg = '';
   longErrorMsg: string;
+
+  mouseOver = -1;
 
   get pageCount() {
     return Math.ceil(this.blockCount / this.pageSize);
@@ -33,7 +35,6 @@ export class BlocksComponent implements OnInit {
     private api: ApiService,
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router,
     private translate: TranslateService
   ) {
     translate.get('general.loadingMsg').subscribe((res: string) => {
@@ -47,7 +48,7 @@ export class BlocksComponent implements OnInit {
       this.route.paramMap
         .subscribe(params => {
           const pageIndex = parseInt(params.get('page'), 10) - 1;
-          this.navigate(pageIndex)
+          this.navigate(pageIndex);
         });
     }, error => {
       this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {

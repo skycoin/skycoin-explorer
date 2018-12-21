@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/mergeMap';
-import { Output, Transaction } from '../../../app.datatypes';
+import { Transaction } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -13,13 +13,12 @@ import { TranslateService } from '@ngx-translate/core';
 export class TransactionDetailComponent implements OnInit {
 
   transaction: Transaction;
-  loadingMsg = "";
+  loadingMsg = '';
   longErrorMsg: string;
 
   constructor(
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router,
     private translate: TranslateService
   ) {
     translate.get('general.loadingMsg').subscribe((res: string) => {

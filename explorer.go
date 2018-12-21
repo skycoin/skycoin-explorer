@@ -130,8 +130,9 @@ type APIEndpoint struct {
 	QueryArgs      []string `json:"query_args,omitempty"`
 	Description    string   `json:"description"`
 	ExampleRequest string   `json:"example_request"`
-	// This string will be parsed into a map[string]interface{} in order to render newlines
-	ExampleResponse string `json:"-"`
+	// This strings will be parsed into a map[string]interface{} in order to render newlines
+	ExampleResponse        string `json:"-"`
+	ExampleVerboseResponse string `json:"-"`
 }
 
 func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -290,8 +291,8 @@ var apiEndpoints = []APIEndpoint{
 	{
 		ExplorerPath:   "/api/block",
 		SkycoinPath:    "/block",
-		QueryArgs:      []string{"hash", "seq"},
-		Description:    "Returns information about a block, given a hash or sequence number.",
+		QueryArgs:      []string{"hash", "seq", "verbose"},
+		Description:    "Returns information about a block, given a hash or sequence number. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "/api/block?hash=e20d5832b3f9bea4da58e149e4805b4e4a962ea7c5ce3cd9f31c6d7fc72e3300",
 		ExampleResponse: `{
     "header": {
@@ -339,13 +340,78 @@ var apiEndpoints = []APIEndpoint{
     },
     "size": 414
 }`,
+		ExampleVerboseResponse: `{
+    "header": {
+        "seq": 1893,
+        "block_hash": "e20d5832b3f9bea4da58e149e4805b4e4a962ea7c5ce3cd9f31c6d7fc72e3300",
+        "previous_block_hash": "e99fe31adf3a15aab77eb81d7aaa5477a96d2ce7f74ccb3d4cdce4da2eb01cb2",
+        "timestamp": 1499405825,
+        "fee": 5033788,
+        "version": 0,
+        "tx_body_hash": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3"
+    },
+    "body": {
+        "txns": [
+            {
+                "length": 414,
+                "type": 0,
+                "txid": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3",
+                "inner_hash": "5fcc1649794894f2c79411a832f799ba12e0528ff530d7068abaa03c10e451cf",
+                "fee": 5033788,
+                "sigs": [
+                    "b951fd0c1528df88c87eb90cb1ecbc3ba2b6332ace16c2f1cc731976c0cebfb10ecb1c20335374f8cf0b832364a523c3e16f32c3240ed4eccfac1803caf8815100",
+                    "6a06e57d130f6e780eecbe0c2626eed7724a2443438258598af287bf8fc1b87f041d04a7082550bd2055a08f0849419200fdac27c018d5cebf84e8bba1c4f61201",
+                    "8cc9ae6ae5be81456fc8e2d54b6868c45b415556c689c8c4329cd30b671a18254885a1aef8a3ac9ab76a8dc83e08607516fdef291a003935ae4507775ae53c7800"
+                ],
+                "inputs": [
+                    {
+                        "uxid": "0922a7b41d1b76b6b56bfad0d5d0f6845517bbd895c660eab0ebe3899b5f63c4",
+                        "owner": "2Q2VViWhgBzz6c8GkXQyDVFdQUWcBcDon4L",
+                        "coins": "7.000000",
+                        "hours": 851106,
+                        "calculated_hours": 851311
+                    },
+                    {
+                        "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
+                        "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
+                        "coins": "5.000000",
+                        "hours": 6402335,
+                        "calculated_hours": 6402335
+                    },
+                    {
+                        "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
+                        "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
+                        "coins": "2400.000000",
+                        "hours": 800291,
+                        "calculated_hours": 800291
+                    }
+                ],
+                "outputs": [
+                    {
+                        "uxid": "8a941208d3f2d2c4a32438e05645fb64dba3b4b7d83c48d52f51bc1eb9a4117a",
+                        "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
+                        "coins": "2361.000000",
+                        "hours": 1006716
+                    },
+                    {
+                        "uxid": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
+                        "dst": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
+                        "coins": "51.000000",
+                        "hours": 2013433
+                    }
+                ]
+            }
+        ]
+    },
+    "size": 414
+}`,
 	},
 
 	{
 		ExplorerPath:   "/api/blocks",
 		SkycoinPath:    "/blocks",
-		QueryArgs:      []string{"start", "end"},
-		Description:    "Returns information about a range of blocks, given a start and end block sequence number. The range of blocks will include both the start and end sequence numbers.",
+		QueryArgs:      []string{"start", "end", "verbose"},
+		Description:    "Returns information about a range of blocks, given a start and end block sequence number. The range of blocks will include both the start and end sequence numbers. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "https://explorer.skycoin.net/api/blocks?start=1891&end=1892",
 		ExampleResponse: `{
     "blocks": [
@@ -400,8 +466,8 @@ var apiEndpoints = []APIEndpoint{
                         ]
                     }
                 ]
-						},
-						"size": 802
+            },
+            "size": 802
         },
         {
             "header": {
@@ -442,8 +508,158 @@ var apiEndpoints = []APIEndpoint{
                         ]
                     }
                 ]
-						},
-						"size": 220
+            },
+            "size": 220
+        }
+    ]
+}`,
+		ExampleVerboseResponse: `{
+    "blocks": [
+        {
+            "header": {
+                "seq": 1891,
+                "block_hash": "015265e82b4a28eee364327bf0d3b51fed54c2067318029974c262478a09bf17",
+                "previous_block_hash": "71bf5abc05a4344597cf7df25249203df12e73b0a2e37dab386eb292a6cc5faa",
+                "timestamp": 1499402935,
+                "fee": 38414015,
+                "version": 0,
+                "tx_body_hash": "ac9759e9ffc3450d9af92e205f909375131df64e8f158a26e5e1e15334f45c8d"
+            },
+            "body": {
+                "txns": [
+                    {
+                        "length": 802,
+                        "type": 0,
+                        "txid": "ac9759e9ffc3450d9af92e205f909375131df64e8f158a26e5e1e15334f45c8d",
+                        "inner_hash": "cd36c8a00ff1fa81d94747b2d64107657fa40fa43bb0e5afc70d16661eca4286",
+                        "fee": 38414015,
+                        "sigs": [
+                            "d34f0a9f0b82028e44702c7fc694e35aeb2777630efaaae32b9854b6c59c9ad747bdb91111864a050f024efd325a744cbbb7c1dde55a776c8f0d4856ac07fa5801",
+                            "aa2f3ec98866bafda37f6e0b52be6fd1201131ce6b7edf1988b762edf14c35880b26a3a3fe9369a0f9eedecbe958abae83e54d572440903f5ff5b11cb9eb5e9200",
+                            "746e171c22c99939d2d7e4b615f98de74f1c6ae152cb3d1e17e4d5e25d6f52b444242080a5a3d8f36de3befb8ec915321a7cb282eafc661c0857de753a6b40e100",
+                            "e4f3db5afa209cbceac814d0f5c6fff8b57a3cc5c15063cd0b390067705de0a87313488d5eabd369855a87879a8d163fce08faeacd9d6538528d29c7cdbdaedf00",
+                            "038263cdaf43a544b4ef66b2c910b9dd807ecd55e2fbf513c776b7accb1ff1fb5f591fbba22af58cf399d743955ab6cc7e3e641ecc675253306b2d0b6570672f00",
+                            "215d1527af817f9c0613cacc3c2d07873ff563ab113023fc83ea836e3ac827f240df8a3d390d8e867cdda149d0db8f86bf435fa354dc4f3ac8c3a9b39297d7ba00",
+                            "a2d7a50176ac1ca9417ca35f9848621bc3e0aeacb0cce713e9f93d82db4988ac5bca5bf02610c64f1580b198aadf49b04a14542466f7dca49d73b6c70f2577a201"
+                        ],
+                        "inputs": [
+                            {
+                                "uxid": "e72d8ba4ce2d3b37aeb71df2e3bed80ee07204b3fa633f56cbce7bca836bd39c",
+                                "owner": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "3.000000",
+                                "hours": 0,
+                                "calculated_hours": 58814
+                            },
+                            {
+                                "uxid": "6a349ba12c5d2827de6c24773d3dd8f6572e86adba4c8954a6d6e68df9e165e2",
+                                "owner": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "2400.000000",
+                                "hours": 348891,
+                                "calculated_hours": 44390964
+                            },
+                            {
+                                "uxid": "bb9a579003de101bee76d83d4f8796b97b34ba55555c9729a14919648c3dd7bc",
+                                "owner": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "2.000000",
+                                "hours": 2442307,
+                                "calculated_hours": 2442329
+                            },
+                            {
+                                "uxid": "6232b9b399cd86c7c0b42f9780728dea59f47565cd451010eda90e002079cdfe",
+                                "owner": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "100.000000",
+                                "hours": 2437264,
+                                "calculated_hours": 2438357
+                            },
+                            {
+                                "uxid": "d30ded9d1e3b0067d667a2a04fdacff895099ca7371d20d36d6e6565a4180e10",
+                                "owner": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "500.000000",
+                                "hours": 1252147,
+                                "calculated_hours": 1257601
+                            },
+                            {
+                                "uxid": "f248f84f019e573ba913827b9e55ef57cdd21d622b7000ff4d89d303ca2e7c20",
+                                "owner": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "900.000000",
+                                "hours": 304661,
+                                "calculated_hours": 314456
+                            },
+                            {
+                                "uxid": "0e64b71334792a5e6170fd526bab7f0abb3b5a1ef0912d8b273f59c6e3ff0d75",
+                                "owner": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "1000.000000",
+                                "hours": 305303,
+                                "calculated_hours": 316164
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "uxid": "ce1075dd609622b0c28d4106f58943d7f0cae6baffbe9f048bb5bc5f23706b93",
+                                "dst": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "4900.000000",
+                                "hours": 6402335
+                            },
+                            {
+                                "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
+                                "dst": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
+                                "coins": "5.000000",
+                                "hours": 6402335
+                            }
+                        ]
+                    }
+                ]
+            },
+            "size": 802
+        },
+        {
+            "header": {
+                "seq": 1892,
+                "block_hash": "e99fe31adf3a15aab77eb81d7aaa5477a96d2ce7f74ccb3d4cdce4da2eb01cb2",
+                "previous_block_hash": "015265e82b4a28eee364327bf0d3b51fed54c2067318029974c262478a09bf17",
+                "timestamp": 1499403255,
+                "fee": 4801753,
+                "version": 0,
+                "tx_body_hash": "b3c6f0f87c5282ff7ff5e6d637c2581e6a56826a76ec3dd221d02786881e3d14"
+            },
+            "body": {
+                "txns": [
+                    {
+                        "length": 220,
+                        "type": 0,
+                        "txid": "b3c6f0f87c5282ff7ff5e6d637c2581e6a56826a76ec3dd221d02786881e3d14",
+                        "inner_hash": "3dde2cd3b6562e229e99e1a0c3d87be89ab42bb773343d1471a9627cd004fc67",
+                        "fee": 4801753,
+                        "sigs": [
+                            "22557281582f7daaf07fc79cd1c33438c06788c8561cf2fee96d81d46ffe827f44d57e0cadeb80662ea5b720c4062d5b72827dc72ea9db7afefbfe644aefea2d00"
+                        ],
+                        "inputs": [
+                            {
+                                "uxid": "ce1075dd609622b0c28d4106f58943d7f0cae6baffbe9f048bb5bc5f23706b93",
+                                "owner": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "4900.000000",
+                                "hours": 6402335,
+                                "calculated_hours": 6402335
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "uxid": "c8b8eac053a5640bae40144cbc3dda02746071e3c7d00a4b5dfd06d28f928ec4",
+                                "dst": "PRXLNyB64cqaiG4pCoFZZ8Tuv7LWYPpa7m",
+                                "coins": "2500.000000",
+                                "hours": 800291
+                            },
+                            {
+                                "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
+                                "dst": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
+                                "coins": "2400.000000",
+                                "hours": 800291
+                            }
+                        ]
+                    }
+                ]
+            },
+            "size": 220
         }
     ]
 }`,
@@ -456,27 +672,46 @@ var apiEndpoints = []APIEndpoint{
 		Description:    "Returns head outputs for a list of comma-separated addresses.  If no addresses are specified, returns all head outputs.",
 		ExampleRequest: "/api/currentBalance?addrs=SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17,iqi5BpPhEqt35SaeMLKA94XnzBG57hToNi",
 		ExampleResponse: `{
+    "head": {
+      "seq": 65796,
+      "block_hash": "3c869dfad2fdea444fe53f888c20ead67c5b0fccd8da34c3d7da580bc8a6d23c",
+      "previous_block_hash": "8dce9985e05f3ac648a0a17dd60bda2737395d646b1cb42f3039eccde2a6ce7a",
+      "timestamp": 1540423494,
+      "fee": 6892,
+      "version": 0,
+      "tx_body_hash": "bd9ea7068c96ca065f511635cddcc0fb7e13bdf0b5889dd52889292ca9e2a116",
+      "ux_hash": "572660420c0b463d00a1d87f320c9390456bbc93bc8be1e16808a3116f2152bc"
+    },
     "head_outputs": [
         {
             "hash": "fa8161308dee3accc99a35be1fb7921dff4d24a6fc804e98d7aae7aae99d0d0d",
+            "time": 1540423494,
+            "block_seq": 65796,
             "src_tx": "b125abb61f5d6ec0f44422e234007b07ab276923e9533023bdd58d51e0a0f9b7",
             "address": "iqi5BpPhEqt35SaeMLKA94XnzBG57hToNi",
             "coins": "50",
-            "hours": 248
+            "hours": 248,
+            "calculated_hours": 3445
         },
         {
             "hash": "38926afbb00c2f50d293de866bc44713eaa14c18286b24796819fbc190efcbce",
+            "time": 1540423494,
+            "block_seq": 50000,
             "src_tx": "8591837d905894142119923de1447ba855dcf8f34ba451970e83a2bbfea8eeca",
             "address": "iqi5BpPhEqt35SaeMLKA94XnzBG57hToNi",
             "coins": "375",
-            "hours": 9
+            "hours": 9,
+            "calculated_hours": 3445
         },
         {
             "hash": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
+            "time": 1540423494,
+            "block_seq": 20000,
             "src_tx": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3",
             "address": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
             "coins": "51",
-            "hours": 2013433
+            "hours": 2013433,
+            "calculated_hours": 3000000
         }
     ],
     "outgoing_outputs": [],
@@ -487,8 +722,8 @@ var apiEndpoints = []APIEndpoint{
 	{
 		ExplorerPath:   "/api/transaction",
 		SkycoinPath:    "/transaction",
-		QueryArgs:      []string{"txid"},
-		Description:    "Returns transaction metadata.",
+		QueryArgs:      []string{"txid", "verbose"},
+		Description:    "Returns transaction metadata. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "/api/transaction?txid=edd2de176948cbd27cdd8cba7ca4b5afb8dbf8174dd6de95f73ce359affe4f05",
 		ExampleResponse: `{
     "status": {
@@ -527,6 +762,49 @@ var apiEndpoints = []APIEndpoint{
         ]
     }
 }`,
+		ExampleVerboseResponse: `{
+    "status": {
+        "confirmed": true,
+        "unconfirmed": false,
+        "height": 55518,
+        "block_seq": 1747
+    },
+    "time": 1498734315,
+    "txn": {
+        "timestamp": 1498734315,
+        "length": 220,
+        "type": 0,
+        "txid": "edd2de176948cbd27cdd8cba7ca4b5afb8dbf8174dd6de95f73ce359affe4f05",
+        "inner_hash": "1a0b3794925960bc4a61fc1deebbdb48879f2272cdf7247e62d97b3f9df6ba72",
+        "fee": 16308,
+        "sigs": [
+            "642a1443755bc949114b2c1a02cdf70d996a96c4971428fca39515b4143bb04b5a1922faeb45f7201fe10e40f162eeed61802fc55345ae7b9fcd12cc1a36f7b101"
+        ],
+        "inputs": [
+            {
+                "uxid": "8aab2420737e710430e95823e4853b5b9f36ab8afb679a6963564be34bfa87a4",
+                "owner": "2b3974pDXkdHR6VGQvVZc1iZBzrJtNfAHPY",
+                "coins": "1537.000000",
+                "hours": 12150,
+                "calculated_hours": 20863
+            }
+        ],
+        "outputs": [
+            {
+                "uxid": "a72bebed7cf5fab28a4f57e525de5c22a34b3bd2a3bca0074e6658d618969ab0",
+                "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
+                "coins": "1513.000000",
+                "hours": 1518
+            },
+            {
+                "uxid": "51a9abaf13e3b404902698e6841738e7e054b59127733c60a5edd3a67c596f6d",
+                "dst": "2dbpXFWsbTRRACGMcvinhKcWyXybMbv5yx8",
+                "coins": "24.000000",
+                "hours": 3037
+            }
+        ]
+    }
+}`,
 	},
 
 	{
@@ -551,44 +829,86 @@ var apiEndpoints = []APIEndpoint{
 	{
 		ExplorerPath:   "/api/pendingTxs",
 		SkycoinPath:    "/pendingTxs",
-		Description:    "Returns the unconfirmed transactions in the pool.",
+		QueryArgs:      []string{"verbose"},
+		Description:    "Returns the unconfirmed transactions in the pool. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "/api/pendingTxs",
 		ExampleResponse: `[
-            {
-                "transaction": {
-                    "length": 317,
-                    "type": 0,
-                    "txid": "89578005d8730fe1789288ee7dea036160a9bd43234fb673baa6abd91289a48b",
-                    "inner_hash": "cac977eee019832245724aa643ceff451b9d8b24612b2f6a58177c79e8a4c26f",
-                    "sigs": [
-                        "3f084a0c750731dd985d3137200f9b5fc3de06069e62edea0cdd3a91d88e56b95aff5104a3e797ab4d6d417861af0c343efb0fff2e5ba9e7cf88ab714e10f38101",
-                        "e9a8aa8860d189daf0b1dbfd2a4cc309fc0c7250fa81113aa7258f9603d19727793c1b7533131605db64752aeb9c1f4465198bb1d8dd597213d6406a0a81ed3701"
-                    ],
-                    "inputs": [
-                        "bb89d4ed40d0e6e3a82c12e70b01a4bc240d2cd4f252cfac88235abe61bd3ad0",
-                        "170d6fd7be1d722a1969cb3f7d45cdf4d978129c3433915dbaf098d4f075bbfc"
-                    ],
-                    "outputs": [
-                        {
-                            "uxid": "ec9cf2f6052bab24ec57847c72cfb377c06958a9e04a077d07b6dd5bf23ec106",
-                            "dst": "nu7eSpT6hr5P21uzw7bnbxm83B6ywSjHdq",
-                            "coins": "60.000000",
-                            "hours": 2458
-                        },
-                        {
-                            "uxid": "be40210601829ba8653bac1d6ecc4049955d97fb490a48c310fd912280422bd9",
-                            "dst": "2iVtHS5ye99Km5PonsB42No3pQRGEURmxyc",
-                            "coins": "1.000000",
-                            "hours": 2458
-                        }
-                    ]
+    {
+        "transaction": {
+            "length": 317,
+            "type": 0,
+            "txid": "89578005d8730fe1789288ee7dea036160a9bd43234fb673baa6abd91289a48b",
+            "inner_hash": "cac977eee019832245724aa643ceff451b9d8b24612b2f6a58177c79e8a4c26f",
+            "sigs": [
+                "3f084a0c750731dd985d3137200f9b5fc3de06069e62edea0cdd3a91d88e56b95aff5104a3e797ab4d6d417861af0c343efb0fff2e5ba9e7cf88ab714e10f38101",
+                "e9a8aa8860d189daf0b1dbfd2a4cc309fc0c7250fa81113aa7258f9603d19727793c1b7533131605db64752aeb9c1f4465198bb1d8dd597213d6406a0a81ed3701"
+            ],
+            "inputs": [
+                "bb89d4ed40d0e6e3a82c12e70b01a4bc240d2cd4f252cfac88235abe61bd3ad0",
+                "170d6fd7be1d722a1969cb3f7d45cdf4d978129c3433915dbaf098d4f075bbfc"
+            ],
+            "outputs": [
+                {
+                    "uxid": "ec9cf2f6052bab24ec57847c72cfb377c06958a9e04a077d07b6dd5bf23ec106",
+                    "dst": "nu7eSpT6hr5P21uzw7bnbxm83B6ywSjHdq",
+                    "coins": "60.000000",
+                    "hours": 2458
                 },
-                "received": "2017-05-09T10:11:57.14303834+02:00",
-                "checked": "2017-05-09T10:19:58.801315452+02:00",
-                "announced": "0001-01-01T00:00:00Z",
-                "is_valid": true
-            }
-        ]`,
+                {
+                    "uxid": "be40210601829ba8653bac1d6ecc4049955d97fb490a48c310fd912280422bd9",
+                    "dst": "2iVtHS5ye99Km5PonsB42No3pQRGEURmxyc",
+                    "coins": "1.000000",
+                    "hours": 2458
+                }
+            ]
+        },
+        "received": "2017-05-09T10:11:57.14303834+02:00",
+        "checked": "2017-05-09T10:19:58.801315452+02:00",
+        "announced": "0001-01-01T00:00:00Z",
+        "is_valid": true
+    }
+]`,
+		ExampleVerboseResponse: `[
+    {
+        "transaction": {
+            "length": 220,
+            "type": 0,
+            "txid": "d455564dcf1fb666c3846cf579ff33e21c203e2923938c6563fe7fcb8573ba44",
+            "inner_hash": "4e73155db8ed04a3bd2b953218efcc9122ebfbf4c55f08f50d1563e48eacf71d",
+            "fee": 12855964,
+            "sigs": [
+                "17330c256a50e2117ddccf51f1980fc14380f0f9476432196ade3043668759847b97e1b209961458745684d9239541f79d9ca9255582864d30a540017ab84f2b01"
+            ],
+            "inputs": [
+                {
+                    "uxid": "27e7bc48ceca4d47e806a87100a8a98592b7618702e1cd479bf4c190462a6d09",
+                    "owner": "23MjQipM9YsPKkYiuaBmf6m7fD54wrzHxpd",
+                    "coins": "7815.000000",
+                    "hours": 279089,
+                    "calculated_hours": 13101146
+                }
+            ],
+            "outputs": [
+                {
+                    "uxid": "4b4ebf62acbaece798d0dfc92fcea85768a2874dad8a9b8eb5454288deae468c",
+                    "dst": "23MjQipM9YsPKkYiuaBmf6m7fD54wrzHxpd",
+                    "coins": "586.000000",
+                    "hours": 122591
+                },
+                {
+                    "uxid": "781cfb134d5fdad48f3c937dfcfc66b169a305adc8abdfe92a0ec94c564913f2",
+                    "dst": "2ehrG4VKLRuvBNWYz3U7tS75QWvzyWR89Dg",
+                    "coins": "7229.000000",
+                    "hours": 122591
+                }
+            ]
+        },
+        "received": "2018-06-20T14:14:52.415702671+08:00",
+        "checked": "2018-08-26T19:47:45.328131142+08:00",
+        "announced": "2018-08-26T19:51:47.356083569+08:00",
+        "is_valid": true
+    }
+]`,
 	},
 	{
 		ExplorerPath:   "/api/richlist",
@@ -633,81 +953,171 @@ var apiEndpoints = []APIEndpoint{
 	{
 		ExplorerPath:   "/api/transactions",
 		SkycoinPath:    "/transactions",
-		QueryArgs:      []string{"addrs", "confirmed"},
-		Description:    "Returns transactions for a list of comma-separated addresses. If no addresses are specified, returns all transactions.",
+		QueryArgs:      []string{"addrs", "confirmed", "verbose"},
+		Description:    "Returns transactions for a list of comma-separated addresses. If no addresses are specified, returns all transactions. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "/api/transactions?addrs=7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD,6dkVxyKFbFKg9Vdg6HPg1UANLByYRqkrdY&confirmed=1",
 		ExampleResponse: `[
-			{
-					"status": {
-							"confirmed": true,
-							"unconfirmed": false,
-							"height": 10492,
-							"block_seq": 1177,
-							"unknown": false
-					},
-					"time": 1494275011,
-					"txn": {
-							"length": 317,
-							"type": 0,
-							"txid": "b09cd3a8baef6a449848f50a1b97943006ca92747d4e485d0647a3ea74550eca",
-							"inner_hash": "2cb370051c92521a04ba5357e229d8ffa90d9d1741ea223b44dd60a1483ee0e5",
-							"timestamp": 1494275011,
-							"sigs": [
-									"a55155ca15f73f0762f79c15917949a936658cff668647daf82a174eed95703a02622881f9cf6c7495536676f931b2d91d389a9e7b034232b3a1519c8da6fb8800",
-									"cc7d7cbd6f31adabd9bde2c0deaa9277c0f3cf807a4ec97e11872817091dc3705841a6adb74acb625ee20ab6d3525350b8663566003276073d94c3bfe22fe48e01"
-							],
-							"inputs": [
-									"4f4b0078a9cd19b3395e54b3f42af6adc997f77f04e0ca54016c67c4f2384e3c",
-									"36f4871646b6564b2f1ab72bd768a67579a1e0242bc68bcbcf1779bc75b3dddd"
-							],
-							"outputs": [
-									{
-											"uxid": "5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191",
-											"dst": "2K6NuLBBapWndAssUtkxKfCtyjDQDHrEhhT",
-											"coins": "8.000000",
-											"hours": 7454
-									},
-									{
-											"uxid": "a1268e9bd2033b49b44afa765d20876467254f51e5515626780467267a65c563",
-											"dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
-											"coins": "1.000000",
-											"hours": 7454
-									}
-							]
-					}
-			},
-			{
-					"status": {
-							"confirmed": true,
-							"unconfirmed": false,
-							"height": 10491,
-							"block_seq": 1178,
-							"unknown": false
-					},
-					"time": 1494275231,
-					"txn": {
-							"length": 183,
-							"type": 0,
-							"txid": "a6446654829a4a844add9f181949d12f8291fdd2c0fcb22200361e90e814e2d3",
-							"inner_hash": "075f255d42ddd2fb228fe488b8b468526810db7a144aeed1fd091e3fd404626e",
-							"timestamp": 1494275231,
-							"sigs": [
-									"9b6fae9a70a42464dda089c943fafbf7bae8b8402e6bf4e4077553206eebc2ed4f7630bb1bd92505131cca5bf8bd82a44477ef53058e1995411bdbf1f5dfad1f00"
-							],
-							"inputs": [
-									"5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191"
-							],
-							"outputs": [
-									{
-											"uxid": "70fa9dfb887f9ef55beb4e960f60e4703c56f98201acecf2cad729f5d7e84690",
-											"dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
-											"coins": "8.000000",
-											"hours": 931
-									}
-							]
-					}
-			}
-	]`,
+    {
+        "status": {
+            "confirmed": true,
+            "unconfirmed": false,
+            "height": 10492,
+            "block_seq": 1177,
+            "unknown": false
+        },
+        "time": 1494275011,
+        "txn": {
+            "length": 317,
+            "type": 0,
+            "txid": "b09cd3a8baef6a449848f50a1b97943006ca92747d4e485d0647a3ea74550eca",
+            "inner_hash": "2cb370051c92521a04ba5357e229d8ffa90d9d1741ea223b44dd60a1483ee0e5",
+            "timestamp": 1494275011,
+            "sigs": [
+                "a55155ca15f73f0762f79c15917949a936658cff668647daf82a174eed95703a02622881f9cf6c7495536676f931b2d91d389a9e7b034232b3a1519c8da6fb8800",
+                "cc7d7cbd6f31adabd9bde2c0deaa9277c0f3cf807a4ec97e11872817091dc3705841a6adb74acb625ee20ab6d3525350b8663566003276073d94c3bfe22fe48e01"
+            ],
+            "inputs": [
+                "4f4b0078a9cd19b3395e54b3f42af6adc997f77f04e0ca54016c67c4f2384e3c",
+                "36f4871646b6564b2f1ab72bd768a67579a1e0242bc68bcbcf1779bc75b3dddd"
+            ],
+            "outputs": [
+                {
+                    "uxid": "5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191",
+                    "dst": "2K6NuLBBapWndAssUtkxKfCtyjDQDHrEhhT",
+                    "coins": "8.000000",
+                    "hours": 7454
+                },
+                {
+                    "uxid": "a1268e9bd2033b49b44afa765d20876467254f51e5515626780467267a65c563",
+                    "dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
+                    "coins": "1.000000",
+                    "hours": 7454
+                }
+            ]
+        }
+    },
+    {
+        "status": {
+            "confirmed": true,
+            "unconfirmed": false,
+            "height": 10491,
+            "block_seq": 1178,
+            "unknown": false
+        },
+        "time": 1494275231,
+        "txn": {
+            "length": 183,
+            "type": 0,
+            "txid": "a6446654829a4a844add9f181949d12f8291fdd2c0fcb22200361e90e814e2d3",
+            "inner_hash": "075f255d42ddd2fb228fe488b8b468526810db7a144aeed1fd091e3fd404626e",
+            "timestamp": 1494275231,
+            "sigs": [
+                "9b6fae9a70a42464dda089c943fafbf7bae8b8402e6bf4e4077553206eebc2ed4f7630bb1bd92505131cca5bf8bd82a44477ef53058e1995411bdbf1f5dfad1f00"
+            ],
+            "inputs": [
+                "5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191"
+            ],
+            "outputs": [
+                {
+                    "uxid": "70fa9dfb887f9ef55beb4e960f60e4703c56f98201acecf2cad729f5d7e84690",
+                    "dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
+                    "coins": "8.000000",
+                    "hours": 931
+                }
+            ]
+        }
+    }
+]`,
+		ExampleVerboseResponse: `[
+    {
+        "status": {
+            "confirmed": true,
+            "unconfirmed": false,
+            "height": 56088,
+            "block_seq": 1177
+        },
+        "time": 1494275011,
+        "txn": {
+            "timestamp": 1494275011,
+            "length": 317,
+            "type": 0,
+            "txid": "b09cd3a8baef6a449848f50a1b97943006ca92747d4e485d0647a3ea74550eca",
+            "inner_hash": "2cb370051c92521a04ba5357e229d8ffa90d9d1741ea223b44dd60a1483ee0e5",
+            "fee": 44726,
+            "sigs": [
+                "a55155ca15f73f0762f79c15917949a936658cff668647daf82a174eed95703a02622881f9cf6c7495536676f931b2d91d389a9e7b034232b3a1519c8da6fb8800",
+                "cc7d7cbd6f31adabd9bde2c0deaa9277c0f3cf807a4ec97e11872817091dc3705841a6adb74acb625ee20ab6d3525350b8663566003276073d94c3bfe22fe48e01"
+            ],
+            "inputs": [
+                {
+                    "uxid": "4f4b0078a9cd19b3395e54b3f42af6adc997f77f04e0ca54016c67c4f2384e3c",
+                    "owner": "2K6NuLBBapWndAssUtkxKfCtyjDQDHrEhhT",
+                    "coins": "1.000000",
+                    "hours": 52836,
+                    "calculated_hours": 52857
+                },
+                {
+                    "uxid": "36f4871646b6564b2f1ab72bd768a67579a1e0242bc68bcbcf1779bc75b3dddd",
+                    "owner": "2K6NuLBBapWndAssUtkxKfCtyjDQDHrEhhT",
+                    "coins": "8.000000",
+                    "hours": 6604,
+                    "calculated_hours": 6777
+                }
+            ],
+            "outputs": [
+                {
+                    "uxid": "5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191",
+                    "dst": "2K6NuLBBapWndAssUtkxKfCtyjDQDHrEhhT",
+                    "coins": "8.000000",
+                    "hours": 7454
+                },
+                {
+                    "uxid": "a1268e9bd2033b49b44afa765d20876467254f51e5515626780467267a65c563",
+                    "dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
+                    "coins": "1.000000",
+                    "hours": 7454
+                }
+            ]
+        }
+    },
+    {
+        "status": {
+            "confirmed": true,
+            "unconfirmed": false,
+            "height": 56087,
+            "block_seq": 1178
+        },
+        "time": 1494275231,
+        "txn": {
+            "timestamp": 1494275231,
+            "length": 183,
+            "type": 0,
+            "txid": "a6446654829a4a844add9f181949d12f8291fdd2c0fcb22200361e90e814e2d3",
+            "inner_hash": "075f255d42ddd2fb228fe488b8b468526810db7a144aeed1fd091e3fd404626e",
+            "fee": 6523,
+            "sigs": [
+                "9b6fae9a70a42464dda089c943fafbf7bae8b8402e6bf4e4077553206eebc2ed4f7630bb1bd92505131cca5bf8bd82a44477ef53058e1995411bdbf1f5dfad1f00"
+            ],
+            "inputs": [
+                {
+                    "uxid": "5287f390628909dd8c25fad0feb37859c0c1ddcf90da0c040c837c89fefd9191",
+                    "owner": "2K6NuLBBapWndAssUtkxKfCtyjDQDHrEhhT",
+                    "coins": "8.000000",
+                    "hours": 7454,
+                    "calculated_hours": 7454
+                }
+            ],
+            "outputs": [
+                {
+                    "uxid": "70fa9dfb887f9ef55beb4e960f60e4703c56f98201acecf2cad729f5d7e84690",
+                    "dst": "7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD",
+                    "coins": "8.000000",
+                    "hours": 931
+                }
+            ]
+        }
+    }
+]`,
 	},
 	{
 		ExplorerPath:   "/api/balance",
@@ -716,15 +1126,51 @@ var apiEndpoints = []APIEndpoint{
 		Description:    "Returns the combined balance of a list of comma-separated addresses.",
 		ExampleRequest: "/api/balance?addrs=7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD,nu7eSpT6hr5P21uzw7bnbxm83B6ywSjHdq",
 		ExampleResponse: `{
-			"confirmed": {
-					"coins": 70000000,
-					"hours": 28052
-			},
-			"predicted": {
-					"coins": 9000000,
-					"hours": 8385
-			}
-		}`,
+      "confirmed": {
+          "coins": 70000000,
+          "hours": 28052
+      },
+      "predicted": {
+          "coins": 9000000,
+          "hours": 8385
+      }
+}`,
+	},
+	{
+		ExplorerPath:   "/api/health",
+		SkycoinPath:    "/health",
+		Description:    "Returns information about the current state of the node.",
+		ExampleRequest: "/api/health",
+		ExampleResponse: `{
+      "blockchain": {
+          "head": {
+              "seq": 58894,
+              "block_hash": "3961bea8c4ab45d658ae42effd4caf36b81709dc52a5708fdd4c8eb1b199a1f6",
+              "previous_block_hash": "8eca94e7597b87c8587286b66a6b409f6b4bf288a381a56d7fde3594e319c38a",
+              "timestamp": 1537581604,
+              "fee": 485194,
+              "version": 0,
+              "tx_body_hash": "c03c0dd28841d5aa87ce4e692ec8adde923799146ec5504e17ac0c95036362dd",
+              "ux_hash": "f7d30ecb49f132283862ad58f691e8747894c9fc241cb3a864fc15bd3e2c83d3"
+          },
+          "unspents": 38171,
+          "unconfirmed": 1,
+          "time_since_last_block": "4m46s"
+      },
+      "version": {
+          "version": "0.24.1",
+          "commit": "8798b5ee43c7ce43b9b75d57a1a6cd2c1295cd1e",
+          "branch": "develop"
+      },
+      "open_connections": 8,
+      "uptime": "6m30.629057248s",
+      "csrf_enabled": true,
+      "csp_enabled": true,
+      "wallet_api_enabled": true,
+      "gui_enabled": true,
+      "unversioned_api_enabled": false,
+      "json_rpc_enabled": false
+}`,
 	},
 }
 
@@ -738,7 +1184,8 @@ var docEndpoint APIEndpoint = APIEndpoint{
 // formatting when rendered in the browser as JSON
 type ParsedJSONAPIEndpoint struct {
 	APIEndpoint
-	ParsedExampleResponse interface{} `json:"example_response,omitempty"`
+	ParsedExampleResponse        interface{} `json:"example_response,omitempty"`
+	ParsedExampleVerboseResponse interface{} `json:"example_vervose_response,omitempty"`
 }
 
 var parsedJSONAPIEndpoints []ParsedJSONAPIEndpoint
@@ -759,6 +1206,16 @@ func init() {
 			log.Println("Example response:")
 			log.Println(apiEndpoints[i].ExampleResponse)
 			log.Panic(err)
+		}
+		if apiEndpoints[i].ExampleVerboseResponse != "" {
+			resp = []byte(apiEndpoints[i].ExampleVerboseResponse)
+			if err := json.Unmarshal(resp, &parsedJSONAPIEndpoints[i].ParsedExampleVerboseResponse); err != nil {
+				log.Println("Error parsing example verbose response JSON:", err)
+				log.Println("path:", apiEndpoints[i].ExplorerPath)
+				log.Println("Example verbose response:")
+				log.Println(apiEndpoints[i].ExampleVerboseResponse)
+				log.Panic(err)
+			}
 		}
 	}
 }
@@ -831,6 +1288,11 @@ code.inline { border-radius: 3px; padding: 0.2em; background-color: #F7FAFB; fon
 {{ if .ExampleResponse }}
 <p>Example response:</p>
 <p class="example"><pre class="example"><code>{{ .ExampleResponse }}</code></pre></p>
+{{ end }}
+
+{{ if .ExampleVerboseResponse }}
+<p>Example verbose response:</p>
+<p class="example"><pre class="example"><code>{{ .ExampleVerboseResponse }}</code></pre></p>
 {{ end }}
 
 {{ if .SkycoinPath }}

@@ -1,5 +1,5 @@
-import { NavigarionPage } from "./navigation.po";
-import { GeneralPageFunctions } from "../general.po";
+import { NavigarionPage } from './navigation.po';
+import { GeneralPageFunctions } from '../general.po';
 
 describe('skycoin-explorer Navigation', () => {
   const page = new NavigarionPage();

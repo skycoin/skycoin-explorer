@@ -1,10 +1,19 @@
 import { browser, by, element } from 'protractor';
 
 export class GeneralPageFunctions {
+
+  static processAndCheckDate(text: string): boolean {
+    let numberText = text;
+    if (isNaN(Number(numberText.substr(0, 1)))) {
+      numberText = numberText.substr(1, numberText.length - 1);
+    }
+    return !isNaN((new Date(numberText)).getTime());
+  }
+
   navigateTo(route: string) {
     return browser.get(route);
   }
-  
+
   goBack() {
     browser.navigate().back();
   }
@@ -36,7 +45,7 @@ export class GeneralPageFunctions {
       .get(transsactionIndex)
       .element(by.css('.-date'))
       .getText()
-      .then(text => !isNaN((new Date(text)).getTime()));
+      .then(text => GeneralPageFunctions.processAndCheckDate(text));
   }
 
   getTransactionInputs(transsactionIndex: number) {
@@ -44,8 +53,8 @@ export class GeneralPageFunctions {
       .all(by.css('.transaction'))
       .get(transsactionIndex)
       .all(by.css('.-data > .row > div:nth-of-type(1) a'))
-      .map((element, i) => element.getText())
-      .then(texts => texts.join(","));
+      .map((elem, i) => elem.getText())
+      .then(texts => texts.join(','));
   }
 
   getTransactionOutputs(transsactionIndex: number) {
@@ -53,15 +62,15 @@ export class GeneralPageFunctions {
       .all(by.css('.transaction'))
       .get(transsactionIndex)
       .all(by.css('.-data > .row > div:nth-of-type(2) a'))
-      .map((element, i) => element.getText())
-      .then(texts => texts.join(","));
+      .map((elem, i) => elem.getText())
+      .then(texts => texts.join(','));
   }
 
   getTransactionInputsAndOutputsTotalCoins() {
     return element
       .all(by.css('.-balance > div:nth-of-type(2)'))
-      .map((element, i) => element.getText())
-      .then(texts => texts.map(text => Number((text as string).replace(',', ''))).reduce((total, val) => total+val, 0))
+      .map((elem, i) => elem.getText())
+      .then(texts => texts.map(text => Number((text as string).replace(new RegExp(',', 'g'), ''))).reduce((total, val) => total + val, 0))
       .then(result => Math.round(result * 1000000) / 1000000);
   }
 

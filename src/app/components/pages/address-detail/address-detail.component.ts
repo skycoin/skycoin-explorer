@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Output, Transaction } from '../../../app.datatypes';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
+import { BigNumber } from 'bignumber.js';
 
 @Component({
   selector: 'app-address-detail',
@@ -14,13 +14,15 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AddressDetailComponent implements OnInit {
   address: string;
-  totalReceived: number;
-  balance: number;
+  totalReceived: BigNumber;
+  totalSent: BigNumber;
+  balance: BigNumber;
+  hoursBalance: BigNumber;
   transactions: any[];
   pageTransactions: any[];
   pageIndex = 0;
   pageSize = 25;
-  loadingMsg = "";
+  loadingMsg = '';
   longErrorMsg: string;
 
   get pageCount() {
@@ -31,7 +33,6 @@ export class AddressDetailComponent implements OnInit {
     private api: ApiService,
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private router: Router,
     private translate: TranslateService
   ) {
     translate.get('general.loadingMsg').subscribe((res: string) => {
@@ -41,28 +42,38 @@ export class AddressDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.switchMap((params: Params) => {
-      //Clear the content if the address, and not just the page, changes
-      if (this.address != params['address']) {
+      // Clear the content if the address, and not just the page, changes
+      if (this.address !== params['address']) {
         this.transactions = undefined;
         this.balance = undefined;
+        this.hoursBalance = undefined;
       }
 
       this.address = params['address'];
-      if (params['page'])
+      if (params['page']) {
         this.pageIndex = parseInt(params['page'], 10) - 1;
+      }
 
-      //Clear the list content.
+      // Clear the list content.
       this.pageTransactions = undefined;
 
-      if (this.transactions)
+      if (this.transactions) {
         return Observable.of(this.transactions);
-      else
+      } else {
         return this.explorer.getTransactions(this.address);
+      }
 
     }).subscribe(
       transactions => {
         this.transactions = transactions;
-        this.totalReceived = transactions.reduce((a, b) => b.balance > 0 ? (a + b.balance) : a, 0);
+
+        this.totalReceived = new BigNumber(0);
+        transactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) ? tx.balance : 0));
+
+        this.totalSent = new BigNumber(0);
+        transactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) ? tx.balance : 0));
+        this.totalSent = this.totalSent.negated();
+
         this.updateTransactions();
       },
       error => {
@@ -79,17 +90,21 @@ export class AddressDetailComponent implements OnInit {
         }
       }
     );
-    
+
     this.route.params.switchMap((params: Params) => this.api.getBalance(params['address']))
-      .subscribe(response => this.balance = response.confirmed.coins / 1000000);
+      .subscribe(response => {
+        this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
+        this.hoursBalance = new BigNumber(response.confirmed.hours);
+      });
   }
 
   updateTransactions() {
-    if (this.pageIndex > this.transactions.length / this.pageSize)
+    if (this.pageIndex > this.transactions.length / this.pageSize) {
       this.pageIndex = Math.floor(this.transactions.length / this.pageSize);
+    }
 
     this.pageTransactions = [];
-    for (let i=this.pageIndex * this.pageSize; i<(this.pageIndex+1)*this.pageSize && i<this.transactions.length; i++) {
+    for (let i = this.pageIndex * this.pageSize; i < (this.pageIndex + 1) * this.pageSize && i < this.transactions.length; i++) {
       this.pageTransactions.push(this.transactions[i]);
     }
   }

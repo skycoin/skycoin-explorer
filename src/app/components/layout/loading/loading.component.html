@@ -1,16 +1,8 @@
-<div id="loadingModal" class="modal bottom-sheet" [ngClass]="{modalShow:loading}">
-  <div class="modal-content">
-    <h4>Loading please wait...</h4>
-    <div class="preloader-wrapper big active">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-        <div class="circle"></div>
-      </div><div class="circle-clipper right">
-        <div class="circle"></div>
-      </div>
-      </div>
-    </div>
+<div class="row -msg-container">
+  <div class="col-sm-12">
+    <span *ngIf="!longErrorMsg; else error_msg">
+      {{ loadingMsg | translate }} <i class="fa fa-spinner fa-spin fa-fw"></i>
+    </span>
+    <ng-template #error_msg>{{ longErrorMsg }}</ng-template>
   </div>
 </div>

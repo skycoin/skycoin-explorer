@@ -10,7 +10,7 @@ import { LoadingComponent } from './components/layout/loading/loading.component'
 import { BlocksComponent } from './components/pages/blocks/blocks.component';
 import { UnconfirmedTransactionsComponent } from './components/pages/unconfirmed-transactions/unconfirmed-transactions.component';
 import { ApiService } from './services/api/api.service';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
 import { TransactionDetailComponent } from './components/pages/transaction-detail/transaction-detail.component';
 import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
@@ -27,12 +27,11 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { AppTranslateLoader } from 'app/app.translate-loader';
 import { GenericHeaderComponent } from 'app/components/layout/generic-header/generic-header.component';
 import { GenericFooterComponent } from 'app/components/layout/generic-footer/generic-footer.component';
-import { ExplorerDatePipe } from 'app/pipes/explorer-date.pipe';
 import { DatePipe } from '@angular/common';
-import { CoinsFormatterComponent } from 'app/components/layout/coins-formatter/coins-formatter.component';
 import { DateFormatterComponent } from 'app/components/layout/date-formatter/date-formatter.component';
 import { SearchService } from './services/search/search.service';
 import { SearchComponent } from './components/pages/search/search.component';
+import { TransactionInfoComponent } from './components/layout/transaction-info/transaction-info.component';
 
 
 const ROUTES = [
@@ -108,16 +107,15 @@ const ROUTES = [
     RichlistComponent,
     UnspentOutputsComponent,
     CopyButtonComponent,
-    ExplorerDatePipe,
-    CoinsFormatterComponent,
     DateFormatterComponent,
     SearchComponent,
+    TransactionInfoComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(ROUTES),
     TranslateModule.forRoot({
       loader: {

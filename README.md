@@ -141,6 +141,22 @@ Run linters:
 make lint
 ```
 
+### e2e Tests
+
+If you are running a Skycoin node normally, you can run the e2e tests with:
+
+```sh
+npm run e2e
+```
+
+If you are running a Skycoin node using the test database (`blockchain-180.db`), you can run the e2e tests with:
+
+```sh
+npm run e2e-blockchain-180
+```
+
+The second method is the one used in Travis.
+
 ### Customization
 
 [CUSTOMIZATION.md](CUSTOMIZATION.md)

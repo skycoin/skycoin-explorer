@@ -9,7 +9,7 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e skycoin-explorer-e2e",
     "e2e-blockchain-180": "ng e2e skycoin-explorer-e2e-blockchain-180",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
@@ -32,7 +32,8 @@
     "moment": "^2.21.0",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14",
-    "snyk": "^1.85.0"
+    "snyk": "^1.85.0",
+    "bignumber.js": "^7.2.1"
   },
   "devDependencies": {
     "@angular/cli": "^6.0.0",

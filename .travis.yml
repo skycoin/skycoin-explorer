@@ -1,7 +1,6 @@
 language: go
 
 go:
-  - "1.8"
   - "1.9"
   - "1.10"
 
@@ -28,6 +27,7 @@ install:
 
 script:
   - make check
+  - make lint-ts
   - make build-ng
   - make check-ui
 

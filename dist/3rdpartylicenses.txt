@@ -252,6 +252,10 @@ scrollingelement@1.5.2
 MIT
 MIT
 
+bignumber.js@7.2.1
+MIT
+MIT
+
 tslib@1.9.3
 Apache-2.0
 Apache License

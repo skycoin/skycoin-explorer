@@ -124,6 +124,23 @@ func buildSkycoinURL(path string, query url.Values) string {
 	return u.String()
 }
 
+type CoinSupply struct {
+	// Coins distributed beyond the project:
+	CurrentSupply string `json:"current_supply"`
+	// TotalSupply is CurrentSupply plus coins held by the distribution addresses that are spendable
+	TotalSupply string `json:"total_supply"`
+	// MaxSupply is the maximum number of coins to be distributed ever
+	MaxSupply string `json:"max_supply"`
+	// CurrentCoinHourSupply is coins hours in non distribution addresses
+	CurrentCoinHourSupply string `json:"current_coinhour_supply"`
+	// TotalCoinHourSupply is coin hours in all addresses including unlocked distribution addresses
+	TotalCoinHourSupply string `json:"total_coinhour_supply"`
+	// Distribution addresses which count towards total supply
+	UnlockedAddresses []string `json:"unlocked_distribution_addresses"`
+	// Distribution addresses which are locked and do not count towards total supply
+	LockedAddresses []string `json:"locked_distribution_addresses"`
+}
+
 type APIEndpoint struct {
 	ExplorerPath   string   `json:"explorer_path"`
 	SkycoinPath    string   `json:"skycoin_path"`
@@ -163,6 +180,21 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 
 	w.WriteHeader(resp.StatusCode)
+
+	if s.ExplorerPath == "/api/coinmarketcap" {
+		w.Header().Set("Content-Type", "text/plain")
+		var cs CoinSupply
+		if err := json.NewDecoder(resp.Body).Decode(&cs); err != nil {
+			msg := "Decode CoinSupply result failed"
+			log.Println("ERROR:", msg, skycoinURL, err)
+			http.Error(w, msg, http.StatusInternalServerError)
+			return
+		}
+
+		fmt.Fprintf(w, "%s", cs.CurrentSupply)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 
 	if n, err := io.Copy(w, resp.Body); err != nil {
@@ -204,6 +236,13 @@ var apiEndpoints = []APIEndpoint{
         "TtAaxB3qGz5zEAhhiGkBY9VPV7cekhvRYS"
     ]
 }`,
+	},
+	{
+		ExplorerPath:    "/api/coinmarketcap",
+		SkycoinPath:     "/coinSupply",
+		Description:     "Returns circulating supply coin number.",
+		ExampleRequest:  "/api/coinmarketcap",
+		ExampleResponse: "7187500.000000",
 	},
 	{
 		ExplorerPath:   "/api/address",

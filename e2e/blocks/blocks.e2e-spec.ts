@@ -23,12 +23,10 @@ describe('skycoin-explorer Blocks Page', () => {
   it('should display the Explorer API link', () => {
     expect(page.getExplorerApiText()).toEqual('Explorer API');
   });
-  
+
   it('should display the Unconfirmed Transactions link', () => {
     expect(page.getUnconfirmedTransactionsText()).toEqual('Unconfirmed Transactions');
   });
-
-  
 
   it('should display the Rich List link', () => {
     expect(page.getRichListText()).toEqual('Rich List');

@@ -15,7 +15,7 @@ export class BlocksPage {
 
   getUnconfirmedTransactionsText() {
     return element.all(by.css('.-link')).get(1).getText();
-  }  
+  }
 
   getRichListText() {
     return element.all(by.css('.-link')).get(2).getText();

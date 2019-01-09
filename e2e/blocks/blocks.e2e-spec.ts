@@ -20,6 +20,10 @@ describe('skycoin-explorer Blocks Page', () => {
     expect(page.getPageTitle(2)).toBe('Blocks');
   });
 
+  it('should display the Explorer API link', () => {
+    expect(page.getExplorerApiText()).toEqual('Explorer API');
+  });
+
   it('should display the Unconfirmed Transactions link', () => {
     expect(page.getUnconfirmedTransactionsText()).toEqual('Unconfirmed Transactions');
   });

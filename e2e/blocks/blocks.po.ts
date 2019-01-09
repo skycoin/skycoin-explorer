@@ -9,12 +9,16 @@ export class BlocksPage {
     .getAttribute('textContent');
   }
 
-  getUnconfirmedTransactionsText() {
+  getExplorerApiText() {
     return element.all(by.css('.-link')).get(0).getText();
   }
 
-  getRichListText() {
+  getUnconfirmedTransactionsText() {
     return element.all(by.css('.-link')).get(1).getText();
+  }
+
+  getRichListText() {
+    return element.all(by.css('.-link')).get(2).getText();
   }
 
   getStatsLabelsCount() {

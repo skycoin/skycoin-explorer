@@ -57,7 +57,7 @@ $img-height-small: 32px;
     transform: translateX(0);
     transition: transform 400ms ease-in-out;
     text-align: left;
-    overflow-y: auto;
+    //TODO: Try if cause some problems in mobile -> overflow-y: auto;
 
   &.visible {
     transform: translateX(-270px);
@@ -101,7 +101,7 @@ $img-height-small: 32px;
   }
 }
 
-.nav-link {
+.nav-link, .dropdown{
   display: flex;
   align-items: center;
   margin: 0;
@@ -117,12 +117,6 @@ $img-height-small: 32px;
 
   &.active {
     color: #101F34;
-  }
-
-  img {
-    height: auto;
-    margin-right: 0.8rem;
-    width: 23px;
   }
 
   @media (min-width: 64rem) {
@@ -151,6 +145,15 @@ $img-height-small: 32px;
     &.active {
       border-bottom-color: #0072FF;
     }
+  }
+}
+
+.nav-link {
+
+  img {
+    height: auto;
+    margin-right: 0.8rem;
+    width: 23px;
   }
 }
 
@@ -227,5 +230,49 @@ $img-height-small: 32px;
 
   @media (min-width: 83.2rem) {
     display: none;
+  }
+}
+
+.dropdown {
+
+  position: relative;
+  //display: inline-block;
+
+  &:hover{
+    .dropdown-menu{
+      display:flex;
+      flex-direction: column;
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100%);
+    left: 0;
+    z-index: 1000;
+    
+    display:none;
+
+    float: left;
+    text-align: left;
+    list-style: none;
+    background-color: white;
+    background-clip: padding-box;
+
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0px 2px 3px rgba(0,0,0,0.3);
+    border-top: 1px solid white;
+    margin: -2px 0 0 0;
+    min-width: 100%;
+
+    .dropdown-item{
+      margin: 5px;
+      padding:5px;
+      text-decoration: none;
+
+      &:hover{
+        color:black;
+      }
+    }
   }
 }

@@ -13,7 +13,19 @@
               <button class="menu-toggle-btn menu-hide-btn" (click)="toggleMenu(false)"></button>
               <div class="nav-group">
                 <a href="https://www.skycoin.net/downloads/" class="nav-link">Downloads</a>
-                <a href="https://www.skycoin.net/ecosystem" class="nav-link">Ecosystem</a>
+                <div class="nav-item dropdown">
+                  <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Ecosystem
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="https://www.skycoin.net/ecosystem">Overview</a>
+                    <a class="dropdown-item" href="#">Skywire</a>
+                    <a class="dropdown-item" href="#">Obelisk</a>
+                    <a class="dropdown-item" href="#">Fiver</a>
+                    <a class="dropdown-item" href="#">CX</a>
+                    <a class="dropdown-item" href="#">CXO</a>
+                  </div>
+                </div>
                 <a href="https://www.skycoin.net/skyminer" class="nav-link">Skyminer</a>
                 <a href="https://www.skycoin.net/team" class="nav-link">Team</a>
                 <a href="https://www.skycoin.net/blog" class="nav-link">Blog</a>

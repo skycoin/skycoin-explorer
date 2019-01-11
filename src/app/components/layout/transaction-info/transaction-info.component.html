@@ -28,25 +28,19 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
-        <div class="-body" *ngFor="let input of inputsToShow">
+        <div class="-body" *ngFor="let input of inputs">
           <a class="-link" [routerLink]="'/app/address/' + input.owner">{{ input.owner }}</a><app-copy-button [text]="input.owner"></app-copy-button>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ input.coins.decimalPlaces(6).toString() | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ input.hours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.calculatedHours' | translate }}:&nbsp;</div><div> {{ input.calculatedHours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
         </div>
-        <div class="-body" *ngIf="showMoreInputs !== showMoreStatus.DontShowMore">
-          <a class="-link" (click)="startShowingAllInputs()">{{ showMoreInputs === showMoreStatus.ShowMore ? ('txBoxes.loadAll' | translate:{ total: totalInputs }) : ('txBoxes.loading' | translate) }}</a>
-        </div>
       </div>
       <div class="col-sm-6">
         <div class="-header -xs-only">{{ 'txBoxes.outputs' | translate }}</div>
-        <div class="-body" *ngFor="let output of outputsToShow">
+        <div class="-body" *ngFor="let output of outputs">
           <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><app-copy-button [text]="output.address"></app-copy-button>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins.decimalPlaces(6).toString() | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
-        </div>
-        <div class="-body" *ngIf="showMoreOutputs !== showMoreStatus.DontShowMore">
-          <a class="-link" (click)="startShowingAllOutputs()">{{ showMoreOutputs === showMoreStatus.ShowMore ? ('txBoxes.loadAll' | translate:{ total: totalOutputs }) : ('txBoxes.loading' | translate) }}</a>
         </div>
       </div>
     </div>

@@ -246,10 +246,10 @@ var apiEndpoints = []APIEndpoint{
 	},
 	{
 		ExplorerPath:   "/api/address",
-		SkycoinPath:    "/explorer/address",
-		QueryArgs:      []string{"address"},
-		Description:    "Returns address info.",
-		ExampleRequest: "/api/address?address=SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
+		SkycoinPath:    "/transactions",
+		QueryArgs:      []string{"addrs", "confirmed", "verbose"},
+		Description:    "Returns transactions related to addresses",
+		ExampleRequest: "/api/address?addrs=SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17&verbose=1",
 		ExampleResponse: `[
     {
         "status": {

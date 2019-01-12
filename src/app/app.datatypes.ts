@@ -229,9 +229,9 @@ export class GetTransactionResponse {
   txn: GenericTransactionResponse;
 }
 
-export function parseGetTransaction(raw: GetTransactionResponse): Transaction {
+export function parseGetTransaction(raw: GetTransactionResponse, address: string = null): Transaction {
   raw.txn.status = raw.status;
-  return parseGenericTransaction(raw.txn);
+  return parseGenericTransaction(raw.txn, address);
 }
 
 export class GetUxoutResponse {

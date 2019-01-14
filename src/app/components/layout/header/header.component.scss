@@ -101,23 +101,27 @@ $img-height-small: 32px;
   }
 }
 
-.nav-link, .dropdown{
+.nav-link, .nav-item{
   display: flex;
   align-items: center;
-  margin: 0;
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
   font-size: 1.4rem;
   line-height: 1.6rem;
   font-family: "SkycoinSans", sans-serif;
   color: #0072FF;
-  text-decoration: none;
+  
 
   &.active {
     color: #101F34;
   }
+
+  a {
+    text-decoration: none;
+    &:hover{
+      color:black;
+    }    
+  }
+
+  
 
   @media (min-width: 64rem) {
     display: flex;
@@ -236,7 +240,6 @@ $img-height-small: 32px;
 .dropdown {
 
   position: relative;
-  //display: inline-block;
 
   &:hover{
     .dropdown-menu{
@@ -248,7 +251,8 @@ $img-height-small: 32px;
   .dropdown-menu {
     position: absolute;
     top: calc(100%);
-    left: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
     z-index: 1000;
     
     display:none;
@@ -269,10 +273,20 @@ $img-height-small: 32px;
       margin: 5px;
       padding:5px;
       text-decoration: none;
+      white-space:nowrap;
+
+      &.active{
+        border-bottom: 2px solid #0072FF;
+      }
 
       &:hover{
         color:black;
       }
     }
   }
+}
+
+.font-awesome {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
 }

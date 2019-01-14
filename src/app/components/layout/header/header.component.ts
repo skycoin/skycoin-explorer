@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import disableScroll from 'disable-scroll';
+import menu from './menu';
 
 @Component({
   selector: 'app-header',
@@ -25,5 +26,9 @@ export class HeaderComponent implements OnInit {
       } else {
           disableScroll.off();
       }
+  }
+
+  getMenu(){
+    return menu;
   }
 }

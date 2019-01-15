@@ -12,7 +12,6 @@ Environment options:
 
 CLI Options:
 * -api-only - Don't serve static content from ./dist, only proxy the skycoin node
-* -use-unversioned-api - Use the deprecated unversioned API endpoints without /api/v1 prefix, when communicating with the node
 
 Run the explorer and navigate to http://127.0.0.1:8001/api.html for API documentation.
 
@@ -51,11 +50,10 @@ const (
 )
 
 var (
-	explorerHost      = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
-	skycoinAddr       *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
-	apiOnly           bool     // set to true with -api-only cli flag
-	useUnversionedAPI bool     // calls unversioned API endpoints on the node (without the /api/v1 prefix)
-	verify            bool     // set to true with -verify cli flag. Check init() conditions and quits.
+	explorerHost = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
+	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
+	apiOnly      bool     // set to true with -api-only cli flag
+	verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
 )
 
 func init() {
@@ -87,7 +85,6 @@ func init() {
 	}
 
 	flag.BoolVar(&apiOnly, "api-only", false, "Only run the API, don't serve static content")
-	flag.BoolVar(&useUnversionedAPI, "use-unversioned-api", false, "Use the deprecated unversioned API endpoints without /api/v1 prefix, when communicating with the node")
 	flag.BoolVar(&verify, "verify", false, "Run init() checks and quit")
 	flag.Parse()
 
@@ -98,20 +95,12 @@ func init() {
 	if apiOnly {
 		log.Println("Running in api-only mode")
 	}
-
-	if useUnversionedAPI {
-		log.Println("Using the deprecated unversioned API endpoints")
-	}
 }
 
 func buildSkycoinURL(path string, query url.Values) string {
 	rawQuery := ""
 	if query != nil {
 		rawQuery = query.Encode()
-	}
-
-	if !useUnversionedAPI {
-		path = "/api/v1" + path
 	}
 
 	u := &url.URL{
@@ -216,7 +205,7 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 var apiEndpoints = []APIEndpoint{
 	{
 		ExplorerPath:   "/api/coinSupply",
-		SkycoinPath:    "/coinSupply",
+		SkycoinPath:    "/api/v1/coinSupply",
 		Description:    "Returns metadata about the coin distribution.",
 		ExampleRequest: "/api/coinSupply",
 		ExampleResponse: `{
@@ -239,7 +228,7 @@ var apiEndpoints = []APIEndpoint{
 	},
 	{
 		ExplorerPath:    "/api/coinmarketcap",
-		SkycoinPath:     "/coinSupply",
+		SkycoinPath:     "/api/v1/coinSupply",
 		Description:     "Returns circulating supply coin number.",
 		ExampleRequest:  "/api/coinmarketcap",
 		ExampleResponse: "7187500.000000",
@@ -247,7 +236,7 @@ var apiEndpoints = []APIEndpoint{
 
 	{
 		ExplorerPath:   "/api/blockchain/metadata",
-		SkycoinPath:    "/blockchain/metadata",
+		SkycoinPath:    "/api/v1/blockchain/metadata",
 		Description:    "Returns blockchain metadata.",
 		ExampleRequest: "/api/blockchain/metadata",
 		ExampleResponse: `{
@@ -267,7 +256,7 @@ var apiEndpoints = []APIEndpoint{
 
 	{
 		ExplorerPath:   "/api/block",
-		SkycoinPath:    "/block",
+		SkycoinPath:    "/api/v1/block",
 		QueryArgs:      []string{"hash", "seq", "verbose"},
 		Description:    "Returns information about a block, given a hash or sequence number. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "/api/block?hash=e20d5832b3f9bea4da58e149e4805b4e4a962ea7c5ce3cd9f31c6d7fc72e3300",
@@ -386,7 +375,7 @@ var apiEndpoints = []APIEndpoint{
 
 	{
 		ExplorerPath:   "/api/blocks",
-		SkycoinPath:    "/blocks",
+		SkycoinPath:    "/api/v1/blocks",
 		QueryArgs:      []string{"start", "end", "verbose"},
 		Description:    "Returns information about a range of blocks, given a start and end block sequence number. The range of blocks will include both the start and end sequence numbers. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "https://explorer.skycoin.net/api/blocks?start=1891&end=1892",
@@ -644,7 +633,7 @@ var apiEndpoints = []APIEndpoint{
 
 	{
 		ExplorerPath:   "/api/currentBalance",
-		SkycoinPath:    "/outputs",
+		SkycoinPath:    "/api/v1/outputs",
 		QueryArgs:      []string{"addrs"},
 		Description:    "Returns head outputs for a list of comma-separated addresses.  If no addresses are specified, returns all head outputs.",
 		ExampleRequest: "/api/currentBalance?addrs=SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17,iqi5BpPhEqt35SaeMLKA94XnzBG57hToNi",
@@ -698,7 +687,7 @@ var apiEndpoints = []APIEndpoint{
 
 	{
 		ExplorerPath:   "/api/transaction",
-		SkycoinPath:    "/transaction",
+		SkycoinPath:    "/api/v1/transaction",
 		QueryArgs:      []string{"txid", "verbose"},
 		Description:    "Returns transaction metadata. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "/api/transaction?txid=edd2de176948cbd27cdd8cba7ca4b5afb8dbf8174dd6de95f73ce359affe4f05",
@@ -786,7 +775,7 @@ var apiEndpoints = []APIEndpoint{
 
 	{
 		ExplorerPath:   "/api/uxout",
-		SkycoinPath:    "/uxout",
+		SkycoinPath:    "/api/v1/uxout",
 		QueryArgs:      []string{"uxid"},
 		Description:    "Returns unspent output metadata.  Note: coins are measured in drops, which are coins * 1000000.",
 		ExampleRequest: "/api/uxout?uxid=374fac152e3a920975151438ad87125c0222c4e78cae2c49183cde674cb07bd7",
@@ -805,7 +794,7 @@ var apiEndpoints = []APIEndpoint{
 
 	{
 		ExplorerPath:   "/api/pendingTxs",
-		SkycoinPath:    "/pendingTxs",
+		SkycoinPath:    "/api/v1/pendingTxs",
 		QueryArgs:      []string{"verbose"},
 		Description:    "Returns the unconfirmed transactions in the pool. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "/api/pendingTxs",
@@ -889,7 +878,7 @@ var apiEndpoints = []APIEndpoint{
 	},
 	{
 		ExplorerPath:   "/api/richlist",
-		SkycoinPath:    "/richlist",
+		SkycoinPath:    "/api/v1/richlist",
 		QueryArgs:      []string{"n", "include-distribution"},
 		Description:    "Returns top N richer with unspect outputs, If no n are specified, returns 20.",
 		ExampleRequest: "/api/richlist?n=4&include-distribution=false",
@@ -920,7 +909,7 @@ var apiEndpoints = []APIEndpoint{
 	},
 	{
 		ExplorerPath:   "/api/addresscount",
-		SkycoinPath:    "/addresscount",
+		SkycoinPath:    "/api/v1/addresscount",
 		Description:    "Returns count number of unique addresses with unspent outputs",
 		ExampleRequest: "/api/addresscount",
 		ExampleResponse: `{
@@ -929,7 +918,7 @@ var apiEndpoints = []APIEndpoint{
 	},
 	{
 		ExplorerPath:   "/api/transactions",
-		SkycoinPath:    "/transactions",
+		SkycoinPath:    "/api/v1/transactions",
 		QueryArgs:      []string{"addrs", "confirmed", "verbose"},
 		Description:    "Returns transactions for a list of comma-separated addresses. If no addresses are specified, returns all transactions. Assign 1 to the \"verbose\" argument to get more data in the response.",
 		ExampleRequest: "/api/transactions?addrs=7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD,6dkVxyKFbFKg9Vdg6HPg1UANLByYRqkrdY&confirmed=1",
@@ -1098,7 +1087,7 @@ var apiEndpoints = []APIEndpoint{
 	},
 	{
 		ExplorerPath:   "/api/balance",
-		SkycoinPath:    "/balance",
+		SkycoinPath:    "/api/v1/balance",
 		QueryArgs:      []string{"addrs"},
 		Description:    "Returns the combined balance of a list of comma-separated addresses.",
 		ExampleRequest: "/api/balance?addrs=7cpQ7t3PZZXvjTst8G7Uvs7XH4LeM8fBPD,nu7eSpT6hr5P21uzw7bnbxm83B6ywSjHdq",
@@ -1115,7 +1104,7 @@ var apiEndpoints = []APIEndpoint{
 	},
 	{
 		ExplorerPath:   "/api/health",
-		SkycoinPath:    "/health",
+		SkycoinPath:    "/api/v1/health",
 		Description:    "Returns information about the current state of the node.",
 		ExampleRequest: "/api/health",
 		ExampleResponse: `{

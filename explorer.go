@@ -244,68 +244,6 @@ var apiEndpoints = []APIEndpoint{
 		ExampleRequest:  "/api/coinmarketcap",
 		ExampleResponse: "7187500.000000",
 	},
-	{
-		ExplorerPath:   "/api/address",
-		SkycoinPath:    "/explorer/address",
-		QueryArgs:      []string{"address"},
-		Description:    "Returns address info.",
-		ExampleRequest: "/api/address?address=SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
-		ExampleResponse: `[
-    {
-        "status": {
-            "confirmed": true,
-            "unconfirmed": false,
-            "height": 10161,
-            "block_seq": 1893,
-            "unknown": false
-        },
-        "length": 414,
-        "type": 0,
-        "txid": "c297eb14a9e68ec5501aa886e5bb720a58fe6466be633a8264f61eee9580a2c3",
-        "inner_hash": "5fcc1649794894f2c79411a832f799ba12e0528ff530d7068abaa03c10e451cf",
-        "timestamp": 1499405825,
-        "sigs": [
-            "b951fd0c1528df88c87eb90cb1ecbc3ba2b6332ace16c2f1cc731976c0cebfb10ecb1c20335374f8cf0b832364a523c3e16f32c3240ed4eccfac1803caf8815100",
-            "6a06e57d130f6e780eecbe0c2626eed7724a2443438258598af287bf8fc1b87f041d04a7082550bd2055a08f0849419200fdac27c018d5cebf84e8bba1c4f61201",
-            "8cc9ae6ae5be81456fc8e2d54b6868c45b415556c689c8c4329cd30b671a18254885a1aef8a3ac9ab76a8dc83e08607516fdef291a003935ae4507775ae53c7800"
-        ],
-        "inputs": [
-            {
-                "uxid": "0922a7b41d1b76b6b56bfad0d5d0f6845517bbd895c660eab0ebe3899b5f63c4",
-                "owner": "2Q2VViWhgBzz6c8GkXQyDVFdQUWcBcDon4L",
-                "coins": "7.000000",
-                "hours": "851106"
-            },
-            {
-                "uxid": "d73cf1f1d04a1d493fe3480a00e48187f9201bb64828fe0c638f17c0c88bb3d9",
-                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
-                "coins": "5.000000",
-                "hours": "6402335"
-            },
-            {
-                "uxid": "16dd81af869743599fe60108c22d7ee1fcbf1a7f460fffd3a015fbb3f721c36d",
-                "owner": "YPhukwVyLsPGX1FAPQa2ktr5XnSLqyGbr5",
-                "coins": "2400.000000",
-                "hours": "800291"
-            }
-        ],
-        "outputs": [
-            {
-                "uxid": "8a941208d3f2d2c4a32438e05645fb64dba3b4b7d83c48d52f51bc1eb9a4117a",
-                "dst": "2GgFvqoyk9RjwVzj8tqfcXVXB4orBwoc9qv",
-                "coins": "2361.000000",
-                "hours": 1006716
-            },
-            {
-                "uxid": "a70d1f0f488066a327acd0d5ea77b87d62b3b061d3db8361c90194a6520ab29f",
-                "dst": "SeDoYN6SNaTiAZFHwArnFwQmcyz7ZvJm17",
-                "coins": "51.000000",
-                "hours": 2013433
-            }
-        ]
-    }
-]`,
-	},
 
 	{
 		ExplorerPath:   "/api/blockchain/metadata",

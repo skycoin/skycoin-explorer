@@ -57,7 +57,7 @@ $img-height-small: 32px;
     transform: translateX(0);
     transition: transform 400ms ease-in-out;
     text-align: left;
-    //TODO: Try if cause some problems in mobile -> overflow-y: auto;
+    overflow-y: auto;    
 
   &.visible {
     transform: translateX(-270px);
@@ -71,6 +71,7 @@ $img-height-small: 32px;
     background: transparent;
     box-shadow: none;
     transform: translateX(0);
+    overflow-y:inherit;
   }
 }
 

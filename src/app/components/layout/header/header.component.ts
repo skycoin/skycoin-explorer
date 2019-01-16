@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
       this.setupMenu();
   }
 
-  onCLickMenuDropdown(item) {
+  onClickMenuDropdown(item) {
     this.menu = this.menu.map( i => {
       if (i === item) {
         i.open = !i.open;

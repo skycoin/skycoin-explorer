@@ -10,15 +10,13 @@ import menu from './menu';
 })
 export class HeaderComponent implements OnInit {
   @Input() menuVisible: boolean;
-  menu:any;
-  
-  constructor(
-    public router: Router,
-  ) {  
+  menu: any;
+
+  constructor(public router: Router) {
     this.setupMenu();
   }
 
-  private setupMenu(){
+  private setupMenu() {
     this.menu = menu;
   }
 
@@ -37,13 +35,13 @@ export class HeaderComponent implements OnInit {
       this.setupMenu();
   }
 
-  onCLickMenuDropdown(item){
-    this.menu = this.menu.map((i)=>{
-      if(i===item){
+  onCLickMenuDropdown(item) {
+    this.menu = this.menu.map( i => {
+      if (i === item) {
         i.open = !i.open;
       }
       return i;
-    })
+    });
 
   }
 }

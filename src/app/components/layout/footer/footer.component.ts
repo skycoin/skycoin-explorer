@@ -13,7 +13,7 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
   }
 
-  getMenu(){
+  getMenu() {
     return menu;
   }
 

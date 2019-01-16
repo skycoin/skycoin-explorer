@@ -12,7 +12,6 @@ enum ShowMoreStatus {
   styleUrls: ['./transaction-info.component.scss']
 })
 export class TransactionInfoComponent {
-  private readonly maxInitialElements = 10;
   private transactionInternal: any;
 
   disableClicks = false;
@@ -23,6 +22,8 @@ export class TransactionInfoComponent {
   totalOutputs = 0;
   showMoreOutputs: ShowMoreStatus = ShowMoreStatus.DontShowMore;
   outputsToShow: any[] = [];
+
+  @Input() maxInitialElements = 10;
 
   @Input()
   set transaction(value: any) {

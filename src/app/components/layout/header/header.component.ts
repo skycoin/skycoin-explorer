@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   }
 
   private setupMenu() {
-    this.menu = menu;
+    this.menu = menu.map(obj => ({...obj}));
   }
 
   ngOnInit() {

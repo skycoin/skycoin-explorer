@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import menu from '../header/menu';
 
 @Component({
   selector: 'app-footer',
@@ -57,6 +58,10 @@ export class FooterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  getMenu() {
+    return menu;
   }
 
 }

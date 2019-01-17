@@ -9,4 +9,4 @@
 
 <app-loading [longErrorMsg]="longErrorMsg" *ngIf="transaction === undefined"></app-loading>
 
-<app-transaction-info *ngIf="transaction" [transaction]="transaction"></app-transaction-info>
+<app-transaction-info *ngIf="transaction" [maxInitialElements]="32" [transaction]="transaction"></app-transaction-info>

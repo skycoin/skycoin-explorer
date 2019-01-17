@@ -1,8 +1,7 @@
 language: go
 
 go:
-  - "1.9"
-  - "1.10"
+  - "1.11.x"
 
 env:
   - SKYCOIN_ADDR=http://172.17.0.2:6420

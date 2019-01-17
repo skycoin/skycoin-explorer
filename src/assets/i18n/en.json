@@ -35,6 +35,7 @@
     "totalSupply": "Total Supply",
     "currentCoinhourSupply": "Current Coinhour Supply",
     "totalCoinhourSupply": "Total Coinhour Supply",
+    "explorerApi": "Explorer API",
     "unconfirmedTransactions": "Unconfirmed Transactions",
     "richList": "Rich List",
     "time": "Time",

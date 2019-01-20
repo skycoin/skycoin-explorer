@@ -106,12 +106,26 @@ h2 {
     }
     .-label {
       display: inline-block;
-      margin: 0px 30px;
       padding: 2px 15px;
       color: white;
     }
-    .-address {
-      float: left;
+
+    .address {
+      padding-right: 10px;
+    }
+
+    .-inline-block {
+      display: inline-block;
+    }
+
+    .-label {
+      margin: 5px 0px 0px 0px;
+    }
+
+    @media (min-width: (1124px)) {
+      .address-balance-line-break {
+        display: none !important;
+      }
     }
 
     @media (max-width: $max-sm-width) {
@@ -121,11 +135,7 @@ h2 {
       .-date {
         text-align: left;
       }
-      .-label {
-        margin: 5px 0px 0px 0px;
-      }
-      .-address {
-        float: none;
+      .-inline-block {
         display: inline;
       }
 
@@ -311,6 +321,10 @@ app-copy-button {
   height: 12px;
   width: 12px;
   overflow: visible;
+}
+
+.-copy-button-margin {
+  margin-right: 12px;
 }
 
 .container{

@@ -8,7 +8,7 @@
           <ng-container *ngIf="transaction.balance">
             <br class="address-balance-line-break" />
             <div class="-label" [ngClass]="{'-red' : transaction.balance.isLessThan(0), '-green' : transaction.balance.isGreaterThanOrEqualTo(0)}">
-              {{ (transaction.balance<0?"":"+")+(transaction.balance.decimalPlaces(6).toString() | number:'1.0-6') }} {{ 'general.coinIdentifier' | translate }} <ng-container *ngIf="!transaction.status">({{ 'txBoxes.pending' | translate }})</ng-container>
+              {{ (transaction.balance<0?"":"+")+(transaction.balance.decimalPlaces(6).toString() | number:'1.0-6') }} {{ 'general.coinIdentifier' | translate }} <ng-container *ngIf="!transaction.status">({{ 'general.pending' | translate }})</ng-container>
             </div>
           </ng-container>
         </div>

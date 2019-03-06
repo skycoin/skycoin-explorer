@@ -43,3 +43,5 @@ Thumbs.db
 # compiled binaries
 /explorer.*
 !/explorer.go
+
+dist/

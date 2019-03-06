@@ -12,32 +12,34 @@ You can check blocks, transactions and their states.
 
 [https://explorer.skycoin.net](https://explorer.skycoin.net)
 
-### Quick reference
-
-- **Where to file issues**:
-    [https://github.com/skycoin/skycoin-explorer/issues](https://github.com/skycoin/skycoin-explorer/issues)
-
 # Table of Contents
 
-  - [Releases Notes](CHANGELOG.md)
-  - [Installation](#installation)
-    - [Requirements](#requirements)
-  - [Usage](#usage)
-    - [Run a skycoin node](#run-a-skycoin-node)
-    - [Run the explorer](#run-the-explorer)
-    - [Docker images](#docker-images)
-  - [API documentation](#api-documentation)
-  - [Development](#development)
-    - [Compiling the angular frontend](#compiling-the-angular-frontend)
-    - [Formatting](#formatting)
-    - [Code Linting](#code-linting)
-    - [Customization](#customization)
-  - [Deployment](#deployment)
+<!-- MarkdownTOC levels="1,2,3,4,5" autolink="true" bracket="round" -->
+
+- [Installation](#installation)
+	- [Requirements](#requirements)
+	- [Go](#go)
+	- [Angular](#angular)
+- [Docker images](#docker-images)
+- [API documentation](#api-documentation)
+- [Usage](#usage)
+	- [Run a skycoin node](#run-a-skycoin-node)
+	- [Build the explorer frontend](#build-the-explorer-frontend)
+	- [Run the explorer](#run-the-explorer)
+- [Development](#development)
+	- [Compiling the angular frontend](#compiling-the-angular-frontend)
+	- [Formatting](#formatting)
+	- [Code Linting](#code-linting)
+	- [e2e Tests](#e2e-tests)
+	- [Customization](#customization)
+- [Deployment](#deployment)
+
+<!-- /MarkdownTOC -->
 
 
-# Installation
+## Installation
 
-## Requirements
+### Requirements
 
 ```
 go>=1.10
@@ -59,6 +61,20 @@ After cloning the project, you will need to run `npm install` to pull in all jav
 
 The angular code is compiled to the `dist/` folder.
 
+## Docker images
+
+If you want to run Explorer on Docker refer to [Docker instructions](docker/images/README.md)
+
+## API documentation
+
+HTML documentation:
+
+http://explorer.skycoin.net/api.html
+
+JSON formatted API docs:
+
+http://explorer.skycoin.net/api/docs
+
 ## Usage
 
 ### Run a skycoin node
@@ -68,6 +84,14 @@ git clone github.com/skycoin/skycoin
 cd skycoin
 ./run.sh
 ```
+
+### Build the explorer frontend
+
+```sh
+make build-ng
+```
+
+Note: if you do not want to install NPM or build the frontend, you can use a docker image to run the explorer.
 
 ### Run the explorer
 
@@ -90,20 +114,6 @@ SKYCOIN_ADDR=http://127.0.0.1:3333 ./explorer
 ```sh
 make run-api
 ```
-
-## Docker images
-
-If you want to run Explorer on Docker refer to [Docker instructions](docker/images/README.md)
-
-## API documentation
-
-HTML documentation:
-
-http://explorer.skycoin.net/api.html
-
-JSON formatted API docs:
-
-http://explorer.skycoin.net/api/docs
 
 ## Development
 

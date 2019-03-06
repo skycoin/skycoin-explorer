@@ -16,8 +16,8 @@ export class ApiService {
     private http: HttpClient
   ) { }
 
-  getAddress(address: string): Observable<GenericTransactionResponse[]> {
-    return this.get('address', { address: address });
+  getAddress(address: string): Observable<GetTransactionResponse[]> {
+    return this.get('transactions', { addrs: address, verbose: 1 });
   }
 
   getUnconfirmedTransactions(): Observable<GetUnconfirmedTransactionResponse[]> {

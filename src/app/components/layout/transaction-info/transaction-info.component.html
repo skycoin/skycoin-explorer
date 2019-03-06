@@ -3,10 +3,10 @@
     <div class="row">
       <div class="col-md-10 col-sm-12">
         <div class="-row">
-          <div class="-float-left">{{ 'txBoxes.transactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
-          <div class="-address"><a [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a><app-copy-button [text]="transaction.id"></app-copy-button></div>
+          <div class="-inline-block">{{ 'txBoxes.transactionID' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+          <div class="address -inline-block"><a class="-copy-button-margin" [routerLink]="'/app/transaction/' + transaction.id">{{ transaction.id }}</a><app-copy-button [text]="transaction.id"></app-copy-button></div>
           <ng-container *ngIf="transaction.balance">
-            <br class="-xs-sm-only" />
+            <br class="address-balance-line-break" />
             <div class="-label" [ngClass]="{'-red' : transaction.balance.isLessThan(0), '-green' : transaction.balance.isGreaterThanOrEqualTo(0)}">
               {{ (transaction.balance<0?"":"+")+(transaction.balance.decimalPlaces(6).toString() | number:'1.0-6') }} {{ 'general.coinIdentifier' | translate }} <ng-container *ngIf="!transaction.status">({{ 'txBoxes.pending' | translate }})</ng-container>
             </div>
@@ -29,7 +29,7 @@
       <div class="col-sm-6">
         <div class="-header -xs-only">{{ 'txBoxes.inputs' | translate }}</div>
         <div class="-body" *ngFor="let input of inputsToShow">
-          <a class="-link" [routerLink]="'/app/address/' + input.owner">{{ input.owner }}</a><app-copy-button [text]="input.owner"></app-copy-button>
+          <a class="-link -copy-button-margin" [routerLink]="'/app/address/' + input.owner">{{ input.owner }}</a><app-copy-button [text]="input.owner"></app-copy-button>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ input.coins.decimalPlaces(6).toString() | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ input.hours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.calculatedHours' | translate }}:&nbsp;</div><div> {{ input.calculatedHours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
@@ -41,7 +41,7 @@
       <div class="col-sm-6">
         <div class="-header -xs-only">{{ 'txBoxes.outputs' | translate }}</div>
         <div class="-body" *ngFor="let output of outputsToShow">
-          <a class="-link" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><app-copy-button [text]="output.address"></app-copy-button>
+          <a class="-link -copy-button-margin" [routerLink]="'/app/address/' + output.address">{{ output.address }}</a><app-copy-button [text]="output.address"></app-copy-button>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins.decimalPlaces(6).toString() | number:'1.0-6' }}</div></div>
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours.decimalPlaces(0).toString() | number:'1.0-0' }}</div></div>
         </div>

@@ -31,11 +31,11 @@ export class ExplorerService {
   getTransactions(address: string): Observable<Transaction[]> {
     return this.api.getAddress(address)
       .map(response => {
-        response = response.sort((a, b) => a.timestamp - b.timestamp);
+        response = response.sort((a, b) => a.txn.timestamp - b.txn.timestamp);
 
         let currentBalance = new BigNumber('0');
         return response.map(rawTx => {
-          const parsedTx = parseGenericTransaction(rawTx, address);
+          const parsedTx = parseGetTransaction(rawTx, address);
           parsedTx.initialBalance = currentBalance;
           currentBalance = currentBalance.plus(parsedTx.balance);
           parsedTx.finalBalance = currentBalance;

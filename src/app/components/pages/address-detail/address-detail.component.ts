@@ -1,9 +1,9 @@
+import { of as observableOf } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
 import { BigNumber } from 'bignumber.js';
 
@@ -41,7 +41,7 @@ export class AddressDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.switchMap((params: Params) => {
+    this.route.params.pipe(switchMap((params: Params) => {
       // Clear the content if the address, and not just the page, changes
       if (this.address !== params['address']) {
         this.transactions = undefined;
@@ -58,12 +58,12 @@ export class AddressDetailComponent implements OnInit {
       this.pageTransactions = undefined;
 
       if (this.transactions) {
-        return Observable.of(this.transactions);
+        return observableOf(this.transactions);
       } else {
         return this.explorer.getTransactions(this.address);
       }
 
-    }).subscribe(
+    })).subscribe(
       transactions => {
         this.transactions = transactions;
 
@@ -91,7 +91,7 @@ export class AddressDetailComponent implements OnInit {
       }
     );
 
-    this.route.params.switchMap((params: Params) => this.api.getBalance(params['address']))
+    this.route.params.pipe(switchMap((params: Params) => this.api.getBalance(params['address'])))
       .subscribe(response => {
         this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
         this.hoursBalance = new BigNumber(response.confirmed.hours);

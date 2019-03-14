@@ -1,9 +1,8 @@
+import { switchMap, filter, first } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Block } from '../../../app.datatypes';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/services/api/api.service';
 
@@ -31,14 +30,14 @@ export class BlockDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.api.getBlockchainMetadata().first().subscribe(blockchain => this.blockCount = blockchain.blocks);
+    this.api.getBlockchainMetadata().pipe(first()).subscribe(blockchain => this.blockCount = blockchain.blocks);
 
     let blockID = '';
-    this.route.params.filter(params => +params['id'] !== null)
-      .switchMap((params: Params) => {
+    this.route.params.pipe(filter(params => +params['id'] !== null),
+      switchMap((params: Params) => {
         blockID = params['id'];
         return this.explorer.getBlock(+blockID);
-      }).subscribe((block: Block) => {
+      })).subscribe((block: Block) => {
         if (block != null) {
           this.block = block;
         } else {

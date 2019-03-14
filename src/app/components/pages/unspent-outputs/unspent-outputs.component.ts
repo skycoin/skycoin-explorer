@@ -1,9 +1,8 @@
+import { switchMap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { GetCurrentBalanceResponse } from '../../../app.datatypes';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
 import { TranslateService } from '@ngx-translate/core';
 import { BigNumber } from 'bignumber.js';
 
@@ -31,10 +30,10 @@ export class UnspentOutputsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.switchMap((params: Params) => {
+    this.route.params.pipe(switchMap((params: Params) => {
       this.address = params['address'];
       return this.api.getCurrentBalance(params['address']);
-    }).subscribe(response => {
+    })).subscribe(response => {
       this.outputs = response;
 
       this.coins = new BigNumber(0);

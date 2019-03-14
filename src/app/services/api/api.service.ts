@@ -1,11 +1,9 @@
+import { throwError as observableThrowError,  Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransactionResponse, GenericTransactionResponse,
     GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse, GetCoinSupplyResponse } from '../../app.datatypes';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ApiService {
@@ -37,10 +35,10 @@ export class ApiService {
   }
 
   getBlockchainMetadata(): Observable<Blockchain> {
-    return this.get('blockchain/metadata')
-      .map((res: GetBlockchainMetadataResponse) => ({
+    return this.get('blockchain/metadata').pipe(
+      map((res: GetBlockchainMetadataResponse) => ({
         blocks: res.head.seq,
-      }));
+      })));
   }
 
   getCoinSupply(): Observable<GetCoinSupplyResponse> {
@@ -60,14 +58,15 @@ export class ApiService {
   }
 
   getRichlist(): Observable<RichlistEntry[]> {
-    return this.get('richlist').map(response => response.richlist);
+    return this.get('richlist').pipe(map((response: any) => response.richlist));
   }
 
   // Old methods
 
   get(url: string, options: object = null): any {
-    return this.http.get(this.getUrl(url, options))
-      .catch((error: any) => Observable.throw(error || 'Server error'));
+    return this.http.get(this.getUrl(url, options)).pipe(
+      catchError((error: any) => observableThrowError(error || 'Server error'))
+    );
   }
 
   private getQueryString(parameters: object = null): string {

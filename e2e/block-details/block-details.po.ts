@@ -45,7 +45,7 @@ export class BlockDetailsPage {
     return element
       .all(by.css('.header-container > div > a'))
       .get(index)
-      .element(by.css('.-not-xs'))
+      .element(by.css('.btn-text-e2e'))
       .getAttribute('textContent');
   }
 

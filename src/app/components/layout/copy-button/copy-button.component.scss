@@ -1,8 +1,9 @@
 @import '../../../../assets/scss/_variables.scss';
 
 .icon {
-  padding: 5px 12px;
+  padding: 5px $siz-copy-button-margin;
   position: absolute;
+  margin-left: -$siz-copy-button-margin;
   margin-top: -8px;
   font-family: 'Font Awesome 5 Free';
   font-size: 14px;

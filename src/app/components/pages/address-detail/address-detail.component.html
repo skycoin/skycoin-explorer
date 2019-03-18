@@ -11,28 +11,28 @@
       <span>{{ 'addressDetail.totalReceived' | translate }}</span><br class="-xs-only" />
       <div>
         {{ transactions && totalReceived ? ((totalReceived.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }}
-        <span *ngIf="transactions && PendingIn && PendingIn.isGreaterThan(0)">&nbsp;({{ (PendingIn.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) + ' ' + ('general.pending' | translate) }})</span>
+        <span *ngIf="transactions && pendingBalance && pendingBalance.isGreaterThan(0)">&nbsp;({{ (pendingBalance.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.pending' | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.totalSent' | translate }}</span><br class="-xs-only" />
       <div>
         {{ transactions && totalSent ? ((totalSent.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }}
-        <span *ngIf="transactions && PendingOut && PendingOut.isGreaterThan(0)">&nbsp;({{ (PendingOut.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) + ' ' + ('general.pending' | translate) }})</span>
+        <span *ngIf="transactions && pendingBalance && pendingBalance.isLessThan(0)">&nbsp;({{ (pendingBalance.negated().decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.pending' | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.currentBalance' | translate }}</span><br class="-xs-only" />
       <div>
         {{ transactions && balance ? ((balance.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }}
-        <span *ngIf="transactions && predictedBalance && !predictedBalance.isEqualTo(balance)">&nbsp;({{ (predictedBalance.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) + ' ' + ('general.predicted' | translate) }})</span>
+        <span *ngIf="transactions && pendingBalance && !pendingBalance.isEqualTo(0)">&nbsp;({{ (pendingBalance.isGreaterThan(0) ? '+' : '') + (pendingBalance.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.pending' | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.hoursBalance' | translate }}</span><br class="-xs-only" />
       <div>
         {{ transactions && hoursBalance ? ((hoursBalance.decimalPlaces(0).toString() | number:'1.0-0')) : loadingMsg }}
-        <span *ngIf="transactions && predictedHoursBalance && !predictedHoursBalance.isEqualTo(hoursBalance)">&nbsp;({{ (predictedHoursBalance.decimalPlaces(0).toString() | number:'1.0-0') + ' ' + ('general.coinIdentifier' | translate) + ' ' + ('general.predicted' | translate) }})</span>
+        <span *ngIf="transactions && pendingHoursBalance && !pendingHoursBalance.isEqualTo(0)">&nbsp;({{ (pendingHoursBalance.isGreaterThan(0) ? '+' : '') + (pendingHoursBalance.decimalPlaces(0).toString() | number:'1.0-0') + ' ' + ('general.pending' | translate) }})</span>
       </div>
     </div>
     <div class="-row"><span>{{ 'addressDetail.tools' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/unspent/' + address" class="-link" *ngIf="address">{{ 'addressDetail.unspentOutputs' | translate }}</a> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>

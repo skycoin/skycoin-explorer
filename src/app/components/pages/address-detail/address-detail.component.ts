@@ -17,12 +17,10 @@ export class AddressDetailComponent implements OnInit {
   address: string;
   totalReceived: BigNumber;
   totalSent: BigNumber;
-  PendingIn: BigNumber;
-  PendingOut: BigNumber;
   balance: BigNumber;
   hoursBalance: BigNumber;
-  predictedBalance: BigNumber;
-  predictedHoursBalance: BigNumber;
+  pendingBalance: BigNumber;
+  pendingHoursBalance: BigNumber;
   transactions: Transaction[];
   pageTransactions: any[];
   pageIndex = 0;
@@ -74,15 +72,10 @@ export class AddressDetailComponent implements OnInit {
 
         this.totalReceived = new BigNumber(0);
         transactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) && tx.status ? tx.balance : 0));
-        this.PendingIn = new BigNumber(0);
-        transactions.map(tx => this.PendingIn = this.PendingIn.plus(tx.balance.isGreaterThan(0) && !tx.status ? tx.balance : 0));
 
         this.totalSent = new BigNumber(0);
         transactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) && tx.status ? tx.balance : 0));
         this.totalSent = this.totalSent.negated();
-        this.PendingOut = new BigNumber(0);
-        transactions.map(tx => this.PendingOut = this.PendingOut.plus(tx.balance.isLessThan(0) && !tx.status ? tx.balance : 0));
-        this.PendingOut = this.PendingOut.negated();
 
         this.updateTransactions();
       },
@@ -105,8 +98,8 @@ export class AddressDetailComponent implements OnInit {
       .subscribe(response => {
         this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
         this.hoursBalance = new BigNumber(response.confirmed.hours);
-        this.predictedBalance = new BigNumber(response.predicted.coins).dividedBy(1000000);
-        this.predictedHoursBalance = new BigNumber(response.predicted.hours);
+        this.pendingBalance = new BigNumber(response.predicted.coins).dividedBy(1000000).minus(this.balance);
+        this.pendingHoursBalance = new BigNumber(response.predicted.hours).minus(this.hoursBalance);
       });
   }
 

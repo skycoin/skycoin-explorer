@@ -16,8 +16,8 @@
       <div class="row">
         <div class="col-md-9 col-sm-12">
           <div class="-row">
-            <div class="-float-left">{{ 'unspentOutputs.origin' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
-            <div><a class="-copy-button-margin" [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a><app-copy-button [text]="output.src_tx"></app-copy-button></div>
+            <div class="-inline-block">{{ 'unspentOutputs.origin' | translate }}<span class="-xs-sm-only">:</span></div><br class="-xs-sm-only"/>
+            <div class="-inline-block"><a class="-copy-button-margin" [routerLink]="'/app/transaction/' + output.src_tx">{{ output.src_tx }}</a><app-copy-button [text]="output.src_tx"></app-copy-button></div>
           </div>
         </div>
         <div class="col-md-3 col-sm-12 -date"><div class="-row"><span class="-xs-sm-only">{{ 'unspentOutputs.date' | translate }}:<br/></span><app-date-formatter *ngIf="output" [date]="output.time"></app-date-formatter></div></div>

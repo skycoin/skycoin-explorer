@@ -6,6 +6,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
 import { BigNumber } from 'bignumber.js';
+import { Transaction } from 'app/app.datatypes';
 
 @Component({
   selector: 'app-address-detail',
@@ -18,7 +19,9 @@ export class AddressDetailComponent implements OnInit {
   totalSent: BigNumber;
   balance: BigNumber;
   hoursBalance: BigNumber;
-  transactions: any[];
+  pendingBalance: BigNumber;
+  pendingHoursBalance: BigNumber;
+  transactions: Transaction[];
   pageTransactions: any[];
   pageIndex = 0;
   pageSize = 25;
@@ -68,10 +71,10 @@ export class AddressDetailComponent implements OnInit {
         this.transactions = transactions;
 
         this.totalReceived = new BigNumber(0);
-        transactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) ? tx.balance : 0));
+        transactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) && tx.status ? tx.balance : 0));
 
         this.totalSent = new BigNumber(0);
-        transactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) ? tx.balance : 0));
+        transactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) && tx.status ? tx.balance : 0));
         this.totalSent = this.totalSent.negated();
 
         this.updateTransactions();
@@ -95,6 +98,8 @@ export class AddressDetailComponent implements OnInit {
       .subscribe(response => {
         this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
         this.hoursBalance = new BigNumber(response.confirmed.hours);
+        this.pendingBalance = new BigNumber(response.predicted.coins).dividedBy(1000000).minus(this.balance);
+        this.pendingHoursBalance = new BigNumber(response.predicted.hours).minus(this.hoursBalance);
       });
   }
 

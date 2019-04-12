@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Transaction } from '../../../app.datatypes';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

@@ -1,3 +1,4 @@
+import { first } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -18,7 +19,7 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.params.first()
+    this.route.params.pipe(first())
       .subscribe((params: Params) => {
         if (!params['term'] || (params['term'].trim() as string).length < 1) {
           this.errorMsg = 'search.unableToFind';

@@ -1,6 +1,6 @@
+import { mergeMap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import 'rxjs/add/operator/mergeMap';
 import { Transaction } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -27,7 +27,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.flatMap((params: Params) => this.explorer.getTransaction(params['txid']))
+    this.route.params.pipe(mergeMap((params: Params) => this.explorer.getTransaction(params['txid'])))
       .subscribe(
         transaction => this.transaction = transaction,
         error => {

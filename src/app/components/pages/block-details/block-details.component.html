@@ -4,11 +4,11 @@
       <h2>{{ 'blockDetails.title' | translate }}</h2>
       <div class="nav-button-container" *ngIf="blockCount && block != undefined">
         <a [routerLink]="'/app/block/' + (block.id - 1)" class="nav-button" *ngIf="block.id > 0">
-          <span class="font-awesome">&#xf104;</span> <span class="-not-xs">{{ 'blockDetails.previous' | translate }}</span>
+          <span class="font-awesome">&#xf104;</span><span class="-not-xs">&nbsp;</span><span class="-not-xs btn-text-e2e">{{ 'blockDetails.previous' | translate }}</span>
         </a>
-        <span *ngIf="block.id > 0 && block.id < blockCount" class="-not-xs">&nbsp;</span>
+        <span *ngIf="block.id > 0 && block.id < blockCount">&nbsp;<span class="-not-xs">&nbsp;&nbsp;</span></span>
         <a [routerLink]="'/app/block/' + (block.id + 1)" class="nav-button" *ngIf="block.id < blockCount">
-          <span class="-not-xs">{{ 'blockDetails.next' | translate }}</span> <span class="font-awesome">&#xf105;</span>
+          <span class="-not-xs btn-text-e2e">{{ 'blockDetails.next' | translate }}</span><span class="-not-xs">&nbsp;</span><span class="font-awesome">&#xf105;</span>
         </a>
       </div>
     </div>

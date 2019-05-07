@@ -33,6 +33,7 @@ You can check blocks, transactions and their states.
 	- [e2e Tests](#e2e-tests)
 	- [Customization](#customization)
 - [Deployment](#deployment)
+- [Translations](#translations)
 
 <!-- /MarkdownTOC -->
 
@@ -190,3 +191,7 @@ Run it on port 80:
 ```sh
 EXPLORER_HOST=:80 ./explorer
 ```
+
+#### Translations
+
+You can find information about how to work with translation files in the [Translations README](/src/assets/i18n/README.md).

@@ -32,6 +32,8 @@ import { DateFormatterComponent } from 'app/components/layout/date-formatter/dat
 import { SearchService } from './services/search/search.service';
 import { SearchComponent } from './components/pages/search/search.component';
 import { TransactionInfoComponent } from './components/layout/transaction-info/transaction-info.component';
+import { LanguageService } from 'app/services/language/language.service';
+import { LanguageSelectionComponent } from 'app/components/layout/language-selection/language-selection.component';
 
 
 const ROUTES = [
@@ -110,6 +112,7 @@ const ROUTES = [
     DateFormatterComponent,
     SearchComponent,
     TransactionInfoComponent,
+    LanguageSelectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -128,6 +131,7 @@ const ROUTES = [
     ApiService,
     ExplorerService,
     SearchService,
+    LanguageService,
     {provide: RouteReuseStrategy, useClass: AppReuseStrategy},
     DatePipe,
   ],

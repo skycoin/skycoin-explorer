@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { TranslateService } from '@ngx-translate/core';
 import { BigNumber } from 'bignumber.js';
 import { Transaction } from 'app/app.datatypes';
 
@@ -25,7 +24,7 @@ export class AddressDetailComponent implements OnInit {
   pageTransactions: any[];
   pageIndex = 0;
   pageSize = 25;
-  loadingMsg = '';
+  loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
 
   get pageCount() {
@@ -35,13 +34,8 @@ export class AddressDetailComponent implements OnInit {
   constructor(
     private api: ApiService,
     private explorer: ExplorerService,
-    private route: ActivatedRoute,
-    private translate: TranslateService
-  ) {
-    translate.get('general.loadingMsg').subscribe((res: string) => {
-      this.loadingMsg = res;
-    });
-  }
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this.route.params.pipe(switchMap((params: Params) => {
@@ -81,15 +75,11 @@ export class AddressDetailComponent implements OnInit {
       },
       error => {
         if (error.status >= 400 && error.status < 500) {
-          this.translate.get(['general.noData', 'addressDetail.withoutTransactions']).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.noData'];
-            this.longErrorMsg = res['addressDetail.withoutTransactions'];
-          });
+          this.loadingMsg = 'general.noData';
+          this.longErrorMsg = 'addressDetail.withoutTransactions';
         } else {
-          this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.shortLoadingErrorMsg'];
-            this.longErrorMsg = res['general.longLoadingErrorMsg'];
-          });
+          this.loadingMsg = 'general.shortLoadingErrorMsg';
+          this.longErrorMsg = 'general.longLoadingErrorMsg';
         }
       }
     );

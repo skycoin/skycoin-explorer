@@ -4,34 +4,34 @@
   <div class="element-details">
     <div class="-row -xs-only">
       <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
-      <span>{{ 'general.address' | translate }}</span><br class="-xs-only" /> <span>{{ address ? address : loadingMsg }}</span>
+      <span>{{ 'general.address' | translate }}</span><br class="-xs-only" /> <span>{{ address ? address : (loadingMsg | translate) }}</span>
     </div>
-    <div class="-row -tx-number"><span>{{ 'addressDetail.txsNumber' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : loadingMsg }} </div></div>
+    <div class="-row -tx-number"><span>{{ 'addressDetail.txsNumber' | translate }}</span><br class="-xs-only" /><div> {{ transactions ? transactions.length : (loadingMsg | translate) }} </div></div>
     <div class="-row">
       <span>{{ 'addressDetail.totalReceived' | translate }}</span><br class="-xs-only" />
       <div>
-        {{ transactions && totalReceived ? ((totalReceived.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }}
+        {{ transactions && totalReceived ? ((totalReceived.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : (loadingMsg | translate) }}
         <span *ngIf="transactions && pendingBalance && pendingBalance.isGreaterThan(0)">&nbsp;({{ (pendingBalance.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.pending' | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.totalSent' | translate }}</span><br class="-xs-only" />
       <div>
-        {{ transactions && totalSent ? ((totalSent.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }}
+        {{ transactions && totalSent ? ((totalSent.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : (loadingMsg | translate) }}
         <span *ngIf="transactions && pendingBalance && pendingBalance.isLessThan(0)">&nbsp;({{ (pendingBalance.negated().decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.pending' | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.currentBalance' | translate }}</span><br class="-xs-only" />
       <div>
-        {{ transactions && balance ? ((balance.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : loadingMsg }}
+        {{ transactions && balance ? ((balance.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate)) : (loadingMsg | translate) }}
         <span *ngIf="transactions && pendingBalance && !pendingBalance.isEqualTo(0)">&nbsp;({{ (pendingBalance.isGreaterThan(0) ? '+' : '') + (pendingBalance.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.pending' | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.hoursBalance' | translate }}</span><br class="-xs-only" />
       <div>
-        {{ transactions && hoursBalance ? ((hoursBalance.decimalPlaces(0).toString() | number:'1.0-0')) : loadingMsg }}
+        {{ transactions && hoursBalance ? ((hoursBalance.decimalPlaces(0).toString() | number:'1.0-0')) : (loadingMsg | translate) }}
         <span *ngIf="transactions && pendingHoursBalance && !pendingHoursBalance.isEqualTo(0)">&nbsp;({{ (pendingHoursBalance.isGreaterThan(0) ? '+' : '') + (pendingHoursBalance.decimalPlaces(0).toString() | number:'1.0-0') + ' ' + ('general.pending' | translate) }})</span>
       </div>
     </div>
@@ -42,7 +42,7 @@
   <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
 </div>
 
-<app-loading [longErrorMsg]="longErrorMsg" *ngIf="transactions === undefined"></app-loading>
+<app-loading [longErrorMsg]="longErrorMsg | translate" *ngIf="transactions === undefined"></app-loading>
 
 <app-transaction-info *ngFor="let transaction of pageTransactions" [transaction]="transaction"></app-transaction-info>
 

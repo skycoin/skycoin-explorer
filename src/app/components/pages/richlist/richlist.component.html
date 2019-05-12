@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <app-loading [longErrorMsg]="longErrorMsg" *ngIf="!entries.length"></app-loading>
+  <app-loading [longErrorMsg]="longErrorMsg | translate" *ngIf="!entries.length"></app-loading>
 
   <a class="-row" *ngFor="let entry of entries; let i = index" [routerLink]="'/app/address/' + entry.address">
     <div class="row">

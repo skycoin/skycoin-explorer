@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Transaction } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-transaction-detail',
@@ -13,18 +12,13 @@ import { TranslateService } from '@ngx-translate/core';
 export class TransactionDetailComponent implements OnInit {
 
   transaction: Transaction;
-  loadingMsg = '';
+  loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
 
   constructor(
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private translate: TranslateService
-  ) {
-    translate.get('general.loadingMsg').subscribe((res: string) => {
-      this.loadingMsg = res;
-    });
-  }
+  ) { }
 
   ngOnInit() {
     this.route.params.pipe(mergeMap((params: Params) => this.explorer.getTransaction(params['txid'])))
@@ -32,15 +26,11 @@ export class TransactionDetailComponent implements OnInit {
         transaction => this.transaction = transaction,
         error => {
           if (error.status >= 400 && error.status < 500) {
-            this.translate.get(['general.noData', 'transactionDetail.canNotFind']).subscribe((res: string[]) => {
-              this.loadingMsg = res['general.noData'];
-              this.longErrorMsg = res['transactionDetail.canNotFind'];
-            });
+            this.loadingMsg = 'general.noData';
+            this.longErrorMsg = 'transactionDetail.canNotFind';
           } else {
-            this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
-              this.loadingMsg = res['general.shortLoadingErrorMsg'];
-              this.longErrorMsg = res['general.longLoadingErrorMsg'];
-            });
+            this.loadingMsg = 'general.shortLoadingErrorMsg';
+            this.longErrorMsg = 'general.longLoadingErrorMsg';
           }
         }
       );

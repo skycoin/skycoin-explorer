@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { Block } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './blocks.component.html',
@@ -34,11 +33,8 @@ export class BlocksComponent implements OnInit {
     private api: ApiService,
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private translate: TranslateService
   ) {
-    translate.get('general.loadingMsg').subscribe((res: string) => {
-      this.loadingCoinSupplyMsg = this.loadingMetadataMsg = res;
-    });
+   this.loadingCoinSupplyMsg = this.loadingMetadataMsg = 'general.loadingMsg';
   }
 
   ngOnInit() {
@@ -49,11 +45,9 @@ export class BlocksComponent implements OnInit {
           const pageIndex = parseInt(params.get('page'), 10) - 1;
           this.navigate(pageIndex);
         });
-    }, error => {
-      this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
-        this.loadingMetadataMsg = res['general.shortLoadingErrorMsg'];
-        this.longErrorMsg = res['general.longLoadingErrorMsg'];
-      });
+    }, () => {
+      this.loadingMetadataMsg = 'general.shortLoadingErrorMsg';
+      this.longErrorMsg = 'general.longLoadingErrorMsg';
     });
 
     this.api.getCoinSupply().pipe(first()).subscribe(response => {
@@ -61,10 +55,8 @@ export class BlocksComponent implements OnInit {
       this.totalSupply = response.total_supply;
       this.currentCoinhourSupply = response.current_coinhour_supply;
       this.totalCoinhourSupply = response.total_coinhour_supply;
-    }, error => {
-      this.translate.get('general.shortLoadingErrorMsg').subscribe((res: string) => {
-        this.loadingCoinSupplyMsg = res;
-      });
+    }, () => {
+      this.loadingCoinSupplyMsg = 'general.shortLoadingErrorMsg';
     });
 
   }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, Event as RouterEvent } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { HeaderConfig, FooterConfig } from 'app/app.config';
+import { LanguageService } from 'app/services/language/language.service';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +12,7 @@ export class AppComponent {
   headerConfig = HeaderConfig;
   footerConfig = FooterConfig;
 
-  constructor(private router: Router, translate: TranslateService) {
-
-    // Fallback.
-    translate.setDefaultLang('en');
-    // Lang to use.
-    translate.use('en');
-
+  constructor(router: Router, languageService: LanguageService) {
     router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);

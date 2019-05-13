@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Transaction } from '../../../app.datatypes';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-unconfirmed-transactions',
@@ -14,17 +13,12 @@ export class UnconfirmedTransactionsComponent implements OnInit {
   leastRecent: number;
   mostRecent: number;
   totalSize: number;
-  loadingMsg = '';
+  loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
 
   constructor(
     private explorer: ExplorerService,
-    private translate: TranslateService
-  ) {
-    translate.get('general.loadingMsg').subscribe((res: string) => {
-      this.loadingMsg = res;
-    });
-  }
+  ) { }
 
   ngOnInit() {
     this.explorer.getUnconfirmedTransactions().subscribe(transactions => {
@@ -35,11 +29,9 @@ export class UnconfirmedTransactionsComponent implements OnInit {
         this.leastRecent = orderedList[orderedList.length - 1].timestamp;
         this.totalSize = orderedList.map(tx => tx.length).reduce((sum, current) => sum + current);
       }
-    }, error => {
-      this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
-        this.loadingMsg = res['general.shortLoadingErrorMsg'];
-        this.longErrorMsg = res['general.longLoadingErrorMsg'];
-      });
+    }, () => {
+      this.loadingMsg = 'general.shortLoadingErrorMsg';
+      this.longErrorMsg = 'general.longLoadingErrorMsg';
     });
   }
 }

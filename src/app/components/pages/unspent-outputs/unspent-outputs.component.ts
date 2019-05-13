@@ -16,18 +16,14 @@ export class UnspentOutputsComponent implements OnInit {
   outputs: GetCurrentBalanceResponse;
   coins: BigNumber = null;
   hours: BigNumber = null;
-  loadingMsg = '';
+  loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
 
   constructor(
     private api: ApiService,
     private route: ActivatedRoute,
     private translate: TranslateService
-  ) {
-    translate.get('general.loadingMsg').subscribe((res: string) => {
-      this.loadingMsg = res;
-    });
-  }
+  ) { }
 
   ngOnInit() {
     this.route.params.pipe(switchMap((params: Params) => {
@@ -43,15 +39,11 @@ export class UnspentOutputsComponent implements OnInit {
       response.head_outputs.map(o => this.hours = this.hours.plus(o.calculated_hours));
     }, error => {
       if (error.status >= 400 && error.status < 500) {
-        this.translate.get(['general.noData', 'unspentOutputs.withoutOutputs']).subscribe((res: string[]) => {
-          this.loadingMsg = res['general.noData'];
-          this.longErrorMsg = res['unspentOutputs.withoutOutputs'];
-        });
+        this.loadingMsg = 'general.noData';
+        this.longErrorMsg = 'unspentOutputs.withoutOutputs';
       } else {
-        this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
-          this.loadingMsg = res['general.shortLoadingErrorMsg'];
-          this.longErrorMsg = res['general.longLoadingErrorMsg'];
-        });
+        this.loadingMsg = 'general.shortLoadingErrorMsg';
+        this.longErrorMsg = 'general.longLoadingErrorMsg';
       }
     });
   }

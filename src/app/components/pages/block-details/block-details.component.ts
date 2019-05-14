@@ -1,10 +1,8 @@
+import { switchMap, filter, first } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Block } from '../../../app.datatypes';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
-import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/services/api/api.service';
 
 @Component({
@@ -14,50 +12,39 @@ import { ApiService } from 'app/services/api/api.service';
 })
 export class BlockDetailsComponent implements OnInit {
   block: Block;
-  loadingMsg = '';
+  loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
   blockCount: number;
+  blockID = '';
 
   constructor(
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-    private translate: TranslateService,
     private api: ApiService,
-  ) {
-    translate.get('general.loadingMsg').subscribe((res: string) => {
-      this.loadingMsg = res;
-    });
-  }
+  ) { }
 
   ngOnInit() {
 
-    this.api.getBlockchainMetadata().first().subscribe(blockchain => this.blockCount = blockchain.blocks);
+    this.api.getBlockchainMetadata().pipe(first()).subscribe(blockchain => this.blockCount = blockchain.blocks);
 
-    let blockID = '';
-    this.route.params.filter(params => +params['id'] !== null)
-      .switchMap((params: Params) => {
-        blockID = params['id'];
-        return this.explorer.getBlock(+blockID);
-      }).subscribe((block: Block) => {
+    this.route.params.pipe(filter(params => +params['id'] !== null),
+      switchMap((params: Params) => {
+        this.blockID = params['id'];
+        return this.explorer.getBlock(+this.blockID);
+      })).subscribe((block: Block) => {
         if (block != null) {
           this.block = block;
         } else {
-          this.translate.get(['general.noData', 'blockDetails.doesNotExist'], {number: blockID}).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.noData'];
-            this.longErrorMsg = res['blockDetails.doesNotExist'];
-          });
+          this.loadingMsg = 'general.noData';
+          this.longErrorMsg = 'blockDetails.doesNotExist';
         }
       }, error => {
         if (error.status >= 400 && error.status < 500) {
-          this.translate.get(['general.noData', 'blockDetails.doesNotExist'], {number: blockID}).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.noData'];
-            this.longErrorMsg = res['blockDetails.doesNotExist'];
-          });
+          this.loadingMsg = 'general.noData';
+          this.longErrorMsg = 'blockDetails.doesNotExist';
         } else {
-          this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.shortLoadingErrorMsg'];
-            this.longErrorMsg = res['general.longLoadingErrorMsg'];
-          });
+          this.loadingMsg = 'general.shortLoadingErrorMsg';
+          this.longErrorMsg = 'general.longLoadingErrorMsg';
         }
 
       });

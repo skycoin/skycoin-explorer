@@ -90,12 +90,18 @@ h2 {
 
   .row {
     margin-bottom: 0;
+
+    .-row {
+      >div {
+        margin-top: 5px;
+      }
+    }
   }
 
   .-title {
     background-color: $col-odd-background;
     font-weight: 700;
-    padding: $siz-normal-margin $siz-big-margin;
+    padding: ($siz-normal-margin - 5) $siz-big-margin $siz-normal-margin $siz-big-margin;
 
     a {
       color: $primary;
@@ -103,6 +109,7 @@ h2 {
     }
     .-date {
       text-align: right;
+      margin-top: 5px;
     }
     .-label {
       display: inline-block;
@@ -134,6 +141,7 @@ h2 {
       }
       .-date {
         text-align: left;
+        margin-top: unset;
       }
       .-inline-block {
         display: inline;

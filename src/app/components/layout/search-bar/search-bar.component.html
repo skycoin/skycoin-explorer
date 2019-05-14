@@ -1,7 +1,10 @@
 <form (submit)="search()">
-  <div class="-search-bar-container">
-    <img src="/assets/img/search.png" (click)="search()" *ngIf="!searching" />
-    <i class="fa fa-spinner fa-spin fa-fw" *ngIf="searching"></i>
-    <input [(ngModel)]="query" name="query" placeholder="{{ 'searchBar.hint' | translate }}">
+  <div class="general-container">
+    <div class="search-bar-container">
+      <img src="/assets/img/search.png" (click)="search()" *ngIf="!searching" />
+      <i class="fa fa-spinner fa-spin fa-fw" *ngIf="searching"></i>
+      <input [(ngModel)]="query" name="query" placeholder="{{ 'searchBar.hint' | translate }}">
+    </div>
+    <app-language-selection></app-language-selection>
   </div>
 </form>

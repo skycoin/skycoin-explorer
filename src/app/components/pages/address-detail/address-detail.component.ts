@@ -1,11 +1,11 @@
+import { of as observableOf } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/Rx';
-import { TranslateService } from '@ngx-translate/core';
 import { BigNumber } from 'bignumber.js';
+import { Transaction } from 'app/app.datatypes';
 
 @Component({
   selector: 'app-address-detail',
@@ -18,11 +18,13 @@ export class AddressDetailComponent implements OnInit {
   totalSent: BigNumber;
   balance: BigNumber;
   hoursBalance: BigNumber;
-  transactions: any[];
+  pendingBalance: BigNumber;
+  pendingHoursBalance: BigNumber;
+  transactions: Transaction[];
   pageTransactions: any[];
   pageIndex = 0;
   pageSize = 25;
-  loadingMsg = '';
+  loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
 
   get pageCount() {
@@ -32,16 +34,11 @@ export class AddressDetailComponent implements OnInit {
   constructor(
     private api: ApiService,
     private explorer: ExplorerService,
-    private route: ActivatedRoute,
-    private translate: TranslateService
-  ) {
-    translate.get('general.loadingMsg').subscribe((res: string) => {
-      this.loadingMsg = res;
-    });
-  }
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    this.route.params.switchMap((params: Params) => {
+    this.route.params.pipe(switchMap((params: Params) => {
       // Clear the content if the address, and not just the page, changes
       if (this.address !== params['address']) {
         this.transactions = undefined;
@@ -58,43 +55,41 @@ export class AddressDetailComponent implements OnInit {
       this.pageTransactions = undefined;
 
       if (this.transactions) {
-        return Observable.of(this.transactions);
+        return observableOf(this.transactions);
       } else {
         return this.explorer.getTransactions(this.address);
       }
 
-    }).subscribe(
+    })).subscribe(
       transactions => {
         this.transactions = transactions;
 
         this.totalReceived = new BigNumber(0);
-        transactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) ? tx.balance : 0));
+        transactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) && tx.status ? tx.balance : 0));
 
         this.totalSent = new BigNumber(0);
-        transactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) ? tx.balance : 0));
+        transactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) && tx.status ? tx.balance : 0));
         this.totalSent = this.totalSent.negated();
 
         this.updateTransactions();
       },
       error => {
         if (error.status >= 400 && error.status < 500) {
-          this.translate.get(['general.noData', 'addressDetail.withoutTransactions']).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.noData'];
-            this.longErrorMsg = res['addressDetail.withoutTransactions'];
-          });
+          this.loadingMsg = 'general.noData';
+          this.longErrorMsg = 'addressDetail.withoutTransactions';
         } else {
-          this.translate.get(['general.shortLoadingErrorMsg', 'general.longLoadingErrorMsg']).subscribe((res: string[]) => {
-            this.loadingMsg = res['general.shortLoadingErrorMsg'];
-            this.longErrorMsg = res['general.longLoadingErrorMsg'];
-          });
+          this.loadingMsg = 'general.shortLoadingErrorMsg';
+          this.longErrorMsg = 'general.longLoadingErrorMsg';
         }
       }
     );
 
-    this.route.params.switchMap((params: Params) => this.api.getBalance(params['address']))
+    this.route.params.pipe(switchMap((params: Params) => this.api.getBalance(params['address'])))
       .subscribe(response => {
         this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
         this.hoursBalance = new BigNumber(response.confirmed.hours);
+        this.pendingBalance = new BigNumber(response.predicted.coins).dividedBy(1000000).minus(this.balance);
+        this.pendingHoursBalance = new BigNumber(response.predicted.hours).minus(this.hoursBalance);
       });
   }
 

@@ -1,5 +1,6 @@
+import { throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import { ExplorerService } from '../explorer/explorer.service';
 
@@ -24,20 +25,20 @@ export class SearchService {
     searchTerm = encodeURIComponent(searchTerm);
 
     if (searchTerm.length >= 27 && searchTerm.length <= 35) {
-      response.resultNavCommands = Observable.of(['/app/address', searchTerm]);
+      response.resultNavCommands = observableOf(['/app/address', searchTerm]);
     } else if (searchTerm.length === 64) {
-      response.resultNavCommands = this.explorer.getBlockByHash(searchTerm)
-        .map(block => ['/app/block', block.id.toString()])
-        .catch((error: any) => {
+      response.resultNavCommands = this.explorer.getBlockByHash(searchTerm).pipe(
+        map(block => ['/app/block', block.id.toString()]),
+        catchError((error: any) => {
           if (error && error.status && error.status === 404) {
-            return Observable.of(['/app/transaction', searchTerm]);
+            return observableOf(['/app/transaction', searchTerm]);
           } else {
-            return Observable.throw(error);
+            return observableThrowError(error);
           }
-        });
+        }));
     } else {
       if (parseInt(searchTerm, 10).toString() === searchTerm && parseInt(searchTerm, 10) >= 0) {
-        response.resultNavCommands = Observable.of(['/app/block', searchTerm]);
+        response.resultNavCommands = observableOf(['/app/block', searchTerm]);
       } else {
         response.error = SearchError.InvalidSearchTerm;
       }

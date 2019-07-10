@@ -1,25 +1,23 @@
 {
   "general": {
-    "coinIdentifier": "SKY",
     "address": "Address",
     "coins": "Coins",
-    "iniialHours": "Initial Hours",
-    "calculatedHours": "Final Hours",
-    "currentHours": "Current Hours",
     "hours": "Hours",
-    "pending": "pending",
     "loadingMsg": "Loading...",
     "shortLoadingErrorMsg": "Loading error",
-    "longLoadingErrorMsg": "Error loading data, try again later...",
+    "longLoadingErrorMsg": "Error loading data. Please try again later...",
     "waitingData": "Waiting for data...",
     "noData": "No data to show"
   },
   "txBoxes": {
-    "transactionID": "Transaction ID",
+    "pendingTransaction": "pending",
+    "transactionIDShortLabel": "Transaction ID",
     "inputs": "Inputs",
     "outputs": "Outputs",
+    "hoursWhenCreated": "Initial Hours",
+    "hoursWhenUsed": "Final Hours",
     "date": "Date",
-    "balance": "More info",
+    "moreInfo": "More info",
     "fee": "Transaction fee (in hours)",
     "initialBalance": "Initial coins balance",
     "finalBalance": "Final coins balance",
@@ -39,15 +37,15 @@
     "unconfirmedTransactions": "Unconfirmed Transactions",
     "richList": "Rich List",
     "time": "Time",
-    "blockNumber": "Block Number",
-    "blockNumberSmall": "Block #",
-    "transactions": "Transactions",
-    "blockhash": "Blockhash"
+    "blockNumberShortLabel": "Block Number",
+    "blockNumberVeryShortLabel": "Block #",
+    "transactionsShortLabel": "Transactions",
+    "blockhashShortLabel": "Blockhash"
   },
   "blockDetails": {
     "title": "Block Details",
-    "next": "Next block",
-    "previous": "Previous block",
+    "goToNext": "Next block",
+    "goToPrevious": "Previous block",
     "height": "Height",
     "timestamp": "Timestamp",
     "size": "Size",
@@ -66,7 +64,9 @@
     "hoursBalance": "Current Hours",
     "tools": "Tools",
     "unspentOutputs": "Unspent outputs",
-    "withoutTransactions": "Without transactions"
+    "withoutTransactions": "Without transactions",
+    "singularPendingCoin": "pending",
+    "pluralPendingCoins": "pending"
   },
   "unspentOutputs": {
     "title": "Unspent Outputs",
@@ -76,7 +76,9 @@
     "totalHours": "Total Hours",
     "origin": "Origin",
     "date": "Date",
-    "withoutOutputs": "Without outputs"
+    "withoutOutputs": "Without outputs",
+    "hoursWhenCreated": "Initial Hours",
+    "currentHours": "Current Hours"
   },
   "transactionDetail": {
     "title": "Transaction",

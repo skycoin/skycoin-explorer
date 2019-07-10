@@ -1,6 +1,6 @@
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
@@ -12,7 +12,7 @@ import { Transaction } from 'app/app.datatypes';
   templateUrl: './address-detail.component.html',
   styleUrls: ['./address-detail.component.scss']
 })
-export class AddressDetailComponent implements OnInit {
+export class AddressDetailComponent implements OnInit, OnDestroy {
   address: string;
   totalReceived: BigNumber;
   totalSent: BigNumber;
@@ -27,6 +27,8 @@ export class AddressDetailComponent implements OnInit {
   loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
 
+  private pageSubscriptions: Subscription[] = [];
+
   get pageCount() {
     return Math.ceil(this.transactions.length / this.pageSize);
   }
@@ -38,7 +40,7 @@ export class AddressDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.pipe(switchMap((params: Params) => {
+    this.pageSubscriptions.push(this.route.params.pipe(switchMap((params: Params) => {
       // Clear the content if the address, and not just the page, changes
       if (this.address !== params['address']) {
         this.transactions = undefined;
@@ -82,15 +84,19 @@ export class AddressDetailComponent implements OnInit {
           this.longErrorMsg = 'general.longLoadingErrorMsg';
         }
       }
-    );
+    ));
 
-    this.route.params.pipe(switchMap((params: Params) => this.api.getBalance(params['address'])))
+    this.pageSubscriptions.push(this.route.params.pipe(switchMap((params: Params) => this.api.getBalance(params['address'])))
       .subscribe(response => {
         this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
         this.hoursBalance = new BigNumber(response.confirmed.hours);
         this.pendingBalance = new BigNumber(response.predicted.coins).dividedBy(1000000).minus(this.balance);
         this.pendingHoursBalance = new BigNumber(response.predicted.hours).minus(this.hoursBalance);
-      });
+      }));
+  }
+
+  ngOnDestroy() {
+    this.pageSubscriptions.forEach(sub => sub.unsubscribe());
   }
 
   updateTransactions() {

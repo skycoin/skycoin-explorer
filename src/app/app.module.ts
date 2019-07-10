@@ -17,7 +17,6 @@ import { AddressDetailComponent } from './components/pages/address-detail/addres
 import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
 import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
-import { FormsModule } from '@angular/forms';
 import { RichlistComponent } from 'app/components/pages/richlist/richlist.component';
 import { UnspentOutputsComponent } from 'app/components/pages/unspent-outputs/unspent-outputs.component';
 import { CopyButtonComponent } from 'app/components/layout/copy-button/copy-button.component';
@@ -27,13 +26,14 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { AppTranslateLoader } from 'app/app.translate-loader';
 import { GenericHeaderComponent } from 'app/components/layout/generic-header/generic-header.component';
 import { GenericFooterComponent } from 'app/components/layout/generic-footer/generic-footer.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { DateFormatterComponent } from 'app/components/layout/date-formatter/date-formatter.component';
 import { SearchService } from './services/search/search.service';
 import { SearchComponent } from './components/pages/search/search.component';
 import { TransactionInfoComponent } from './components/layout/transaction-info/transaction-info.component';
 import { LanguageService } from 'app/services/language/language.service';
 import { LanguageSelectionComponent } from 'app/components/layout/language-selection/language-selection.component';
+import { AmountPipe } from 'app/pipes/amount.pipe';
 
 
 const ROUTES = [
@@ -113,11 +113,11 @@ const ROUTES = [
     SearchComponent,
     TransactionInfoComponent,
     LanguageSelectionComponent,
+    AmountPipe,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES),
     TranslateModule.forRoot({
@@ -134,6 +134,7 @@ const ROUTES = [
     LanguageService,
     {provide: RouteReuseStrategy, useClass: AppReuseStrategy},
     DatePipe,
+    DecimalPipe,
   ],
   bootstrap: [AppComponent]
 })

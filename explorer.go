@@ -1124,18 +1124,39 @@ var apiEndpoints = []APIEndpoint{
           "time_since_last_block": "4m46s"
       },
       "version": {
-          "version": "0.24.1",
+          "version": "0.25.0",
           "commit": "8798b5ee43c7ce43b9b75d57a1a6cd2c1295cd1e",
           "branch": "develop"
       },
+      "coin": "skycoin",
+      "user_agent": "skycoin:0.25.0",
       "open_connections": 8,
+      "outgoing_connections": 5,
+      "incoming_connections": 3,
       "uptime": "6m30.629057248s",
       "csrf_enabled": true,
       "csp_enabled": true,
       "wallet_api_enabled": true,
       "gui_enabled": true,
-      "unversioned_api_enabled": false,
-      "json_rpc_enabled": false
+      "user_verify_transaction": {
+          "burn_factor": 10,
+          "max_transaction_size": 32768,
+          "max_decimals": 3
+      },
+      "unconfirmed_verify_transaction": {
+          "burn_factor": 10,
+          "max_transaction_size": 32768,
+          "max_decimals": 3
+      },
+      "started_at": 1542443907,
+      "fiber": {
+          "name": "skycoin",
+          "display_name": "Skycoin",
+          "ticker": "SKY",
+          "coin_hours_display_name": "Coin Hours",
+          "coin_hours_ticker": "SCH",
+          "explorer_url": "https://explorer.skycoin.net"
+      }
 }`,
 	},
 }

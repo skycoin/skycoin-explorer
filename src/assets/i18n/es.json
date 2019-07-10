@@ -1,25 +1,23 @@
 {
   "general": {
-    "coinIdentifier": "SKY",
     "address": "Dirección",
     "coins": "Monedas",
-    "iniialHours": "Horas Iniciales",
-    "calculatedHours": "Horas Finales",
-    "currentHours": "Horas Actuales",
     "hours": "Horas",
-    "pending": "pendiente",
     "loadingMsg": "Cargando...",
     "shortLoadingErrorMsg": "Error de carga",
-    "longLoadingErrorMsg": "Error al cargar los datos, inténtelo más tarde...",
+    "longLoadingErrorMsg": "Error al cargar los datos. Por favor inténtelo más tarde...",
     "waitingData": "Esperando por los datos...",
     "noData": "No hay datos para mostrar"
   },
   "txBoxes": {
-    "transactionID": "ID de la transacción",
+    "pendingTransaction": "pendiente",
+    "transactionIDShortLabel": "ID de la transacción",
     "inputs": "Entradas",
     "outputs": "Salidas",
+    "hoursWhenCreated": "Horas Iniciales",
+    "hoursWhenUsed": "Horas Finales",
     "date": "Fecha",
-    "balance": "Más info",
+    "moreInfo": "Más info",
     "fee": "Tarifa de transacción (en horas)",
     "initialBalance": "Saldo inicial de monedas",
     "finalBalance": "Saldo final de monedas",
@@ -39,15 +37,15 @@
     "unconfirmedTransactions": "Transacciones Sin Confirmar",
     "richList": "Top de Direcciones",
     "time": "Fecha",
-    "blockNumber": "Número de bloque",
-    "blockNumberSmall": "#",
-    "transactions": "Transacciones",
-    "blockhash": "Hash"
+    "blockNumberShortLabel": "Número de bloque",
+    "blockNumberVeryShortLabel": "#",
+    "transactionsShortLabel": "Transacciones",
+    "blockhashShortLabel": "Hash"
   },
   "blockDetails": {
     "title": "Detalles del bloque",
-    "next": "Bloque siguiente",
-    "previous": "Bloque anterior",
+    "goToNext": "Bloque siguiente",
+    "goToPrevious": "Bloque anterior",
     "height": "Altura",
     "timestamp": "Fecha",
     "size": "Tamaño",
@@ -66,7 +64,9 @@
     "hoursBalance": "Horas Actuales",
     "tools": "Herramientas",
     "unspentOutputs": "Salidas no Gastadas",
-    "withoutTransactions": "Sin transacciones"
+    "withoutTransactions": "Sin transacciones",
+    "singularPendingCoin": "pendiente",
+    "pluralPendingCoins": "pendientes"
   },
   "unspentOutputs": {
     "title": "Salidas No Gastadas",
@@ -76,7 +76,9 @@
     "totalHours": "Horas Totales",
     "origin": "Origen",
     "date": "Fecha",
-    "withoutOutputs": "Sin salidas no gastadas"
+    "withoutOutputs": "Sin salidas no gastadas",
+    "hoursWhenCreated": "Horas Iniciales",
+    "currentHours": "Horas Actuales"
   },
   "transactionDetail": {
     "title": "Transacción",

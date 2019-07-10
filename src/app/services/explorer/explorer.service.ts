@@ -8,9 +8,34 @@ import { BigNumber } from 'bignumber.js';
 @Injectable()
 export class ExplorerService {
 
+  internalFullCoinName = ' ';
+  internalCoinName = ' ';
+  internalHoursName = ' ';
+  internalMaxDecimals = 6;
+
+  get fullCoinName(): string {
+    return this.internalFullCoinName;
+  }
+  get coinName(): string {
+    return this.internalCoinName;
+  }
+  get hoursName(): string {
+    return this.internalHoursName;
+  }
+  get maxDecimals(): number {
+    return this.internalMaxDecimals;
+  }
+
   constructor(
     private api: ApiService,
-  ) { }
+  ) {
+    this.api.getHealth().subscribe(response => {
+      this.internalFullCoinName = response.fiber.display_name;
+      this.internalCoinName = response.fiber.ticker;
+      this.internalHoursName = response.fiber.coin_hours_display_name;
+      this.internalMaxDecimals = response.user_verify_transaction.max_decimals;
+    });
+  }
 
   getBlock(id: number): Observable<Block> {
    return this.api.getBlockById(id).pipe(map(response => parseGenericBlock(response)));

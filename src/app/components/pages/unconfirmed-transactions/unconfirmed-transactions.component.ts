@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Transaction } from '../../../app.datatypes';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-unconfirmed-transactions',
   templateUrl: './unconfirmed-transactions.component.html',
   styleUrls: ['./unconfirmed-transactions.component.scss']
 })
-export class UnconfirmedTransactionsComponent implements OnInit {
+export class UnconfirmedTransactionsComponent implements OnInit, OnDestroy {
 
   transactions: Transaction[];
   leastRecent: number;
@@ -16,12 +17,14 @@ export class UnconfirmedTransactionsComponent implements OnInit {
   loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
 
+  private pageSubscriptions: Subscription[] = [];
+
   constructor(
     private explorer: ExplorerService,
   ) { }
 
   ngOnInit() {
-    this.explorer.getUnconfirmedTransactions().subscribe(transactions => {
+    this.pageSubscriptions.push(this.explorer.getUnconfirmedTransactions().subscribe(transactions => {
       this.transactions = transactions;
       if (transactions.length > 0) {
         const orderedList = transactions.sort((a, b) => b.timestamp - a.timestamp);
@@ -32,6 +35,10 @@ export class UnconfirmedTransactionsComponent implements OnInit {
     }, () => {
       this.loadingMsg = 'general.shortLoadingErrorMsg';
       this.longErrorMsg = 'general.longLoadingErrorMsg';
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.pageSubscriptions.forEach(sub => sub.unsubscribe());
   }
 }

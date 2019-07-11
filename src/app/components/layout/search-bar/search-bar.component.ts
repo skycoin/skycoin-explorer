@@ -46,7 +46,7 @@ export class SearchBarComponent implements OnDestroy {
     }
 
     this.operationSubscription = navCommands.resultNavCommands.subscribe(
-      result => { this.searching = false; this.router.navigate(result); },
+      result => { this.searching = false; this.router.navigate(result); this.input.nativeElement.value = ''; },
       () => this.searching = false
     );
   }

@@ -25,7 +25,7 @@ export class AmountPipe implements PipeTransform {
       }
     }
     if (partToReturn !== 'first') {
-      response += showingCoins ? this.explorerService.coinName : this.explorerService.hoursName;
+      response += showingCoins ? this.explorerService.coinName : (Number(value) === 1 || Number(value) === -1 ? this.explorerService.hoursNameSingular : this.explorerService.hoursName);
     }
 
     return response;

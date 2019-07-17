@@ -11,6 +11,7 @@ export class ExplorerService {
   internalFullCoinName = ' ';
   internalCoinName = ' ';
   internalHoursName = ' ';
+  internalHoursNameSingular = ' ';
   internalMaxDecimals = 6;
 
   get fullCoinName(): string {
@@ -21,6 +22,9 @@ export class ExplorerService {
   }
   get hoursName(): string {
     return this.internalHoursName;
+  }
+  get hoursNameSingular(): string {
+    return this.internalHoursNameSingular;
   }
   get maxDecimals(): number {
     return this.internalMaxDecimals;
@@ -33,6 +37,7 @@ export class ExplorerService {
       this.internalFullCoinName = response.fiber.display_name;
       this.internalCoinName = response.fiber.ticker;
       this.internalHoursName = response.fiber.coin_hours_display_name;
+      this.internalHoursNameSingular = response.fiber.coin_hours_display_name_singular;
       this.internalMaxDecimals = response.user_verify_transaction.max_decimals;
     });
   }

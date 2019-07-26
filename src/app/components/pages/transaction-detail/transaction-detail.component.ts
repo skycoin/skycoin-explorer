@@ -1,19 +1,22 @@
 import { mergeMap } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Transaction } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-transaction-detail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit {
+export class TransactionDetailComponent implements OnInit, OnDestroy {
 
   transaction: Transaction;
   loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
+
+  private pageSubscriptions: Subscription[] = [];
 
   constructor(
     private explorer: ExplorerService,
@@ -21,7 +24,7 @@ export class TransactionDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.pipe(mergeMap((params: Params) => this.explorer.getTransaction(params['txid'])))
+    this.pageSubscriptions.push(this.route.params.pipe(mergeMap((params: Params) => this.explorer.getTransaction(params['txid'])))
       .subscribe(
         transaction => this.transaction = transaction,
         error => {
@@ -33,6 +36,10 @@ export class TransactionDetailComponent implements OnInit {
             this.longErrorMsg = 'general.longLoadingErrorMsg';
           }
         }
-      );
+      ));
+  }
+
+  ngOnDestroy() {
+    this.pageSubscriptions.forEach(sub => sub.unsubscribe());
   }
 }

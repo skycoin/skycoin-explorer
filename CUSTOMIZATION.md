@@ -2,6 +2,10 @@
 
 The explorer is designed in such a way that it is possible to make simple customizations with relative ease.
 
+## Basic identifiers
+
+The explorer automatically obtains from the node the name of the coins and hours. If, for example, the explorer is connected to a Skycoin node, it will automatically get the "SKY" name from the node and use it to identify the amounts of coins.
+
 ## QR codes
 
 To simplify copying addresses with mobile devices, the explorer shows qr codes. The qr codes contain the addresses prefixed with the name of the coin, in this way: `skycoin:abcd...` (More information in this link: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki). If needed, the `skycoin:` prefix can be changed by modifying the value of `QrConfig.prefix`, inside [app.config.ts](src/app/app.config.ts).

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 import { SearchService, SearchError } from '../../../services/search/search.service';
 
@@ -9,9 +10,12 @@ import { SearchService, SearchError } from '../../../services/search/search.serv
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent {
-  query: string;
+export class SearchBarComponent implements OnDestroy {
+  @ViewChild('input') input: ElementRef;
+
   searching = false;
+
+  private operationSubscription: Subscription;
 
   constructor(
     public searchService: SearchService,
@@ -19,9 +23,15 @@ export class SearchBarComponent {
     private translate: TranslateService,
   ) { }
 
+  ngOnDestroy() {
+    if (this.operationSubscription && !this.operationSubscription.closed) {
+      this.operationSubscription.unsubscribe();
+    }
+  }
+
   search() {
-    if (!this.query) { return; }
-    const hashVal = this.query.trim();
+    if (this.searching) { return; }
+    const hashVal = this.input.nativeElement.value.trim();
     if (hashVal.length < 1) { return; }
 
     this.searching = true;
@@ -35,10 +45,9 @@ export class SearchBarComponent {
       return;
     }
 
-    navCommands.resultNavCommands.subscribe(
-      result => { this.searching = false; this.router.navigate(result); },
+    this.operationSubscription = navCommands.resultNavCommands.subscribe(
+      result => { this.searching = false; this.router.navigate(result); this.input.nativeElement.value = ''; },
       () => this.searching = false
     );
-    this.query = null;
   }
 }

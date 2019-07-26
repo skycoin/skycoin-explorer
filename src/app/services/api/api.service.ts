@@ -14,6 +14,10 @@ export class ApiService {
     private http: HttpClient
   ) { }
 
+  getHealth(): Observable<any> {
+    return this.get('health');
+  }
+
   getAddress(address: string): Observable<GetTransactionResponse[]> {
     return this.get('transactions', { addrs: address, verbose: 1 });
   }

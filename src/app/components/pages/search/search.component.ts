@@ -1,16 +1,19 @@
 import { first } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { SearchService, SearchError } from '../../../services/search/search.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './search.component.html',
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
 
   searchTerm = '';
   errorMsg: string;
+
+  private pageSubscriptions: Subscription[] = [];
 
   constructor(
     private searchService: SearchService,
@@ -19,7 +22,7 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.params.pipe(first())
+    this.pageSubscriptions.push(this.route.params.pipe(first())
       .subscribe((params: Params) => {
         if (!params['term'] || (params['term'].trim() as string).length < 1) {
           this.errorMsg = 'search.unableToFind';
@@ -34,10 +37,14 @@ export class SearchComponent implements OnInit {
           return;
         }
 
-        navCommands.resultNavCommands.subscribe(
+        this.pageSubscriptions.push(navCommands.resultNavCommands.subscribe(
           result => this.router.navigate(result, { replaceUrl: true }),
           err => this.errorMsg = 'search.unableToFind'
-        );
-      });
+        ));
+      }));
+  }
+
+  ngOnDestroy() {
+    this.pageSubscriptions.forEach(sub => sub.unsubscribe());
   }
 }

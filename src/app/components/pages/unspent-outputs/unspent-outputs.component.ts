@@ -1,23 +1,26 @@
 import { switchMap } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { GetCurrentBalanceResponse } from '../../../app.datatypes';
 import { TranslateService } from '@ngx-translate/core';
 import { BigNumber } from 'bignumber.js';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-unspent-outputs',
   templateUrl: './unspent-outputs.component.html',
   styleUrls: ['./unspent-outputs.component.scss']
 })
-export class UnspentOutputsComponent implements OnInit {
+export class UnspentOutputsComponent implements OnInit, OnDestroy {
   address: string;
   outputs: GetCurrentBalanceResponse;
   coins: BigNumber = null;
   hours: BigNumber = null;
   loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
+
+  private pageSubscriptions: Subscription[] = [];
 
   constructor(
     private api: ApiService,
@@ -26,7 +29,7 @@ export class UnspentOutputsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.pipe(switchMap((params: Params) => {
+    this.pageSubscriptions.push(this.route.params.pipe(switchMap((params: Params) => {
       this.address = params['address'];
       return this.api.getCurrentBalance(params['address']);
     })).subscribe(response => {
@@ -45,6 +48,10 @@ export class UnspentOutputsComponent implements OnInit {
         this.loadingMsg = 'general.shortLoadingErrorMsg';
         this.longErrorMsg = 'general.longLoadingErrorMsg';
       }
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.pageSubscriptions.forEach(sub => sub.unsubscribe());
   }
 }

@@ -3,8 +3,8 @@
   <div class="element-details">
     <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link -copy-button-margin" *ngIf="address">{{ address }}</a> <app-copy-button [text]="address" *ngIf="address"></app-copy-button> <span *ngIf="!address">{{ loadingMsg  | translate }}</span> </div></div>
     <div class="-row"><span>{{ 'unspentOutputs.outputsNumber' | translate }}</span><br class="-xs-only" /><div> {{ outputs ? outputs.head_outputs.length : (loadingMsg  | translate) }} </div></div>
-    <div class="-row"><span>{{ 'unspentOutputs.totalCoins' | translate }}</span><br class="-xs-only" /><div> {{ coins != null ? (coins.decimalPlaces(6).toString() | number:'1.0-6') + ' ' + ('general.coinIdentifier' | translate) : (loadingMsg  | translate) }} </div></div>
-    <div class="-row"><span>{{ 'unspentOutputs.totalHours' | translate }}</span><br class="-xs-only" /><div> {{ hours != null ? (hours.decimalPlaces(0).toString() | number:'1.0-0') : (loadingMsg  | translate) }} </div></div>
+    <div class="-row"><span>{{ 'unspentOutputs.totalCoins' | translate }}</span><br class="-xs-only" /><div> {{ coins != null ? (coins.toString() | amount:true) : (loadingMsg  | translate) }} </div></div>
+    <div class="-row"><span>{{ 'unspentOutputs.totalHours' | translate }}</span><br class="-xs-only" /><div> {{ hours != null ? (hours.toString() | amount:false) : (loadingMsg  | translate) }} </div></div>
   </div>
 </div>
 
@@ -29,9 +29,9 @@
         <div class="col-sm-12">
           <div class="-body">
             <div>{{ output.hash }}</div>
-            <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | number:'1.0-6' }}</div></div>
-            <div class="-balance"><div class="-transparent -float-left">{{ 'general.iniialHours' | translate }}:&nbsp;</div><div> {{ output.hours | number:'1.0-0' }}</div></div>
-            <div class="-balance"><div class="-transparent -float-left">{{ 'general.currentHours' | translate }}:&nbsp;</div><div> {{ output.calculated_hours | number:'1.0-0' }}</div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'general.coins' | translate }}:&nbsp;</div><div> {{ output.coins | amount:true:'first' }}</div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'unspentOutputs.hoursWhenCreated' | translate }}:&nbsp;</div><div> {{ output.hours | amount:false:'first' }}</div></div>
+            <div class="-balance"><div class="-transparent -float-left">{{ 'unspentOutputs.currentHours' | translate }}:&nbsp;</div><div> {{ output.calculated_hours | amount:false:'first' }}</div></div>
           </div>
         </div>
       </div>

@@ -1,15 +1,16 @@
 import { first } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { Block } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './blocks.component.html',
   styleUrls: ['./blocks.component.scss']
 })
-export class BlocksComponent implements OnInit {
+export class BlocksComponent implements OnInit, OnDestroy {
 
   blocks: Block[] = [];
   currentSupply: number;
@@ -25,6 +26,9 @@ export class BlocksComponent implements OnInit {
 
   mouseOver = -1;
 
+  private pageSubscriptions: Subscription[] = [];
+  private getBlocksSubscription: Subscription;
+
   get pageCount() {
     return Math.ceil(this.blockCount / this.pageSize);
   }
@@ -38,33 +42,46 @@ export class BlocksComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.api.getBlockchainMetadata().pipe(first()).subscribe(blockchain => {
+    this.pageSubscriptions.push(this.api.getBlockchainMetadata().pipe(first()).subscribe(blockchain => {
       this.blockCount = blockchain.blocks;
-      this.route.paramMap
+      this.pageSubscriptions.push(this.route.paramMap
         .subscribe(params => {
           const pageIndex = parseInt(params.get('page'), 10) - 1;
           this.navigate(pageIndex);
-        });
+        }));
     }, () => {
       this.loadingMetadataMsg = 'general.shortLoadingErrorMsg';
       this.longErrorMsg = 'general.longLoadingErrorMsg';
-    });
+    }));
 
-    this.api.getCoinSupply().pipe(first()).subscribe(response => {
+    this.pageSubscriptions.push(this.api.getCoinSupply().pipe(first()).subscribe(response => {
       this.currentSupply = response.current_supply;
       this.totalSupply = response.total_supply;
       this.currentCoinhourSupply = response.current_coinhour_supply;
       this.totalCoinhourSupply = response.total_coinhour_supply;
     }, () => {
       this.loadingCoinSupplyMsg = 'general.shortLoadingErrorMsg';
-    });
+    }));
 
   }
 
+  ngOnDestroy() {
+    this.pageSubscriptions.forEach(sub => sub.unsubscribe());
+    this.removeGetBlocksSubscription();
+  }
+
   navigate(pageIndex) {
+    this.removeGetBlocksSubscription();
+
     this.pageIndex = pageIndex;
     const end = this.blockCount - (this.pageIndex * this.pageSize);
     const begin = end - this.pageSize + 1;
-    this.explorer.getBlocks(begin > 0 ? begin : 0, end > 0 ? end : 0).pipe(first()).subscribe(blocks => this.blocks = blocks);
+    this.getBlocksSubscription = this.explorer.getBlocks(begin > 0 ? begin : 0, end > 0 ? end : 0).pipe(first()).subscribe(blocks => this.blocks = blocks);
+  }
+
+  private removeGetBlocksSubscription() {
+    if (this.getBlocksSubscription) {
+      this.getBlocksSubscription.unsubscribe();
+    }
   }
 }

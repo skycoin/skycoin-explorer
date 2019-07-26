@@ -1,21 +1,24 @@
 import { switchMap, filter, first } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Block } from '../../../app.datatypes';
 import { ApiService } from 'app/services/api/api.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-block-details',
   templateUrl: './block-details.component.html',
   styleUrls: ['./block-details.component.scss']
 })
-export class BlockDetailsComponent implements OnInit {
+export class BlockDetailsComponent implements OnInit, OnDestroy {
   block: Block;
   loadingMsg = 'general.loadingMsg';
   longErrorMsg: string;
   blockCount: number;
   blockID = '';
+
+  private pageSubscriptions: Subscription[] = [];
 
   constructor(
     private explorer: ExplorerService,
@@ -25,9 +28,9 @@ export class BlockDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.api.getBlockchainMetadata().pipe(first()).subscribe(blockchain => this.blockCount = blockchain.blocks);
+    this.pageSubscriptions.push(this.api.getBlockchainMetadata().pipe(first()).subscribe(blockchain => this.blockCount = blockchain.blocks));
 
-    this.route.params.pipe(filter(params => +params['id'] !== null),
+    this.pageSubscriptions.push(this.route.params.pipe(filter(params => +params['id'] !== null),
       switchMap((params: Params) => {
         this.blockID = params['id'];
         return this.explorer.getBlock(+this.blockID);
@@ -47,6 +50,10 @@ export class BlockDetailsComponent implements OnInit {
           this.longErrorMsg = 'general.longLoadingErrorMsg';
         }
 
-      });
+      }));
+  }
+
+  ngOnDestroy() {
+    this.pageSubscriptions.forEach(sub => sub.unsubscribe());
   }
 }

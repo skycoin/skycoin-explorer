@@ -11,28 +11,28 @@
       <span>{{ 'addressDetail.totalReceived' | translate }}</span><br class="-xs-only" />
       <div>
         {{ transactions && totalReceived ? ((totalReceived.toString() | amount)) : (loadingMsg | translate) }}
-        <span *ngIf="transactions && pendingBalance && pendingBalance.isGreaterThan(0)">&nbsp;({{ (pendingBalance.toString() | amount:true:'first') + ' ' + ((pendingBalance.isEqualTo(1) || pendingBalance.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
+        <span *ngIf="transactions && pendingIncomingCoins && pendingIncomingCoins.isGreaterThan(0)">&nbsp;({{ (pendingIncomingCoins.toString() | amount:true:'first') + ' ' + ((pendingIncomingCoins.isEqualTo(1) || pendingIncomingCoins.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.totalSent' | translate }}</span><br class="-xs-only" />
       <div>
         {{ transactions && totalSent ? ((totalSent.toString() | amount)) : (loadingMsg | translate) }}
-        <span *ngIf="transactions && pendingBalance && pendingBalance.isLessThan(0)">&nbsp;({{ (pendingBalance.negated().toString() | amount:true:'first') + ' ' + ((pendingBalance.isEqualTo(1) || pendingBalance.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
+        <span *ngIf="transactions && pendingOutgoingCoins && pendingOutgoingCoins.isGreaterThan(0)">&nbsp;({{ (pendingOutgoingCoins.toString() | amount:true:'first') + ' ' + ((pendingOutgoingCoins.isEqualTo(1) || pendingOutgoingCoins.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.currentBalance' | translate }}</span><br class="-xs-only" />
       <div>
         {{ transactions && balance ? ((balance.toString() | amount)) : (loadingMsg | translate) }}
-        <span *ngIf="transactions && pendingBalance && !pendingBalance.isEqualTo(0)">&nbsp;({{ (pendingBalance.isGreaterThan(0) ? '+' : '') + (pendingBalance.toString() | amount:true:'first') + ' ' + ((pendingBalance.isEqualTo(1) || pendingBalance.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
+        <span *ngIf="transactions && pendingCoins && !pendingCoins.isEqualTo(0)">&nbsp;({{ (pendingCoins.isGreaterThan(0) ? '+' : '') + (pendingCoins.toString() | amount:true:'first') + ' ' + ((pendingCoins.isEqualTo(1) || pendingCoins.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
       </div>
     </div>
     <div class="-row">
       <span>{{ 'addressDetail.hoursBalance' | translate }}</span><br class="-xs-only" />
       <div>
         {{ transactions && hoursBalance ? ((hoursBalance.toString() | amount:false)) : (loadingMsg | translate) }}
-        <span *ngIf="transactions && pendingHoursBalance && !pendingHoursBalance.isEqualTo(0)">&nbsp;({{ (pendingHoursBalance.isGreaterThan(0) ? '+' : '') + (pendingHoursBalance.toString() | amount:false:'first') + ' ' + ((pendingHoursBalance.isEqualTo(1) || pendingHoursBalance.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
+        <span *ngIf="transactions && pendingHours && !pendingHours.isEqualTo(0)">&nbsp;({{ (pendingHours.isGreaterThan(0) ? '+' : '') + (pendingHours.toString() | amount:false:'first') + ' ' + ((pendingHours.isEqualTo(1) || pendingHours.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
       </div>
     </div>
     <div class="-row"><span>{{ 'addressDetail.tools' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/unspent/' + address" class="-link" *ngIf="address">{{ 'addressDetail.unspentOutputs' | translate }}</a> <span *ngIf="!address">{{ loadingMsg }}</span> </div></div>

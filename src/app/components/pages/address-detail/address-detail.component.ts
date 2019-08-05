@@ -5,7 +5,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { BigNumber } from 'bignumber.js';
-import { Transaction } from 'app/app.datatypes';
+import { Transaction, GetBalanceResponse, GetUnconfirmedTransactionResponse } from 'app/app.datatypes';
 
 @Component({
   selector: 'app-address-detail',
@@ -18,8 +18,10 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
   totalSent: BigNumber;
   balance: BigNumber;
   hoursBalance: BigNumber;
-  pendingBalance: BigNumber;
-  pendingHoursBalance: BigNumber;
+  pendingIncomingCoins: BigNumber;
+  pendingOutgoingCoins: BigNumber;
+  pendingCoins: BigNumber;
+  pendingHours: BigNumber;
   transactions: Transaction[];
   pageTransactions: any[];
   pageIndex = 0;
@@ -86,13 +88,63 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
       }
     ));
 
-    this.pageSubscriptions.push(this.route.params.pipe(switchMap((params: Params) => this.api.getBalance(params['address'])))
-      .subscribe(response => {
-        this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
-        this.hoursBalance = new BigNumber(response.confirmed.hours);
-        this.pendingBalance = new BigNumber(response.predicted.coins).dividedBy(1000000).minus(this.balance);
-        this.pendingHoursBalance = new BigNumber(response.predicted.hours).minus(this.hoursBalance);
-      }));
+    let routeParams: Params;
+    let balanceResponse: GetBalanceResponse;
+    this.pageSubscriptions.push(this.route.params.pipe(
+      switchMap((params: Params) => {
+        routeParams = params;
+
+        this.balance = null;
+        this.hoursBalance = null;
+        this.pendingIncomingCoins = new BigNumber(0);
+        this.pendingOutgoingCoins = new BigNumber(0);
+        this.pendingCoins = new BigNumber(0);
+        this.pendingHours = new BigNumber(0);
+
+        return this.api.getBalance(routeParams['address']);
+      }), switchMap((response: GetBalanceResponse) => {
+        balanceResponse = response;
+
+        return this.api.getUnconfirmedTransactions();
+      })
+    ).subscribe((unconfirmed: GetUnconfirmedTransactionResponse[]) => {
+      this.balance = new BigNumber(balanceResponse.confirmed.coins).dividedBy(1000000);
+      this.hoursBalance = new BigNumber(balanceResponse.confirmed.hours);
+
+      if (unconfirmed) {
+        unconfirmed.forEach(tx => {
+          let coinsOut = new BigNumber(0);
+          let hoursOut = new BigNumber(0);
+          tx.transaction.inputs.forEach(input => {
+            if (input.owner === routeParams['address']) {
+              coinsOut = coinsOut.plus(input.coins);
+              hoursOut = hoursOut.plus(input.calculated_hours);
+            }
+          });
+
+          let coinsIn = new BigNumber(0);
+          let hoursIn = new BigNumber(0);
+          tx.transaction.outputs.forEach(output => {
+            if (output.dst === routeParams['address']) {
+              coinsIn = coinsIn.plus(output.coins);
+              hoursIn = hoursIn.plus(output.hours);
+            }
+          });
+
+          const coinsDifference = coinsIn.minus(coinsOut);
+          const hoursDifference = hoursIn.minus(hoursOut);
+
+          this.pendingCoins = this.pendingCoins.plus(coinsDifference);
+          this.pendingHours = this.pendingHours.plus(hoursDifference);
+
+          if (coinsDifference.isGreaterThan(0)) {
+            this.pendingIncomingCoins = this.pendingIncomingCoins.plus(coinsDifference);
+          } else if (coinsDifference.isLessThan(0)) {
+            this.pendingOutgoingCoins = this.pendingOutgoingCoins.plus(coinsDifference.negated());
+          }
+        });
+      }
+    }));
   }
 
   ngOnDestroy() {

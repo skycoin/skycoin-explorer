@@ -1,7 +1,10 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { AnimationEvent } from '@angular/animations/src/animation_event';
 
+/**
+ * Button that allow the user to copy text.
+ */
 @Component({
   selector: 'app-copy-button',
   templateUrl: './copy-button.component.html',
@@ -16,25 +19,14 @@ import { AnimationEvent } from '@angular/animations/src/animation_event';
         opacity: 0.0,
         transform: 'translateY(-10px)'
       })),
-      transition('void => hide', [
-        style({
-          opacity: 0,
-          transform: 'translateY(0px)'
-        }),
-        animate('0ms 0ms')
-      ]),
+      state('reset', style({
+        opacity: 0.0,
+        transform: 'translateY(10px)'
+      })),
       transition('* => show', [
-        style({
-          opacity: 0.0,
-          transform: 'translateY(10px)'
-        }),
         animate('200ms 0ms ease-out')
       ]),
       transition('* => hide', [
-        style({
-          opacity: 1.0,
-          transform: 'translateY(0px)'
-        }),
         animate('200ms 500ms ease-in')
       ]),
     ])
@@ -42,17 +34,39 @@ import { AnimationEvent } from '@angular/animations/src/animation_event';
 })
 export class CopyButtonComponent {
 
-  private static showAnimName = 'show';
-  private static hideAnimName = 'hide';
+  /**
+   * State for showing the black "Copied" message box.
+   */
+  private static showAnimState = 'show';
+  /**
+   * State for hidding the black "Copied" message box.
+   */
+  private static hideAnimState = 'hide';
+  /**
+   * Special state for immediately hidding the black "Copied" message box.
+   */
+  private static resetAnimState = 'reset';
 
-  animState = CopyButtonComponent.hideAnimName;
+  /**
+   * Current animation state of the black "Copied" message box.
+   */
+  animState = CopyButtonComponent.resetAnimState;
+  /**
+   * If the black "Copied" message box should be visible.
+   */
   showLabel = false;
+  /**
+   * Text to be copied when clicking this button.
+   */
   @Input() text: string;
-  @HostBinding('attr.class') cssClass = 'copy-button';
 
+  /**
+   * Function for copying the text.
+   */
   copy() {
+    // Create a temporary textarea for copying the text, add the text to it and place it in
+    // a corner.
     const tempElement = document.createElement('textarea');
-
     tempElement.style.position = 'fixed';
     tempElement.style.left = '1px';
     tempElement.style.top = '1px';
@@ -60,22 +74,36 @@ export class CopyButtonComponent {
     tempElement.style.height = '1px';
     tempElement.style.opacity = '0';
     tempElement.value = this.text;
-
     document.body.appendChild(tempElement);
+
+    // Select the text.
     tempElement.focus();
     tempElement.select();
 
+    // Copy the text and remove the textarea.
     document.execCommand('copy');
     document.body.removeChild(tempElement);
 
-    this.animState = CopyButtonComponent.showAnimName;
-    this.showLabel = true;
+    // Reset the animation of the black "Copied" message box and hide it.
+    this.animState = CopyButtonComponent.resetAnimState;
+    this.showLabel = false;
+
+    // Wait a frame to start the animation for showing the black "Copied" message box.
+    setTimeout(() => {
+      this.animState = CopyButtonComponent.showAnimState;
+      this.showLabel = true;
+    }, 16);
   }
 
-  animationDone(event: AnimationEvent) {
-    if (event.toState === CopyButtonComponent.showAnimName) {
-      this.animState = CopyButtonComponent.hideAnimName;
-    } else {
+  /**
+   * Event dispatched when an animation ends. The event is associated in the HTML file.
+   */
+  animationDone() {
+    if (this.animState === CopyButtonComponent.showAnimState) {
+      // Go to the next state.
+      this.animState = CopyButtonComponent.hideAnimState;
+    } else if (this.animState === CopyButtonComponent.hideAnimState) {
+      // Hide the the black "Copied" message box.
       this.showLabel = false;
     }
   }

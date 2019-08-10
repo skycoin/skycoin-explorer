@@ -1,5 +1,5 @@
-import { of as observableOf, Subscription, Observable, observable } from 'rxjs';
-import { switchMap, skip } from 'rxjs/operators';
+import { of as observableOf, Subscription, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { BigNumber } from 'bignumber.js';

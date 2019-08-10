@@ -22,7 +22,7 @@
     <div class="-row"><span>{{ 'blockDetails.size' | translate }}</span><br class="-xs-only" /><div> {{ block ? (block.size | number) + ' bytes' : (loadingMsg | translate) }} </div></div>
     <div class="-row"><span>{{ 'blockDetails.hash' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + block.id" class="-link -copy-button-margin" *ngIf="block">{{ block.hash }}</a> <app-copy-button [text]="block.hash" *ngIf="block"></app-copy-button> <span *ngIf="!block">{{ loadingMsg | translate }}</span> </div></div>
     <div class="-row"><span>{{ 'blockDetails.parentHash' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/block/' + (block.id-1)" class="-link -copy-button-margin" *ngIf="block && block.id != 0">{{ block.parent_hash }}</a> <app-copy-button [text]="block.parent_hash" *ngIf="block && block.id != 0"></app-copy-button> <span *ngIf="block && block.id == 0">{{ 'blockDetails.withoutParent' | translate }}</span> <span *ngIf="!block">{{ loadingMsg | translate }}</span> </div></div>
-    <div class="-row"><span>{{ 'blockDetails.totalAmount' | translate }}</span><br class="-xs-only" /><div> {{ block ? ((block.transactions | transactionsValue) | amount) : (loadingMsg | translate) }} </div></div>
+    <div class="-row"><span>{{ 'blockDetails.totalAmount' | translate }}</span><br class="-xs-only" /><div> {{ block ? (totalAmount.toString() | amount) : (loadingMsg | translate) }} </div></div>
   </div>
 </div>
 

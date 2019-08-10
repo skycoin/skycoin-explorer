@@ -1,13 +1,33 @@
+/**
+ * General configuration file.
+ */
+
+
+/**
+ * Configuration for the QR codes.
+ */
 export const QrConfig = {
+  /**
+   * Prefix that will be added to the addresses in the QR codes, to identify what coin the address
+   * is for. Corresponds to the BIP-21 specification.
+   */
   prefix: 'skycoin:',
 };
 
+/**
+ * Configuration for the generic header. Read the customization docs for more info.
+ */
 export const HeaderConfig = {
+  // Set to true for using the generic header, instead of the Skycoin one.
   useGenericHeader: false,
   genericHeaderUrl: 'https://www.skycoin.net/',
 };
 
+/**
+ * Configuration for the generic footer. Read the customization docs for more info.
+ */
 export const FooterConfig = {
+  // Set to true for using the generic footer, instead of the Skycoin one.
   useGenericFooter: false,
   contactLinks: [
     {
@@ -35,7 +55,14 @@ export const FooterConfig = {
   ],
 };
 
+/**
+ * Laguage configuration.
+ */
 export const languageConfig = {
+  /**
+   * List of available languages. See the documentation in the assets/i18n folder and the
+   * LanguageData class (inside the LanguageService file) for more information.
+   */
   languages: [{
       code: 'en',
       name: 'English',
@@ -52,5 +79,8 @@ export const languageConfig = {
       iconName: 'zh.png'
     }
   ],
+  /**
+   * Code of the default language.
+   */
   defaultLanguage: 'en'
 };

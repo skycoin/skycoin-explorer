@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
+
 import { HeaderConfig, FooterConfig } from 'app/app.config';
 import { LanguageService } from 'app/services/language/language.service';
 import { ExplorerService } from 'app/services/explorer/explorer.service';
@@ -10,10 +11,16 @@ import { ExplorerService } from 'app/services/explorer/explorer.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  // Get the settings for the generic header and the generic footer.
   headerConfig = HeaderConfig;
   footerConfig = FooterConfig;
 
   constructor(router: Router, languageService: LanguageService, explorerService: ExplorerService) {
+    // Initialize the services
+    languageService.initialize();
+    explorerService.initialize();
+
+    // Return the scroll to the top after navigating.
     router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);

@@ -1,5 +1,9 @@
 import { RouteReuseStrategy, ActivatedRouteSnapshot, DetachedRouteHandle } from '@angular/router';
 
+/**
+ * Tells the system which components should be always recreated after a change in the URL
+ * and which ones may be recycled.
+ */
 export class AppReuseStrategy implements RouteReuseStrategy {
 
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
@@ -17,7 +21,8 @@ export class AppReuseStrategy implements RouteReuseStrategy {
   }
 
   shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-    // Reuse only the address page. Also only if the navigation is from it and to it.
+    // Reuse only the address page. Also, only if the navigation is from it and to it (that
+    // happens when the user selects a new address, uses the search bar or changes the page).
     if (curr.routeConfig && curr.routeConfig.path.includes('app/address/') && future.routeConfig && future.routeConfig.path.includes('app/address/')) {
       return true;
     } else if ((curr.children && curr.children.length > 0 && curr.children[0].routeConfig && curr.children[0].routeConfig.path.includes('app/address/')) &&

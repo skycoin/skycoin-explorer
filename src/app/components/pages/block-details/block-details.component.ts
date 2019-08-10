@@ -2,6 +2,7 @@ import { switchMap, filter, first, retryWhen, delay } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
+import BigNumber from 'bignumber.js';
 
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Block } from '../../../app.datatypes';
@@ -21,11 +22,15 @@ export class BlockDetailsComponent implements OnInit, OnDestroy {
    */
   block: Block;
   /**
+   * Total number of coins sent in all the outputs of all transactions in the block.
+   */
+  totalAmount: BigNumber;
+  /**
    * How many blocks the blockchain currently has.
    */
   blockCount: number;
   /**
-   * ID of the current block.
+   * ID (sequence number) of the current block.
    */
   blockID = '';
   /**
@@ -68,6 +73,11 @@ export class BlockDetailsComponent implements OnInit, OnDestroy {
       })).subscribe((block: Block) => {
         if (block != null) {
           this.block = block;
+
+          this.totalAmount = new BigNumber('0');
+          block.transactions.map(tx => {
+            tx.outputs.map(o => this.totalAmount = this.totalAmount.plus(o.coins));
+          });
         } else {
           // The block was not found.
           this.loadingMsg = 'general.noData';

@@ -9,6 +9,12 @@
     "waitingData": "Waiting for data...",
     "noData": "No data to show"
   },
+  "genericHeader": {
+    "websiteLink": "Website"
+  },
+  "genericFooter": {
+    "credit": "Powered by Skyfiber"
+  },
   "txBoxes": {
     "pendingTransaction": "pending",
     "transactionIDShortLabel": "Transaction ID",

@@ -4,6 +4,17 @@
 
 
 /**
+ * Names to identify the coins and hours in case it is not possible to obtain the values
+ * from the node.
+ */
+export const CoinIdentifiers = {
+  fullName: 'Skycoin',
+  coinName: 'SKY',
+  HoursName: 'Coin Hours',
+  HoursNameSingular: 'Coin Hour',
+};
+
+/**
  * Configuration for the QR codes.
  */
 export const QrConfig = {

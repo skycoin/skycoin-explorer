@@ -5,6 +5,7 @@ import { BigNumber } from 'bignumber.js';
 
 import { ApiService } from '../api/api.service';
 import { Block, parseGenericBlock, parseGetUnconfirmedTransaction, Transaction, parseGetTransaction } from '../../app.datatypes';
+import { CoinIdentifiers } from '../../app.config';
 
 /**
  * Allows to request information from the server. This service returns processed objects,
@@ -68,11 +69,37 @@ export class ExplorerService {
 
     // Get basic information about the node.
     this.api.getHealth().subscribe(response => {
-      this.internalFullCoinName = response.fiber.display_name;
-      this.internalCoinName = response.fiber.ticker;
-      this.internalHoursName = response.fiber.coin_hours_display_name;
-      this.internalHoursNameSingular = response.fiber.coin_hours_display_name_singular;
-      this.internalMaxDecimals = response.user_verify_transaction.max_decimals;
+
+      // Get the information from the node if available.
+      if (response.fiber && response.fiber.display_name) {
+        this.internalFullCoinName = response.fiber.display_name;
+      } else {
+        this.internalFullCoinName = CoinIdentifiers.fullName;
+      }
+
+      if (response.fiber && response.fiber.ticker) {
+        this.internalCoinName = response.fiber.ticker;
+      } else {
+        this.internalCoinName = CoinIdentifiers.coinName;
+      }
+
+      if (response.fiber && response.fiber.coin_hours_display_name) {
+        this.internalHoursName = response.fiber.coin_hours_display_name;
+      } else {
+        this.internalHoursName = CoinIdentifiers.HoursName;
+      }
+
+      if (response.fiber && response.fiber.coin_hours_display_name_singular) {
+        this.internalHoursNameSingular = response.fiber.coin_hours_display_name_singular;
+      } else {
+        this.internalHoursNameSingular = CoinIdentifiers.HoursNameSingular;
+      }
+
+      if (response.user_verify_transaction && response.user_verify_transaction.max_decimals) {
+        this.internalMaxDecimals = response.user_verify_transaction.max_decimals;
+      } else {
+        this.internalMaxDecimals = 6;
+      }
     });
   }
 

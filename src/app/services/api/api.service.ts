@@ -11,7 +11,7 @@ import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconf
  * returned by the node, unlike ApiService, which returns processed objects.
  *
  * This service uses the api of the intermediate server (explorer.go). The API is similar to the
- * Skicoin node API, but there are differences. There is more info clicking the "Explorer API"
+ * Skycoin node API, but there are differences. There is more info clicking the "Explorer API"
  * link in the main page of the explorer. For even more info, seach the value of the "Internal
  * skycoin node path:" section in the Skycoin REST API docs:
  * https://github.com/skycoin/skycoin/blob/develop/src/api/README.md

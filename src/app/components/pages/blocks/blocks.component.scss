@@ -10,8 +10,7 @@
   }
 
   p {
-    font-size: $siz-normal-text;
-    line-height: 14px;
+    line-height: $siz-normal-text;
     padding: 3px 0;
     margin-bottom: 5px;
 
@@ -21,7 +20,7 @@
 
     .-label {
       display: block;
-      color: $gray;
+      color: $gray-text;
       float: left;
     }
 
@@ -46,14 +45,6 @@
 
 .-small-font {
   font-size: $siz-small-text;
-}
-
-.-link {
-  text-decoration: none;
-}
-
-.-small-date {
-  display: inline;
 }
 
 .-small-padding {

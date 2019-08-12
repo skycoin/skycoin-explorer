@@ -48,7 +48,7 @@ When the explorer is being hosted in a server, you only need the URL to access i
 
 ### Software requirements
 
-For the server to work, you must install Go (Golang) v10.x or newer. You also need a Skycoin node v0.27 or newer (normally the node included with the desktop wallets does not work, as it must be running on the default port: 6420).
+For the server to work, you must install Go (Golang) v10.x or newer. You also need a Skycoin node v0.26 or newer (normally the node included with the desktop wallets does not work, as it must be running on the default port: 6420).
 
 For compiling the frontend or starting it in development mode, you need Node.js v8.x or newer and a compatible version of the NPM package manager. If the frontend has already been compiled and will be opened through the included server (via [http://127.0.0.1:8001](http://127.0.0.1:8001)), these requirements are not necessary.
 

@@ -1,14 +1,22 @@
+/* Standard font */
 $font-family: "SkycoinSans", sans-serif;
-$primary: #0072ff;
-$green: #00FF92;
-$red: #FF004E;
-$warning: #ffad1a;
-$gray: #92A4BA;
 
-$text-heading: #394049;
+/* System colors */
+
+// Main color, used mainly for links.
+$primary: #0072ff;
+// The main use is for the green box that shows how many coins entering an address.
+$green: #00FF92;
+// The main use is for the red box that shows how many coins leaved an address.
+$red: #FF004E;
+
+/* Text colors */
+
+$normal-text: #333;
+$heading-text: #394049;
 $gray-text: #92A4BA;
 
-$transparent: 0.25;
+/* Colors for the table elements */
 
 $col-hard-background: #F0F0F0;
 $col-normal-background: #fff;
@@ -19,6 +27,8 @@ $col-soft-background: #FBFBFB;
 $col-hard-separator: #E2E2E2;
 $col-normal-separator: #EFF0F0;
 
+/* Colors for the generic header and the generic footer */
+
 $col-generic-header-background: #FFFFFF;
 $col-generic-header-text: $primary;
 $col-generic-header-border: #eceef0;
@@ -27,14 +37,19 @@ $col-generic-footer-text: #FFFFFF;
 $col-generic-footer-top-border: #333333;
 $col-generic-footer-middle-border: #111111;
 
+/* Responsive design sizes */
+
 $max-xxs-width: 479px;
 $max-xs-width: 767px;
 $max-sm-width: 991px;
 
+/* Element sizes */
+
 $siz-big-margin: 20px;
 $siz-normal-margin: 15px;
-$siz-small-margin: 10px;
-$siz-copy-button-margin: 12px;
 
+/* Text sizes */
+
+$siz-header-text: 24px;
 $siz-normal-text: 14px;
 $siz-small-text: 12px;

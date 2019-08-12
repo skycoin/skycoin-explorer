@@ -12,15 +12,15 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     trigger('showMessage', [
       state('show', style({
         opacity: 1.0,
-        transform: 'translateY(0px)'
+        transform: 'translateY(-25px)'
       })),
       state('hide', style({
         opacity: 0.0,
-        transform: 'translateY(-10px)'
+        transform: 'translateY(-35px)'
       })),
       state('reset', style({
         opacity: 0.0,
-        transform: 'translateY(10px)'
+        transform: 'translateY(-15px)'
       })),
       transition('* => show', [
         animate('200ms 0ms ease-out')

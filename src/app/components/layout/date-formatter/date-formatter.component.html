@@ -1,9 +1,9 @@
-<div class="root" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+<div (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
   <span *ngIf="date">
     <!-- Date -->
     <span class="timezone-icon" [ngClass]="{'timezone-icon-opaque': mouseOver}" >&#xf0ac;</span>{{date * dateMultiplier | date:'yyyy-MM-dd'}}
     <!-- Time -->
-    <span class="time -gray">{{date * dateMultiplier | date:'HH:mm:ss'}}</span>
+    <span class="-gray">{{date * dateMultiplier | date:'HH:mm:ss'}}</span>
   </span>
   <!-- Time zone -->
   <div *ngIf="date && mouseOver" class="timezone-container">

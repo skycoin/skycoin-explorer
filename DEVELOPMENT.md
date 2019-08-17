@@ -45,7 +45,7 @@ You must have goimports installed (use `make install-linters`).
 
 ## Frontend
 
-The frontend is an Angular application that can be viewed in a web browser. I currently uses Angular 7.
+The frontend is an Angular application that can be viewed in a web browser. I currently uses Angular 8.
 
 ### Frontend file structure
 

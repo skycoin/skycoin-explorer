@@ -18,7 +18,7 @@ export class SearchBarComponent implements OnDestroy {
   /**
    * Search field.
    */
-  @ViewChild('input') input: ElementRef;
+  @ViewChild('input', { static: true }) input: ElementRef;
 
   /**
    * If true, it is not possible to start another search and the UI is shown busy.

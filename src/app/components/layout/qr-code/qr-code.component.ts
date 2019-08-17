@@ -20,7 +20,7 @@ export class QrCodeComponent implements OnInit {
    * Content of the QR code. The content of QrConfig.prefix will be added at the left.
    */
   @Input() string: string;
-  @ViewChild('qr') qr: any;
+  @ViewChild('qr', { static: true }) qr: any;
 
   // Size in pixels.
   size = 130;

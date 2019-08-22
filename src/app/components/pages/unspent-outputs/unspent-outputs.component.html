@@ -1,5 +1,7 @@
 <div class="element-details-wrapper">
+  <!-- Title -->
   <h2>{{ 'unspentOutputs.title' | translate }}</h2>
+  <!-- Top data table -->
   <div class="element-details">
     <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link -copy-button-margin" *ngIf="address">{{ address }}</a> <app-copy-button [text]="address" *ngIf="address"></app-copy-button> <span *ngIf="!address">{{ loadingMsg  | translate }}</span> </div></div>
     <div class="-row"><span>{{ 'unspentOutputs.outputsNumber' | translate }}</span><br class="-xs-only" /><div> {{ outputs ? outputs.head_outputs.length : (loadingMsg  | translate) }} </div></div>
@@ -8,9 +10,12 @@
   </div>
 </div>
 
+<!-- Loading control -->
 <app-loading [longErrorMsg]="longErrorMsg | translate" *ngIf="outputs === undefined"></app-loading>
 
+<!-- Outputs list -->
 <div *ngIf="outputs">
+  <!-- Header (origin and date) -->
   <div class="transaction" *ngFor="let output of outputs.head_outputs">
     <div class="-title">
       <div class="row">
@@ -24,6 +29,7 @@
       </div>
     </div>
 
+    <!-- Data -->
     <div class="-data -clear-background">
       <div class="row">
         <div class="col-sm-12">

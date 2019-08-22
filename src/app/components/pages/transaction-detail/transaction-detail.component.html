@@ -1,5 +1,7 @@
 <div class="element-details-wrapper">
+  <!-- Title -->
   <h2>{{ 'transactionDetail.title' | translate }}</h2>
+  <!-- Top data table -->
   <div class="element-details">
     <div class="-row"><span>{{ 'transactionDetail.status' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.status ? ('transactionDetail.confirmed' | translate) : ('transactionDetail.unconfirmed' | translate)) : (loadingMsg | translate) }} </div></div>
     <div class="-row"><span>{{ 'transactionDetail.size' | translate }}</span><br class="-xs-only" /><div> {{ transaction ? (transaction.length | number) + ' bytes' : (loadingMsg | translate) }} </div></div>
@@ -7,6 +9,8 @@
   </div>
 </div>
 
+<!-- Loading control -->
 <app-loading [longErrorMsg]="longErrorMsg | translate" *ngIf="transaction === undefined"></app-loading>
 
+<!-- Transaction details -->
 <app-transaction-info *ngIf="transaction" [maxInitialElements]="32" [transaction]="transaction"></app-transaction-info>

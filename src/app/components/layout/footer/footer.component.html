@@ -1,10 +1,12 @@
 <footer class="page-footer">
   <div class="wrapper">
+    <!-- Logo and navigation menu -->
     <div class="footer-first-row">
       <a href="/">
         <img src="/assets/img/logoBlueWhite.svg">
       </a>
       <div class="footer-links">
+        <!-- This loop builds the menu. Se the "menu.ts" file in the "header" folder for more info about the properties of the items -->
         <div class="nav-link" *ngFor="let item of getMenu()">
           <a *ngIf="!item.menu" 
               href="{{item.href}}"
@@ -29,6 +31,7 @@
         </div>
       </div>
     </div>
+    <!-- Contact icons -->
     <div class="footer-second-row">
       <div class="social-link" *ngFor="let link of links">
         <a href={{link.href}} target="_blank" rel="noopener">
@@ -36,6 +39,7 @@
         </a>
       </div>
     </div>
+    <!-- Credits and mail -->
     <div class="footer-third-row">
       <div class="copyright">
         <p>© Skycoin.net 2018</p>

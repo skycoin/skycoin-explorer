@@ -2,16 +2,21 @@
   <div class="wrapper">
     <div class="nav-wrapper">
       <div class="header-inner">
+        <!-- Logo -->
         <a href="https://www.skycoin.net/" class="logo">
           <img src="/assets/img/logo.svg" alt="Skycoin">
         </a>
         <div>
+          <!-- Menu button (only visible if the window is too small) -->
           <button class="menu-toggle-btn menu-show-btn" (click)="toggleMenu(true)"></button>
+          <!-- Menu containers (mainly for when the window is too small) -->
           <div class="menu-overlay" *ngIf="menuVisible"></div>
           <div class="nav">
             <div class="nav-inner" [class.visible]="menuVisible">
+              <!-- Button for closing the menu (only visible if the window is too small) -->
               <button class="menu-toggle-btn menu-hide-btn" (click)="toggleMenu(false)"></button>
               <div class="nav-group">
+                <!-- This loop builds the menu. Se the "menu.ts" file for more info about the properties of the items -->
                 <div class="nav-link" *ngFor="let item of menu">
                   <a *ngIf="!item.menu" 
                       href="{{item.href}}"
@@ -37,6 +42,7 @@
                   </div>
                 </div>
               </div>
+              <!-- Additional buttons (only visible if the window is too small) -->
               <div class="nav-group mobile">
                 <a href="https://t.me/Skycoin" target="_blank" class="nav-link">
                   <img src="/assets/img/social/telegram.svg" alt="Telegram">
@@ -47,6 +53,7 @@
                   <span>Discord</span>
                 </a>
               </div>
+              <!-- Buy button -->
               <div class="nav-group">
                 <a href="https://www.skycoin.net/buy/" target="_blank" class="nav-button">Buy Skycoin</a>
               </div>

@@ -14,7 +14,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { BlockDetailsComponent } from './components/pages/block-details/block-details.component';
 import { TransactionDetailComponent } from './components/pages/transaction-detail/transaction-detail.component';
 import { AddressDetailComponent } from './components/pages/address-detail/address-detail.component';
-import { TransactionsValuePipe } from './pipes/transactions-value.pipe';
 import { ExplorerService } from './services/explorer/explorer.service';
 import { QrCodeComponent } from './components/layout/qr-code/qr-code.component';
 import { RichlistComponent } from 'app/components/pages/richlist/richlist.component';
@@ -105,7 +104,6 @@ const ROUTES = [
     QrCodeComponent,
     SearchBarComponent,
     TransactionDetailComponent,
-    TransactionsValuePipe,
     RichlistComponent,
     UnspentOutputsComponent,
     CopyButtonComponent,

@@ -4,13 +4,13 @@
 
 [![Build Status](https://travis-ci.com/skycoin/skycoin-explorer.svg?branch=develop)](https://travis-ci.com/skycoin/skycoin-explorer)
 
-https://explorer.skycoin.net
+https://explorer.skycoin.com
 
 Skycoin Explorer is a tool for checking the contents fo the Skycoin blockchain.
 
 You can check the state of blocks, transactions and more.
 
-[https://explorer.skycoin.net](https://explorer.skycoin.net)
+[https://explorer.skycoin.com](https://explorer.skycoin.com)
 
 # Table of Contents
 
@@ -62,7 +62,7 @@ If you want to run Explorer on Docker refer to [Docker instructions](docker/imag
 
 ## API documentation
 
-The API provided by the server is similar to the Skycoin node API, but there are differences. You can find documentation about it in HTML format in [http://explorer.skycoin.net/api.html](http://explorer.skycoin.net/api.html) and in JSON format in [http://explorer.skycoin.net/api/docs](http://explorer.skycoin.net/api/docs).
+The API provided by the server is similar to the Skycoin node API, but there are differences. You can find documentation about it in HTML format in [http://explorer.skycoin.com/api.html](http://explorer.skycoin.com/api.html) and in JSON format in [http://explorer.skycoin.com/api/docs](http://explorer.skycoin.com/api/docs).
 
 If you are running the server locally, you can access the documentation in [http://127.0.0.1:8001/api.html](http://127.0.0.1:8001/api.html) and [http://127.0.0.1:8001/api/docs](http://127.0.0.1:8001/api/docs).
 

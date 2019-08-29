@@ -13,7 +13,7 @@
 export default [
   {
     name: 'Downloads',
-    href: 'https://www.skycoin.net/downloads',
+    href: 'https://www.skycoin.com/downloads',
     active: false,
     target: '_blank',
     open: false,
@@ -25,42 +25,42 @@ export default [
     menu: [
       {
         name: 'Overview',
-        href: 'https://www.skycoin.net/ecosystem',
+        href: 'https://www.skycoin.com/ecosystem',
         active: false,
         target: '_blank',
         open: false,
       },
       {
         name: 'Skywire',
-        href: 'https://www.skycoin.net/skywire',
+        href: 'https://www.skycoin.com/skywire',
         active: false,
         target: '_blank',
         open: false,
       },
       {
         name: 'Obelisk',
-        href: 'https://www.skycoin.net/obelisk',
+        href: 'https://www.skycoin.com/obelisk',
         active: false,
         target: '_blank',
         open: false,
       },
       {
         name: 'Fiber',
-        href: 'https://www.skycoin.net/fiber',
+        href: 'https://www.skycoin.com/fiber',
         active: false,
         target: '_blank',
         open: false,
       },
       {
         name: 'CX',
-        href: 'https://www.skycoin.net/cx',
+        href: 'https://www.skycoin.com/cx',
         active: false,
         target: '_blank',
         open: false,
       },
       {
         name: 'CXO',
-        href: 'https://www.skycoin.net/cxo',
+        href: 'https://www.skycoin.com/cxo',
         active: false,
         target: '_blank',
         open: false,
@@ -69,14 +69,14 @@ export default [
   },
   {
     name: 'Skyminer',
-    href: 'https://www.skycoin.net/skyminer',
+    href: 'https://www.skycoin.com/skyminer',
     active: false,
     target: '_blank',
     open: false,
   },
   {
     name: 'Blog',
-    href: 'https://www.skycoin.net/blog/',
+    href: 'https://www.skycoin.com/blog/',
     active: false,
     target: '_blank',
     open: false,
@@ -88,14 +88,14 @@ export default [
     menu: [
       {
         name: 'Hardware store',
-        href: 'https://store.skycoin.net/',
+        href: 'https://store.skycoin.com/',
         active: false,
         target: '_blank',
         open: false,
       },
       {
         name: 'Merchandise store',
-        href: 'https://merch.skycoin.net/',
+        href: 'https://merch.skycoin.com/',
         active: false,
         target: '_blank',
         open: false,
@@ -109,21 +109,21 @@ export default [
     menu: [
       {
         name: 'Team',
-        href: 'https://www.skycoin.net/team',
+        href: 'https://www.skycoin.com/team',
         active: false,
         target: '_blank',
         open: false,
       },
       {
         name: 'Gallery',
-        href: 'https://www.skycoin.net/gallery',
+        href: 'https://www.skycoin.com/gallery',
         active: false,
         target: '_blank',
         open: false,
       },
       {
         name: 'Jobs',
-        href: 'https://www.skycoin.net/jobs',
+        href: 'https://www.skycoin.com/jobs',
         active: false,
         target: '_blank',
         open: false,
@@ -137,7 +137,7 @@ export default [
       },
       {
         name: 'Explorer API',
-        href: 'https://explorer.skycoin.net/api.html',
+        href: 'https://explorer.skycoin.com/api.html',
         active: false,
         target: '_blank',
         open: false,

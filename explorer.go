@@ -378,7 +378,7 @@ var apiEndpoints = []APIEndpoint{
 		SkycoinPath:    "/api/v1/blocks",
 		QueryArgs:      []string{"start", "end", "verbose"},
 		Description:    "Returns information about a range of blocks, given a start and end block sequence number. The range of blocks will include both the start and end sequence numbers. Assign 1 to the \"verbose\" argument to get more data in the response.",
-		ExampleRequest: "https://explorer.skycoin.net/api/blocks?start=1891&end=1892",
+		ExampleRequest: "https://explorer.skycoin.com/api/blocks?start=1891&end=1892",
 		ExampleResponse: `{
     "blocks": [
         {
@@ -1155,7 +1155,7 @@ var apiEndpoints = []APIEndpoint{
           "ticker": "SKY",
           "coin_hours_display_name": "Coin Hours",
           "coin_hours_ticker": "SCH",
-          "explorer_url": "https://explorer.skycoin.net"
+          "explorer_url": "https://explorer.skycoin.com"
       }
 }`,
 	},

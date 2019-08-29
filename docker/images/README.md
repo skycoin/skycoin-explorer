@@ -22,7 +22,7 @@
 -->
 
 # What is Skycoin explorer ?
-[Skycoin explorer](https://explorer.skycoin.net) is a tool to interact with Skycoin's ecosystem.
+[Skycoin explorer](https://explorer.skycoin.com) is a tool to interact with Skycoin's ecosystem.
 
 You can check blocks, transactions and their states.
 

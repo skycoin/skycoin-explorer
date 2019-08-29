@@ -8,7 +8,7 @@
       <div class="footer-links">
         <!-- This loop builds the menu. Se the "menu.ts" file in the "header" folder for more info about the properties of the items -->
         <div class="nav-link" *ngFor="let item of getMenu()">
-          <a *ngIf="!item.menu" 
+          <a *ngIf="!item.menu"
               href="{{item.href}}"
               [ngClass]="item.active?'active':''"
               target="{{item.target}}" >
@@ -20,8 +20,8 @@
               <span class="font-awesome">&#xf107;</span>
             </a>
             <div class="dropdown-menu dark" aria-labelledby="dropdownMenuButton">
-              <a *ngFor="let item of item.menu" 
-                [ngClass]="item.active?'dropdown-item active':'dropdown-item'" 
+              <a *ngFor="let item of item.menu"
+                [ngClass]="item.active?'dropdown-item active':'dropdown-item'"
                 href="{{item.href}}"
                 target="{{item.target}}">
                 {{item.name}}
@@ -42,11 +42,11 @@
     <!-- Credits and mail -->
     <div class="footer-third-row">
       <div class="copyright">
-        <p>© Skycoin.net 2018</p>
+        <p>© skycoin.com 2018</p>
       </div>
       <div class="contact">
         <p>
-          <a href="mailto:contact@skycoin.net">contact@skycoin.net</a>
+          <a href="mailto:contact@skycoin.com">contact@skycoin.com</a>
         </p>
       </div>
     </div>

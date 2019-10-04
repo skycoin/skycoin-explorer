@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.13.5
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:shelljs:20140723':
@@ -22,4 +22,21 @@ patch:
         patched: '2018-06-26T08:10:05.074Z'
     - '@angular-devkit/build-angular > node-sass > request > tunnel-agent':
         patched: '2018-06-26T08:10:05.074Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - protractor > browserstack > https-proxy-agent:
+        patched: '2019-10-04T03:21:48.587Z'
+    - protractor > saucelabs > https-proxy-agent:
+        patched: '2019-10-04T03:21:48.587Z'
+    - snyk > proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T03:21:48.587Z'
+    - '@angular/cli > pacote > make-fetch-happen > https-proxy-agent':
+        patched: '2019-10-04T03:21:48.587Z'
+    - snyk > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T03:21:48.587Z'
+    - '@angular/cli > pacote > npm-registry-fetch > make-fetch-happen > https-proxy-agent':
+        patched: '2019-10-04T03:21:48.587Z'
+    - '@angular/cli > @schematics/update > pacote > make-fetch-happen > https-proxy-agent':
+        patched: '2019-10-04T03:21:48.587Z'
+    - '@angular/cli > @schematics/update > pacote > npm-registry-fetch > make-fetch-happen > https-proxy-agent':
+        patched: '2019-10-04T03:21:48.587Z'
 patched: '2018-04-18T04:53:49.215Z'

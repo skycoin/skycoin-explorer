@@ -30,7 +30,7 @@
     "disable-scroll": "^0.4.0",
     "rxjs": "^6.4.0",
     "zone.js": "^0.8.29",
-    "snyk": "^1.85.0",
+    "snyk": "^1.230.5",
     "bignumber.js": "^7.2.1",
     "lodash": "^4.17.11"
   },

@@ -58,7 +58,7 @@ check-ui: ## runs e2e tests connecting to a containerized node
 	docker volume create skycoin-data
 	docker volume create skycoin-wallet
 	chmod 777 $(PWD)/e2e/test-fixtures/blockchain-180.db
-	
+
 	docker run -d --rm \
 	-v skycoin-data:/data \
 	-v skycoin-wallet:/wallet \
@@ -66,7 +66,7 @@ check-ui: ## runs e2e tests connecting to a containerized node
 	--name skycoin-backend \
 	-p 6000:6000 \
 	-p 6420:6420 \
-	skycoin/skycoin:develop \
+	skycoinproject/skycoin \
 	-web-interface-addr 172.17.0.2 \
 	-db-path=project-root/test-fixtures/blockchain-180.db \
 	-disable-networking

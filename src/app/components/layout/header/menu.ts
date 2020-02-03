@@ -93,13 +93,6 @@ export default [
         target: '_blank',
         open: false,
       },
-      {
-        name: 'Merchandise store',
-        href: 'https://merch.skycoin.com/',
-        active: false,
-        target: '_blank',
-        open: false,
-      },
     ],
   },
   {

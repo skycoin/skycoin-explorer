@@ -6,7 +6,7 @@ import { BigNumber } from 'bignumber.js';
 
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Transaction, GetBalanceResponse, GetUnconfirmedTransactionResponse } from 'app/app.datatypes';
+import { Transaction, GetBalanceResponse, GetUnconfirmedTransactionResponse, AddressTransactionsResponse } from 'app/app.datatypes';
 
 /**
  * Page for showing info about a specific address.
@@ -31,6 +31,10 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
    * Indicates if the data has been loaded.
    */
   dataLoaded = false;
+  /**
+   * How many transactions the address has.
+   */
+  totalTransactionsCount: number;
   /**
    * Total amount of coins received by the address.
    */
@@ -66,7 +70,7 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
   /**
    * Complete transactions list.
    */
-  transactions: Transaction[];
+  alltransactions: Transaction[];
   /**
    * Transactions to be shown in the current page.
    */
@@ -75,6 +79,10 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
    * Current page.
    */
   pageIndex = 0;
+  /**
+   * How many pages with transactions the current address has.
+   */
+  pageCount = 0;
   /**
    * Max number of transactions per page.
    */
@@ -88,6 +96,12 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
    * Error message to be shown in the loading control if there is a problem.
    */
   longErrorMsg: string;
+  /**
+   * If true, the address has few transactions and all of them are stored in memory. If false,
+   * only the transactions of the current page are in memory and no information about how
+   * many coins the address has received and sent is calculated.
+   */
+  hasManyTransactions = false;
 
   // Subscriptions that will be cleaned when closing the page.
   private navParamsSubscription: Subscription;
@@ -101,13 +115,6 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
    * Lastest response obtained when requesting the unconfirmed transactions to the node.
    */
   private lastestUnconfirmedResponse: GetUnconfirmedTransactionResponse[];
-
-  /**
-   * How many pages with transactions the current address has.
-   */
-  get pageCount() {
-    return Math.ceil(this.transactions.length / this.pageSize);
-  }
 
   constructor(
     private api: ApiService,
@@ -137,9 +144,11 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
     if (this.address !== routeParams['address']) {
       // Reset the data variables.
       this.dataLoaded = false;
-      this.transactions = undefined;
+      this.totalTransactionsCount = undefined;
+      this.alltransactions = undefined;
       this.balance = undefined;
       this.hoursBalance = undefined;
+      this.hasManyTransactions = false;
 
       // Reset the loading/error messages.
       this.loadingMsg = 'general.loadingMsg';
@@ -166,32 +175,48 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
       this.operationSubscription.unsubscribe();
     }
 
-    let nextStep: Observable<Transaction[]>;
-    if (this.transactions) {
-      // If this.transactions still has a value, only the page, and not the address, was changed,
-      // so there is no need for loading the transactions again.
-      nextStep = observableOf(this.transactions);
+    let nextStep: Observable<AddressTransactionsResponse>;
+    if (this.alltransactions && !this.hasManyTransactions) {
+      // If this.alltransactions still has a value, the address does not have many transactions
+      // (so all are in memory) and only the page was changed, there is no need for loading
+      // the transactions again.
+      nextStep = observableOf(<AddressTransactionsResponse> {
+        totalTransactionsCount: this.totalTransactionsCount,
+        currentPageIndex: this.pageIndex,
+        totalPages: this.pageCount,
+        recoveredTransactions: this.alltransactions,
+        addressHasManyTransactions: false,
+      });
     } else {
-      // Get all the transactions again.
-      nextStep = this.explorer.getTransactions(this.address);
+      // Make the loading indicator appear again and load the transactions.
+      this.alltransactions = undefined;
+      nextStep = this.explorer.getTransactions(this.address, this.pageIndex + 1, this.pageSize);
     }
 
-    // Get all transactions.
-    this.operationSubscription = nextStep.pipe(switchMap((transactions: Transaction[]) => {
-      // Save the transactions list.
-      this.transactions = transactions;
+    // Get the transactions.
+    this.operationSubscription = nextStep.pipe(switchMap((response: AddressTransactionsResponse) => {
+      // Save the pagination information.
+      this.totalTransactionsCount = response.totalTransactionsCount;
+      this.alltransactions = response.recoveredTransactions;
+      this.hasManyTransactions = response.addressHasManyTransactions;
+      this.pageCount = response.totalPages;
+      this.pageIndex = response.currentPageIndex;
 
-      // Calculate the number of received and sent coins (counting the confirmed
-      // transactions only).
-      this.totalReceived = new BigNumber(0);
-      transactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) && tx.status ? tx.balance : 0));
+      if (!response.addressHasManyTransactions) {
+        // Calculate the number of received and sent coins (counting the confirmed
+        // transactions only).
+        this.totalReceived = new BigNumber(0);
+        response.recoveredTransactions.map(tx => this.totalReceived = this.totalReceived.plus(tx.balance.isGreaterThan(0) && tx.status ? tx.balance : 0));
 
-      this.totalSent = new BigNumber(0);
-      transactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) && tx.status ? tx.balance : 0));
-      this.totalSent = this.totalSent.negated();
+        this.totalSent = new BigNumber(0);
+        response.recoveredTransactions.map(tx => this.totalSent = this.totalSent.plus(tx.balance.isLessThan(0) && tx.status ? tx.balance : 0));
+        this.totalSent = this.totalSent.negated();
 
-      // Update the list of transactions that will be displayed in the UI.
-      this.updateTransactions();
+        // Update the list of transactions that will be displayed in the UI.
+        this.updateTransactions();
+      } else {
+        this.pageTransactions = this.alltransactions;
+      }
 
       // Get the balance.
       if (this.lastestBalanceResponse) {
@@ -284,8 +309,8 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
    */
   private updateTransactions() {
     // If the user request an invalid page, show a valid one.
-    if (this.pageIndex > this.transactions.length / this.pageSize) {
-      this.pageIndex = Math.floor(this.transactions.length / this.pageSize);
+    if (this.pageIndex > this.alltransactions.length / this.pageSize) {
+      this.pageIndex = Math.floor(this.alltransactions.length / this.pageSize);
     }
     if (this.pageIndex < 0) {
       this.pageIndex = 0;
@@ -293,8 +318,8 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
 
     // Get the transaction of the current page.
     this.pageTransactions = [];
-    for (let i = this.pageIndex * this.pageSize; i < (this.pageIndex + 1) * this.pageSize && i < this.transactions.length; i++) {
-      this.pageTransactions.push(this.transactions[i]);
+    for (let i = this.pageIndex * this.pageSize; i < (this.pageIndex + 1) * this.pageSize && i < this.alltransactions.length; i++) {
+      this.pageTransactions.push(this.alltransactions[i]);
     }
   }
 }

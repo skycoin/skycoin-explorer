@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { BigNumber } from 'bignumber.js';
 
 import { ApiService } from '../api/api.service';
-import { Block, parseGenericBlock, parseGetUnconfirmedTransaction, Transaction, parseGetTransaction } from '../../app.datatypes';
+import { Block, parseGenericBlock, parseGetUnconfirmedTransaction, Transaction, parseGetTransaction, AddressTransactionsResponse } from '../../app.datatypes';
 import { CoinIdentifiers } from '../../app.config';
 
 /**
@@ -13,6 +13,8 @@ import { CoinIdentifiers } from '../../app.config';
  */
 @Injectable()
 export class ExplorerService {
+  // Max transactions an address can have to be considered as not having many transactions.
+  private readonly manyTransactionsCount = 100;
 
   // Variables with information about the node.
   internalFullCoinName = ' ';
@@ -130,25 +132,80 @@ export class ExplorerService {
   }
 
   /**
-   * Gets the list of transactions of a specific address.
+   * Gets the list of transactions of a specific address. Depending on how many transactions
+   * the address has, the function may return a paginated results or all the transactions.
    * @param address Address to consult.
+   * @param page Number of the desired results page.
+   * @param pageSize Max number of transactions each results page can have.
+   * @returns An object with the requested transactions and information about the pagination.
+   * IMPORTANT: if the address has many transactions, the response will only contain the
+   * transactions for the requested page (the response will indicate the address is considered
+   * to have many transactions) and information about the balance variation after each transaction
+   * will not be included. However, if the address does not have many transactions, the response
+   * will include all the transactions the address has, which could be more than the requested max
+   * per page, and the caller will be responsible for using only the transactions needed.
    */
-  getTransactions(address: string): Observable<Transaction[]> {
-    return this.api.getAddress(address).pipe(
-      map(response => {
-        // Sort to get the lastest transactions last (it will be reversed below).
-        response = response.sort((a, b) => a.txn.timestamp - b.txn.timestamp);
+  getTransactions(address: string, page: number, pageSize: number): Observable<AddressTransactionsResponse> {
+    let transactionsCount: number;
+    let hasManyTransactions: boolean;
+    let currentPageIndex: number;
+    let totalPages: number;
 
-        // Calculate the balance variation after every transaction.
-        let currentBalance = new BigNumber('0');
-        return response.map(rawTx => {
-          const parsedTx = parseGetTransaction(rawTx, address);
+    // Request one page with just one transaction to know how many transactions the address has.
+    return this.api.getAddressWithPagination(address, 1, 1).pipe(mergeMap(response => {
+      transactionsCount = response.page_info.total_pages;
+      totalPages = Math.ceil(transactionsCount / pageSize);
+
+      // Make sure the page is not outside the boundaries.
+      if (page < 1) {
+        currentPageIndex = 0;
+      } else if (page > totalPages) {
+        currentPageIndex = totalPages - 1;
+      } else {
+        currentPageIndex = page - 1;
+      }
+
+      hasManyTransactions = transactionsCount > this.manyTransactionsCount;
+
+      // Get the transaction list depending on how may transactions the address has.
+      let nextStep: Observable<any>;
+      if (!hasManyTransactions) {
+        nextStep = this.api.getAddress(address);
+      } else {
+        nextStep = this.api.getAddressWithPagination(address, currentPageIndex + 1, pageSize).pipe(map(resp => resp.txns));
+      }
+
+      return nextStep;
+    }), map(response => {
+      // Sort to get the lastest transactions last (it will be reversed below).
+      response = response.sort((a, b) => a.txn.timestamp - b.txn.timestamp);
+
+      // Process the response.
+      let currentBalance = new BigNumber('0');
+      response = response.map(rawTx => {
+        const parsedTx = parseGetTransaction(rawTx, address);
+
+        // Calculate the balance variation after every transaction, if all transactions
+        // are in memory.
+        if (!hasManyTransactions) {
           parsedTx.initialBalance = currentBalance;
           currentBalance = currentBalance.plus(parsedTx.balance);
           parsedTx.finalBalance = currentBalance;
-          return parsedTx;
-        }).reverse();
-      }));
+        }
+
+        return parsedTx;
+      });
+
+      response = response.reverse();
+
+      return <AddressTransactionsResponse>{
+        totalTransactionsCount: transactionsCount,
+        currentPageIndex: currentPageIndex,
+        totalPages: totalPages,
+        addressHasManyTransactions: hasManyTransactions,
+        recoveredTransactions: response,
+      };
+    }));
   }
 
   /**

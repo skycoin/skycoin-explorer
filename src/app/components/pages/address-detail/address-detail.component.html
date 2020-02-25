@@ -11,15 +11,15 @@
       <span>{{ 'general.address' | translate }}</span><br class="-xs-only" /> <span>{{ address ? address : (loadingMsg | translate) }}</span>
     </div>
 
-    <div class="-row -tx-number"><span>{{ 'addressDetail.txsNumber' | translate }}</span><br class="-xs-only" /><div> {{ dataLoaded ? transactions.length : (loadingMsg | translate) }} </div></div>
-    <div class="-row">
+    <div class="-row -tx-number"><span>{{ 'addressDetail.txsNumber' | translate }}</span><br class="-xs-only" /><div> {{ dataLoaded ? totalTransactionsCount : (loadingMsg | translate) }} </div></div>
+    <div class="-row" *ngIf="!hasManyTransactions">
       <span>{{ 'addressDetail.totalReceived' | translate }}</span><br class="-xs-only" />
       <div>
         {{ dataLoaded ? ((totalReceived.toString() | amount)) : (loadingMsg | translate) }}
         <span *ngIf="dataLoaded && pendingIncomingCoins && pendingIncomingCoins.isGreaterThan(0)">&nbsp;({{ (pendingIncomingCoins.toString() | amount:true:'first') + ' ' + ((pendingIncomingCoins.isEqualTo(1) || pendingIncomingCoins.isEqualTo(-1) ? 'addressDetail.singularPendingCoin': 'addressDetail.pluralPendingCoins') | translate) }})</span>
       </div>
     </div>
-    <div class="-row">
+    <div class="-row" *ngIf="!hasManyTransactions">
       <span>{{ 'addressDetail.totalSent' | translate }}</span><br class="-xs-only" />
       <div>
         {{ dataLoaded ? ((totalSent.toString() | amount)) : (loadingMsg | translate) }}
@@ -49,13 +49,13 @@
 </div>
 
 <!-- Loading control -->
-<app-loading [longErrorMsg]="longErrorMsg | translate" *ngIf="transactions === undefined"></app-loading>
+<app-loading [longErrorMsg]="longErrorMsg | translate" *ngIf="alltransactions === undefined"></app-loading>
 
 <!-- Transactions list -->
 <app-transaction-info *ngFor="let transaction of pageTransactions" [transaction]="transaction"></app-transaction-info>
 
 <!-- Page selection bar -->
-<div class="pagination" *ngIf="transactions && transactions.length > pageSize">
+<div class="pagination" *ngIf="pageCount > 1">
   <a class="-first" [ngClass]="{ disabled: pageIndex <= 0 }" [routerLink]="'/app/address/' + address + '/1'">«</a>
   <a class="-previous" [ngClass]="{ disabled: pageIndex <= 0 }" [routerLink]="'/app/address/' + address + '/' + (pageIndex > 0 ? pageIndex : 1)">‹</a>
   <a class="-page -hide-xs" *ngIf="pageIndex > 1" [routerLink]="'/app/address/' + address + '/' + (pageIndex - 1)">{{ pageIndex - 1 }}</a>

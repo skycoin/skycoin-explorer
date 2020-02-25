@@ -264,3 +264,15 @@ export interface GetCoinSupplyResponse {
   current_coinhour_supply: number;
   total_coinhour_supply: number;
 }
+
+/**
+ * Specific objects.
+ */
+
+export interface AddressTransactionsResponse {
+  addressHasManyTransactions: boolean;
+  totalTransactionsCount: number;
+  currentPageIndex: number;
+  totalPages: number;
+  recoveredTransactions: Transaction[];
+}

@@ -113,6 +113,7 @@ func buildSkycoinURL(path string, query url.Values) string {
 	return u.String()
 }
 
+// CoinSupply coin supply struct
 type CoinSupply struct {
 	// Coins distributed beyond the project:
 	CurrentSupply string `json:"current_supply"`
@@ -130,6 +131,7 @@ type CoinSupply struct {
 	LockedAddresses []string `json:"locked_distribution_addresses"`
 }
 
+// APIEndpoint api endpoint struct
 type APIEndpoint struct {
 	ExplorerPath   string   `json:"explorer_path"`
 	SkycoinPath    string   `json:"skycoin_path"`
@@ -1084,8 +1086,8 @@ var apiEndpoints = []APIEndpoint{
         }
     }
 ]`,
-    },
-    {
+	},
+	{
 		ExplorerPath:   "/api/paginatedTransactions",
 		SkycoinPath:    "/api/v2/transactions",
 		QueryArgs:      []string{"addrs", "confirmed", "verbose", "page", "limit", "sort"},
@@ -1265,7 +1267,7 @@ var docEndpoint APIEndpoint = APIEndpoint{
 	ExampleRequest: "/api/docs",
 }
 
-// Parse the ExampleResponse string into generic interface, for human-readable
+// ParsedJSONAPIEndpoint parse the ExampleResponse string into generic interface, for human-readable
 // formatting when rendered in the browser as JSON
 type ParsedJSONAPIEndpoint struct {
 	APIEndpoint

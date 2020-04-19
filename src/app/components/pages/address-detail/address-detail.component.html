@@ -72,7 +72,7 @@
           {{ loadingMsg | translate }}
         </ng-container>
         <ng-container *ngIf="dataLoaded">
-          <span>{{ totalReceived.toString() | amount }}</span>&nbsp;
+          <span>{{ totalSent.toString() | amount }}</span>&nbsp;
           <span *ngIf="pendingOutgoingCoins && pendingOutgoingCoins.isGreaterThan(0)">({{
             ('addressDetail.' + (pendingOutgoingCoins.isEqualTo(1) || pendingOutgoingCoins.isEqualTo(-1) ? 'singular' : 'plural' ) + 'PendingCoins') | translate:{ amount:
               (pendingOutgoingCoins.isGreaterThan(0) ? '+' : '') + (pendingOutgoingCoins.toString() | amount:true:'first')

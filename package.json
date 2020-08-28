@@ -32,7 +32,7 @@
     "zone.js": "^0.8.29",
     "snyk": "^1.85.0",
     "bignumber.js": "^7.2.1",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.17"
   },
   "devDependencies": {
     "@angular/cli": "^7.3.5",

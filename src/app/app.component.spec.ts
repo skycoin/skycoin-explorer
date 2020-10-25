@@ -1,6 +1,22 @@
 import { TestBed, async } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
+import { LanguageService } from './services/language/language.service';
+import { ExplorerService } from './services/explorer/explorer.service';
+
+class MockRouter {
+  events = of(null);
+}
+
+class MockLanguageService {
+  initialize() {}
+}
+
+class MockExplorerService {
+  initialize() {}
+}
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -8,6 +24,11 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers: [
+        { provide: Router, useClass: MockRouter },
+        { provide: LanguageService, useClass: MockLanguageService },
+        { provide: ExplorerService, useClass: MockExplorerService },
+      ]
     }).compileComponents();
   }));
 
@@ -15,18 +36,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  }));
-
-  it(`should have as title 'app'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
-  }));
-
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!!');
   }));
 });

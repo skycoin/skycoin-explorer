@@ -31,7 +31,6 @@
     "rxjs": "^6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2",
-    "snyk": "^1.85.0",
     "bignumber.js": "^7.2.1"
   },
   "devDependencies": {
@@ -54,7 +53,8 @@
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
     "typescript": "~3.9.7",
-    "@angular-devkit/build-angular": "~0.1000.5"
+    "@angular-devkit/build-angular": "~0.1000.5",
+    "snyk": "^1.420.1"
   },
   "snyk": true
 }

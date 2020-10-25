@@ -8,7 +8,7 @@ export class AddressDetailPage {
 
   getAddressForSmallScreens() {
     return element(by.css('.element-details > div:nth-of-type(1) > span:nth-of-type(2)'))
-      .getAttribute('textContent');
+      .getAttribute('textContent').then(address => address.trim());
   }
 
   getNumberOfTransactions() {

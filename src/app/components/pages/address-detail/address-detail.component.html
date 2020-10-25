@@ -1,6 +1,6 @@
 <div class="element-details-wrapper -right-margin">
   <!-- Title (it depends on the window size) -->
-  <h2 class="-not-xs">{{ address }}</h2>
+  <h2 class="-not-xs">{{ address }}{{ explorer.getAddressName(address) }}</h2>
   <h2 class="-xs-only">{{ 'addressDetail.title' | translate }}</h2>
 
   <!-- Top data table -->
@@ -8,7 +8,10 @@
     <!-- QR code (small windows only) -->
     <div class="-row -xs-only">
       <app-qr-code [string]="address" *ngIf="address"></app-qr-code>
-      <span>{{ 'general.address' | translate }}</span><br class="-xs-only" /> <span>{{ address ? address : (loadingMsg | translate) }}</span>
+      <span>{{ 'general.address' | translate }}</span><br class="-xs-only" /> <span>
+        {{ address ? address : (loadingMsg | translate) }}
+        {{ address ? explorer.getAddressName(address) : '' }}
+      </span>
     </div>
 
     <div class="-row -tx-number"><span>{{ 'addressDetail.txsNumber' | translate }}</span><br class="-xs-only" /><div> {{ dataLoaded ? totalTransactionsCount : (loadingMsg | translate) }} </div></div>

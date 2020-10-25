@@ -32,7 +32,9 @@ export class ApiService {
    * Get information about the state of the node.
    */
   getHealth(): Observable<any> {
-    return this.get('health');
+    const url = !this.nodeUrl() ? 'health' : 'v1/health';
+
+    return this.get(url);
   }
 
   /**
@@ -40,7 +42,9 @@ export class ApiService {
    * @param address Address to consult.
    */
   getAddress(address: string): Observable<GetTransactionResponse[]> {
-    return this.get('transactions', { addrs: address, verbose: 1 });
+    const url = !this.nodeUrl() ? 'transactions' : 'v1/transactions';
+
+    return this.get(url, { addrs: address, verbose: 1 });
   }
 
   /**
@@ -48,7 +52,9 @@ export class ApiService {
    * @param address Address to consult.
    */
   getAddressWithPagination(address: string, page: number, pageSize: number): Observable<any> {
-    return this.get('paginatedTransactions', { addrs: address, page: page, limit: pageSize, sort: 'desc', verbose: 1 })
+    const url = !this.nodeUrl() ? 'paginatedTransactions' : 'v2/transactions';
+
+    return this.get(url, { addrs: address, page: page, limit: pageSize, sort: 'desc', verbose: 1 })
       .pipe(map((response: any) => response.data));
   }
 
@@ -56,7 +62,9 @@ export class ApiService {
    * Gets the list of unconfirmed transactions.
    */
   getUnconfirmedTransactions(): Observable<GetUnconfirmedTransactionResponse[]> {
-    return this.get('pendingTxs', { verbose: 1 });
+    const url = !this.nodeUrl() ? 'pendingTxs' : 'v1/pendingTxs';
+
+    return this.get(url, { verbose: 1 });
   }
 
   /**
@@ -64,7 +72,9 @@ export class ApiService {
    * @param id Block ID (sequence number).
    */
   getBlockById(id: number): Observable<GenericBlockResponse> {
-    return this.get('block', { seq: id, verbose: 1 });
+    const url = !this.nodeUrl() ? 'block' : 'v1/block';
+
+    return this.get(url, { seq: id, verbose: 1 });
   }
 
   /**
@@ -72,7 +82,9 @@ export class ApiService {
    * @param hash Block hash.
    */
   getBlockByHash(hash: string): Observable<GenericBlockResponse> {
-    return this.get('block', { hash: hash, verbose: 1 });
+    const url = !this.nodeUrl() ? 'block' : 'v1/block';
+
+    return this.get(url, { hash: hash, verbose: 1 });
   }
 
   /**
@@ -81,14 +93,18 @@ export class ApiService {
    * @param endNumber Number (height) of the last block (inclusive).
    */
   getBlocks(startNumber: number, endNumber: number): Observable<GetBlocksResponse> {
-    return this.get('blocks', { start: startNumber, end: endNumber });
+    const url = !this.nodeUrl() ? 'blocks' : 'v1/blocks';
+
+    return this.get(url, { start: startNumber, end: endNumber });
   }
 
   /**
    * Gets information about the state of the blockchain.
    */
   getBlockchainMetadata(): Observable<Blockchain> {
-    return this.get('blockchain/metadata').pipe(
+    const url = !this.nodeUrl() ? 'blockchain/metadata' : 'v1/blockchain/metadata';
+
+    return this.get(url).pipe(
       map((res: GetBlockchainMetadataResponse) => ({
         blocks: res.head.seq,
       })));
@@ -98,7 +114,9 @@ export class ApiService {
    * Gets information about the current coin supply.
    */
   getCoinSupply(): Observable<GetCoinSupplyResponse> {
-    return this.get('coinSupply');
+    const url = !this.nodeUrl() ? 'coinSupply' : 'v1/coinSupply';
+
+    return this.get(url);
   }
 
   /**
@@ -106,7 +124,9 @@ export class ApiService {
    * @param address Address to consult.
    */
   getCurrentBalance(address: string): Observable<GetCurrentBalanceResponse> {
-    return this.get('currentBalance', { addrs: address });
+    const url = !this.nodeUrl() ? 'currentBalance' : 'v1/outputs';
+
+    return this.get(url, { addrs: address });
   }
 
   /**
@@ -114,7 +134,9 @@ export class ApiService {
    * @param address Address to consult.
    */
   getBalance(address: string): Observable<GetBalanceResponse> {
-    return this.get('balance', { addrs: address });
+    const url = !this.nodeUrl() ? 'balance' : 'v1/balance';
+
+    return this.get(url, { addrs: address });
   }
 
   /**
@@ -122,14 +144,18 @@ export class ApiService {
    * @param transactionId Transaction hash.
    */
   getTransaction(transactionId: string): Observable<GetTransactionResponse> {
-    return this.get('transaction', { txid: transactionId, verbose: 1 });
+    const url = !this.nodeUrl() ? 'transaction' : 'v1/transaction';
+
+    return this.get(url, { txid: transactionId, verbose: 1 });
   }
 
   /**
    * Gets the list of unlocked addresses with most coins.
    */
   getRichlist(): Observable<RichlistEntry[]> {
-    return this.get('richlist').pipe(map((response: any) => response.richlist));
+    const url = !this.nodeUrl() ? 'richlist' : 'v1/richlist';
+
+    return this.get(url).pipe(map((response: any) => response.richlist));
   }
 
   // Old methods
@@ -172,6 +198,19 @@ export class ApiService {
       url = url.substr(1, url.length - 1);
     }
 
-    return this.url + url + '?' + this.getQueryString(options);
+    let initialPart = this.url;
+    if (this.nodeUrl()) {
+      initialPart = window['nodeUrl'];
+    }
+
+    return initialPart + url + '?' + this.getQueryString(options);
+  }
+
+  /**
+   * Returns the URL of the node that the explorer must use as backend. If it does not return a
+   * valid value, the explorer must use as backend the Go intermediate server included with it.
+   */
+  private nodeUrl() {
+    return window['nodeUrl'];
   }
 }

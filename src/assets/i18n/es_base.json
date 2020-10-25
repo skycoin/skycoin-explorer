@@ -71,6 +71,7 @@
     "tools": "Tools",
     "unspentOutputs": "Unspent outputs",
     "withoutTransactions": "Without transactions",
+    "invalidAddress": "Invalid address",
     "singularPendingCoin": "pending",
     "pluralPendingCoins": "pending"
   },
@@ -84,7 +85,9 @@
     "date": "Date",
     "withoutOutputs": "Without outputs",
     "hoursWhenCreated": "Initial Hours",
-    "currentHours": "Current Hours"
+    "currentHours": "Current Hours",
+    "loadAll": "Show all {{total}} elements",
+    "loading": "Loading, please wait..."
   },
   "transactionDetail": {
     "title": "Transaction",

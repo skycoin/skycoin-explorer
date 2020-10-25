@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+import { ExplorerService } from '../../../services/explorer/explorer.service';
+
 /**
  * Different states of the list of inputs and outputs.
  */
@@ -92,6 +94,8 @@ export class TransactionInfoComponent {
   get transaction(): any {
     return this.transactionInternal;
   }
+
+  constructor(public explorer: ExplorerService) { }
 
   /**
    * Creates the list of inputs to be shown, but limiting it to the number of elements set

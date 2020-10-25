@@ -95,3 +95,13 @@ export const languageConfig = {
    */
   defaultLanguage: 'en'
 };
+
+/**
+ * List with named addresses.
+ */
+export const namedAddresses = [
+  {
+    address: '2iNNt6fm9LszSWe51693BeyNUKX34pPaLx8',
+    name: 'Binance hot wallet'
+  }
+];

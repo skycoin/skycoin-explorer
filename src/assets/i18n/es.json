@@ -114,7 +114,8 @@
     "copied": "Copiado"
   },
   "searchBar": {
-    "hint": "Dirección, hash/número de bloque o ID de transacción"
+    "hint": "Dirección, hash/número de bloque o ID de transacción",
+    "syncAlert": "El nodo aún se está sincronizando. Los datos que ve pueden estar desactualizados."
   },
   "search": {
     "title": "Buscar",

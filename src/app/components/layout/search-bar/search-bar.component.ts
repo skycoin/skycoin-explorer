@@ -1,9 +1,11 @@
 import { Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
+import { delay, mergeMap } from 'rxjs/operators';
 
 import { SearchService, SearchError } from '../../../services/search/search.service';
+import { ApiService } from '../../../services/api/api.service';
 
 /**
  * Shows the search bar. Is the user search something, this component takes cares of finding it
@@ -24,19 +26,66 @@ export class SearchBarComponent implements OnDestroy {
    * If true, it is not possible to start another search and the UI is shown busy.
    */
   searching = false;
+  /**
+   * Indicates if the node synchronization alert msg must be shown.
+   */
+  showSyncWarning = false;
 
+  private nodeUrlSubscription: Subscription;
+  private syncSubscription: Subscription;
   private operationSubscription: Subscription;
 
   constructor(
     public searchService: SearchService,
     private router: Router,
     private translate: TranslateService,
-  ) { }
+    private apiService: ApiService,
+  ) {
+    // Each time the node URL is changed, check if the node is in sync.
+    this.nodeUrlSubscription = this.apiService.localNodeUrl.subscribe(() => {
+      this.checkSyncState(0);
+    });
+  }
 
   ngOnDestroy() {
+    if (this.nodeUrlSubscription) {
+      this.nodeUrlSubscription.unsubscribe();
+    }
+    if (this.syncSubscription) {
+      this.syncSubscription.unsubscribe();
+    }
     if (this.operationSubscription && !this.operationSubscription.closed) {
       this.operationSubscription.unsubscribe();
     }
+  }
+
+  /**
+   * Checks if the node is in sync. If it is not, the procedure will be automatically
+   * repeated after a delay.
+   * @param delayMs Delay before performing the actual check.
+   */
+  private checkSyncState(delayMs: number) {
+    if (this.syncSubscription) {
+      this.syncSubscription.unsubscribe();
+    }
+
+    // Get the data.
+    this.syncSubscription = of(0).pipe(delay(delayMs), mergeMap(() => this.apiService.getSyncState())).subscribe(response => {
+      // The node is considered in sync if it is less than 3 blocks behind the top. The gap
+      // in blocks is to avoid showing the alert if the operation is made just when a new block
+      // has been detected but not added, which would happen very fast and should not merit
+      // alerting the user.
+      this.showSyncWarning = response.highest - response.current > 3;
+
+      // If the node is not in sync, repeat the operation after some time.
+      if (this.showSyncWarning) {
+        this.checkSyncState(10000);
+      }
+    }, () => {
+      if (this.showSyncWarning) {
+        this.checkSyncState(10000);
+      }
+    });
   }
 
   /**

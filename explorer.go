@@ -1259,6 +1259,26 @@ var apiEndpoints = []APIEndpoint{
       }
 }`,
 	},
+	{
+		ExplorerPath:   "/api/blockchain/progress",
+		SkycoinPath:    "/api/v1/blockchain/progress",
+		Description:    "Gets the blockchain progress.",
+		ExampleRequest: "/api/blockchain/progress",
+		ExampleResponse: `{
+    "current": 2760,
+    "highest": 2760,
+    "peers": [
+        {
+            "address": "35.157.164.126:6000",
+            "height": 2760
+        },
+        {
+            "address": "63.142.253.76:6000",
+            "height": 2760
+        }
+    ]
+}`,
+	},
 }
 
 var docEndpoint APIEndpoint = APIEndpoint{

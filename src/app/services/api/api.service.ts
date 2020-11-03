@@ -1,10 +1,10 @@
-import { throwError as observableThrowError,  Observable } from 'rxjs';
+import { throwError as observableThrowError,  Observable, ReplaySubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransactionResponse,
-    GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse, GetCoinSupplyResponse } from '../../app.datatypes';
+    GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse, GetCoinSupplyResponse, GetSyncStateResponse } from '../../app.datatypes';
 
 /**
  * Allows to request information from the server. This service returns almost the same data
@@ -18,15 +18,59 @@ import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconf
  */
 @Injectable()
 export class ApiService {
+  /**
+   * Key used for saving the local node URL in the persistent storage and the window object.
+   */
+  private static readonly localNodeUrlKey = 'nodeUrl';
 
   /**
    * URL used to connect to the API.
    */
   private url = '/api/';
+  /**
+   * Subject for emitting every time the local node URL is changed or removed.
+   */
+  private localNodeUrlSubject: ReplaySubject<string> = new ReplaySubject<string>(1);
 
   constructor(
     private http: HttpClient
   ) { }
+
+  /**
+   * Initializes the service.
+   */
+  initialize() {
+    // Get the URL of the local node that must be used as backend, if an URL was saved before.
+    const localNodeUrl = localStorage.getItem(ApiService.localNodeUrlKey);
+    if (localNodeUrl) {
+      window[ApiService.localNodeUrlKey] = localNodeUrl;
+    }
+
+    this.localNodeUrlSubject.next(localNodeUrl);
+  }
+
+  /**
+   * Sets the URL of the local node that must be used as backend. If the URL is null, any
+   * previously saved URL is removed.
+   */
+  setNodeUrl(url: string) {
+    window[ApiService.localNodeUrlKey] = url;
+
+    if (url) {
+      localStorage.setItem(ApiService.localNodeUrlKey, url);
+    } else {
+      localStorage.removeItem(ApiService.localNodeUrlKey);
+    }
+
+    this.localNodeUrlSubject.next(url);
+  }
+
+  /**
+   * Emits every time the local node URL is changed or removed.
+   */
+  get localNodeUrl(): Observable<string> {
+    return this.localNodeUrlSubject.asObservable();
+  }
 
   /**
    * Get information about the state of the node.
@@ -158,6 +202,15 @@ export class ApiService {
     return this.get(url).pipe(map((response: any) => response.richlist));
   }
 
+  /**
+   * Gets the sync state of the node.
+   */
+  getSyncState(): Observable<GetSyncStateResponse> {
+    const url = !this.nodeUrl() ? 'blockchain/progress' : 'v1/blockchain/progress';
+
+    return this.get(url);
+  }
+
   // Old methods
 
   /**
@@ -198,9 +251,9 @@ export class ApiService {
       url = url.substr(1, url.length - 1);
     }
 
-    let initialPart = this.url;
-    if (this.nodeUrl()) {
-      initialPart = window['nodeUrl'];
+    let initialPart = this.nodeUrl();
+    if (!initialPart) {
+      initialPart = this.url;
     }
 
     return initialPart + url + '?' + this.getQueryString(options);
@@ -211,6 +264,6 @@ export class ApiService {
    * valid value, the explorer must use as backend the Go intermediate server included with it.
    */
   private nodeUrl() {
-    return window['nodeUrl'];
+    return window[ApiService.localNodeUrlKey];
   }
 }

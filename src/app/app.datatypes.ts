@@ -236,6 +236,11 @@ export class GetTransactionResponse {
   txn: GenericTransactionResponse;
 }
 
+export class GetSyncStateResponse {
+  current: number;
+  highest: number;
+}
+
 export function parseGetTransaction(raw: GetTransactionResponse, address: string = null): Transaction {
   raw.txn.status = raw.status;
   return parseGenericTransaction(raw.txn, address);

@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { Observable, Subscription, of } from 'rxjs';
+import { map, mergeMap, delay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { BigNumber } from 'bignumber.js';
 
@@ -57,28 +57,34 @@ export class ExplorerService {
     return this.internalMaxDecimals;
   }
 
-  /**
-   * Lets know if the initialize() function has already been called.
-   */
-  private initialized = false;
+  private nodeUrlSubscription: Subscription;
+  private initializationSubscription: Subscription;
 
   constructor(
     private api: ApiService,
   ) { }
 
+  /**
+   * Initializes the service.
+   */
   initialize() {
-    if (this.initialized) {
-      return;
-    }
-    this.initialized = true;
-
     namedAddresses.forEach(namedAddress => {
       this.namedAddressesMap.set(namedAddress.address, namedAddress.name);
     });
 
-    // Get basic information about the node.
-    this.api.getHealth().subscribe(response => {
+    this.getNodeInfo(0);
+  }
 
+  /**
+   * Gets the basic info about the backend.
+   * @param delayMs Delay before starting to get the data.
+   */
+  private getNodeInfo(delayMs: number) {
+    if (this.initializationSubscription) {
+      this.initializationSubscription.unsubscribe();
+    }
+
+    this.initializationSubscription = of(0).pipe(delay(delayMs), mergeMap(() => this.api.getHealth())).subscribe(response => {
       // Get the information from the node if available.
       if (response.fiber && response.fiber.display_name) {
         this.internalFullCoinName = response.fiber.display_name;
@@ -109,6 +115,9 @@ export class ExplorerService {
       } else {
         this.internalMaxDecimals = 6;
       }
+    }, () => {
+      // Retry in case of error.
+      this.getNodeInfo(3000);
     });
   }
 

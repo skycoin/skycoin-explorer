@@ -44,6 +44,15 @@ export class ApiService {
   }
 
   /**
+   * Gets the list of transactions of a specific address, using pagination.
+   * @param address Address to consult.
+   */
+  getAddressWithPagination(address: string, page: number, pageSize: number): Observable<any> {
+    return this.get('paginatedTransactions', { addrs: address, page: page, limit: pageSize, sort: 'desc', verbose: 1 })
+      .pipe(map((response: any) => response.data));
+  }
+
+  /**
    * Gets the list of unconfirmed transactions.
    */
   getUnconfirmedTransactions(): Observable<GetUnconfirmedTransactionResponse[]> {

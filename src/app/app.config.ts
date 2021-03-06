@@ -31,7 +31,7 @@ export const QrConfig = {
 export const HeaderConfig = {
   // Set to true for using the generic header, instead of the Skycoin one.
   useGenericHeader: false,
-  genericHeaderUrl: 'https://www.skycoin.net/',
+  genericHeaderUrl: 'https://www.skycoin.com/',
 };
 
 /**
@@ -42,25 +42,25 @@ export const FooterConfig = {
   useGenericFooter: false,
   contactLinks: [
     {
-      url: 'https://www.skycoin.net/',
+      url: 'https://www.skycoin.com/',
       content: '<i class="fab fa-github"></i>',
     } , {
-      url: 'https://www.skycoin.net/',
+      url: 'https://www.skycoin.com/',
       content: '<i class="fab fa-telegram"></i>',
     } , {
-      url: 'https://www.skycoin.net/',
+      url: 'https://www.skycoin.com/',
       content: '<i class="fab fa-twitter"></i>',
     } , {
-      url: 'https://www.skycoin.net/',
+      url: 'https://www.skycoin.com/',
       content: '<i class="fab fa-youtube"></i>',
     } , {
-      url: 'https://www.skycoin.net/',
+      url: 'https://www.skycoin.com/',
       content: '<i class="fab fa-discord"></i>',
     } , {
-      url: 'https://www.skycoin.net/',
+      url: 'https://www.skycoin.com/',
       content: '<i class="fab fa-instagram"></i>',
     } , {
-      url: 'https://www.skycoin.net/',
+      url: 'https://www.skycoin.com/',
       content: '<i class="fab fa-reddit"></i>',
     }
   ],

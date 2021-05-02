@@ -1,10 +1,10 @@
-import { throwError as observableThrowError,  Observable } from 'rxjs';
+import { throwError as observableThrowError,  Observable, ReplaySubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconfirmedTransactionResponse,
-    GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse, GetCoinSupplyResponse } from '../../app.datatypes';
+    GetCurrentBalanceResponse, GenericBlockResponse, RichlistEntry, GetBalanceResponse, GetTransactionResponse, GetCoinSupplyResponse, GetSyncStateResponse } from '../../app.datatypes';
 
 /**
  * Allows to request information from the server. This service returns almost the same data
@@ -18,21 +18,67 @@ import { Blockchain, GetBlocksResponse, GetBlockchainMetadataResponse, GetUnconf
  */
 @Injectable()
 export class ApiService {
+  /**
+   * Key used for saving the local node URL in the persistent storage and the window object.
+   */
+  private static readonly localNodeUrlKey = 'nodeUrl';
 
   /**
    * URL used to connect to the API.
    */
   private url = '/api/';
+  /**
+   * Subject for emitting every time the local node URL is changed or removed.
+   */
+  private localNodeUrlSubject: ReplaySubject<string> = new ReplaySubject<string>(1);
 
   constructor(
     private http: HttpClient
   ) { }
 
   /**
+   * Initializes the service.
+   */
+  initialize() {
+    // Get the URL of the local node that must be used as backend, if an URL was saved before.
+    const localNodeUrl = localStorage.getItem(ApiService.localNodeUrlKey);
+    if (localNodeUrl) {
+      window[ApiService.localNodeUrlKey] = localNodeUrl;
+    }
+
+    this.localNodeUrlSubject.next(localNodeUrl);
+  }
+
+  /**
+   * Sets the URL of the local node that must be used as backend. If the URL is null, any
+   * previously saved URL is removed.
+   */
+  setNodeUrl(url: string) {
+    window[ApiService.localNodeUrlKey] = url;
+
+    if (url) {
+      localStorage.setItem(ApiService.localNodeUrlKey, url);
+    } else {
+      localStorage.removeItem(ApiService.localNodeUrlKey);
+    }
+
+    this.localNodeUrlSubject.next(url);
+  }
+
+  /**
+   * Emits every time the local node URL is changed or removed.
+   */
+  get localNodeUrl(): Observable<string> {
+    return this.localNodeUrlSubject.asObservable();
+  }
+
+  /**
    * Get information about the state of the node.
    */
   getHealth(): Observable<any> {
-    return this.get('health');
+    const url = !this.nodeUrl() ? 'health' : 'v1/health';
+
+    return this.get(url);
   }
 
   /**
@@ -40,7 +86,9 @@ export class ApiService {
    * @param address Address to consult.
    */
   getAddress(address: string): Observable<GetTransactionResponse[]> {
-    return this.get('transactions', { addrs: address, verbose: 1 });
+    const url = !this.nodeUrl() ? 'transactions' : 'v1/transactions';
+
+    return this.get(url, { addrs: address, verbose: 1 });
   }
 
   /**
@@ -48,7 +96,9 @@ export class ApiService {
    * @param address Address to consult.
    */
   getAddressWithPagination(address: string, page: number, pageSize: number): Observable<any> {
-    return this.get('paginatedTransactions', { addrs: address, page: page, limit: pageSize, sort: 'desc', verbose: 1 })
+    const url = !this.nodeUrl() ? 'paginatedTransactions' : 'v2/transactions';
+
+    return this.get(url, { addrs: address, page: page, limit: pageSize, sort: 'desc', verbose: 1 })
       .pipe(map((response: any) => response.data));
   }
 
@@ -56,7 +106,9 @@ export class ApiService {
    * Gets the list of unconfirmed transactions.
    */
   getUnconfirmedTransactions(): Observable<GetUnconfirmedTransactionResponse[]> {
-    return this.get('pendingTxs', { verbose: 1 });
+    const url = !this.nodeUrl() ? 'pendingTxs' : 'v1/pendingTxs';
+
+    return this.get(url, { verbose: 1 });
   }
 
   /**
@@ -64,7 +116,9 @@ export class ApiService {
    * @param id Block ID (sequence number).
    */
   getBlockById(id: number): Observable<GenericBlockResponse> {
-    return this.get('block', { seq: id, verbose: 1 });
+    const url = !this.nodeUrl() ? 'block' : 'v1/block';
+
+    return this.get(url, { seq: id, verbose: 1 });
   }
 
   /**
@@ -72,7 +126,9 @@ export class ApiService {
    * @param hash Block hash.
    */
   getBlockByHash(hash: string): Observable<GenericBlockResponse> {
-    return this.get('block', { hash: hash, verbose: 1 });
+    const url = !this.nodeUrl() ? 'block' : 'v1/block';
+
+    return this.get(url, { hash: hash, verbose: 1 });
   }
 
   /**
@@ -81,14 +137,18 @@ export class ApiService {
    * @param endNumber Number (height) of the last block (inclusive).
    */
   getBlocks(startNumber: number, endNumber: number): Observable<GetBlocksResponse> {
-    return this.get('blocks', { start: startNumber, end: endNumber });
+    const url = !this.nodeUrl() ? 'blocks' : 'v1/blocks';
+
+    return this.get(url, { start: startNumber, end: endNumber });
   }
 
   /**
    * Gets information about the state of the blockchain.
    */
   getBlockchainMetadata(): Observable<Blockchain> {
-    return this.get('blockchain/metadata').pipe(
+    const url = !this.nodeUrl() ? 'blockchain/metadata' : 'v1/blockchain/metadata';
+
+    return this.get(url).pipe(
       map((res: GetBlockchainMetadataResponse) => ({
         blocks: res.head.seq,
       })));
@@ -98,7 +158,9 @@ export class ApiService {
    * Gets information about the current coin supply.
    */
   getCoinSupply(): Observable<GetCoinSupplyResponse> {
-    return this.get('coinSupply');
+    const url = !this.nodeUrl() ? 'coinSupply' : 'v1/coinSupply';
+
+    return this.get(url);
   }
 
   /**
@@ -106,7 +168,9 @@ export class ApiService {
    * @param address Address to consult.
    */
   getCurrentBalance(address: string): Observable<GetCurrentBalanceResponse> {
-    return this.get('currentBalance', { addrs: address });
+    const url = !this.nodeUrl() ? 'currentBalance' : 'v1/outputs';
+
+    return this.get(url, { addrs: address });
   }
 
   /**
@@ -114,7 +178,9 @@ export class ApiService {
    * @param address Address to consult.
    */
   getBalance(address: string): Observable<GetBalanceResponse> {
-    return this.get('balance', { addrs: address });
+    const url = !this.nodeUrl() ? 'balance' : 'v1/balance';
+
+    return this.get(url, { addrs: address });
   }
 
   /**
@@ -122,14 +188,27 @@ export class ApiService {
    * @param transactionId Transaction hash.
    */
   getTransaction(transactionId: string): Observable<GetTransactionResponse> {
-    return this.get('transaction', { txid: transactionId, verbose: 1 });
+    const url = !this.nodeUrl() ? 'transaction' : 'v1/transaction';
+
+    return this.get(url, { txid: transactionId, verbose: 1 });
   }
 
   /**
    * Gets the list of unlocked addresses with most coins.
    */
   getRichlist(): Observable<RichlistEntry[]> {
-    return this.get('richlist').pipe(map((response: any) => response.richlist));
+    const url = !this.nodeUrl() ? 'richlist' : 'v1/richlist';
+
+    return this.get(url).pipe(map((response: any) => response.richlist));
+  }
+
+  /**
+   * Gets the sync state of the node.
+   */
+  getSyncState(): Observable<GetSyncStateResponse> {
+    const url = !this.nodeUrl() ? 'blockchain/progress' : 'v1/blockchain/progress';
+
+    return this.get(url);
   }
 
   // Old methods
@@ -172,6 +251,19 @@ export class ApiService {
       url = url.substr(1, url.length - 1);
     }
 
-    return this.url + url + '?' + this.getQueryString(options);
+    let initialPart = this.nodeUrl();
+    if (!initialPart) {
+      initialPart = this.url;
+    }
+
+    return initialPart + url + '?' + this.getQueryString(options);
+  }
+
+  /**
+   * Returns the URL of the node that the explorer must use as backend. If it does not return a
+   * valid value, the explorer must use as backend the Go intermediate server included with it.
+   */
+  private nodeUrl() {
+    return window[ApiService.localNodeUrlKey];
   }
 }

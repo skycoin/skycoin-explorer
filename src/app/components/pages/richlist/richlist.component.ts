@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { ApiService } from '../../../services/api/api.service';
 import { RichlistEntry } from '../../../app.datatypes';
+import { ExplorerService } from '../../../services/explorer/explorer.service';
 
 /**
  * Page for showing the list of unlocked addresses with most coins.
@@ -29,6 +30,7 @@ export class RichlistComponent implements OnInit, OnDestroy {
 
   constructor(
     private api: ApiService,
+    public explorer: ExplorerService
   ) {}
 
   ngOnInit() {

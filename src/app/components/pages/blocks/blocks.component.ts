@@ -61,6 +61,10 @@ export class BlocksComponent implements OnInit, OnDestroy {
    * Error message to be shown in the loading control if there is a problem.
    */
   longErrorMsg: string;
+  /**
+   * If the app is using a local node as backend.
+   */
+  usingLocalNode = false;
 
   /**
    * If the mouse is over the date of a block, this var contains the ID of that block,
@@ -72,6 +76,7 @@ export class BlocksComponent implements OnInit, OnDestroy {
   /**
    * Observable subscriptions that will be cleaned when closing the page.
    */
+  private nodeUrlSubscription: Subscription;
   private pageSubscriptions: Subscription[] = [];
 
   /**
@@ -85,7 +90,12 @@ export class BlocksComponent implements OnInit, OnDestroy {
     private api: ApiService,
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-  ) { }
+  ) {
+    // Each time the node URL is changed, check if a local node is being used.
+    this.nodeUrlSubscription = this.api.localNodeUrl.subscribe(response => {
+      this.usingLocalNode = !!response;
+    });
+  }
 
   ngOnInit() {
     // Get how many blocks the blockchain has.
@@ -124,5 +134,6 @@ export class BlocksComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // Clean all subscriptions.
     this.pageSubscriptions.forEach(sub => sub.unsubscribe());
+    this.nodeUrlSubscription.unsubscribe();
   }
 }

@@ -33,6 +33,7 @@ import { TransactionInfoComponent } from './components/layout/transaction-info/t
 import { LanguageService } from 'app/services/language/language.service';
 import { LanguageSelectionComponent } from 'app/components/layout/language-selection/language-selection.component';
 import { AmountPipe } from 'app/pipes/amount.pipe';
+import { NodeUrlComponent } from './components/pages/node-url.component';
 
 
 const ROUTES = [
@@ -87,6 +88,15 @@ const ROUTES = [
     path: 'app/search/:term',
     component: SearchComponent
   },
+  {
+    path: 'node',
+    redirectTo: 'node/null',
+    pathMatch: 'full'
+  },
+  {
+    path: 'node/:url',
+    component: NodeUrlComponent
+  },
 ];
 
 @NgModule({
@@ -112,12 +122,13 @@ const ROUTES = [
     TransactionInfoComponent,
     LanguageSelectionComponent,
     AmountPipe,
+    NodeUrlComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES),
+    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

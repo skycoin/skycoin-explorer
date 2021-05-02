@@ -71,6 +71,7 @@
     "tools": "Tools",
     "unspentOutputs": "Unspent outputs",
     "withoutTransactions": "Without transactions",
+    "invalidAddress": "Invalid address",
     "singularPendingCoin": "pending",
     "pluralPendingCoins": "pending"
   },
@@ -84,7 +85,9 @@
     "date": "Date",
     "withoutOutputs": "Without outputs",
     "hoursWhenCreated": "Initial Hours",
-    "currentHours": "Current Hours"
+    "currentHours": "Current Hours",
+    "loadAll": "Show all {{total}} elements",
+    "loading": "Loading, please wait..."
   },
   "transactionDetail": {
     "title": "Transaction",
@@ -111,7 +114,8 @@
     "copied": "Copied"
   },
   "searchBar": {
-    "hint": "Address, block hash or number, or transaction ID"
+    "hint": "Address, block hash or number, or transaction ID",
+    "syncAlert": "The node is still syncing. The data you see may be outdated."
   },
   "search": {
     "title": "Search",

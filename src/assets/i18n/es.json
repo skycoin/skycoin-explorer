@@ -71,6 +71,7 @@
     "tools": "Herramientas",
     "unspentOutputs": "Salidas no Gastadas",
     "withoutTransactions": "Sin transacciones",
+    "invalidAddress": "Dirección inválida",
     "singularPendingCoin": "pendiente",
     "pluralPendingCoins": "pendientes"
   },
@@ -84,7 +85,9 @@
     "date": "Fecha",
     "withoutOutputs": "Sin salidas no gastadas",
     "hoursWhenCreated": "Horas Iniciales",
-    "currentHours": "Horas Actuales"
+    "currentHours": "Horas Actuales",
+    "loadAll": "Mostrar los {{total}} elementos",
+    "loading": "Cargando, por favor espere..."
   },
   "transactionDetail": {
     "title": "Transacción",
@@ -111,7 +114,8 @@
     "copied": "Copiado"
   },
   "searchBar": {
-    "hint": "Dirección, hash/número de bloque o ID de transacción"
+    "hint": "Dirección, hash/número de bloque o ID de transacción",
+    "syncAlert": "El nodo aún se está sincronizando. Los datos que ve pueden estar desactualizados."
   },
   "search": {
     "title": "Buscar",

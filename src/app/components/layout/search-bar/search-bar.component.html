@@ -9,3 +9,7 @@
   <!-- Language button -->
   <app-language-selection></app-language-selection>
 </div>
+<!-- Sync warning -->
+<div class="sync-warning" *ngIf="showSyncWarning">
+  <div>{{ 'searchBar.syncAlert' | translate }}</div>
+</div>

@@ -118,8 +118,8 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private api: ApiService,
-    private explorer: ExplorerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public explorer: ExplorerService
   ) { }
 
   ngOnInit() {
@@ -289,12 +289,20 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
         });
       }
 
+      // If no transactions were found for the address.
+      if (this.totalTransactionsCount < 1) {
+        // Show that there are no transactions.
+        this.longErrorMsg = 'addressDetail.withoutTransactions';
+        // Needed for showing the previous msg.
+        this.alltransactions = undefined;
+      }
+
       this.dataLoaded = true;
     }, error => {
       if (error.status >= 400 && error.status < 500) {
         // The address was not found.
         this.loadingMsg = 'general.noData';
-        this.longErrorMsg = 'addressDetail.withoutTransactions';
+        this.longErrorMsg = 'addressDetail.invalidAddress';
       } else {
         // Error loading the data.
         this.loadingMsg = 'general.shortLoadingErrorMsg';

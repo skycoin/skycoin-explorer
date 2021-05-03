@@ -12,7 +12,7 @@
     <p><span><span class="-label">{{ 'blocks.totalSupply' | translate }}:</span><br class="-xs-only"/> <span class="-value">{{ totalSupply ? (totalSupply | amount:true:'first') : (loadingCoinSupplyMsg | translate) }}</span></span></p>
     <p><span><span class="-label">{{ 'blocks.currentCoinhourSupply' | translate }}:</span><br class="-xs-only"/> <span class="-value">{{ currentCoinhourSupply ? (currentCoinhourSupply | amount:false:'first') : (loadingCoinSupplyMsg | translate) }}</span></span></p>
     <p><span><span class="-label">{{ 'blocks.totalCoinhourSupply' | translate }}:</span><br class="-xs-only"/> <span class="-value">{{ totalCoinhourSupply ? (totalCoinhourSupply | amount:false:'first') : (loadingCoinSupplyMsg | translate) }}</span></span></p>
-    <p><a href="https://explorer.skycoin.com/api.html" class="-link">{{ 'blocks.explorerApi' | translate }}</a></p>
+    <p *ngIf="!usingLocalNode"><a href="https://explorer.skycoin.com/api.html" class="-link">{{ 'blocks.explorerApi' | translate }}</a></p>
     <p><a routerLink="/app/unconfirmedtransactions" class="-link">{{ 'blocks.unconfirmedTransactions' | translate }}</a></p>
     <p><a routerLink="/app/richlist" class="-link">{{ 'blocks.richList' | translate }}</a></p>
   </div>

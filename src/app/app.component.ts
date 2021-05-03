@@ -4,6 +4,7 @@ import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { HeaderConfig, FooterConfig } from 'app/app.config';
 import { LanguageService } from 'app/services/language/language.service';
 import { ExplorerService } from 'app/services/explorer/explorer.service';
+import { ApiService } from './services/api/api.service';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,9 @@ export class AppComponent {
   headerConfig = HeaderConfig;
   footerConfig = FooterConfig;
 
-  constructor(router: Router, languageService: LanguageService, explorerService: ExplorerService) {
-    // Initialize the services
+  constructor(router: Router, languageService: LanguageService, explorerService: ExplorerService, apiService: ApiService) {
+    // Initialize the services. The api service must be initialized first.
+    apiService.initialize();
     languageService.initialize();
     explorerService.initialize();
 

@@ -36,11 +36,15 @@ You can check the state of blocks, transactions and more.
 
 ## Architecture
 
-The explorer is divided in 2 parts: the server and the frontend.
+The explorer is divided in 2 parts: the frontend and the optional server.
 
 The frontend is an Angular application that can be viewed in a web browser. When compiled, it is saved in the `/dist` fonder, inside the root of this repository.
 
 The server is a small program written in Go (Golang) which two functions: serve the contents of the `/dist` folder in [http://127.0.0.1:8001](http://127.0.0.1:8001) (making it is possible to open the frontend in a web browser) and provide an API for getting data from the blockchain. The API provided by the server is just a proxy that gets the data from a Skycoin node, so it needs a Skycoin node to be running to work.
+
+If you don't want to use the included server, the frontend is able to get the data directly from a Skycoin node. For that, you must open the `{explorerUrl}/node/{url}` address, replacing the `{url}` part with the URL for accessing the API of the local node, URL encoded. For example, if the local node is running in `127.0.0.1:6420` you must use `http://127.0.0.1:6420/api/`, which is `http:%2F%2F127.0.0.1:6420%2Fapi%2F` when URL encoded.
+
+If you want to make the app use the included server again, just open `{explorerUrl}/node/null`.
 
 ## Installation
 
@@ -107,7 +111,7 @@ To start the server, run this command in the repository root:
 make run
 ```
 
-The explorer assumes that the Skycoin node is running on `localhost:6420` (the default location of the Skycoin node). If the node is running in a different URL (even a remote one), then run this command instead:
+The intermediate Go server assumes that the Skycoin node is running on `localhost:6420` (the default location of the Skycoin node). If the node is running in a different URL (even a remote one), then run this command instead:
 
 ```sh
 SKYCOIN_ADDR={NODE_URL} make run
@@ -132,6 +136,10 @@ If the Skycoin node and the server are already running, simply open [http://127.
 ## Translations
 
 You can find information about how to work with translation files in the [Translations README](/src/assets/i18n/README.md).
+
+## named addresses
+
+It is possible to assign names to specific addresses, so the explorer shows the name every time the address is shown. For editing the named addresses list, just add, remove or modify entries from the `namedAddresses` array in the [src/app/app.config.ts) file.
 
 ## Deployment
 

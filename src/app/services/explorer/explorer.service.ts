@@ -1,11 +1,11 @@
-import { Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { Observable, Subscription, of } from 'rxjs';
+import { map, mergeMap, delay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { BigNumber } from 'bignumber.js';
 
 import { ApiService } from '../api/api.service';
 import { Block, parseGenericBlock, parseGetUnconfirmedTransaction, Transaction, parseGetTransaction, AddressTransactionsResponse } from '../../app.datatypes';
-import { CoinIdentifiers } from '../../app.config';
+import { CoinIdentifiers, namedAddresses } from '../../app.config';
 
 /**
  * Allows to request information from the server. This service returns processed objects,
@@ -17,11 +17,14 @@ export class ExplorerService {
   private readonly manyTransactionsCount = 100;
 
   // Variables with information about the node.
-  internalFullCoinName = ' ';
-  internalCoinName = ' ';
-  internalHoursName = ' ';
-  internalHoursNameSingular = ' ';
-  internalMaxDecimals = 6;
+  private internalFullCoinName = ' ';
+  private internalCoinName = ' ';
+  private internalHoursName = ' ';
+  private internalHoursNameSingular = ' ';
+  private internalMaxDecimals = 6;
+
+  // Map for getting the names associated with particular addresses.
+  private namedAddressesMap = new Map<string, string>();
 
   /**
    * Full coin name returned by the node.
@@ -54,24 +57,34 @@ export class ExplorerService {
     return this.internalMaxDecimals;
   }
 
-  /**
-   * Lets know if the initialize() function has already been called.
-   */
-  private initialized = false;
+  private nodeUrlSubscription: Subscription;
+  private initializationSubscription: Subscription;
 
   constructor(
     private api: ApiService,
   ) { }
 
+  /**
+   * Initializes the service.
+   */
   initialize() {
-    if (this.initialized) {
-      return;
+    namedAddresses.forEach(namedAddress => {
+      this.namedAddressesMap.set(namedAddress.address, namedAddress.name);
+    });
+
+    this.getNodeInfo(0);
+  }
+
+  /**
+   * Gets the basic info about the backend.
+   * @param delayMs Delay before starting to get the data.
+   */
+  private getNodeInfo(delayMs: number) {
+    if (this.initializationSubscription) {
+      this.initializationSubscription.unsubscribe();
     }
-    this.initialized = true;
 
-    // Get basic information about the node.
-    this.api.getHealth().subscribe(response => {
-
+    this.initializationSubscription = of(0).pipe(delay(delayMs), mergeMap(() => this.api.getHealth())).subscribe(response => {
       // Get the information from the node if available.
       if (response.fiber && response.fiber.display_name) {
         this.internalFullCoinName = response.fiber.display_name;
@@ -102,6 +115,9 @@ export class ExplorerService {
       } else {
         this.internalMaxDecimals = 6;
       }
+    }, () => {
+      // Retry in case of error.
+      this.getNodeInfo(3000);
     });
   }
 
@@ -223,5 +239,17 @@ export class ExplorerService {
   getTransaction(transactionId: string): Observable<Transaction> {
     return this.api.getTransaction(transactionId).pipe(
       map(response => parseGetTransaction(response)));
+  }
+
+  /**
+   * Returns the name associated to an address, enclosed in parentheses. If no name has been
+   * associated to the address, returns an empty string.
+   */
+  getAddressName(address: string): string {
+    if (this.namedAddressesMap.has(address)) {
+      return ' (' + this.namedAddressesMap.get(address) + ')';
+    }
+
+    return '';
   }
 }

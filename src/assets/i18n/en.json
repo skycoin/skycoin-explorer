@@ -66,14 +66,12 @@
     "txsNumber": "# of Transactions",
     "totalReceived": "Total Received",
     "totalSent": "Total Sent",
-    "currentBalance": "Current Coins",
-    "hoursBalance": "Current Hours",
     "tools": "Tools",
     "unspentOutputs": "Unspent outputs",
     "withoutTransactions": "Without transactions",
-    "invalidAddress": "Invalid address",
-    "singularPendingCoin": "pending",
-    "pluralPendingCoins": "pending"
+    "singularPendingCoins": "{{ amount }} pending",
+    "pluralPendingCoins": "{{ amount }} pending",
+    "invalidAddress": "Invalid address"
   },
   "unspentOutputs": {
     "title": "Unspent Outputs",

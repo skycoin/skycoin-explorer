@@ -62,8 +62,6 @@
     "txsNumber": "# of Transactions",
     "totalReceived": "Total Received",
     "totalSent": "Total Sent",
-    "currentBalance": "Current Coins",
-    "hoursBalance": "Current Hours",
     "tools": "Tools",
     "unspentOutputs": "Unspent outputs",
     "withoutTransactions": "Without transactions"

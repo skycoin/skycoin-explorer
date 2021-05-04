@@ -62,8 +62,6 @@
     "txsNumber": "# 的交易",
     "totalReceived": "总共收取",
     "totalSent": "总共发出",
-    "currentBalance": "当前币额",
-    "hoursBalance": "当前币时数",
     "tools": "工具",
     "unspentOutputs": "未花费输出",
     "withoutTransactions": "没有交易"

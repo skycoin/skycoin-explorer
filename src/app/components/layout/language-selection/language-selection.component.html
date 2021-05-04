@@ -1,9 +1,11 @@
 <div>
+  <!-- Button -->
   <div class="language-button" (click)="langsButtonClick()">
-    <img [src]="language ? ('assets/img/lang/' + language.iconName) : ''" class="flag-img" />
+    <img [src]="currentLanguage ? ('assets/img/lang/' + currentLanguage.iconName) : ''" class="flag-img" />
     <img src="/assets/img/arrow.png" class="arrow-img" />
   </div>
-  <div [ngClass]="showLangs ? 'dropdown-menu open' : 'dropdown-menu'">
+  <!-- Menu -->
+  <div class="dropdown-menu" [ngClass]="{open: showLangs}">
     <div *ngFor="let lang of langs" class="dropdown-item" (click)="changeLanguage(lang)">
       <img [src]="'/assets/img/lang/' + lang.iconName" class="small-flag-img" />
       {{ lang.name }}

@@ -1,7 +1,14 @@
 import { BigNumber } from 'bignumber.js';
 
 /**
- * Elementary Types
+ * Collection of types used in various parts of the application. Some types are just
+ * representations of the responses the API return and others are for internal use in the
+ * application. Also, this file contains functions for processing the responses returned
+ * by the API and return internal types.
+ */
+
+/**
+ * Elementary types used in the app.
  */
 
 export class Block {
@@ -53,7 +60,7 @@ export class RichlistEntry {
 }
 
 /**
- * Generic Node Response Types
+ * Generic API response types
  */
 
 export class GenericBlockResponse {
@@ -172,7 +179,7 @@ function parseGenericTransactionOutput(raw: GenericTransactionOutputResponse): O
 }
 
 /**
- * Node Response Types
+ * API response types (returned by a specific API endpoint)
  */
 
 export class GetUnconfirmedTransactionResponse {
@@ -229,6 +236,11 @@ export class GetTransactionResponse {
   txn: GenericTransactionResponse;
 }
 
+export class GetSyncStateResponse {
+  current: number;
+  highest: number;
+}
+
 export function parseGetTransaction(raw: GetTransactionResponse, address: string = null): Transaction {
   raw.txn.status = raw.status;
   return parseGenericTransaction(raw.txn, address);
@@ -256,4 +268,16 @@ export interface GetCoinSupplyResponse {
   max_supply: number;
   current_coinhour_supply: number;
   total_coinhour_supply: number;
+}
+
+/**
+ * Specific objects.
+ */
+
+export interface AddressTransactionsResponse {
+  addressHasManyTransactions: boolean;
+  totalTransactionsCount: number;
+  currentPageIndex: number;
+  totalPages: number;
+  recoveredTransactions: Transaction[];
 }

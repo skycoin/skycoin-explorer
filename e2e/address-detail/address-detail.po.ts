@@ -8,7 +8,7 @@ export class AddressDetailPage {
 
   getAddressForSmallScreens() {
     return element(by.css('.element-details > div:nth-of-type(1) > span:nth-of-type(2)'))
-      .getAttribute('textContent');
+      .getAttribute('textContent').then(address => address.trim());
   }
 
   getNumberOfTransactions() {
@@ -30,7 +30,7 @@ export class AddressDetailPage {
   }
 
   getCurrentBalance() {
-    return element(by.css('.element-details > div:nth-of-type(5) > div'))
+    return element(by.css('.balance-container > div:nth-of-type(1)'))
       .getText()
       .then(text => Number(text.split(' ')[0].replace(new RegExp(',', 'g'), '')));
   }

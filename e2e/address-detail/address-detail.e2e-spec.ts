@@ -19,8 +19,8 @@ describe('skycoin-explorer Address Page', () => {
     expect(page.getPageTitleForSmallScreens()).toBe('Address');
   });
 
-  it('should have 6 address details rows', () => {
-    expect(generalFunctions.getDetailsRowCount()).toEqual(7);
+  it('should have 5 address details rows', () => {
+    expect(generalFunctions.getDetailsRowCount()).toEqual(5);
   });
 
   it('should have the correct address for small screens', () => {

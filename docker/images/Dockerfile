@@ -17,10 +17,9 @@ RUN ln -sf /bin/bash /bin/sh
 # install node, explorer dependencies build Angular's project
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash && \
 	source /root/.profile && \
-	nvm install 8.9 && \
-	nvm use 8.9 && \
+	nvm install 10.16 && \
+	nvm use 10.16 && \
 	cd $GOPATH/src/github.com/skycoin/skycoin-explorer && \
-	npm install webpack @angular-devkit/build-optimizer && \
 	npm install && \
 	npm run build
 

@@ -2,13 +2,27 @@
 
 The explorer is designed in such a way that it is possible to make simple customizations with relative ease.
 
+## Page title
+
+To change the page title (the one shown in the browser tab), simply change the content of the `<title>` tag in [index.html](src/index.html).
+
+## Favicon
+
+The favicon file is [favicon.ico](src/favicon.ico), so you can change the favicon by replacing that file. You can also change the content of the `<link>` tag used for setting the favicon in [index.html](src/index.html).
+
+## Basic identifiers
+
+The explorer automatically tries to obtain from the node the name of the coins and hours. If, for example, the explorer is connected to a Skycoin node, it will automatically get the "SKY" name from the node and use it to identify the amounts of coins.
+
+However, because old versions of the node do not return that information, you should add the coin identifiers in the `CoinIdentifiers` object inside the [app.config.ts](src/app/app.config.ts) file.
+
 ## QR codes
 
 To simplify copying addresses with mobile devices, the explorer shows qr codes. The qr codes contain the addresses prefixed with the name of the coin, in this way: `skycoin:abcd...` (More information in this link: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki). If needed, the `skycoin:` prefix can be changed by modifying the value of `QrConfig.prefix`, inside [app.config.ts](src/app/app.config.ts).
 
 ## Search functionality
 
-The explorer is integrated with the browser's search functionality. This means that the user can search for elements of the blockchain directly from the search functionality of the browser. For this to work properly, you must modify the [search.xml](src/search.xml) file. Simply replace the `https://explorer.skycoin.net/` prefix of all URLs with the URL where the browser will reside (it is not necessary to replace the text that may be to the right of that prefix). Also, replace the `ShortName` and `Description` as deemed necessary.
+The explorer is integrated with the browser's search functionality. This means that the user can search for elements of the blockchain directly from the search functionality of the browser. For this to work properly, you must modify the [search.xml](src/search.xml) file. Simply replace the `https://explorer.skycoin.com/` prefix of all URLs with the URL where the browser will reside (it is not necessary to replace the text that may be to the right of that prefix). Also, replace the `ShortName` and `Description` as deemed necessary.
 
 You can find more information about the file format in [opensearch-1-1-draft-6.md](https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md)
 
@@ -28,7 +42,7 @@ The generic header may be activated simply by opening [app.config.ts](src/app/ap
 
 The "website" link opens the URL specified in `HeaderConfig.genericHeaderUrl`, inside [app.config.ts](src/app/app.config.ts).
 
-The logo may be modified by replacing the [HeaderComponent]((src/assets/img/logo.png) file. In case of modifying the logo, it is important to keep in mind that the new image should be less than 110px high and 220px wide.
+The logo may be modified by replacing the [logo.png]((src/assets/img/logo.png) file. In case of modifying the logo, it is important to keep in mind that the new image should be less than 110px high and 220px wide.
 
 The header colors may be modified by changing the values of `$col-generic-header-background`, `$col-generic-header-text` and `$col-generic-header-border`, in [_variables.scss](src/assets/scss/_variables.scss). For example, consider the following values:
 ```
@@ -71,7 +85,7 @@ Although it may seem that the second parameter is complicated to configure, its 
 
 ![GitHub Logo](/doc_images/code.png)
 
-Taking all this into account, it is possible to add a link to a Twitter account simply by adding and element like the following one to the `FooterConfig.contactLinks` array:
+Taking all this into account, it is possible to add a link to a Twitter account simply by adding an element like the following one to the `FooterConfig.contactLinks` array:
 ```
 {
   url: "https://twitter.com/skycoinproject",

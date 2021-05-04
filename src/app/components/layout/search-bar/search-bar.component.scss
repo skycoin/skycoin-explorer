@@ -24,7 +24,7 @@
     input {
       border: 2px solid rgba(0, 0, 0, 0.05);
       border-radius: 6px;
-      font-size: 12px;
+      font-size: $siz-small-text;
       height: 42px;
       padding: 0 0 0 40px;
       width: 100%;
@@ -34,4 +34,13 @@
       }
     }
   }
+}
+
+.sync-warning {
+  background-color: #f79d9d;
+  border: #c70000 dashed 1px;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  text-align: center;
 }

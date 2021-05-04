@@ -1,3 +1,6 @@
+<!-- Configuration file for the integration with browser search bar.
+This file is valid only for the dev builds. More info about the file in
+https://developer.mozilla.org/en-US/docs/Web/OpenSearch#OpenSearch_description_file  -->
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
   <script/>
   <ShortName>Skycoin Explorer Test</ShortName>

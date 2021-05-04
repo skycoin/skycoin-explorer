@@ -24,7 +24,6 @@ describe('skycoin-explorer Rich List Page', () => {
     for (let i = 0; i < 20; i++) {
       const AddressLength = page.getAddressLength(i);
       expect(AddressLength).toBeGreaterThan(26);
-      expect(AddressLength).toBeLessThan(36);
     }
   });
 

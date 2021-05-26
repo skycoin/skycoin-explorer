@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 import { QrConfig } from 'app/app.config';
 
@@ -19,8 +19,13 @@ export class QrCodeComponent implements OnInit {
   /**
    * Content of the QR code. The content of QrConfig.prefix will be added at the left.
    */
-  @Input() string: string;
-  @ViewChild('qr', { static: true }) qr: any;
+  @Input() set string(val: string) {
+    this.stringInternal = val;
+    this.updateQR();
+  }
+  private stringInternal: string;
+
+  @ViewChild('qr', { static: true }) qr: ElementRef;
 
   // Size in pixels.
   size = 130;
@@ -33,8 +38,13 @@ export class QrCodeComponent implements OnInit {
   usesvg = false;
 
   ngOnInit() {
+    this.updateQR();
+  }
+
+  private updateQR() {
+    (this.qr.nativeElement as HTMLDivElement).innerHTML = '';
     const qr = new QRCode(this.qr.nativeElement, {
-      text: QrConfig.prefix + this.string,
+      text: QrConfig.prefix + this.stringInternal,
       width: this.size,
       height: this.size,
       colorDark: this.colordark,

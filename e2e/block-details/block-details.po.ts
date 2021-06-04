@@ -46,7 +46,7 @@ export class BlockDetailsPage {
       .all(by.css('.header-container > div > a'))
       .get(index)
       .element(by.css('.btn-text-e2e'))
-      .getAttribute('textContent');
+      .getText();
   }
 
   clickNavigationButton(index: number) {

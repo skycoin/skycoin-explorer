@@ -57,11 +57,11 @@ describe('skycoin-explorer Block Details Page', () => {
   });
 
   it('should display the "Previous block" button', () => {
-    expect(page.getNavigationButtonText(0)).toBe('Previous block');
+    expect(page.getNavigationButtonText(0)).toBe('Previous block'.toUpperCase());
   });
 
   it('should display the "Next block" button', () => {
-    expect(page.getNavigationButtonText(1)).toBe('Next block');
+    expect(page.getNavigationButtonText(1)).toBe('Next block'.toUpperCase());
   });
 
   it('should navigate to the previous block using the nav button', () => {

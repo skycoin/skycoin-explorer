@@ -1,5 +1,6 @@
 import { BlocksPage } from './blocks.po';
 import { GeneralPageFunctions } from '../general.po';
+import { browser } from 'protractor';
 
 describe('skycoin-explorer Blocks Page', () => {
   const page = new BlocksPage();
@@ -13,6 +14,7 @@ describe('skycoin-explorer Blocks Page', () => {
   });
 
   it('should display the first title for small screens', () => {
+    browser.manage().window().setSize(400, 500);
     expect(page.getPageTitle(1)).toBe('Stats');
   });
 
@@ -21,6 +23,7 @@ describe('skycoin-explorer Blocks Page', () => {
   });
 
   it('should display the Explorer API link', () => {
+    browser.manage().window().setSize(1920, 1080);
     expect(page.getExplorerApiText()).toEqual('Explorer API');
   });
 

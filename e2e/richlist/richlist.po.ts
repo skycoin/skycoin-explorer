@@ -5,7 +5,7 @@ export class RichlistPage {
     return element
     .all(by.css('app-root h2'))
     .get(0)
-    .getAttribute('textContent');
+    .getText();
   }
 
   getEntriesCount() {

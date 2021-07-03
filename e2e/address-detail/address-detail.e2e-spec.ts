@@ -16,18 +16,22 @@ describe('skycoin-explorer Address Page', () => {
   });
 
   it('should have the title for small screens', () => {
+    browser.manage().window().setSize(400, 500);
     expect(page.getPageTitleForSmallScreens()).toBe('Address');
   });
 
   it('should have 5 address details rows', () => {
+    browser.manage().window().setSize(1920, 1080);
     expect(generalFunctions.getDetailsRowCount()).toEqual(5);
   });
 
   it('should have the correct address for small screens', () => {
+    browser.manage().window().setSize(400, 500);
     expect(page.getAddressForSmallScreens()).toEqual(address);
   });
 
   it('should show the correct # of transactions', () => {
+    browser.manage().window().setSize(1920, 1080);
     expect(page.getNumberOfTransactions()).toBe(1);
   });
 

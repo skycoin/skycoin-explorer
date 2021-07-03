@@ -6,7 +6,7 @@ export class BlocksPage {
     return element
     .all(by.css('app-root h2'))
     .get(titleNumber)
-    .getAttribute('textContent');
+    .getText();
   }
 
   getExplorerApiText() {

@@ -2,13 +2,12 @@ import { browser, by, element } from 'protractor';
 
 export class AddressDetailPage {
   getPageTitleForSmallScreens() {
-    return element(by.css('.element-details-wrapper > h2:nth-child(2)'))
-      .getAttribute('textContent');
+    return element(by.css('.element-details-wrapper > h2:nth-child(2)')).getText();
   }
 
   getAddressForSmallScreens() {
     return element(by.css('.element-details > div:nth-of-type(1) > span:nth-of-type(2)'))
-      .getAttribute('textContent').then(address => address.trim());
+      .getText().then(address => address.trim());
   }
 
   getNumberOfTransactions() {

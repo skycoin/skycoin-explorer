@@ -54,6 +54,7 @@ export class LanguageSelectionComponent implements OnDestroy {
 
   /**
    * Changes the selected language.
+   *
    * @param language New selected language.
    */
   changeLanguage(language: LanguageData) {

@@ -77,6 +77,7 @@ export class ExplorerService {
 
   /**
    * Gets the basic info about the backend.
+   *
    * @param delayMs Delay before starting to get the data.
    */
   private getNodeInfo(delayMs: number) {
@@ -123,6 +124,7 @@ export class ExplorerService {
 
   /**
    * Gets a block by its ID (sequence number).
+   *
    * @param id Block ID (sequence number).
    */
   getBlock(id: number): Observable<Block> {
@@ -131,6 +133,7 @@ export class ExplorerService {
 
   /**
    * Gets an array with the blocks in a specific range.
+   *
    * @param start Number (height) of the first block (inclusive).
    * @param end Number (height) of the last block (inclusive).
    */
@@ -141,6 +144,7 @@ export class ExplorerService {
 
   /**
    * Gets a block by its hash.
+   *
    * @param hash Block hash.
    */
   getBlockByHash(hash: string): Observable<Block> {
@@ -150,6 +154,7 @@ export class ExplorerService {
   /**
    * Gets the list of transactions of a specific address. Depending on how many transactions
    * the address has, the function may return a paginated results or all the transactions.
+   *
    * @param address Address to consult.
    * @param page Number of the desired results page.
    * @param pageSize Max number of transactions each results page can have.
@@ -214,13 +219,13 @@ export class ExplorerService {
 
       response = response.reverse();
 
-      return <AddressTransactionsResponse>{
+      return {
         totalTransactionsCount: transactionsCount,
         currentPageIndex: currentPageIndex,
         totalPages: totalPages,
         addressHasManyTransactions: hasManyTransactions,
         recoveredTransactions: response,
-      };
+      } as AddressTransactionsResponse;
     }));
   }
 
@@ -234,6 +239,7 @@ export class ExplorerService {
 
   /**
    * Gets a transaction by its hash.
+   *
    * @param transactionId Transaction hash.
    */
   getTransaction(transactionId: string): Observable<Transaction> {

@@ -15,7 +15,7 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
   styleUrls: ['./transaction-detail.component.scss']
 })
 export class TransactionDetailComponent implements OnInit, OnDestroy {
-/**
+  /**
    * Current transaction.
    */
   transaction: Transaction;

@@ -180,13 +180,13 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
       // If this.alltransactions still has a value, the address does not have many transactions
       // (so all are in memory) and only the page was changed, there is no need for loading
       // the transactions again.
-      nextStep = observableOf(<AddressTransactionsResponse> {
+      nextStep = observableOf({
         totalTransactionsCount: this.totalTransactionsCount,
         currentPageIndex: this.pageIndex,
         totalPages: this.pageCount,
         recoveredTransactions: this.alltransactions,
         addressHasManyTransactions: false,
-      });
+      } as AddressTransactionsResponse);
     } else {
       // Make the loading indicator appear again and load the transactions.
       this.alltransactions = undefined;

@@ -57,10 +57,8 @@ export class BlockDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Get how many blocks the blockchain currenly has.
     this.pageSubscriptions.push(this.api.getBlockchainMetadata().pipe(
-      retryWhen((err) => {
-        // If there is a problem, retry after a small delay.
-        return err.pipe(delay(3000));
-      }),
+      // If there is a problem, retry after a small delay.
+      retryWhen((err) => err.pipe(delay(3000))),
       first()
     ).subscribe(blockchain => this.blockCount = blockchain.blocks));
 

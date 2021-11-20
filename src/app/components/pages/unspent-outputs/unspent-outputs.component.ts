@@ -15,15 +15,15 @@ enum ShowMoreStatus {
   /**
    * Only some elements are being shown.
    */
-  ShowMore = 0,
+  showMore = 0,
   /**
    * Preparing to show all elements.
    */
-  Loading = 1,
+  loading = 1,
   /**
    * All elements are being shown.
    */
-  DontShowMore = 2,
+  dontShowMore = 2,
 }
 
 /**
@@ -57,7 +57,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
   /**
    * Current state of the output list.
    */
-  showMoreOutputs = ShowMoreStatus.DontShowMore;
+  showMoreOutputs = ShowMoreStatus.dontShowMore;
   /**
    * Current address.
    */
@@ -121,7 +121,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
         // Show only the max initial number of elements.
         this.outputsToShow = this.outputs.head_outputs.slice(0, this.maxInitialElements);
         // Indicate that there are additional outputs to show.
-        this.showMoreOutputs = ShowMoreStatus.ShowMore;
+        this.showMoreOutputs = ShowMoreStatus.showMore;
       } else {
         this.outputsToShow = this.outputs.head_outputs;
       }
@@ -147,7 +147,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
    * Makes the control show all the outputs.
    */
   showAll() {
-    if (this.showMoreOutputs === ShowMoreStatus.ShowMore) {
+    if (this.showMoreOutputs === ShowMoreStatus.showMore) {
       // If the process takes too long to be completed, the UI may end blocked and all mouse
       // clicks would be processed after finishing, which could make users think that the
       // application behaves erratically (specially if the user starts clicking
@@ -156,7 +156,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
       // control ignore all mouse clicks temporarily.
       this.disableClicks = true;
       // Indicate that the elements are being loaded.
-      this.showMoreOutputs = ShowMoreStatus.Loading;
+      this.showMoreOutputs = ShowMoreStatus.loading;
 
       // Load all the elements after 2 frames, to give the application time for updating the
       // UI, in case it gets blocked.
@@ -166,7 +166,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
         // Updates the UI after 2 frames.
         setTimeout(() => {
           // Idicate that all elements are being shown.
-          this.showMoreOutputs = ShowMoreStatus.DontShowMore;
+          this.showMoreOutputs = ShowMoreStatus.dontShowMore;
           // Accept mouse click.
           this.disableClicks = false;
         });

@@ -6,8 +6,8 @@
     <div class="element-details">
       <div class="-row"><span>{{ 'unspentOutputs.address' | translate }}</span><br class="-xs-only" /><div> <a [routerLink]="'/app/address/' + address" class="-link -copy-button-margin" *ngIf="address">{{ address }}{{ explorer.getAddressName(address) }}</a> <app-copy-button [text]="address" *ngIf="address"></app-copy-button> <span *ngIf="!address">{{ loadingMsg  | translate }}</span> </div></div>
       <div class="-row"><span>{{ 'unspentOutputs.outputsNumber' | translate }}</span><br class="-xs-only" /><div> {{ outputs ? outputs.head_outputs.length : (loadingMsg  | translate) }} </div></div>
-      <div class="-row"><span>{{ 'unspentOutputs.totalCoins' | translate }}</span><br class="-xs-only" /><div> {{ coins != null ? (coins.toString() | amount:true) : (loadingMsg  | translate) }} </div></div>
-      <div class="-row"><span>{{ 'unspentOutputs.totalHours' | translate }}</span><br class="-xs-only" /><div> {{ hours != null ? (hours.toString() | amount:false) : (loadingMsg  | translate) }} </div></div>
+      <div class="-row"><span>{{ 'unspentOutputs.totalCoins' | translate }}</span><br class="-xs-only" /><div> {{ coins !== null ? (coins.toString() | amount:true) : (loadingMsg  | translate) }} </div></div>
+      <div class="-row"><span>{{ 'unspentOutputs.totalHours' | translate }}</span><br class="-xs-only" /><div> {{ hours !== null ? (hours.toString() | amount:false) : (loadingMsg  | translate) }} </div></div>
     </div>
   </div>
 
@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <div class="show-all" *ngIf="showMoreOutputs !== showMoreStatus.DontShowMore" (click)="showAll()">
-    {{ showMoreOutputs === showMoreStatus.ShowMore ? ('unspentOutputs.loadAll' | translate:{ total: totalOutputs }) : ('unspentOutputs.loading' | translate) }}
+  <div class="show-all" *ngIf="showMoreOutputs !== showMoreStatus.dontShowMore" (click)="showAll()">
+    {{ showMoreOutputs === showMoreStatus.showMore ? ('unspentOutputs.loadAll' | translate:{ total: totalOutputs }) : ('unspentOutputs.loading' | translate) }}
   </div>
 </div>

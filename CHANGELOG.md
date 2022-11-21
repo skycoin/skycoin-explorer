@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- The backend was updated to work with Go v18.
+
 ### Removed
 
 ## [v0.4.0] - 01-15-2019

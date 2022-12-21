@@ -128,7 +128,7 @@ const ROUTES: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(ROUTES, {}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

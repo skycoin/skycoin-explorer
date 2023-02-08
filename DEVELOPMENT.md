@@ -53,7 +53,7 @@ The frontend code is inside the [src](src) folder and it follows the normal stru
 
 You can find the components, pipes and services (most of the code) in in the [src/app](src/app) folder. Resource files are in [src/assets](src/assets) and the JS libs/tools that were not included with NPM are in [src/js](src/js).
 
-You can find the code of the e2e tests in the [e2e](e2e) folder. The unit tests are currently not being used.
+You can find the code of the e2e tests in the [test](test) folder. The unit tests are currently not being used.
 
 ### Integration with the browser's search functionality
 
@@ -103,13 +103,13 @@ npm run lint
 
 Note: before running the e2e tests you must compile the frontend and run the server. The e2e testing process will use the compiled frontend, so if you forget to run the compilation process your lastest changes will be ignored.
 
-If you are running a Skycoin node normally, you can run the e2e tests with:
+If you are running a Skycoin node normally, the server must be run locally with `npm start` and you can run the e2e tests with:
 
 ```sh
 npm run e2e
 ```
 
-If you are running a Skycoin node using the test database (`blockchain-180.db`), you can run the e2e tests with:
+If you are running a Skycoin node using the test database (`blockchain-180.db`), the server must be running on `http://127.0.0.1:8001` and you can run the e2e tests with:
 
 ```sh
 npm run e2e-blockchain-180

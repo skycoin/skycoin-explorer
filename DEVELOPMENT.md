@@ -45,7 +45,7 @@ You must have goimports installed (use `make install-linters`).
 
 ## Frontend
 
-The frontend is an Angular application that can be viewed in a web browser. I currently uses Angular 8.
+The frontend is an Angular application that can be viewed in a web browser. I currently uses Angular 15.
 
 ### Frontend file structure
 
@@ -101,8 +101,6 @@ npm run lint
 
 ### e2e Tests
 
-Note: before running the e2e tests you must compile the frontend and run the server. The e2e testing process will use the compiled frontend, so if you forget to run the compilation process your lastest changes will be ignored.
-
 If you are running a Skycoin node normally, the server must be run locally with `npm start` and you can run the e2e tests with:
 
 ```sh
@@ -116,3 +114,7 @@ npm run e2e-blockchain-180
 ```
 
 The second method is the one used in Travis.
+
+Note 1: before running the e2e tests with the test database (`blockchain-180.db`), you must compile the frontend and run the server. The e2e testing process will use the compiled frontend, so if you forget to run the compilation process your lastest changes will be ignored.
+
+Note 2: if the e2e tests fail with an error related to the version of Google Chrome and Chromedriver, you must update the version of Chromedriver on [package.json](package.json) to make it coincide with the version of Google Chrome. After that, run `npm install` to update the dependencies and run the tests again.

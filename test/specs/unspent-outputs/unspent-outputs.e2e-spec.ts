@@ -17,6 +17,7 @@ describe('skycoin-explorer Unspent Outputs Page', () => {
     address = for180BlockchainTesting ? '2A2YC8kxWnUDbscpzZ6UPfNAmx5ddKBeYNs' : '24ooGeabUGQLnJmoyviqA8h2y7Cgz2CY4x7';
 
     await generalFunctions.navigateTo('/app/unspent/' + address);
+    await generalFunctions.waitUntilNoSpinners();
 
     expect(await generalFunctions.getPageTitle()).toBe('Unspent Outputs');
   });

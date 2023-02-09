@@ -11,6 +11,7 @@ describe('skycoin-explorer Unconfirmed Transactions Page', () => {
 
   it('should display Unconfirmed Transactions text', async () => {
     await generalFunctions.navigateTo('/app/unconfirmedtransactions');
+    await generalFunctions.waitUntilNoSpinners();
 
     for180BlockchainTesting = !((await browser.getUrl()).includes('localhost:4200'));
 
@@ -23,7 +24,7 @@ describe('skycoin-explorer Unconfirmed Transactions Page', () => {
 
   it('should show the correct number of transactions', async () => {
     if (for180BlockchainTesting) {
-      expect(await page.getNumberOfTransactions()).toBe(for180BlockchainTesting);
+      expect(await page.getNumberOfTransactions()).toBe(1);
     }
   });
 

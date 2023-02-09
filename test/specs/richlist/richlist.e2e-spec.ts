@@ -9,6 +9,8 @@ describe('skycoin-explorer Rich List Page', () => {
 
   it('should display the title', async () => {
     await generalFunctions.navigateTo('/app/richlist');
+    await generalFunctions.waitUntilNoSpinners();
+    
     expect(await page.getPageTitle()).toEqual('Rich List');
   });
 

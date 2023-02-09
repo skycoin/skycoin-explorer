@@ -9,6 +9,8 @@ describe('skycoin-explorer Block Details Page', () => {
 
   it('should display the title', async () => {
     await generalFunctions.navigateTo('/app/block/5');
+    await generalFunctions.waitUntilNoSpinners();
+    
     expect(await generalFunctions.getPageTitle()).toEqual('Block Details');
   });
 

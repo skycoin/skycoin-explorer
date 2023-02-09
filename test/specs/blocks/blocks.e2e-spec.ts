@@ -9,6 +9,8 @@ describe('skycoin-explorer Blocks Page', () => {
 
   it('should display the title for big screens', async () => {
     await generalFunctions.navigateTo('/');
+    await generalFunctions.waitUntilNoSpinners();
+    
     expect(await page.getPageTitle(0)).toBe('Blocks');
   });
   

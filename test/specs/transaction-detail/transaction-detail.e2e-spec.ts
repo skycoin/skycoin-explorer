@@ -9,6 +9,8 @@ describe('skycoin-explorer Transaction Page', () => {
 
   it('should display the title', async () => {
     await generalFunctions.navigateTo('/app/transaction/0579e7727627cd9815a8a8b5e1df86124f45a4132cc0dbd00d2f110e4f409b69');
+    await generalFunctions.waitUntilNoSpinners();
+    
     expect(await generalFunctions.getPageTitle()).toBe('Transaction');
   });
 

@@ -1,4 +1,4 @@
-import { of as observableOf, Subscription, Observable } from 'rxjs';
+import { of as observableOf, Subscription, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -7,6 +7,31 @@ import { BigNumber } from 'bignumber.js';
 import { ApiService } from '../../../services/api/api.service';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
 import { Transaction, GetBalanceResponse, GetUnconfirmedTransactionResponse, AddressTransactionsResponse } from 'app/app.datatypes';
+import { PageBaseComponent } from '../page-base';
+import { dataValidityTime } from 'app/app.config';
+
+/**
+ * Class for saving the responses returned by the server. This allows to avoid requesting the data
+ * again when the user is checking different pages of the same address.
+ */
+export class CachedAddressDetails {
+  /**
+   * Address the data belongs to.
+   */
+  address: string;
+  /**
+   * Response obtained when the address transactions were requested.
+   */
+  transactionsResponse: AddressTransactionsResponse;
+  /**
+   * Response obtained when the address balance was requested.
+   */
+  balanceResponse: GetBalanceResponse;
+  /**
+   * Response obtained when the unconfirmed transactions were requested.
+   */
+  unconfirmedResponse: GetUnconfirmedTransactionResponse[];
+}
 
 /**
  * Page for showing info about a specific address.
@@ -22,7 +47,18 @@ import { Transaction, GetBalanceResponse, GetUnconfirmedTransactionResponse, Add
   templateUrl: './address-detail.component.html',
   styleUrls: ['./address-detail.component.scss']
 })
-export class AddressDetailComponent implements OnInit, OnDestroy {
+export class AddressDetailComponent extends PageBaseComponent implements OnInit, OnDestroy {
+  // Keys for persisting the server data, to be able to restore the state after navigation.
+  private readonly persistentServerAddressResponseKey = 'serv-adr-response';
+  private readonly persistentServerBalanceResponseKey = 'serv-blc-response';
+  private readonly persistentServerUnconfirmedTxsResponseKey = 'serv-utx-response';
+
+  /**
+   * Var for saving the responses returned by the server. This allows to avoid requesting the data
+   * again when the user is checking different pages of the same address.
+   */
+  private static cachedData: CachedAddressDetails;
+
   /**
    * Current address.
    */
@@ -68,10 +104,6 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
    */
   pendingHours: BigNumber;
   /**
-   * Complete transactions list.
-   */
-  alltransactions: Transaction[];
-  /**
    * Transactions to be shown in the current page.
    */
   pageTransactions: any[];
@@ -107,27 +139,22 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
   private navParamsSubscription: Subscription;
   private operationSubscription: Subscription;
 
-  /**
-   * Lastest response obtained when requesting the address balance to the node.
-   */
-  private lastestBalanceResponse: GetBalanceResponse;
-  /**
-   * Lastest response obtained when requesting the unconfirmed transactions to the node.
-   */
-  private lastestUnconfirmedResponse: GetUnconfirmedTransactionResponse[];
-
   constructor(
     private api: ApiService,
     private route: ActivatedRoute,
     public explorer: ExplorerService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     // Check the URL to detect changes in the requested address and page.
     this.navParamsSubscription = this.route.params.subscribe(params => {
       // Update the data.
-      this.getData(params);
+      this.getData(params, true);
     });
+
+    return super.ngOnInit();
   }
 
   ngOnDestroy() {
@@ -139,24 +166,11 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
   /**
    * Gets the data of the requested address and page.
    */
-  private getData(routeParams: Params) {
-    // Reset the content, but only if the address changed.
-    if (this.address !== routeParams['address']) {
-      // Reset the data variables.
-      this.dataLoaded = false;
-      this.totalTransactionsCount = undefined;
-      this.alltransactions = undefined;
-      this.balance = undefined;
-      this.hoursBalance = undefined;
-      this.hasManyTransactions = false;
-
-      // Reset the loading/error messages.
-      this.loadingMsg = 'general.loadingMsg';
-      this.longErrorMsg = undefined;
-
-      // Reset the cached values.
-      this.lastestBalanceResponse = undefined;
-      this.lastestUnconfirmedResponse = undefined;
+  private getData(routeParams: Params, checkSavedData: boolean) {
+    // Reset the cache var, but only if the address changed.
+    if (!AddressDetailComponent.cachedData || AddressDetailComponent.cachedData.address !== routeParams['address']) {
+      AddressDetailComponent.cachedData = new CachedAddressDetails();
+      AddressDetailComponent.cachedData.address = routeParams['address'];
     }
 
     // Get the requested address and page.
@@ -167,40 +181,53 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
       this.pageIndex = 0;
     }
 
-    // Clear the list content.
-    this.pageTransactions = undefined;
-
     // Cancel any previous pending operation.
     if (this.operationSubscription) {
       this.operationSubscription.unsubscribe();
     }
 
-    let nextStep: Observable<AddressTransactionsResponse>;
-    if (this.alltransactions && !this.hasManyTransactions) {
-      // If this.alltransactions still has a value, the address does not have many transactions
-      // (so all are in memory) and only the page was changed, there is no need for loading
-      // the transactions again.
-      nextStep = observableOf({
-        totalTransactionsCount: this.totalTransactionsCount,
-        currentPageIndex: this.pageIndex,
-        totalPages: this.pageCount,
-        recoveredTransactions: this.alltransactions,
-        addressHasManyTransactions: false,
-      } as AddressTransactionsResponse);
-    } else {
-      // Make the loading indicator appear again and load the transactions.
-      this.alltransactions = undefined;
-      nextStep = this.explorer.getTransactions(this.address, this.pageIndex + 1, this.pageSize);
-    }
+    let oldSavedDataUsed = false;
 
     // Get the transactions.
+    // Use saved data or get from the server. If there is no saved data, savedData is null.
+    let savedData = checkSavedData ? this.getLocalValue(this.persistentServerAddressResponseKey) : null;
+    let nextStep: Observable<any>;
+    if (savedData) {
+      // Reprocess the transactions, as recoveredTransactions is not saved correctly.
+      (savedData.value as AddressTransactionsResponse).recoveredTransactions = this.explorer.processTransactionListFromServer(
+        (savedData.value as AddressTransactionsResponse).originalTransactions,
+        this.address, (savedData.value as AddressTransactionsResponse).addressHasManyTransactions
+      );
+
+      nextStep = of(savedData.value);
+      oldSavedDataUsed = savedData.date < (new Date()).getTime() - dataValidityTime;
+    } else {
+      if (AddressDetailComponent.cachedData.transactionsResponse) {
+        // If transactionsResponse still has a value, the address does not have many transactions
+        // (so all are in memory) and only the page was changed, there is no need for loading
+        // the transactions again.
+        AddressDetailComponent.cachedData.transactionsResponse.currentPageIndex = this.pageIndex;
+        nextStep = observableOf(AddressDetailComponent.cachedData.transactionsResponse);
+      } else {
+        nextStep = this.explorer.getTransactions(this.address, this.pageIndex + 1, this.pageSize);
+      }
+    }
+
     this.operationSubscription = nextStep.pipe(switchMap((response: AddressTransactionsResponse) => {
+      if (!savedData) {
+        this.saveLocalValue(this.persistentServerAddressResponseKey, response);
+      }
+
       // Save the pagination information.
       this.totalTransactionsCount = response.totalTransactionsCount;
-      this.alltransactions = response.recoveredTransactions;
       this.hasManyTransactions = response.addressHasManyTransactions;
       this.pageCount = response.totalPages;
       this.pageIndex = response.currentPageIndex;
+
+      // Save the response on the cache, if the address does not have many transactions.
+      if (!this.hasManyTransactions) {
+        AddressDetailComponent.cachedData.transactionsResponse = response;
+      }
 
       if (!response.addressHasManyTransactions) {
         // Calculate the number of received and sent coins (counting the confirmed
@@ -213,34 +240,65 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
         this.totalSent = this.totalSent.negated();
 
         // Update the list of transactions that will be displayed in the UI.
-        this.updateTransactions();
+        this.updateTransactions(response.recoveredTransactions);
       } else {
-        this.pageTransactions = this.alltransactions;
+        this.pageTransactions = response.recoveredTransactions;
       }
 
       // Get the balance.
-      if (this.lastestBalanceResponse) {
-        // If this.lastestBalanceResponse still has a value, only the page, and not the
-        // address, was changed, so there is no need for loading the data again.
-        return observableOf(this.lastestBalanceResponse);
+      // Use saved data or get from the server. If there is no saved data, savedData is null.
+      savedData = checkSavedData ? this.getLocalValue(this.persistentServerBalanceResponseKey) : null;
+      if (savedData) {
+        oldSavedDataUsed = oldSavedDataUsed || (savedData.date < (new Date()).getTime() - dataValidityTime);
+        return of(savedData.value);
       } else {
-        return this.api.getBalance(routeParams['address']);
+        if (AddressDetailComponent.cachedData.balanceResponse) {
+          // If balanceResponse still has a value, only the page, and not the
+          // address, was changed, so there is no need for loading the data again.
+          return observableOf(AddressDetailComponent.cachedData.balanceResponse);
+        } else {
+          return this.api.getBalance(routeParams['address']);
+        }
       }
     }), switchMap((response: GetBalanceResponse) => {
+      if (!savedData) {
+        this.saveLocalValue(this.persistentServerBalanceResponseKey, response);
+      }
+
+      // Save the response on the cache, if the address does not have many transactions.
+      if (!this.hasManyTransactions) {
+        AddressDetailComponent.cachedData.balanceResponse = response;
+      }
+
       // Save the balance.
-      this.lastestBalanceResponse = response;
       this.balance = new BigNumber(response.confirmed.coins).dividedBy(1000000);
       this.hoursBalance = new BigNumber(response.confirmed.hours);
 
       // Get the pending transactions.
-      if (this.lastestUnconfirmedResponse) {
-        // If this.lastestUnconfirmedResponse still has a value, only the page, and not the
-        // address, was changed, so there is no need for loading the data again.
-        return observableOf(this.lastestUnconfirmedResponse);
+      // Use saved data or get from the server. If there is no saved data, savedData is null.
+      savedData = checkSavedData ? this.getLocalValue(this.persistentServerUnconfirmedTxsResponseKey) : null;
+      if (savedData) {
+        oldSavedDataUsed = oldSavedDataUsed || (savedData.date < (new Date()).getTime() - dataValidityTime);
+        return of(savedData.value);
       } else {
-        return this.api.getUnconfirmedTransactions();
+        if (AddressDetailComponent.cachedData.unconfirmedResponse) {
+          // If unconfirmedResponse still has a value, only the page, and not the
+          // address, was changed, so there is no need for loading the data again.
+          return observableOf(AddressDetailComponent.cachedData.unconfirmedResponse);
+        } else {
+          return this.api.getUnconfirmedTransactions();
+        }
       }
     })).subscribe((unconfirmed: GetUnconfirmedTransactionResponse[]) => {
+      if (!savedData) {
+        this.saveLocalValue(this.persistentServerUnconfirmedTxsResponseKey, unconfirmed);
+      }
+
+      // Save the response on the cache, if the address does not have many transactions.
+      if (!this.hasManyTransactions) {
+        AddressDetailComponent.cachedData.unconfirmedResponse = unconfirmed;
+      }
+
       if (unconfirmed) {
         this.pendingIncomingCoins = new BigNumber(0);
         this.pendingOutgoingCoins = new BigNumber(0);
@@ -293,20 +351,27 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
       if (this.totalTransactionsCount < 1) {
         // Show that there are no transactions.
         this.longErrorMsg = 'addressDetail.withoutTransactions';
-        // Needed for showing the previous msg.
-        this.alltransactions = undefined;
       }
 
       this.dataLoaded = true;
+
+      // If old saved data was used, repeat the operation, ignoring the saved data.
+      if (oldSavedDataUsed) {
+        this.getData(routeParams, false);
+      }
+
+      //setTimeout(() => this.restoreScrollPosition(), 10);
     }, error => {
-      if (error.status >= 400 && error.status < 500) {
-        // The address was not found.
-        this.loadingMsg = 'general.noData';
-        this.longErrorMsg = 'addressDetail.invalidAddress';
-      } else {
-        // Error loading the data.
-        this.loadingMsg = 'general.shortLoadingErrorMsg';
-        this.longErrorMsg = 'general.longLoadingErrorMsg';
+      if (!this.dataLoaded) {
+        if (error.status >= 400 && error.status < 500) {
+          // The address was not found.
+          this.loadingMsg = 'general.noData';
+          this.longErrorMsg = 'addressDetail.invalidAddress';
+        } else {
+          // Error loading the data.
+          this.loadingMsg = 'general.shortLoadingErrorMsg';
+          this.longErrorMsg = 'general.longLoadingErrorMsg';
+        }
       }
     });
   }
@@ -315,10 +380,10 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
    * Updates the list of transactions that will be displayed in the UI, to show only the
    * transactions of the current page.
    */
-  private updateTransactions() {
+  private updateTransactions(alltransactions: Transaction[]) {
     // If the user request an invalid page, show a valid one.
-    if (this.pageIndex > this.alltransactions.length / this.pageSize) {
-      this.pageIndex = Math.floor(this.alltransactions.length / this.pageSize);
+    if (this.pageIndex > alltransactions.length / this.pageSize) {
+      this.pageIndex = Math.floor(alltransactions.length / this.pageSize);
     }
     if (this.pageIndex < 0) {
       this.pageIndex = 0;
@@ -326,8 +391,8 @@ export class AddressDetailComponent implements OnInit, OnDestroy {
 
     // Get the transaction of the current page.
     this.pageTransactions = [];
-    for (let i = this.pageIndex * this.pageSize; i < (this.pageIndex + 1) * this.pageSize && i < this.alltransactions.length; i++) {
-      this.pageTransactions.push(this.alltransactions[i]);
+    for (let i = this.pageIndex * this.pageSize; i < (this.pageIndex + 1) * this.pageSize && i < alltransactions.length; i++) {
+      this.pageTransactions.push(alltransactions[i]);
     }
   }
 }

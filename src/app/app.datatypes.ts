@@ -282,4 +282,5 @@ export interface AddressTransactionsResponse {
   currentPageIndex: number;
   totalPages: number;
   recoveredTransactions: Transaction[];
+  originalTransactions: any;
 }

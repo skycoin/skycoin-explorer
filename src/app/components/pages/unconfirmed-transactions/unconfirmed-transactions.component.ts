@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
-import { ExplorerService } from '../../../services/explorer/explorer.service';
-import { Transaction } from '../../../app.datatypes';
+import { parseGetUnconfirmedTransaction, Transaction } from '../../../app.datatypes';
+import { PageBaseComponent } from '../page-base';
+import { dataValidityTime } from 'app/app.config';
+import { ApiService } from 'app/services/api/api.service';
 
 /**
  * Page for showing the list of unconfirmed (pending) transactions.
@@ -12,7 +14,10 @@ import { Transaction } from '../../../app.datatypes';
   templateUrl: './unconfirmed-transactions.component.html',
   styleUrls: ['./unconfirmed-transactions.component.scss']
 })
-export class UnconfirmedTransactionsComponent implements OnInit, OnDestroy {
+export class UnconfirmedTransactionsComponent extends PageBaseComponent implements OnInit, OnDestroy {
+  // Keys for persisting the server data, to be able to restore the state after navigation.
+  private readonly persistentServerUnconfirmedTxsResponseKey = 'serv-utx-response';
+
   /**
    * Transactions list.
    */
@@ -45,13 +50,37 @@ export class UnconfirmedTransactionsComponent implements OnInit, OnDestroy {
   private pageSubscriptions: Subscription[] = [];
 
   constructor(
-    private explorer: ExplorerService,
-  ) { }
+    private api: ApiService,
+  ) {
+    super();
+  }
 
   ngOnInit() {
+    this.loadData(true);
+
+    return super.ngOnInit();
+  }
+
+  private loadData(checkSavedData: boolean) {
+    let oldSavedDataUsed = false;
+
     // Request the data.
-    this.pageSubscriptions.push(this.explorer.getUnconfirmedTransactions().subscribe(transactions => {
+    // Use saved data or get from the server. If there is no saved data, savedData is null.
+    const savedData = checkSavedData ? this.getLocalValue(this.persistentServerUnconfirmedTxsResponseKey) : null;
+    let nextOperation: Observable<any> = this.api.getUnconfirmedTransactions();
+    if (savedData) {
+      nextOperation = of(savedData.value);
+      oldSavedDataUsed = savedData.date < (new Date()).getTime() - dataValidityTime;
+    }
+
+    this.pageSubscriptions.push(nextOperation.subscribe(transactions => {
+      if (!savedData) {
+        this.saveLocalValue(this.persistentServerUnconfirmedTxsResponseKey, transactions);
+      }
+
+      transactions = transactions.map(rawTx => parseGetUnconfirmedTransaction(rawTx));
       this.transactions = transactions;
+      //this.transactions = transactions.map(rawTx => parseGetUnconfirmedTransaction(rawTx))
       // If there are unconfirmed transactions, calculate the values to be shown in the UI.
       if (transactions.length > 0) {
         const orderedList = transactions.sort((a, b) => b.timestamp - a.timestamp);
@@ -59,10 +88,17 @@ export class UnconfirmedTransactionsComponent implements OnInit, OnDestroy {
         this.leastRecent = orderedList[orderedList.length - 1].timestamp;
         this.totalSize = orderedList.map(tx => tx.length).reduce((sum, current) => sum + current);
       }
+
+      // If old saved data was used, repeat the operation, ignoring the saved data.
+      if (oldSavedDataUsed) {
+        this.loadData(false);
+      }
     }, () => {
-      // Error loading the data.
-      this.loadingMsg = 'general.shortLoadingErrorMsg';
-      this.longErrorMsg = 'general.longLoadingErrorMsg';
+      if (this.transactions === undefined) {
+        // Error loading the data.
+        this.loadingMsg = 'general.shortLoadingErrorMsg';
+        this.longErrorMsg = 'general.longLoadingErrorMsg';
+      }
     }));
   }
 

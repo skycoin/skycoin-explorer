@@ -107,3 +107,5 @@ export const namedAddresses = [
     name: 'Binance hot wallet'
   }
 ];
+
+export const dataValidityTime = 2000;

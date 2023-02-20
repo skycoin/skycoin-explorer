@@ -2,11 +2,13 @@ import { switchMap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { BigNumber } from 'bignumber.js';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 
 import { ApiService } from '../../../services/api/api.service';
 import { GetCurrentBalanceResponse } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
+import { PageBaseComponent } from '../page-base';
+import { dataValidityTime } from 'app/app.config';
 
 /**
  * Different states of the list.
@@ -34,7 +36,10 @@ enum ShowMoreStatus {
   templateUrl: './unspent-outputs.component.html',
   styleUrls: ['./unspent-outputs.component.scss']
 })
-export class UnspentOutputsComponent implements OnInit, OnDestroy {
+export class UnspentOutputsComponent extends PageBaseComponent implements OnInit, OnDestroy {
+  // Keys for persisting the server data, to be able to restore the state after navigation.
+  private readonly persistentServerDataResponseKey = 'serv-dta-response';
+
   /**
    * Indicates how many outputs can be shown initially. If the address has more outputs, the
    * user will have to click a link for showing the rest. This helps to mantain good performance.
@@ -97,15 +102,40 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
     private api: ApiService,
     private route: ActivatedRoute,
     public explorer: ExplorerService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
+    this.loadData(true);
+
+    return super.ngOnInit();
+  }
+
+  private loadData(checkSavedData: boolean) {
+    let oldSavedDataUsed = false;
+
+    let savedData;
+
     // Get the URL params.
     this.pageSubscriptions.push(this.route.params.pipe(switchMap((params: Params) => {
       // Get the address and request the data.
       this.address = params['address'];
-      return this.api.getCurrentBalance(params['address']);
+
+      // Get the data.
+      // Use saved data or get from the server. If there is no saved data, savedData is null.
+      savedData = checkSavedData ? this.getLocalValue(this.persistentServerDataResponseKey) : null;
+      if (savedData) {
+        oldSavedDataUsed = savedData.date < (new Date()).getTime() - dataValidityTime;
+        return of(savedData.value);
+      } else {
+        return this.api.getCurrentBalance(params['address']);
+      }
     })).subscribe(response => {
+      if (!savedData) {
+        this.saveLocalValue(this.persistentServerDataResponseKey, response);
+      }
+
       this.outputs = response;
       this.totalOutputs = response.head_outputs.length;
 
@@ -125,17 +155,25 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
       } else {
         this.outputsToShow = this.outputs.head_outputs;
       }
+
+      // If old saved data was used, repeat the operation, ignoring the saved data.
+      if (oldSavedDataUsed) {
+        this.loadData(false);
+      }
     }, error => {
-      if (error.status >= 400 && error.status < 500) {
-        // The address was not found.
-        this.loadingMsg = 'general.noData';
-        this.longErrorMsg = 'unspentOutputs.withoutOutputs';
-      } else {
-        // Error loading the data.
-        this.loadingMsg = 'general.shortLoadingErrorMsg';
-        this.longErrorMsg = 'general.longLoadingErrorMsg';
+      if (this.outputs !== undefined) {
+        if (error.status >= 400 && error.status < 500) {
+          // The address was not found.
+          this.loadingMsg = 'general.noData';
+          this.longErrorMsg = 'unspentOutputs.withoutOutputs';
+        } else {
+          // Error loading the data.
+          this.loadingMsg = 'general.shortLoadingErrorMsg';
+          this.longErrorMsg = 'general.longLoadingErrorMsg';
+        }
       }
     }));
+
   }
 
   ngOnDestroy() {

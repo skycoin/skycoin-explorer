@@ -108,4 +108,10 @@ export const namedAddresses = [
   }
 ];
 
-export const dataValidityTime = 2000;
+/**
+ * If the user navigates back or forward with the browser buttons, the app will restore the
+ * previous data. After that, if the data was saved too long ago (which means that it is older
+ * than the time defined on this var, in ms), the page will request the data from the server
+ * again on the background, to refresh the info displayed to the user.
+ */
+export const dataValidityTime = 60000;

@@ -2,16 +2,16 @@
 
 Explorer backend service
 
-Serves precompiled angular website from the ./dist folder.
+Serves precompiled angular website from the ./dist folder or any other configured folder.
 
-This must be run from the same folder as ./dist, unless run in -api-only mode.
+This must be run from the same folder as ./dist, unless run in -api-only mode or another precompiled files folder is configured.
 
 Environment options:
 * EXPLORER_HOST - The addr:port to bind the explorer to. Do not include a scheme. Defaults to 127.0.0.1:8001
 * SKYCOIN_ADDR - The skycoin node's address. You must include a scheme. Defaults to http://127.0.0.1:6420
 
 CLI Options:
-* -api-only - Don't serve static content from ./dist, only proxy the skycoin node
+* run with "-h" as argument to see the CLI params.
 
 Run the explorer and navigate to http://127.0.0.1:8001/api.html for API documentation.
 
@@ -27,6 +27,7 @@ import (
 	"html/template"
 	"io"
 	"log"
+	"mime"
 	"net/http"
 	"net/url"
 	"os"
@@ -36,8 +37,9 @@ import (
 )
 
 const (
-	defaultExplorerHost = "127.0.0.1:8001"
-	defaultSkycoinAddr  = "http://127.0.0.1:6420"
+	defaultUiFilesFolder = "./dist/"
+	defaultExplorerHost  = "127.0.0.1:8001"
+	defaultSkycoinAddr   = "http://127.0.0.1:6420"
 
 	// timeout for requests to the backend skycoin node
 	skycoinRequestTimeout = time.Second * 30
@@ -50,14 +52,17 @@ const (
 )
 
 var (
-	explorerHost = ""     // override with envvar EXPLORER_HOST.  Must not have scheme
-	skycoinAddr  *url.URL // override with envvar SKYCOIN_ADDR.  Must have scheme, e.g. http://
-	apiOnly      bool     // set to true with -api-only cli flag
-	verify       bool     // set to true with -verify cli flag. Check init() conditions and quits.
+	explorerHost  = ""     // URL of the web server. Override with envvar EXPLORER_HOST. Must not have scheme
+	skycoinAddr   *url.URL // URL of the Skycoin node. Override with envvar SKYCOIN_ADDR. Must have scheme, e.g. http://
+	uiFilesFolder = ""     // Path for the folder with the precompiled front-end files. Override with the files-folder CLI param.
+	apiOnly       bool     // set to true with -api-only cli flag
+	verify        bool     // set to true with -verify cli flag. Check init() conditions and quits.
 )
 
 func init() {
 	log.SetOutput(os.Stdout)
+
+	// If no env variables are set, use default values.
 
 	explorerHost = os.Getenv("EXPLORER_HOST")
 	if explorerHost == "" {
@@ -69,6 +74,55 @@ func init() {
 		skycoinAddrString = defaultSkycoinAddr
 	}
 
+	skycoinAddr = buildNodeUrl(skycoinAddrString)
+
+	//-api-only - Don't serve static content from ./dist, only proxy the skycoin node
+
+	/*
+		    * EXPLORER_HOST - The addr:port to bind the explorer to. Do not include a scheme. Defaults to 127.0.0.1:8001
+		* SKYCOIN_ADDR - The skycoin node's address. You must include a scheme. Defaults to http://127.0.0.1:6420
+	*/
+
+	// Values set using CLI params.
+	serverHostByFlag := ""
+	nodeAddrByFlag := ""
+	filesFolderByFlag := ""
+
+	flag.StringVar(&serverHostByFlag, "server-host", "", "The addr:port to bind the explorer web server to. Do not include a scheme. Defaults to 127.0.0.1:8001")
+	flag.StringVar(&nodeAddrByFlag, "node-addr", "", "The skycoin node's address. You must include a scheme. Defaults to http://127.0.0.1:6420")
+	flag.StringVar(&filesFolderByFlag, "files-folder", "", "Path for the folder with the precompiled front-end files. Defaults to ./dist")
+	flag.BoolVar(&apiOnly, "api-only", false, "Only run the API, don't serve static content")
+	flag.BoolVar(&verify, "verify", false, "Run init() checks and quit")
+	flag.Parse()
+
+	if serverHostByFlag != "" {
+		explorerHost = serverHostByFlag
+	}
+
+	if nodeAddrByFlag != "" {
+		skycoinAddr = buildNodeUrl(nodeAddrByFlag)
+	}
+
+	if filesFolderByFlag == "" {
+		uiFilesFolder = defaultUiFilesFolder
+	} else {
+		uiFilesFolder = filesFolderByFlag
+		if uiFilesFolder[len(uiFilesFolder)-1] != '/' {
+			uiFilesFolder += "/"
+		}
+	}
+
+	if verify {
+		log.Println("Running in verify mode")
+	}
+
+	if apiOnly {
+		log.Println("Running in api-only mode")
+	}
+}
+
+// buildNodeUrl converts a string to a *url.URL instance.
+func buildNodeUrl(skycoinAddrString string) *url.URL {
 	origURL, err := url.Parse(skycoinAddrString)
 	if err != nil {
 		log.Println("SKYCOIN_ADDR must have a scheme, e.g. http://")
@@ -79,21 +133,9 @@ func init() {
 		log.Fatalln("SKYCOIN_ADDR must have a scheme, e.g. http://")
 	}
 
-	skycoinAddr = &url.URL{
+	return &url.URL{
 		Scheme: origURL.Scheme,
 		Host:   origURL.Host,
-	}
-
-	flag.BoolVar(&apiOnly, "api-only", false, "Only run the API, don't serve static content")
-	flag.BoolVar(&verify, "verify", false, "Run init() checks and quit")
-	flag.Parse()
-
-	if verify {
-		log.Println("Running in verify mode")
-	}
-
-	if apiOnly {
-		log.Println("Running in api-only mode")
 	}
 }
 
@@ -1459,13 +1501,16 @@ func main() {
 	gzipHandle("/api/docs", http.HandlerFunc(jsonDocs))
 
 	if !apiOnly {
-		gzipHandle("/", http.FileServer(http.Dir("./dist/")))
+		// Needed to work with modern brownsers, which need the correct mime type for javascript.
+		mime.AddExtensionType(".js", "application/javascript")
+
+		gzipHandle("/", http.FileServer(http.Dir(uiFilesFolder)))
 
 		// The angular app's internal routes must all start with /app/.
 		// This serves the index.html for all of those routes.
 		// The angular app will render the correct page based upon the request path.
 		gzipHandle("/app/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "./dist/index.html")
+			http.ServeFile(w, r, uiFilesFolder+"index.html")
 		}))
 
 		// Backwards compatiblity for the old link;

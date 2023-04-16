@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
 
   /**
    * If the window is too small, shows of hides the menu.
+   *
    * @param value Indicates if the menu should be visible or not.
    */
   toggleMenu(value: boolean) {
@@ -58,6 +59,7 @@ export class HeaderComponent implements OnInit {
 
   /**
    * If the window is too small, opens or closes a submenu.
+   *
    * @param item Submenu that was clicked.
    */
   onClickMenuDropdown(item) {

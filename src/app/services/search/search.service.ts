@@ -25,7 +25,7 @@ export class ResultNavCommandsResponse {
  */
 export enum SearchError {
   // The term searched is not valid.
-  InvalidSearchTerm = 1,
+  invalidSearchTerm = 1,
 }
 
 /**
@@ -41,6 +41,7 @@ export class SearchService {
   /**
    * This function is used to process a search term entered by the user, to get the navigation commands
    * needed by Router.navigate for sending the user to the page with the requested data.
+   *
    * @param searchTerm search term to be processed.
    * @returns An error or an observable that will get get the navigation commands needed by Router.navigate
    * for sending the user to the page with the requested data.
@@ -56,10 +57,8 @@ export class SearchService {
       // If the search term has this length, it is a hash, but we don't know if it is the hash of
       // a block or a transaction, so we try to find a block with that hash.
       response.resultNavCommands = this.explorer.getBlockByHash(searchTerm).pipe(
-        map(block => {
-          // If a block with that hash is found, it is assumed that the user was searching for that block.
-          return ['/app/block', block.id.toString()];
-        }),
+        // If a block with that hash is found, it is assumed that the user was searching for that block.
+        map(block => ['/app/block', block.id.toString()]),
         catchError((error: any) => {
           // If the node returns 404 (no block with an ID equal to the searched hash was found) then
           // it is assumed that the user was searching for a transaction.
@@ -76,7 +75,7 @@ export class SearchService {
         response.resultNavCommands = observableOf(['/app/block', searchTerm]);
       } else {
         // If the search term did not match any of the previous criteria, it is not possible to process it.
-        response.error = SearchError.InvalidSearchTerm;
+        response.error = SearchError.invalidSearchTerm;
       }
     }
 

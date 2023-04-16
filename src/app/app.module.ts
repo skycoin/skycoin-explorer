@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, RouteReuseStrategy } from '@angular/router';
+import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
@@ -36,7 +36,7 @@ import { AmountPipe } from 'app/pipes/amount.pipe';
 import { NodeUrlComponent } from './components/pages/node-url.component';
 
 
-const ROUTES = [
+const ROUTES: Routes = [
   {
     path: '',
     redirectTo: 'app/blocks/1',
@@ -128,7 +128,7 @@ const ROUTES = [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(ROUTES, {}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

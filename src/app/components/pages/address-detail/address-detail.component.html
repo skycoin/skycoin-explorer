@@ -93,7 +93,7 @@
 </div>
 
 <!-- Loading control -->
-<app-loading [longErrorMsg]="longErrorMsg | translate" *ngIf="alltransactions === undefined"></app-loading>
+<app-loading [longErrorMsg]="longErrorMsg | translate" *ngIf="!dataLoaded || longErrorMsg"></app-loading>
 
 <!-- Transactions list -->
 <app-transaction-info *ngFor="let transaction of pageTransactions" [transaction]="transaction"></app-transaction-info>

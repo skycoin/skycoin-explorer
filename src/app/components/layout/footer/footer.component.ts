@@ -17,6 +17,7 @@ export class FooterComponent {
    * Data for building the contact icon list.
    */
   links = [
+    /*
     {
         href: 'https://medium.com/@Skycoinproject',
         img: 'medium.svg',
@@ -33,10 +34,12 @@ export class FooterComponent {
         href: 'https://www.instagram.com/skycoinproject/',
         img: 'instagram.svg',
     },
+    */
     {
         href: 'https://github.com/skycoin/skycoin',
         img: 'github.svg',
     },
+    /*
     {
         href: 'https://www.youtube.com/c/Skycoin',
         img: 'youtube.svg',
@@ -53,14 +56,17 @@ export class FooterComponent {
         href: 'https://discord.gg/EgBenrW',
         img: 'discord.svg',
     },
+    */
     {
         href: 'https://t.me/Skycoin',
         img: 'telegram.svg',
     },
+    /*
     {
         href: 'https://www.linkedin.com/company/skycoin/',
         img: 'linkedin.svg',
     }
+    */
   ];
 
   /**

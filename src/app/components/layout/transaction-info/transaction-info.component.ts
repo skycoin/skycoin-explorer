@@ -9,15 +9,15 @@ enum ShowMoreStatus {
   /**
    * Only some elements are being shown.
    */
-  ShowMore = 0,
+  showMore = 0,
   /**
    * Preparing to show all elements.
    */
-  Loading = 1,
+  loading = 1,
   /**
    * All elements are being shown.
    */
-  DontShowMore = 2,
+  dontShowMore = 2,
 }
 
 /**
@@ -45,7 +45,7 @@ export class TransactionInfoComponent {
   /**
    * Current state of the inputs list.
    */
-  showMoreInputs: ShowMoreStatus = ShowMoreStatus.DontShowMore;
+  showMoreInputs: ShowMoreStatus = ShowMoreStatus.dontShowMore;
   /**
    * Inputs that will be shown in the UI.
    */
@@ -57,7 +57,7 @@ export class TransactionInfoComponent {
   /**
    * Current state of the outputs list.
    */
-  showMoreOutputs: ShowMoreStatus = ShowMoreStatus.DontShowMore;
+  showMoreOutputs: ShowMoreStatus = ShowMoreStatus.dontShowMore;
   /**
    * Outputs that will be shown in the UI.
    */
@@ -109,7 +109,7 @@ export class TransactionInfoComponent {
         this.inputsToShow.push(this.transaction.inputs[i]);
       }
       // Indicate that there are additional inputs to show.
-      this.showMoreInputs = ShowMoreStatus.ShowMore;
+      this.showMoreInputs = ShowMoreStatus.showMore;
     } else {
       // Show all inputs.
       this.showAllInputs();
@@ -127,7 +127,7 @@ export class TransactionInfoComponent {
       for (let i = 0; i < this.maxInitialElements; i++) {
         this.outputsToShow.push(this.transaction.outputs[i]);
       }
-      this.showMoreOutputs = ShowMoreStatus.ShowMore;
+      this.showMoreOutputs = ShowMoreStatus.showMore;
     } else {
       this.showAllOutputs();
     }
@@ -146,7 +146,7 @@ export class TransactionInfoComponent {
     // control ignore all mouse clicks temporarily.
     this.disableClicks = true;
     // Indicate that the elements are being loaded.
-    this.showMoreInputs = ShowMoreStatus.Loading;
+    this.showMoreInputs = ShowMoreStatus.loading;
     // Load all the elements after 2 frames, to give the application time for updating the
     // UI, in case it gets blocked.
     setTimeout(() => this.showAllInputs(), 32);
@@ -159,7 +159,7 @@ export class TransactionInfoComponent {
   startShowingAllOutputs() {
     // Works similar to startShowingAllInputs().
     this.disableClicks = true;
-    this.showMoreOutputs = ShowMoreStatus.Loading;
+    this.showMoreOutputs = ShowMoreStatus.loading;
     setTimeout(() => this.showAllOutputs(), 32);
   }
 
@@ -172,7 +172,7 @@ export class TransactionInfoComponent {
     // Updates the UI after a frame.
     setTimeout(() => {
       // Idicate that all elements are being shown.
-      this.showMoreInputs = ShowMoreStatus.DontShowMore;
+      this.showMoreInputs = ShowMoreStatus.dontShowMore;
       // Accept mouse click.
       this.disableClicks = false;
     });
@@ -185,7 +185,7 @@ export class TransactionInfoComponent {
     // Works similar to showAllInputs().
     this.outputsToShow = this.transaction.outputs;
     setTimeout(() => {
-      this.showMoreOutputs = ShowMoreStatus.DontShowMore;
+      this.showMoreOutputs = ShowMoreStatus.dontShowMore;
       this.disableClicks = false;
     });
   }

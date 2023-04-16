@@ -2,11 +2,13 @@ import { switchMap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { BigNumber } from 'bignumber.js';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 
 import { ApiService } from '../../../services/api/api.service';
 import { GetCurrentBalanceResponse } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
+import { PageBaseComponent } from '../page-base';
+import { dataValidityTime } from 'app/app.config';
 
 /**
  * Different states of the list.
@@ -15,15 +17,15 @@ enum ShowMoreStatus {
   /**
    * Only some elements are being shown.
    */
-  ShowMore = 0,
+  showMore = 0,
   /**
    * Preparing to show all elements.
    */
-  Loading = 1,
+  loading = 1,
   /**
    * All elements are being shown.
    */
-  DontShowMore = 2,
+  dontShowMore = 2,
 }
 
 /**
@@ -34,7 +36,10 @@ enum ShowMoreStatus {
   templateUrl: './unspent-outputs.component.html',
   styleUrls: ['./unspent-outputs.component.scss']
 })
-export class UnspentOutputsComponent implements OnInit, OnDestroy {
+export class UnspentOutputsComponent extends PageBaseComponent implements OnInit, OnDestroy {
+  // Keys for persisting the server data, to be able to restore the state after navigation.
+  private readonly persistentServerDataResponseKey = 'serv-dta-response';
+
   /**
    * Indicates how many outputs can be shown initially. If the address has more outputs, the
    * user will have to click a link for showing the rest. This helps to mantain good performance.
@@ -57,7 +62,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
   /**
    * Current state of the output list.
    */
-  showMoreOutputs = ShowMoreStatus.DontShowMore;
+  showMoreOutputs = ShowMoreStatus.dontShowMore;
   /**
    * Current address.
    */
@@ -97,15 +102,40 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
     private api: ApiService,
     private route: ActivatedRoute,
     public explorer: ExplorerService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
+    this.loadData(true);
+
+    return super.ngOnInit();
+  }
+
+  private loadData(checkSavedData: boolean) {
+    let oldSavedDataUsed = false;
+
+    let savedData;
+
     // Get the URL params.
     this.pageSubscriptions.push(this.route.params.pipe(switchMap((params: Params) => {
       // Get the address and request the data.
       this.address = params['address'];
-      return this.api.getCurrentBalance(params['address']);
+
+      // Get the data.
+      // Use saved data or get from the server. If there is no saved data, savedData is null.
+      savedData = checkSavedData ? this.getLocalValue(this.persistentServerDataResponseKey) : null;
+      if (savedData) {
+        oldSavedDataUsed = savedData.date < (new Date()).getTime() - dataValidityTime;
+        return of(savedData.value);
+      } else {
+        return this.api.getCurrentBalance(params['address']);
+      }
     })).subscribe(response => {
+      if (!savedData) {
+        this.saveLocalValue(this.persistentServerDataResponseKey, response);
+      }
+
       this.outputs = response;
       this.totalOutputs = response.head_outputs.length;
 
@@ -121,21 +151,29 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
         // Show only the max initial number of elements.
         this.outputsToShow = this.outputs.head_outputs.slice(0, this.maxInitialElements);
         // Indicate that there are additional outputs to show.
-        this.showMoreOutputs = ShowMoreStatus.ShowMore;
+        this.showMoreOutputs = ShowMoreStatus.showMore;
       } else {
         this.outputsToShow = this.outputs.head_outputs;
       }
+
+      // If old saved data was used, repeat the operation, ignoring the saved data.
+      if (oldSavedDataUsed) {
+        this.loadData(false);
+      }
     }, error => {
-      if (error.status >= 400 && error.status < 500) {
-        // The address was not found.
-        this.loadingMsg = 'general.noData';
-        this.longErrorMsg = 'unspentOutputs.withoutOutputs';
-      } else {
-        // Error loading the data.
-        this.loadingMsg = 'general.shortLoadingErrorMsg';
-        this.longErrorMsg = 'general.longLoadingErrorMsg';
+      if (this.outputs !== undefined) {
+        if (error.status >= 400 && error.status < 500) {
+          // The address was not found.
+          this.loadingMsg = 'general.noData';
+          this.longErrorMsg = 'unspentOutputs.withoutOutputs';
+        } else {
+          // Error loading the data.
+          this.loadingMsg = 'general.shortLoadingErrorMsg';
+          this.longErrorMsg = 'general.longLoadingErrorMsg';
+        }
       }
     }));
+
   }
 
   ngOnDestroy() {
@@ -147,7 +185,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
    * Makes the control show all the outputs.
    */
   showAll() {
-    if (this.showMoreOutputs === ShowMoreStatus.ShowMore) {
+    if (this.showMoreOutputs === ShowMoreStatus.showMore) {
       // If the process takes too long to be completed, the UI may end blocked and all mouse
       // clicks would be processed after finishing, which could make users think that the
       // application behaves erratically (specially if the user starts clicking
@@ -156,7 +194,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
       // control ignore all mouse clicks temporarily.
       this.disableClicks = true;
       // Indicate that the elements are being loaded.
-      this.showMoreOutputs = ShowMoreStatus.Loading;
+      this.showMoreOutputs = ShowMoreStatus.loading;
 
       // Load all the elements after 2 frames, to give the application time for updating the
       // UI, in case it gets blocked.
@@ -166,7 +204,7 @@ export class UnspentOutputsComponent implements OnInit, OnDestroy {
         // Updates the UI after 2 frames.
         setTimeout(() => {
           // Idicate that all elements are being shown.
-          this.showMoreOutputs = ShowMoreStatus.DontShowMore;
+          this.showMoreOutputs = ShowMoreStatus.dontShowMore;
           // Accept mouse click.
           this.disableClicks = false;
         });

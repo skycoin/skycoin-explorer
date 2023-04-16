@@ -71,9 +71,9 @@ export class LanguageService {
     // Build the available languages list.
     const langs: string[] = [];
     languageConfig.languages.forEach(lang => {
-      const LangObj = new LanguageData(lang);
-      this.languagesInternal.push(LangObj);
-      langs.push(LangObj.code);
+      const langObj = new LanguageData(lang);
+      this.languagesInternal.push(langObj);
+      langs.push(langObj.code);
     });
 
     // Initialize ngx-translate.
@@ -89,6 +89,7 @@ export class LanguageService {
 
   /**
    * Changes the language of the UI
+   *
    * @param langCode Language code for TranslateService (ngx-translate). Can be found
    * in LanguageData.code.
    */
@@ -98,6 +99,7 @@ export class LanguageService {
 
   /**
    * Event dispatched when the language of the UI is changed.
+   *
    * @param event Event data.
    */
   private onLanguageChanged(event: LangChangeEvent) {

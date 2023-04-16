@@ -22,11 +22,17 @@ export class AppComponent {
     languageService.initialize();
     explorerService.initialize();
 
+    // Prevent automatic scroll retoration during navigation.
+    if (history.scrollRestoration) {
+      history.scrollRestoration = 'manual';
+    }
+    /*
     // Return the scroll to the top after navigating.
     router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);
       }
     });
+    */
   }
 }

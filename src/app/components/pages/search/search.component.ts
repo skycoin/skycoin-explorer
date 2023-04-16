@@ -46,7 +46,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       // Get where the user should be redirected to.
       const navCommands = this.searchService.processTerm(this.searchTerm);
       if (navCommands.error) {
-        if (navCommands.error === SearchError.InvalidSearchTerm) {
+        if (navCommands.error === SearchError.invalidSearchTerm) {
           this.errorMsg = 'search.unableToFind';
         }
 

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import { BigNumber } from 'bignumber.js';
 
 /**
@@ -280,4 +282,5 @@ export interface AddressTransactionsResponse {
   currentPageIndex: number;
   totalPages: number;
   recoveredTransactions: Transaction[];
+  originalTransactions: any;
 }

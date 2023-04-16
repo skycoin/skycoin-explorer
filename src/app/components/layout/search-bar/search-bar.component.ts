@@ -62,6 +62,7 @@ export class SearchBarComponent implements OnDestroy {
   /**
    * Checks if the node is in sync. If it is not, the procedure will be automatically
    * repeated after a delay.
+   *
    * @param delayMs Delay before performing the actual check.
    */
   private checkSyncState(delayMs: number) {
@@ -93,18 +94,22 @@ export class SearchBarComponent implements OnDestroy {
    */
   search() {
     // Do not continue if a search is in progress.
-    if (this.searching) { return; }
+    if (this.searching) {
+      return;
+    }
 
     const valueToSearch = this.input.nativeElement.value.trim();
     // Do not continue if the string is empty.
-    if (valueToSearch.length < 1) { return; }
+    if (valueToSearch.length < 1) {
+      return;
+    }
 
     this.searching = true;
 
     // Get where the user should be redirected to.
     const navCommands = this.searchService.processTerm(valueToSearch);
     if (navCommands.error) {
-      if (navCommands.error === SearchError.InvalidSearchTerm) {
+      if (navCommands.error === SearchError.invalidSearchTerm) {
         alert(this.translate.instant('search.unableToFind', { term: valueToSearch }));
       }
       this.searching = false;

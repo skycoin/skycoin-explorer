@@ -77,6 +77,7 @@ export class ExplorerService {
 
   /**
    * Gets the basic info about the backend.
+   *
    * @param delayMs Delay before starting to get the data.
    */
   private getNodeInfo(delayMs: number) {
@@ -123,6 +124,7 @@ export class ExplorerService {
 
   /**
    * Gets a block by its ID (sequence number).
+   *
    * @param id Block ID (sequence number).
    */
   getBlock(id: number): Observable<Block> {
@@ -131,6 +133,7 @@ export class ExplorerService {
 
   /**
    * Gets an array with the blocks in a specific range.
+   *
    * @param start Number (height) of the first block (inclusive).
    * @param end Number (height) of the last block (inclusive).
    */
@@ -141,6 +144,7 @@ export class ExplorerService {
 
   /**
    * Gets a block by its hash.
+   *
    * @param hash Block hash.
    */
   getBlockByHash(hash: string): Observable<Block> {
@@ -150,6 +154,7 @@ export class ExplorerService {
   /**
    * Gets the list of transactions of a specific address. Depending on how many transactions
    * the address has, the function may return a paginated results or all the transactions.
+   *
    * @param address Address to consult.
    * @param page Number of the desired results page.
    * @param pageSize Max number of transactions each results page can have.
@@ -193,47 +198,45 @@ export class ExplorerService {
 
       return nextStep;
     }), map(response => {
-      // Sort to get the lastest transactions last (it will be reversed below).
-      response = response.sort((a, b) => a.txn.timestamp - b.txn.timestamp);
+      const processedTransactions = this.processTransactionListFromServer(response, address, hasManyTransactions);
 
-      // Process the response.
-      let currentBalance = new BigNumber('0');
-      response = response.map(rawTx => {
-        const parsedTx = parseGetTransaction(rawTx, address);
-
-        // Calculate the balance variation after every transaction, if all transactions
-        // are in memory.
-        if (!hasManyTransactions) {
-          parsedTx.initialBalance = currentBalance;
-          currentBalance = currentBalance.plus(parsedTx.balance);
-          parsedTx.finalBalance = currentBalance;
-        }
-
-        return parsedTx;
-      });
-
-      response = response.reverse();
-
-      return <AddressTransactionsResponse>{
+      return {
         totalTransactionsCount: transactionsCount,
         currentPageIndex: currentPageIndex,
         totalPages: totalPages,
         addressHasManyTransactions: hasManyTransactions,
-        recoveredTransactions: response,
-      };
+        recoveredTransactions: processedTransactions,
+        originalTransactions: response,
+      } as AddressTransactionsResponse;
     }));
   }
 
-  /**
-   * Gets the list of unconfirmed transactions.
-   */
-  getUnconfirmedTransactions(): Observable<Transaction[]> {
-    return this.api.getUnconfirmedTransactions().pipe(
-      map(response => response.map(rawTx => parseGetUnconfirmedTransaction(rawTx))));
+  processTransactionListFromServer(transactionList: any, address: string, hasManyTransactions: boolean): Transaction[] {
+    // Sort to get the lastest transactions last (it will be reversed below).
+    let response = transactionList.sort((a, b) => a.txn.timestamp - b.txn.timestamp);
+
+    // Process the response.
+    let currentBalance = new BigNumber('0');
+    response = response.map(rawTx => {
+      const parsedTx = parseGetTransaction(rawTx, address);
+
+      // Calculate the balance variation after every transaction, if all transactions
+      // are in memory.
+      if (!hasManyTransactions) {
+        parsedTx.initialBalance = currentBalance;
+        currentBalance = currentBalance.plus(parsedTx.balance);
+        parsedTx.finalBalance = currentBalance;
+      }
+
+      return parsedTx;
+    });
+
+    return response.reverse();
   }
 
   /**
    * Gets a transaction by its hash.
+   *
    * @param transactionId Transaction hash.
    */
   getTransaction(transactionId: string): Observable<Transaction> {

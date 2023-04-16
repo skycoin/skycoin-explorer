@@ -83,6 +83,7 @@ export class ApiService {
 
   /**
    * Gets the list of transactions of a specific address.
+   *
    * @param address Address to consult.
    */
   getAddress(address: string): Observable<GetTransactionResponse[]> {
@@ -93,6 +94,7 @@ export class ApiService {
 
   /**
    * Gets the list of transactions of a specific address, using pagination.
+   *
    * @param address Address to consult.
    */
   getAddressWithPagination(address: string, page: number, pageSize: number): Observable<any> {
@@ -113,6 +115,7 @@ export class ApiService {
 
   /**
    * Gets a block by its ID (sequence number).
+   *
    * @param id Block ID (sequence number).
    */
   getBlockById(id: number): Observable<GenericBlockResponse> {
@@ -123,6 +126,7 @@ export class ApiService {
 
   /**
    * Gets a block by its hash.
+   *
    * @param hash Block hash.
    */
   getBlockByHash(hash: string): Observable<GenericBlockResponse> {
@@ -133,6 +137,7 @@ export class ApiService {
 
   /**
    * Gets an array with the blocks in a specific range.
+   *
    * @param startNumber Number (height) of the first block (inclusive).
    * @param endNumber Number (height) of the last block (inclusive).
    */
@@ -165,6 +170,7 @@ export class ApiService {
 
   /**
    * Gets the list of unspent outputs of an address.
+   *
    * @param address Address to consult.
    */
   getCurrentBalance(address: string): Observable<GetCurrentBalanceResponse> {
@@ -175,6 +181,7 @@ export class ApiService {
 
   /**
    * Gets the balance of an address.
+   *
    * @param address Address to consult.
    */
   getBalance(address: string): Observable<GetBalanceResponse> {
@@ -185,6 +192,7 @@ export class ApiService {
 
   /**
    * Gets a transaction by its hash.
+   *
    * @param transactionId Transaction hash.
    */
   getTransaction(transactionId: string): Observable<GetTransactionResponse> {
@@ -215,6 +223,7 @@ export class ApiService {
 
   /**
    * Sends a GET request to the API.
+   *
    * @param url URL segment (the URL of the API endpont after the "/api/" part).
    * @param options Arguments to send as URL params.
    */
@@ -227,6 +236,7 @@ export class ApiService {
   /**
    * Process an object to use its properties for building a querystring, so it can be
    * sent in an API call.
+   *
    * @param parameters Object with params and values to build the querystring.
    */
   private getQueryString(parameters: object = null): string {
@@ -242,6 +252,7 @@ export class ApiService {
 
   /**
    * Gets the complete URL for making an API request.
+   *
    * @param url URL segment (the URL of the API endpont after the "/api/" part).
    * @param options Arguments to send as URL params.
    */

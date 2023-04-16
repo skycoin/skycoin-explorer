@@ -4,7 +4,6 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "",
     "types": [],
-    "target": "es5",
   },
   "files": [
     "main.ts",

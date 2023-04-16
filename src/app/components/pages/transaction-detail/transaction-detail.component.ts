@@ -1,10 +1,12 @@
 import { switchMap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 
 import { Transaction } from '../../../app.datatypes';
 import { ExplorerService } from '../../../services/explorer/explorer.service';
+import { PageBaseComponent } from '../page-base';
+import { dataValidityTime } from 'app/app.config';
 
 /**
  * Page for showing info about a specific transaction.
@@ -14,8 +16,11 @@ import { ExplorerService } from '../../../services/explorer/explorer.service';
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit, OnDestroy {
-/**
+export class TransactionDetailComponent extends PageBaseComponent implements OnInit, OnDestroy {
+  // Keys for persisting the server data, to be able to restore the state after navigation.
+  private readonly persistentServerTransactionResponseKey = 'serv-trx-response';
+
+  /**
    * Current transaction.
    */
   transaction: Transaction;
@@ -37,7 +42,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   constructor(
     private explorer: ExplorerService,
     private route: ActivatedRoute,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     // Get the URL params and request the data.
@@ -54,6 +61,54 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
           // Error loading the data.
           this.loadingMsg = 'general.shortLoadingErrorMsg';
           this.longErrorMsg = 'general.longLoadingErrorMsg';
+        }
+      }
+    ));
+
+    return super.ngOnInit();
+  }
+
+  private loadData(checkSavedData: boolean) {
+    let oldSavedDataUsed = false;
+
+    let savedData;
+
+    // Get the URL params and request the data.
+    this.pageSubscriptions.push(this.route.params.pipe(
+      switchMap((params: Params) => {
+        // Get the transaction data.
+        // Use saved data or get from the server. If there is no saved data, savedData is null.
+        savedData = checkSavedData ? this.getLocalValue(this.persistentServerTransactionResponseKey) : null;
+        if (savedData) {
+          oldSavedDataUsed = savedData.date < (new Date()).getTime() - dataValidityTime;
+          return of(savedData.value);
+        } else {
+          return this.explorer.getTransaction(params['txid']);
+        }
+      })
+    ).subscribe(
+      transaction => {
+        if (!savedData) {
+          this.saveLocalValue(this.persistentServerTransactionResponseKey, transaction);
+        }
+        this.transaction = transaction;
+
+        // If old saved data was used, repeat the operation, ignoring the saved data.
+        if (oldSavedDataUsed) {
+          this.loadData(false);
+        }
+      },
+      error => {
+        if (this.transaction === undefined) {
+          if (error.status >= 400 && error.status < 500) {
+            // The transaction was not found.
+            this.loadingMsg = 'general.noData';
+            this.longErrorMsg = 'transactionDetail.canNotFind';
+          } else {
+            // Error loading the data.
+            this.loadingMsg = 'general.shortLoadingErrorMsg';
+            this.longErrorMsg = 'general.longLoadingErrorMsg';
+          }
         }
       }
     ));

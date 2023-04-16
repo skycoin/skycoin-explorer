@@ -19,3 +19,4 @@ Gopkg.toml
 **/e2e/*
 **/node_modules/*
 **/dist/*
+**/test/*

@@ -39,8 +39,8 @@
           <div class="-balance"><div class="-transparent -float-left">{{ 'txBoxes.hoursWhenUsed' | translate }}:&nbsp;</div><div> {{ input.calculatedHours.toString() | amount:false:'first' }}</div></div>
         </div>
         <!-- Link for showing all elements (If required) -->
-        <div class="-body" *ngIf="showMoreInputs !== showMoreStatus.DontShowMore">
-          <a class="-link pointer" (click)="startShowingAllInputs()">{{ showMoreInputs === showMoreStatus.ShowMore ? ('txBoxes.loadAll' | translate:{ total: totalInputs }) : ('txBoxes.loading' | translate) }}</a>
+        <div class="-body" *ngIf="showMoreInputs !== showMoreStatus.dontShowMore">
+          <a class="-link pointer" (click)="startShowingAllInputs()">{{ showMoreInputs === showMoreStatus.showMore ? ('txBoxes.loadAll' | translate:{ total: totalInputs }) : ('txBoxes.loading' | translate) }}</a>
         </div>
       </div>
       <!-- Outputs -->
@@ -52,8 +52,8 @@
           <div class="-balance"><div class="-transparent -float-left">{{ 'general.hours' | translate }}:&nbsp;</div><div> {{ output.hours.toString() | amount:false:'first' }}</div></div>
         </div>
         <!-- Link for showing all elements (If required) -->
-        <div class="-body" *ngIf="showMoreOutputs !== showMoreStatus.DontShowMore">
-          <a class="-link pointer" (click)="startShowingAllOutputs()">{{ showMoreOutputs === showMoreStatus.ShowMore ? ('txBoxes.loadAll' | translate:{ total: totalOutputs }) : ('txBoxes.loading' | translate) }}</a>
+        <div class="-body" *ngIf="showMoreOutputs !== showMoreStatus.dontShowMore">
+          <a class="-link pointer" (click)="startShowingAllOutputs()">{{ showMoreOutputs === showMoreStatus.showMore ? ('txBoxes.loadAll' | translate:{ total: totalOutputs }) : ('txBoxes.loading' | translate) }}</a>
         </div>
       </div>
     </div>

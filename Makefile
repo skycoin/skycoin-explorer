@@ -43,7 +43,7 @@ lint: ## Run linters. Use make install-linters first.
 check: lint test verify ## Run tests, linters and self-verification
 
 install-linters: ## Install linters
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.21.2
+	curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $(shell go env GOPATH)/bin v1.52.2
 
 format: ## Formats the code. Must have goimports installed (use make install-linters).
 	goimports -w explorer.go

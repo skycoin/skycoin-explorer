@@ -37,7 +37,7 @@ import (
 )
 
 const (
-	defaultUiFilesFolder = "./dist/"
+	defaultUIFilesFolder = "./dist/"
 	defaultExplorerHost  = "127.0.0.1:8001"
 	defaultSkycoinAddr   = "http://127.0.0.1:6420"
 
@@ -74,7 +74,7 @@ func init() {
 		skycoinAddrString = defaultSkycoinAddr
 	}
 
-	skycoinAddr = buildNodeUrl(skycoinAddrString)
+	skycoinAddr = buildNodeURL(skycoinAddrString)
 
 	//-api-only - Don't serve static content from ./dist, only proxy the skycoin node
 
@@ -100,11 +100,11 @@ func init() {
 	}
 
 	if nodeAddrByFlag != "" {
-		skycoinAddr = buildNodeUrl(nodeAddrByFlag)
+		skycoinAddr = buildNodeURL(nodeAddrByFlag)
 	}
 
 	if filesFolderByFlag == "" {
-		uiFilesFolder = defaultUiFilesFolder
+		uiFilesFolder = defaultUIFilesFolder
 	} else {
 		uiFilesFolder = filesFolderByFlag
 		if uiFilesFolder[len(uiFilesFolder)-1] != '/' {
@@ -121,8 +121,8 @@ func init() {
 	}
 }
 
-// buildNodeUrl converts a string to a *url.URL instance.
-func buildNodeUrl(skycoinAddrString string) *url.URL {
+// buildNodeURL converts a string to a *url.URL instance.
+func buildNodeURL(skycoinAddrString string) *url.URL {
 	origURL, err := url.Parse(skycoinAddrString)
 	if err != nil {
 		log.Println("SKYCOIN_ADDR must have a scheme, e.g. http://")
@@ -210,7 +210,11 @@ func (s APIEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Println("Error closing body: ", err)
+		}
+	}()
 
 	w.WriteHeader(resp.StatusCode)
 
@@ -1473,7 +1477,7 @@ func init() {
 }
 
 func htmlDocs(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, docTemplateBody)
+	fmt.Fprintf(w, "%s", docTemplateBody)
 }
 
 func main() {
@@ -1501,8 +1505,10 @@ func main() {
 	gzipHandle("/api/docs", http.HandlerFunc(jsonDocs))
 
 	if !apiOnly {
-		// Needed to work with modern brownsers, which need the correct mime type for javascript.
-		mime.AddExtensionType(".js", "application/javascript")
+		// Needed to work with modern browsers, which need the correct mime type for javascript.
+		if err := mime.AddExtensionType(".js", "application/javascript"); err != nil {
+			log.Fatalln("Unable to register js mime type.")
+		}
 
 		gzipHandle("/", http.FileServer(http.Dir(uiFilesFolder)))
 
@@ -1513,7 +1519,7 @@ func main() {
 			http.ServeFile(w, r, uiFilesFolder+"index.html")
 		}))
 
-		// Backwards compatiblity for the old link;
+		// Backwards compatibility for the old link;
 		// / redirected to /blocks on load, so people may have linked to /blocks
 		// Redirect /blocks to / instead of 404
 		gzipHandle("/blocks", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

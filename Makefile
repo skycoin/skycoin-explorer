@@ -35,15 +35,15 @@ verify: ## Run explorer self-verification
 	exit $$status
 
 lint: ## Run linters. Use make install-linters first.
-	vendorcheck ./...
-	gometalinter --disable-all -E goimports --tests --vendor ./...
+	# go mod vendor ./*.go
+	golangci-lint run -c .golangci.yml ./*.go
+	# @# The govet version in golangci-lint is out of date and has spurious warnings, run it separately
+	go vet -all ./*.go
 
 check: lint test verify ## Run tests, linters and self-verification
 
 install-linters: ## Install linters
-	go get -u github.com/FiloSottile/vendorcheck
-	go get -u github.com/alecthomas/gometalinter
-	gometalinter --vendored-linters --install
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.21.2
 
 format: ## Formats the code. Must have goimports installed (use make install-linters).
 	goimports -w explorer.go

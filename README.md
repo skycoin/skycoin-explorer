@@ -121,6 +121,8 @@ Replace the `{NODE_URL}` part with the URL of the node, including the `http://` 
 
 If you want to run the server in api-only mode (it will respond to API calls but will not serve the frontend), replace the `make run` with `make run-api`.
 
+You can also configure the node and server addresses with CLI flags, run `go run explorer.go -h` to see the options.
+
 ### Open the frontend
 
 If the Skycoin node and the server are already running, simply open [http://127.0.0.1:8001](http://127.0.0.1:8001) in a web browser.
@@ -159,4 +161,16 @@ Run it on port 80:
 
 ```sh
 EXPLORER_HOST=:80 ./explorer
+```
+
+If you want to install the linters in a local development enviroment, use:
+
+```sh
+make install-linters-local
+```
+
+For running the linter, run 
+
+```sh
+make lint
 ```

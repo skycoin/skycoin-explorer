@@ -83,7 +83,7 @@ export class LanguageService {
 
     // Load the last saved language.
     const storedLang = localStorage.getItem(this.storageKey);
-    const currentLang = !!storedLang ? storedLang : languageConfig.defaultLanguage;
+    const currentLang = !!storedLang ? storedLang : languageConfig.defaultLanguage; // eslint-disable-line no-extra-boolean-cast
     this.changeLanguage(currentLang);
   }
 

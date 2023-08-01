@@ -9,11 +9,14 @@ jobs:
         with:
             go-version: 1.19.x
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          # Version Spec of the version to use in SemVer notation.
+          # It also emits such aliases as lts, latest, nightly and canary builds
+          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+          node-version: '14.20'
       - name: Install requirements
         run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
-          export NVM_DIR="$HOME/.nvm"
-          nvm install 14.20
           go get -t ./...
           make install-linters
           npn install

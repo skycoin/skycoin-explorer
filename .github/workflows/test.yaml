@@ -1,0 +1,26 @@
+name: Test
+run-name: test
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+            go-version: 1.19.x
+      - uses: actions/checkout@v3
+      - name: Install requirements
+        run: |
+          nvm install 14.20
+          go get -t ./...
+          make install-linters
+          npn install
+      - name: make check
+        run: make check
+      - name: make lint-ts
+        run: make lint-ts
+      - name: make build-ng
+        run: make build-ng
+      - name: make check-ui
+        run: make check-ui
+

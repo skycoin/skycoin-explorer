@@ -82,41 +82,13 @@ export default [
     open: false,
   },
   {
-    name: 'Store',
-    open: false,
-    active: false,
-    menu: [
-      {
-        name: 'Hardware store',
-        href: 'https://store.skycoin.com/',
-        active: false,
-        target: '_blank',
-        open: false,
-      },
-    ],
-  },
-  {
     name: 'Other',
     open: false,
     active: true,
     menu: [
       {
-        name: 'Team',
-        href: 'https://www.skycoin.com/team',
-        active: false,
-        target: '_blank',
-        open: false,
-      },
-      {
         name: 'Gallery',
         href: 'https://www.skycoin.com/gallery',
-        active: false,
-        target: '_blank',
-        open: false,
-      },
-      {
-        name: 'Jobs',
-        href: 'https://www.skycoin.com/jobs',
         active: false,
         target: '_blank',
         open: false,
